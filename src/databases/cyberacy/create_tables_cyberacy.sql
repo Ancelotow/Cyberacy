@@ -114,7 +114,7 @@ create table choice (
 
 create table link_person_vote (
     vte_id          int not null,
-    prs_nir         int not null,
+    prs_nir         varchar(15) not null,
     lpv_date_vote   timestamp not null,
     constraint  pk_linkpersonvote           primary key (vte_id, prs_nir),
     constraint  fk_linkpersonvote_vote      foreign key (vte_id)    references vote(vte_id),
@@ -122,17 +122,57 @@ create table link_person_vote (
 );
 
 create table manifestation (
-    man_id              serial not null,
-    man_name            varchar(50) not null,
-    man_address_street  varchar(250) null,
-    man_date_start      timestamp not null,
-    man_date_end        timestamp not null,
-    man_is_delete       boolean default(false) not null,
-    man_date_delete     timestamp null,
-    man_date_create     timestamp not null,
-    prs_nir             varchar(20) not null,
-    constraint  pk_manifestation        primary key (man_id),
-    constraint  fk_manifestation_person foreign key (prs_nir)    references person(prs_nir)
+    man_id                      serial not null,
+    man_name                    varchar(50) not null,
+    man_object                  varchar(50) not null,
+    man_security_description    varchar(250) null,
+    man_nb_person_estimate      int null,
+    man_url_document_signed     varchar(100) null,
+    man_reason_aborted          varchar(250) null,
+    man_date_start              timestamp not null,
+    man_date_end                timestamp not null,
+    man_is_aborted              boolean default(false) not null,
+    man_date_aborted            timestamp null,
+    man_date_create             timestamp not null,
+    constraint  pk_manifestation        primary key (man_id)
+);
+
+create table organiser (
+    prs_nir varchar(20) not null,
+    man_id  int not null,
+    constraint  pk_organiser                primary key (prs_nir, man_id),
+    constraint  fk_organiser_person         foreign key (prs_nir)   references person(prs_nir),
+    constraint  fk_organiser_manifestation  foreign key (man_id)    references manifestation(man_id)
+);
+
+create table option_manifestation (
+    omn_id          serial not null,
+    omn_name        varchar(50) not null,
+    omn_description varchar(250) null,
+    omn_is_delete   boolean default(false) not null,
+    man_id          int not null,
+    constraint  pk_optionmanifestation                  primary key (omn_id),
+    constraint  fk_optionmanifestation_manifestation    foreign key (man_id)    references manifestation(man_id)
+);
+
+create table type_step (
+    tst_id      int not null,
+    tst_name    varchar(25) not null,
+    constraint  pk_typestep primary key (tst_id)
+);
+
+create table step (
+    stp_id                  serial not null,
+    stp_address_street      varchar(250) not null,
+    stp_date_arrived        timestamp not null,
+    stp_is_delete           boolean default(false) not null,
+    twn_code_insee          varchar(15) not null,
+    tst_id                  int not null,
+    man_id                  int not null,
+    constraint pk_step                  primary key (stp_id),
+    constraint fk_step_town             foreign key (twn_code_insee)    references town(twn_code_insee),
+    constraint fk_step_typestep         foreign key (tst_id)            references type_step(tst_id),
+    constraint fk_step_manifestation    foreign key (man_id)            references manifestation(man_id)
 );
 
 create table link_person_manifestation (
@@ -144,52 +184,116 @@ create table link_person_manifestation (
     constraint  fk_linkpersonmanifestation_manifestation    foreign key (man_id)    references manifestation(man_id)
 );
 
-create table petition (
-    pet_id          serial not null,
-    pet_name        varchar(50) not null,
-    pet_description varchar(250) null,
-    pet_date_start  timestamp not null,
-    pet_date_end    timestamp not null,
-    pet_is_delete   boolean default(false) not null,
-    pet_date_delete timestamp null,
-    pet_date_create timestamp not null,
-    prs_nir         varchar(20) not null,
-    constraint  pk_petition         primary key (pet_id),
-    constraint  fk_petition_person  foreign key (prs_nir)   references person(prs_nir)
-);
-
-create table link_person_petition (
-    prs_nir     varchar(20) not null,
-    pet_id      int not null,
-    lpp_date    timestamp not null,
-    constraint  pk_linkpersonpetition           primary key (prs_nir, pet_id),
-    constraint  fk_linkpersonpetition_person    foreign key (prs_nir)   references person(prs_nir),
-    constraint  fk_linkpersonpetition_petition  foreign key (pet_id)    references petition(pet_id)
-);
-
 create table political_party (
-    pop_id          serial not null,
-    pop_name        varchar(50) not null,
-    pop_url_logo    varchar(100) not null,
-    pop_date_create timestamp not null,
-    pop_description varchar(250) null,
-    pop_is_delete   boolean default(false) not null,
-    pop_date_delete timestamp null,
-    poe_id          int not null,
-    prs_nir         varchar(20) not null,
+    pop_id                  serial not null,
+    pop_name                varchar(50) not null,
+    pop_url_logo            varchar(100) not null,
+    pop_date_create         timestamp not null,
+    pop_description         varchar(250) null,
+    pop_is_delete           boolean default(false) not null,
+    pop_date_delete         timestamp null,
+    pop_object              varchar(50) not null,
+    pop_address_street      varchar(250) not null,
+    pop_siren               varchar(25) not null,
+    pop_chart               varchar(1000) null,
+    pop_iban                varchar(30) null,
+    pop_url_bank_details    varchar(100) null,
+    pop_url_chart           varchar(100) null,
+    poe_id                  int not null,
+    prs_nir                 varchar(20) not null,
+    twn_code_insee          varchar(15) not null,
     constraint  pk_politicalparty               primary key (pop_id),
-    constraint  fk_politicalparty_person        foreign key (prs_nir)   references person(prs_nir),
-    constraint  fk_politicalparty_politicaledge foreign key (poe_id)    references political_edge(poe_id)
+    constraint  fk_politicalparty_person        foreign key (prs_nir)           references person(prs_nir),
+    constraint  fk_politicalparty_politicaledge foreign key (poe_id)            references political_edge(poe_id),
+    constraint  fk_politicalparty_town          foreign key (twn_code_insee)    references town(twn_code_insee)
 );
 
-create table history_political_party (
-    hpp_id          serial not null,
-    hpp_date_join   date not null,
-    hpp_date_left   date null,
-    hpp_is_left     boolean default(false) not null,
+create table annual_fee (
+    afe_year    int not null,
+    pop_id      int not null,
+    afe_fee     decimal not null,
+    constraint  pk_annualfee                primary key (afe_year, pop_id),
+    constraint  fk_annualfee_politicalparty foreign key (pop_id)    references political_party(pop_id)
+);
+
+create table meeting (
+    mee_id              serial not null,
+    mee_name            varchar(50) not null,
+    mee_object          varchar(50) not null,
+    mee_description     varchar(250) null,
+    mee_date_start      timestamp not null,
+    mee_nb_time         decimal not null,
+    mee_is_aborted      boolean default(false) not null,
+    mee_reason_aborted  varchar(250) null,
+    mee_nb_place        int null,
+    mee_address_street  varchar(250) null,
+    mee_link_twitch     varchar(150) null,
+    pop_id              int not null,
+    twn_code_insee      varchar(15) null,
+    constraint  pk_meeting                  primary key (mee_id),
+    constraint  fk_meeting_politicalparty   foreign key (pop_id)            references political_party(pop_id),
+    constraint  fk_meeting_town             foreign key (twn_code_insee)    references town(twn_code_insee)
+);
+
+create table participant (
+    mee_id              int not null,
+    prs_nir             varchar(15) not null,
+    ptc_date_joined     timestamp not null,
+    ptc_is_aborted      boolean default(false) not null,
+    ptc_date_aborted    timestamp null,
+    ptc_reason_aborted  varchar(250) null,
+    constraint  pk_participant          primary key (mee_id, prs_nir),
+    constraint  fk_participant_meeting  foreign key (mee_id)    references meeting(mee_id),
+    constraint  fk_participant_person   foreign key (prs_nir)   references person(prs_nir)
+);
+
+create table adherent (
+    adh_id          serial not null,
+    adh_date_join   date not null,
+    adh_date_left   date null,
+    adh_is_left     boolean default(false) not null,
     pop_id          int not null,
     prs_nir         varchar(20) not null,
-    constraint  pk_historypoliticalparty                primary key (hpp_id),
-    constraint  fk_historypoliticalparty_person         foreign key (prs_nir)   references person(prs_nir),
-    constraint  fk_historypoliticalparty_politiclparty  foreign key (pop_id)    references political_party(pop_id)
+    constraint  pk_adherent                primary key (adh_id),
+    constraint  fk_adherent_person         foreign key (prs_nir)   references person(prs_nir),
+    constraint  fk_adherent_politiclparty  foreign key (pop_id)    references political_party(pop_id)
+);
+
+create table thread (
+    thr_id          serial not null,
+    thr_main        boolean default(false) not null,
+    thr_name        varchar(50) not null,
+    thr_description varchar(250) null,
+    thr_date_create timestamp not null,
+    thr_is_delete   boolean default(false) not null,
+    thr_date_delete timestamp null,
+    thr_is_private  boolean default(false) not null,
+    thr_url_logo    varchar(150) null,
+    pop_id          int not null,
+    constraint  pk_thread                   primary key (thr_id),
+    constraint  fk_thread_politicalparty    foreign key (pop_id)    references political_party(pop_id)
+);
+
+create table member (
+    mem_id          serial not null,
+    mem_date_join   timestamp not null,
+    mem_date_left   timestamp not null,
+    mem_is_left     boolean default(false) not null,
+    mem_mute_thread boolean default(false) not null,
+    thr_id          int not null,
+    prs_nir         varchar(15) not null,
+    constraint  pk_member           primary key (mem_id),
+    constraint  fk_member_thread    foreign key (thr_id)    references thread(thr_id),
+    constraint  fk_member_person    foreign key (prs_nir)   references person(prs_nir)
+);
+
+create table message (
+    msg_id              serial not null,
+    msg_message         varchar(1000) not null,
+    msg_date_published  timestamp not null,
+    thr_id              int not null,
+    mem_id              int not null,
+    constraint  pk_message          primary key (msg_id),
+    constraint  fk_message_member   foreign key (mem_id)    references member(mem_id),
+    constraint  fk_message_thread   foreign key (thr_id)    references thread(thr_id)
 );
