@@ -36,6 +36,30 @@ const GetById = (nir) => {
 }
 
 /**
+ * Récupération d'une personne par son NIR et son mot de passe
+ * @param nir Le NIR (aussi appelé numéro de sécurité sociale)
+ * @param password Le mot de passe
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetByIdAndPassword = (nir, password) => {
+    return new Promise((resolve, reject) => {
+        const request = `SELECT *
+                         FROM person
+                         WHERE prs_nir = '${nir}'
+                         AND prs_password = '${password}'`
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows[0] : null
+                resolve(res)
+            }
+        });
+    });
+}
+
+/**
  * Ajoute une nouvelle personne si elle n'éxiste pas
  * @param person La nouvelle personne à ajouter
  * @returns {Promise<unknown>}
@@ -66,34 +90,4 @@ const Add = (person) => {
     });
 }
 
-/**
- * Supprime une personne
- * @param nir Le NIR (aussi appelé numéro de sécurité sociale)
- * @returns {Promise<unknown>}
- * @constructor
- */
-const Delete = (nir) => {
-    return new Promise((resolve, reject) => {
-        GetById(nir).then((result) => {
-            if (!result) {
-                const request = `DELETE
-                                 FROM person
-                                 WHERE prs_nir = '${nir}'`
-                pool.query(request, (error, _) => {
-                    if (error) {
-                        reject(error)
-                    } else {
-                        resolve(true)
-                    }
-                });
-            } else {
-                resolve(false)
-            }
-        }).catch((e) => {
-            reject(e)
-        });
-    });
-}
-
-
-export {Person, GetById, Add}
+export {Person, GetById, Add, GetByIdAndPassword}

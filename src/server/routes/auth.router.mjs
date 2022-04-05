@@ -1,4 +1,4 @@
-import {Register} from '../controllers/auth.controller.mjs'
+import {Authentication, Register} from '../controllers/auth.controller.mjs'
 import express from "express"
 
 const routerAuth = express.Router()
@@ -9,7 +9,7 @@ routerAuth.post("/register", async (req, res) => {
 });
 
 routerAuth.post("/login", async (req, res) => {
-    const response = await Register(req.body)
+    const response = await Authentication(req.body.nir, req.body.password)
     res.status(response.status).send(response.data)
 });
 

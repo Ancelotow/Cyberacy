@@ -18,3 +18,12 @@ Content-Type: application/json
 }
 
 ###
+# @name Login
+POST http://localhost:3000/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nir": "875543548",
+  "password": "test"
+}
