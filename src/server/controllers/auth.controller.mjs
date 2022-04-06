@@ -52,6 +52,12 @@ const Authentication = (nir, password) => {
     });
 }
 
+/**
+ * Génère le JWT token
+ * @param nir Le NIR (aussi appelé numéro de sécurité sociale)
+ * @returns {*|null}
+ * @constructor
+ */
 const GenerateToken = (nir) => {
     if(!nir) {
         return null

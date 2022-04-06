@@ -18,8 +18,8 @@ Content-Type: application/json
 }
 
 ###
-# @name Login
-POST http://localhost:3000/login
+# @name Login App
+POST http://localhost:3000/login_app
 Accept: application/json
 Content-Type: application/json
 
@@ -27,3 +27,26 @@ Content-Type: application/json
   "nir": "875543548",
   "password": "test"
 }
+
+###
+# @name Login BO
+POST http://localhost:3000/login_bo
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nir": "875543548",
+  "password": "test"
+}
+
+###
+# @name Login Stats
+POST http://localhost:3000/login_stats
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nir": "875543548",
+  "password": "test"
+}
+

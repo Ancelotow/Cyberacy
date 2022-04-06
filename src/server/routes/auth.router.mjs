@@ -8,7 +8,17 @@ routerAuth.post("/register", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
-routerAuth.post("/login", async (req, res) => {
+routerAuth.post("/login_app", async (req, res) => {
+    const response = await Authentication(req.body.nir, req.body.password)
+    res.status(response.status).send(response.data)
+});
+
+routerAuth.post("/login_stats", async (req, res) => {
+    const response = await Authentication(req.body.nir, req.body.password)
+    res.status(response.status).send(response.data)
+});
+
+routerAuth.post("/login_bo", async (req, res) => {
     const response = await Authentication(req.body.nir, req.body.password)
     res.status(response.status).send(response.data)
 });
