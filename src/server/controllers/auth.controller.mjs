@@ -41,7 +41,6 @@ const Authentication = (nir, password) => {
             resolve({status: 400, data: "Missing parameters."})
         }
         GetByIdAndPassword(nir, password).then((res) => {
-            console.log(res)
             if(!res) {
                 resolve({status: 401, data: "This NIR and password not matching."})
             }

@@ -21,7 +21,15 @@ class Person {
  */
 const GetById = (nir) => {
     return new Promise((resolve, reject) => {
-        const request = `SELECT *
+        const request = `SELECT prs_nir            as nir,
+                                prs_firstname      as firstname,
+                                prs_lastname       as lastname,
+                                prs_email          as email,
+                                prs_birthday       as birthday,
+                                prs_address_street as address_street,
+                                twn_code_insee     as town,
+                                sex_id             as sex,
+                                prf_id             as profile
                          FROM person
                          WHERE prs_nir = '${nir}'`
         pool.query(request, (error, result) => {
@@ -47,7 +55,7 @@ const GetByIdAndPassword = (nir, password) => {
         const request = `SELECT *
                          FROM person
                          WHERE prs_nir = '${nir}'
-                         AND prs_password = '${password}'`
+                           AND prs_password = '${password}'`
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)

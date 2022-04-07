@@ -1,0 +1,23 @@
+###
+# @name Get all manifestation
+GET http://localhost:3000/manifestation?includeAborted=true
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDkzMjEzOTUsImV4cCI6MTY0OTQwNzc5NX0.j8gLqLq3wReClks61WpwnNzvGccOJNxxIVy0sBPizmI
+
+###
+# @name Get all manifestation (without aborted)
+GET http://localhost:3000/manifestation
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDkzMjEzOTUsImV4cCI6MTY0OTQwNzc5NX0.j8gLqLq3wReClks61WpwnNzvGccOJNxxIVy0sBPizmI
+
+###
+# @name Aborted manifestation
+PATCH http://localhost:3000/manifestation/aborted
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDkzMjEzOTUsImV4cCI6MTY0OTQwNzc5NX0.j8gLqLq3wReClks61WpwnNzvGccOJNxxIVy0sBPizmI
+Content-Type: application/json
+
+{
+  "id": 7,
+  "reason": "Il pleut"
+}
