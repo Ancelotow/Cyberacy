@@ -6,7 +6,7 @@ const doc = {
         title: "Cyberacy API",
         description: "Documentation for Cyberacy API."
     },
-    host: "https://cyberacy.herokuapp.com",
+    host: "cyberacy.herokuapp.com",
     basePath: "/",
     schemes: ['http', 'https'],
     consumes: ['application/json'],
