@@ -1,25 +1,27 @@
-import {AddManifestation, AbortedManifestation, GetAllManifestations} from "../controllers/manifestation.controller.mjs";
+import manifestationCtrl from "../controllers/manifestation.controller.mjs";
 import express from "express"
 
 const routerMan = express.Router()
 
 routerMan.post("/manifestation", async (req, res) => {
-    const response = await AddManifestation(req.body)
+    const response = await manifestationCtrl.AddManifestation(req.body)
     res.status(response.status).send(response.data)
 });
 
 routerMan.patch("/manifestation/aborted", async (req, res) => {
-    const response = await AbortedManifestation(req.body.id, req.body.reason)
+    const response = await manifestationCtrl.AbortedManifestation(req.body.id, req.body.reason)
     res.status(response.status).send(response.data)
 });
 
 routerMan.get("/manifestation", async (req, res) => {
-    const response = await GetAllManifestations(req.query.includeAborted)
+    const nir = (req.query.mine && req.query.mine === 'true') ? req.data.nir : null
+    const response = await manifestationCtrl.GetAllManifestations(req.query.includeAborted, nir)
     res.status(response.status).send(response.data)
 });
 
-routerMan.post("/manifestation/participate", async (req, res) => {
-
+routerMan.post("/manifestation/participate/:id", async (req, res) => {
+    const nir = req.data.nir
+    const response = await manifestationCtrl.Participate(nir, req.params.id)
     res.status(response.status).send(response.data)
 });
 

@@ -175,13 +175,13 @@ create table step (
     constraint fk_step_manifestation    foreign key (man_id)            references manifestation(man_id)
 );
 
-create table link_person_manifestation (
+create table manifestant (
     man_id      int not null,
     prs_nir     varchar(20) not null,
-    lpm_date    timestamp not null,
-    constraint  pk_linkpersonmanifestation                  primary key (man_id, prs_nir),
-    constraint  fk_linkpersonmanifestation_person           foreign key (prs_nir)   references person(prs_nir),
-    constraint  fk_linkpersonmanifestation_manifestation    foreign key (man_id)    references manifestation(man_id)
+    mnf_date    timestamp not null,
+    constraint  pk_manifestant                  primary key (man_id, prs_nir),
+    constraint  fk_manifestant_person           foreign key (prs_nir)   references person(prs_nir),
+    constraint  fk_manifestant_manifestation    foreign key (man_id)    references manifestation(man_id)
 );
 
 create table political_party (

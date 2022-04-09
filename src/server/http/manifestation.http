@@ -2,13 +2,19 @@
 # @name Get all manifestation
 GET http://localhost:3000/manifestation?includeAborted=true
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDkzMjEzOTUsImV4cCI6MTY0OTQwNzc5NX0.j8gLqLq3wReClks61WpwnNzvGccOJNxxIVy0sBPizmI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MTMwMDQsImV4cCI6MTY0OTU5OTQwNH0.n4ERguJqgu6PAwrpRWt2MguIE7T57HL0YlKEIYpNwX0
 
 ###
 # @name Get all manifestation (without aborted)
 GET http://localhost:3000/manifestation
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDkzMjEzOTUsImV4cCI6MTY0OTQwNzc5NX0.j8gLqLq3wReClks61WpwnNzvGccOJNxxIVy0sBPizmI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MTMwMDQsImV4cCI6MTY0OTU5OTQwNH0.n4ERguJqgu6PAwrpRWt2MguIE7T57HL0YlKEIYpNwX0
+
+###
+# @name Get all manifestation (mine)
+GET http://localhost:3000/manifestation?mine=true
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MTMwMDQsImV4cCI6MTY0OTU5OTQwNH0.n4ERguJqgu6PAwrpRWt2MguIE7T57HL0YlKEIYpNwX0
 
 ###
 # @name Aborted manifestation
@@ -21,3 +27,10 @@ Content-Type: application/json
   "id": 7,
   "reason": "Il pleut"
 }
+
+###
+# @name Participate to manifestation
+POST http://localhost:3000/manifestation/participate/2
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MTMwMDQsImV4cCI6MTY0OTU5OTQwNH0.n4ERguJqgu6PAwrpRWt2MguIE7T57HL0YlKEIYpNwX0
+Content-Type: application/json

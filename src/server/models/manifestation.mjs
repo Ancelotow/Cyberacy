@@ -112,12 +112,13 @@ const Aborted = (id, reason) => {
 /**
  * Récupère toutes les manifestations
  * @param includeAborted Inclure les manifestations annulées
+ * @param nir Les manifestations pour une personne
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetAll = (includeAborted) => {
+const GetAll = (includeAborted = false, nir = null) => {
     return new Promise((resolve, reject) => {
-        let request = `SELECT man_id                   as id,
+        let request = `SELECT man.man_id               as id,
                               man_name                 as name,
                               man_date_start           as date_start,
                               man_date_end             as date_end,
@@ -129,7 +130,10 @@ const GetAll = (includeAborted) => {
                               man_nb_person_estimate   as nb_person_estimate,
                               man_url_document_signed  as url_document_signed,
                               man_reason_aborted       as reason_aborted
-                       FROM manifestation`
+                       FROM manifestation man`
+        if(nir) {
+            request += ` INNER JOIN manifestant mnf ON man.man_id = mnf.man_id AND mnf.prs_nir = '${nir}'`
+        }
         if (!includeAborted) {
             request += ` WHERE man_is_aborted = false`
         }
@@ -144,7 +148,7 @@ const GetAll = (includeAborted) => {
     });
 }
 
-export {Manifestation, GetById, Add, Aborted, GetAll}
+export default {Manifestation, GetById, Add, Aborted, GetAll}
 
 
 

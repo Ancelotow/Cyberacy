@@ -1,21 +1,22 @@
-import {Manifestation, GetAll, GetById, Add, Aborted} from "../models/manifestation.mjs";
+import manifestation from "../models/manifestation.mjs";
+import manifestant from "../models/manifestant.mjs";
 
 /**
  * Ajoute une nouvelle manifestation
- * @param manifestation La nouvelle manifestation
+ * @param manif La nouvelle manifestation
  * @returns {Promise<unknown>}
  * @constructor
  */
-const AddManifestation = (manifestation) => {
+const AddManifestation = (manif) => {
     return new Promise((resolve, _) => {
-        if (!manifestation) {
+        if (!manif) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!manifestation.name || !manifestation.object ) {
+        } else if (!manif.name || !manif.object ) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!manifestation.date_start || !manifestation.date_end) {
+        } else if (!manif.date_start || !manif.date_end) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            Add(manifestation).then((res) => {
+            manifestation.Add(manif).then((res) => {
                 if (res) {
                     resolve({status: 201, data: "Manifestation has been created."})
                 } else {
@@ -41,7 +42,7 @@ const AbortedManifestation = (id, reason) => {
         if (!id) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            Aborted(id, reason).then((res) => {
+            manifestation.Aborted(id, reason).then((res) => {
                 if (res) {
                     resolve({status: 200, data: "Manifestation has been aborted."})
                 } else {
@@ -57,20 +58,47 @@ const AbortedManifestation = (id, reason) => {
 /**
  * Récupère toutes les manifestations
  * @param includeAborted Inclure les manifestations annulées
+ * @param nir Les manifestations pour une personne
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetAllManifestations = (includeAborted = false) => {
+const GetAllManifestations = (includeAborted = false, nir = null) => {
     return new Promise((resolve, _) => {
-        GetAll(includeAborted).then((res) => {
-            resolve({status: 200, data: res})
+        manifestation.GetAll(includeAborted, nir).then((res) => {
+            const code = (res) ? 200 : 204;
+            resolve({status: code, data: res})
         }).catch((e) => {
             resolve({status: 500, data: e})
         })
     })
 }
 
-export {AddManifestation, AbortedManifestation, GetAllManifestations}
+/**
+ * Participation à une manifestation
+ * @param nir Le NIR du manifestant
+ * @param id_manifestation L'Id de la manifestation
+ * @constructor
+ */
+const Participate = (nir, id_manifestation) => {
+    return new Promise((resolve, _) => {
+        if (!nir || !id_manifestation) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            manifestant.Add(nir, id_manifestation).then((res) => {
+                if (res) {
+                    resolve({status: 201, data: "You participate."})
+                } else {
+                    resolve({status: 400, data: "You already participate."})
+                }
+            }).catch((e) => {
+                console.error(e)
+                resolve({status: 500, data: e})
+            })
+        }
+    })
+}
+
+export default {AddManifestation, AbortedManifestation, GetAllManifestations, Participate}
 
 
 
