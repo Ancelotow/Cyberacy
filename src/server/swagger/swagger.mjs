@@ -6,16 +6,7 @@ const doc = {
         title: "Cyberacy API",
         description: "Documentation for Cyberacy API."
     },
-    servers: [
-        {
-            url: "http://localhost:3000",
-            description: "Local server",
-        },
-        {
-            url: "https://cyberacy.herokuapp.com",
-            description: "Online server",
-        },
-    ],
+    host: "https://cyberacy.herokuapp.com",
     basePath: "/",
     schemes: ['http', 'https'],
     consumes: ['application/json'],

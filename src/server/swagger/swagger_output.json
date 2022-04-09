@@ -5,17 +5,7 @@
     "title": "Cyberacy API",
     "description": "Documentation for Cyberacy API."
   },
-  "host": "localhost:3000",
-  "servers": [
-    {
-      "url": "http://localhost:3000",
-      "description": "Local server"
-    },
-    {
-      "url": "https://cyberacy.herokuapp.com",
-      "description": "Online server"
-    }
-  ],
+  "host": "https://cyberacy.herokuapp.com",
   "basePath": "/",
   "schemes": [
     "http",
