@@ -34,3 +34,29 @@ POST http://localhost:3000/manifestation/participate/2
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MTMwMDQsImV4cCI6MTY0OTU5OTQwNH0.n4ERguJqgu6PAwrpRWt2MguIE7T57HL0YlKEIYpNwX0
 Content-Type: application/json
+
+###
+# @name Add new option to manifestation
+POST http://localhost:3000/manifestation/option
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MjE0MjUsImV4cCI6MTY0OTYwNzgyNX0.lKBuuCJm0vreUQ25jfVAbbRMuMoNBAk5lHqRiO-DdIM
+Content-Type: application/json
+
+{
+  "name": "Hauts-parleurs",
+  "id_manifestation": 2
+}
+
+###
+# @name Get options from manifestation
+GET http://localhost:3000/manifestation/option/2
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MjE0MjUsImV4cCI6MTY0OTYwNzgyNX0.lKBuuCJm0vreUQ25jfVAbbRMuMoNBAk5lHqRiO-DdIM
+Content-Type: application/json
+
+###
+# @name Delete options of manifestation
+DELETE http://localhost:3000/manifestation/option/2
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MjE0MjUsImV4cCI6MTY0OTYwNzgyNX0.lKBuuCJm0vreUQ25jfVAbbRMuMoNBAk5lHqRiO-DdIM
+Content-Type: application/json

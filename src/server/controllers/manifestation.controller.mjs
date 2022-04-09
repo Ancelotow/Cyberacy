@@ -1,5 +1,6 @@
 import manifestation from "../models/manifestation.mjs";
 import manifestant from "../models/manifestant.mjs";
+import option from "../models/option-manifestation.mjs"
 
 /**
  * Ajoute une nouvelle manifestation
@@ -11,7 +12,7 @@ const AddManifestation = (manif) => {
     return new Promise((resolve, _) => {
         if (!manif) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!manif.name || !manif.object ) {
+        } else if (!manif.name || !manif.object) {
             resolve({status: 400, data: "Missing parameters."})
         } else if (!manif.date_start || !manif.date_end) {
             resolve({status: 400, data: "Missing parameters."})
@@ -98,7 +99,85 @@ const Participate = (nir, id_manifestation) => {
     })
 }
 
-export default {AddManifestation, AbortedManifestation, GetAllManifestations, Participate}
+/**
+ * Récupère la liste des options pour une manifestation
+ * @param id_manifestation L'Id de la manifestation
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetOptions = (id_manifestation) => {
+    return new Promise((resolve, _) => {
+        if (!id_manifestation) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            option.GetAll(id_manifestation).then((res) => {
+                const code = (res) ? 200 : 204;
+                resolve({status: code, data: res})
+            }).catch((e) => {
+                resolve({status: 500, data: e})
+            })
+        }
+    });
+}
+
+/**
+ * Ajoute une nouvelle option à une manifestation
+ * @param opt Option de la manifestation à ajouter
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const AddOption = (opt) => {
+    return new Promise((resolve, _) => {
+        if (!opt || !opt.name || !opt.id_manifestation) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            option.Add(opt).then((res) => {
+                if (res) {
+                    resolve({status: 201, data: "Option has been created."})
+                } else {
+                    resolve({status: 400, data: "This option already existed."})
+                }
+            }).catch((e) => {
+                console.error(e)
+                resolve({status: 500, data: e})
+            })
+        }
+    })
+}
+
+/**
+ * Supprime une option de manifestation existante
+ * @param id L'Id de l'option à supprimer
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const DeleteOption = (id) => {
+    return new Promise((resolve, _) => {
+        if (!id) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            option.Delete(id).then((res) => {
+                if (res) {
+                    resolve({status: 200, data: "The option has been deleted."})
+                } else {
+                    resolve({status: 400, data: "This option does not existed."})
+                }
+            }).catch((e) => {
+                resolve({status: 500, data: e})
+            })
+        }
+    });
+}
+
+export default {
+    AddManifestation,
+    AbortedManifestation,
+    GetAllManifestations,
+    Participate,
+    GetOptions,
+    AddOption,
+    DeleteOption
+}
 
 
 

@@ -22,7 +22,6 @@ const GetById = (nir, id_manifestation) => {
                          FROM manifestant
                          WHERE prs_nir = '${nir}'
                            AND man_id = ${id_manifestation}`
-        console.log(request)
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)

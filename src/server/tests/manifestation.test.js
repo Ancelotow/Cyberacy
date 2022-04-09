@@ -49,8 +49,23 @@ describe("Test participation à une manifestations", () => {
     test("Participation à une manifestation avec des paramètres manquant", () => manifestation.Participate(null, null).then((data) => expect(data).toMatchObject({
         status: 400
     })));
-    test("Participation à une manifestation n'existant pas", () => manifestation.Participate('1000', 54).then((data) => expect(data).toMatchObject({
+    /*test("Participation à une manifestation", () => manifestation.Participate('541397454', 2).then((data) => expect(data).toMatchObject({
+        status: 200
+    })));*/
+})
+
+describe("Test gestion des options d'une manifestations", () => {
+    test("Ajout d'une option à une manifestation avec des paramètres manquant", () => manifestation.AddOption(null).then((data) => expect(data).toMatchObject({
         status: 400
+    })));
+    test("Ajout d'une option à une manifestation", () => manifestation.AddOption({
+        name: "Test",
+        id_manifestation: 2
+    }).then((data) => expect(data).toMatchObject({
+        status: 201
+    })));
+    test("Récupération des options d'une manifestations", () => manifestation.GetOptions(2).then((data) => expect(data).toMatchObject({
+        status: 200
     })));
     /*test("Participation à une manifestation", () => manifestation.Participate('541397454', 2).then((data) => expect(data).toMatchObject({
         status: 200

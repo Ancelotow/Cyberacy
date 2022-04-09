@@ -25,4 +25,20 @@ routerMan.post("/manifestation/participate/:id", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
+routerMan.post("/manifestation/option", async (req, res) => {
+    const response = await manifestationCtrl.AddOption(req.body)
+    res.status(response.status).send(response.data)
+});
+
+routerMan.get("/manifestation/option/:id", async (req, res) => {
+    const response = await manifestationCtrl.GetOptions(req.params.id)
+    res.status(response.status).send(response.data)
+});
+
+routerMan.delete("/manifestation/option/:id", async (req, res) => {
+    const response = await manifestationCtrl.DeleteOption(req.params.id)
+    res.status(response.status).send(response.data)
+});
+
+
 export {routerMan}
