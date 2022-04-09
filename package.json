@@ -1,0 +1,22 @@
+{
+  "name": "cyberacy",
+  "version": "1.0.0",
+  "description": "Projet annuel pour l'ESGI",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "postinstall": "npm install --prefix server",
+    "start": "npm start --prefix src/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ancelotow/Cyberacy.git"
+  },
+  "author": "Cyberay team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ancelotow/Cyberacy/issues"
+  },
+  "homepage": "https://github.com/Ancelotow/Cyberacy#readme"
+}
