@@ -6,7 +6,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "postinstall": "npm install --prefix server",
+    "postinstall": "npm install --prefix src/server",
     "start": "npm start --prefix src/server"
   },
   "repository": {
