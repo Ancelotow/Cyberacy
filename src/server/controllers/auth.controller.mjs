@@ -22,6 +22,8 @@ const Register = (person) => {
                     resolve({status: 400, data: "This person already existed."})
                 }
             }).catch((e) => {
+                console.error(e)
+
                 resolve({status: 500, data: e})
             })
         }

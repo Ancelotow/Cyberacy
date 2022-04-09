@@ -7,6 +7,7 @@
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "dev": "nodemon --inspect .",
+    "swagger-autogen": "node swagger/swagger.mjs",
     "start": "node ."
   },
   "author": "Cyberacy",
@@ -18,6 +19,7 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "pg": "^8.7.3",
+    "swagger-autogen": "^2.20.8",
     "swagger-ui-express": "^4.3.0"
   },
   "devDependencies": {

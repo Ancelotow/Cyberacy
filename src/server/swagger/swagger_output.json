@@ -1,0 +1,286 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Cyberacy API",
+    "description": "Documentation for Cyberacy API."
+  },
+  "host": "localhost:3000",
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    },
+    {
+      "url": "https://cyberacy.herokuapp.com",
+      "description": "Online server"
+    }
+  ],
+  "basePath": "/",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Rentrez un token valide dans le format **Bearer &lt;token>**"
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/manifestation": {
+      "post": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Ajouter une nouvelle manifestation.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Récupération des manifestations.",
+        "parameters": [
+          {
+            "name": "mine",
+            "in": "query",
+            "description": "Voir uniquement les manifestation auxquelles je participe.",
+            "type": "boolean"
+          },
+          {
+            "name": "includeAborted",
+            "in": "query",
+            "description": "Inclure les manifestation annuler.",
+            "type": "boolean"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/manifestation/aborted": {
+      "patch": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Annuler une manifestation existante.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "any"
+                },
+                "reason": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/manifestation/participate/{id}": {
+      "post": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Participer à une manifestations.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "parameter",
+            "required": true,
+            "type": "number",
+            "description": "Id de la manifestation."
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/manifestation/option": {
+      "post": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Ajouter une option à une manifestation.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/manifestation/option/{id}": {
+      "get": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Récupérer les options d",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Supprimer une option de une manifestation.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": [
+          "Authentification"
+        ],
+        "description": "Créer un compte basé sur le NIR (numéro de sécurité sociale).",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/login_app": {
+      "post": {
+        "tags": [
+          "Authentification"
+        ],
+        "description": "Connexion et retourne le Bearer token (pour application Android).",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nir": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/login_stats": {
+      "post": {
+        "tags": [
+          "Authentification"
+        ],
+        "description": "Connexion et retourne le Bearer token (pour application de statistiques IOS).",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nir": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/login_bo": {
+      "post": {
+        "tags": [
+          "Authentification"
+        ],
+        "description": "Connexion et retourne le Bearer token (pour le back-office Flutter).",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nir": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
+      }
+    }
+  }
+}

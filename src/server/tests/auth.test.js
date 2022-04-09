@@ -9,7 +9,7 @@ describe("Test resgiter", () => {
         password: "test",
         birthday: '12-02-2001',
         address_street: 'rue des sycomores',
-        town: '94130',
+        town: '94079',
         sex: 1,
         profile: null
     }

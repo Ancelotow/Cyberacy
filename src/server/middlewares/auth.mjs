@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-const WHITE_ROUTES = ['/register', '/login_app', '/login_stats', '/login_bo']
+const WHITE_ROUTES = ['/register', '/login_app', '/login_stats', '/login_bo', '/swagger', '/']
 
 const authToken = (req, res, next) => {
     // Vérifie sila route est sans token ou pas
