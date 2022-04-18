@@ -374,6 +374,28 @@
         ]
       }
     },
+    "/region/{code_insee}/department": {
+      "get": {
+        "tags": [
+          "Geography"
+        ],
+        "description": "Récupération des départements par régions.",
+        "parameters": [
+          {
+            "name": "code_insee",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/department": {
       "get": {
         "tags": [

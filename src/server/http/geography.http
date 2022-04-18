@@ -12,6 +12,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1N
 
 ###
 # @name Get towns
-GET http://localhost:3000/department
+GET http://localhost:3000/town
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+
+###
+# @name Get towns by department
+GET http://localhost:3000/department/94/town
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+
+###
+# @name Get departments by region
+GET http://localhost:3000/region/11/department
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI

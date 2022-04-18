@@ -80,4 +80,28 @@ const GetById = (code) => {
     });
 }
 
-export default {Department, GetAll, Add}
+/**
+ * Récupère les départements par régions
+ * @param code_insee Code INSEE de la région
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetByRegion = (code_insee) => {
+    return new Promise((resolve, reject) => {
+        let request = `SELECT dpt_code       as code,
+                              dpt_name       as name,
+                              reg_code_insee as region_code_insee
+                       FROM department
+                       WHERE reg_code_insee = '${code_insee}'`
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows : null
+                resolve(res)
+            }
+        });
+    });
+}
+
+export default {Department, GetAll, Add, GetByRegion}

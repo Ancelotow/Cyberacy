@@ -57,7 +57,6 @@ const GetTowns = () => {
  * @constructor
  */
 const GetTownsByDepartment = (code) => {
-
     return new Promise((resolve, _) => {
         if(!code) {
             resolve({status: 400, data: "Missing parameters."})
@@ -72,5 +71,26 @@ const GetTownsByDepartment = (code) => {
     });
 }
 
+/**
+ * Liste des départements par régions
+ * @param code_insee Code INSEE de la région
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetDepartmentByRegion = (code_insee) => {
+    return new Promise((resolve, _) => {
+        if(!code_insee) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            department.GetByRegion(code_insee).then((res) => {
+                const code = (res) ? 200 : 204;
+                resolve({status: code, data: res})
+            }).catch((e) => {
+                resolve({status: 500, data: e})
+            })
+        }
+    });
+}
 
-export default {GetRegions, GetDepartments, GetTowns, GetTownsByDepartment}
+
+export default {GetRegions, GetDepartments, GetTowns, GetTownsByDepartment, GetDepartmentByRegion}

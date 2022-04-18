@@ -12,6 +12,15 @@ routerGeo.get("/region", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
+routerGeo.get("/region/:code_insee/department", async (req, res) => {
+    // #swagger.tags = ['Geography']
+    // #swagger.description = 'Récupération des départements par régions.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await geographyCtrl.GetDepartmentByRegion(req.params.code_insee)
+    res.status(response.status).send(response.data)
+});
+
 routerGeo.get("/department", async (req, res) => {
     // #swagger.tags = ['Geography']
     // #swagger.description = 'Récupération des départements.'
