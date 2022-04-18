@@ -12,4 +12,13 @@ routerRef.get("/step_type", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
+routerRef.get("/sex", async (req, res) => {
+    // #swagger.tags = ['References']
+    // #swagger.description = 'Récupération des civilités.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await referencesCtrl.GetSex()
+    res.status(response.status).send(response.data)
+});
+
 export {routerRef}

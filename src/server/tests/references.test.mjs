@@ -11,4 +11,12 @@ describe("Test récupération des références", () => {
             "id": 3, "name": "Arrivée"
         }]
     })));
+
+    test("Récupération des civilités", () => manifestation.GetAllManifestations(false, null).then((data) => expect(data).toMatchObject({
+        status: 200, data: [{
+            "id": 1, "name": "Homme"
+        }, {
+            "id": 2, "name": "Femme"
+        }]
+    })));
 });
