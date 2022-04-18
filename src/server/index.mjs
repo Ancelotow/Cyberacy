@@ -6,6 +6,7 @@ import swaggerUi from 'swagger-ui-express'
 import {routerMan} from "./routes/manifestation.router.mjs";
 import {routerRef} from "./routes/references.router.mjs";
 import {routerGeo} from "./routes/geography.router.mjs";
+import jobGeography from "./cron/geography.cron.mjs"
 import {config} from 'dotenv'
 import morgan from 'morgan'
 import file from 'fs'
@@ -35,6 +36,10 @@ app.use(routerAuth)
 app.use(routerMan)
 app.use(routerGeo)
 app.use(routerRef)
+
+// Cron jobs
+jobGeography.startJob()
+
 
 app.listen(port, () => {
     console.log(`Server listen on port ${port}`)

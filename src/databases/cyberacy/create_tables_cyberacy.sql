@@ -38,7 +38,7 @@ create table link_role_profile (
 
 create table region (
     reg_code_insee  varchar(15) not null,
-    reg_name        varchar(25) not null,
+    reg_name        varchar(50) not null,
     constraint  pk_region   primary key (reg_code_insee)
 );
 

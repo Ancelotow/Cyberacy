@@ -28,4 +28,56 @@ const GetAll = () => {
     });
 }
 
-export default {Department, GetAll}
+/**
+ * Ajoute un nouveau département
+ * @param department Le nouveau département
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const Add = (department) => {
+    return new Promise((resolve, reject) => {
+        GetById(department.code).then((result) => {
+            if (!result) {
+                const request = `INSERT INTO department (dpt_code, dpt_name, reg_code_insee)
+                                 VALUES ('${department.code}', '${department.name}', '${department.region_code_insee}');`
+                pool.query(request, (error, _) => {
+                    if (error) {
+                        reject(error)
+                    } else {
+                        resolve(true)
+                    }
+                });
+            } else {
+                resolve(false)
+            }
+        }).catch((e) => {
+            reject(e)
+        });
+    });
+}
+
+/**
+ * Récupère un département par son code
+ * @param code Code département
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetById = (code) => {
+    return new Promise((resolve, reject) => {
+        const request = `SELECT dpt_code       as code,
+                                dpt_name       as name,
+                                reg_code_insee as region_code_insee
+                         FROM department
+                         WHERE dpt_code = '${code}'`
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows[0] : null
+                resolve(res)
+            }
+        });
+    });
+}
+
+export default {Department, GetAll, Add}
