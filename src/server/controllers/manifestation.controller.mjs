@@ -1,6 +1,7 @@
 import manifestation from "../models/manifestation.mjs";
 import manifestant from "../models/manifestant.mjs";
 import option from "../models/option-manifestation.mjs"
+import step from "../models/step.mjs"
 
 /**
  * Ajoute une nouvelle manifestation
@@ -169,6 +170,78 @@ const DeleteOption = (id) => {
     });
 }
 
+/**
+ * Ajoute une nouvelle étape à une manifestation
+ * @param stp Etape de la manifestation à ajouter
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const AddStep = (stp) => {
+    return new Promise((resolve, _) => {
+        if (!stp || !stp.address_street || !stp.date_arrived) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else if (!stp.town_code_insee || !stp.id_step_type || !stp.id_manifestation) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            step.Add(stp).then((res) => {
+                if (res) {
+                    resolve({status: 201, data: "Step has been created."})
+                } else {
+                    resolve({status: 400, data: "This step already existed."})
+                }
+            }).catch((e) => {
+                console.error(e)
+                resolve({status: 500, data: e})
+            })
+        }
+    })
+}
+
+/**
+ * Supprime une étape de manifestation existante
+ * @param id L'Id de l'étape à supprimer
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const DeleteStep = (id) => {
+    return new Promise((resolve, _) => {
+        if (!id) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            step.Delete(id).then((res) => {
+                if (res) {
+                    resolve({status: 200, data: "The step has been deleted."})
+                } else {
+                    resolve({status: 400, data: "This step does not existed."})
+                }
+            }).catch((e) => {
+                resolve({status: 500, data: e})
+            })
+        }
+    });
+}
+
+/**
+ * Récupère la liste des étapes pour une manifestation
+ * @param id_manifestation L'Id de la manifestation
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetSteps = (id_manifestation) => {
+    return new Promise((resolve, _) => {
+        if (!id_manifestation) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            step.GetAll(id_manifestation).then((res) => {
+                const code = (res) ? 200 : 204;
+                resolve({status: code, data: res})
+            }).catch((e) => {
+                resolve({status: 500, data: e})
+            })
+        }
+    });
+}
+
 export default {
     AddManifestation,
     AbortedManifestation,
@@ -176,7 +249,10 @@ export default {
     Participate,
     GetOptions,
     AddOption,
-    DeleteOption
+    DeleteOption,
+    AddStep,
+    DeleteStep,
+    GetSteps
 }
 
 

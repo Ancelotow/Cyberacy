@@ -49,9 +49,9 @@ Content-Type: application/json
 
 ###
 # @name Get options from manifestation
-GET http://localhost:3000/manifestation/option/2
+GET http://localhost:3000/manifestation/option/3
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MjE0MjUsImV4cCI6MTY0OTYwNzgyNX0.lKBuuCJm0vreUQ25jfVAbbRMuMoNBAk5lHqRiO-DdIM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
 Content-Type: application/json
 
 ###
@@ -59,4 +59,33 @@ Content-Type: application/json
 DELETE http://localhost:3000/manifestation/option/2
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MjE0MjUsImV4cCI6MTY0OTYwNzgyNX0.lKBuuCJm0vreUQ25jfVAbbRMuMoNBAk5lHqRiO-DdIM
+Content-Type: application/json
+
+###
+# @name Add new step to manifestation
+POST http://localhost:3000/manifestation/step
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+Content-Type: application/json
+
+{
+  "address_street": "28 rue de Noisy",
+  "date_arrived": "2022-05-20",
+  "id_manifestation": 3,
+  "id_step_type": 1,
+  "town_code_insee": "94079"
+}
+
+###
+# @name Get steps from manifestation
+GET http://localhost:3000/manifestation/step/3
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+Content-Type: application/json
+
+###
+# @name Delete step of manifestation
+DELETE http://localhost:3000/manifestation/step/2
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
 Content-Type: application/json

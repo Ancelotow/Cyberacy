@@ -133,7 +133,7 @@ create table manifestation (
     man_date_end                timestamp not null,
     man_is_aborted              boolean default(false) not null,
     man_date_aborted            timestamp null,
-    man_date_create             timestamp not null,
+    man_date_create             timestamp default now() not null,
     constraint  pk_manifestation        primary key (man_id)
 );
 

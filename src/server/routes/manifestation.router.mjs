@@ -66,7 +66,7 @@ routerMan.post("/manifestation/option", async (req, res) => {
 
 routerMan.get("/manifestation/option/:id", async (req, res) => {
     // #swagger.tags = ['Manifestation']
-    // #swagger.description = 'Récupérer les options d''une manifestation.'
+    // #swagger.description = 'Récupérer les options de une manifestation.'
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await manifestationCtrl.GetOptions(req.params.id)
@@ -79,6 +79,33 @@ routerMan.delete("/manifestation/option/:id", async (req, res) => {
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await manifestationCtrl.DeleteOption(req.params.id)
+    res.status(response.status).send(response.data)
+});
+
+routerMan.post("/manifestation/step", async (req, res) => {
+    // #swagger.tags = ['Manifestation']
+    // #swagger.description = 'Ajouter une étape à une manifestation.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await manifestationCtrl.AddStep(req.body)
+    res.status(response.status).send(response.data)
+});
+
+routerMan.get("/manifestation/step/:id", async (req, res) => {
+    // #swagger.tags = ['Manifestation']
+    // #swagger.description = 'Récupérer les étapes d\'une manifestation.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await manifestationCtrl.GetSteps(req.params.id)
+    res.status(response.status).send(response.data)
+});
+
+routerMan.delete("/manifestation/step/:id", async (req, res) => {
+    // #swagger.tags = ['Manifestation']
+    // #swagger.description = 'Supprimer une étape de une manifestation.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await manifestationCtrl.DeleteStep(req.params.id)
     res.status(response.status).send(response.data)
 });
 

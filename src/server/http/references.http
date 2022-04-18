@@ -1,0 +1,6 @@
+###
+# @name Get types step
+GET http://localhost:3000/step_type
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+

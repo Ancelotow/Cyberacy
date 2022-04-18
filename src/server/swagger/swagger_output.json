@@ -5,7 +5,7 @@
     "title": "Cyberacy API",
     "description": "Documentation for Cyberacy API."
   },
-  "host": "cyberacy.herokuapp.com",
+  "host": "localhost:3000",
   "basePath": "/",
   "schemes": [
     "http",
@@ -147,7 +147,7 @@
         "tags": [
           "Manifestation"
         ],
-        "description": "Récupérer les options d",
+        "description": "Récupérer les options de une manifestation.",
         "parameters": [
           {
             "name": "id",
@@ -168,6 +168,63 @@
           "Manifestation"
         ],
         "description": "Supprimer une option de une manifestation.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/manifestation/step": {
+      "post": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Ajouter une étape à une manifestation.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/manifestation/step/{id}": {
+      "get": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Récupérer les étapes d\\'une manifestation.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Supprimer une étape de une manifestation.",
         "parameters": [
           {
             "name": "id",
@@ -270,6 +327,21 @@
           }
         ],
         "responses": {}
+      }
+    },
+    "/step_type": {
+      "get": {
+        "tags": [
+          "References"
+        ],
+        "description": "Récupération des types d",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     }
   }

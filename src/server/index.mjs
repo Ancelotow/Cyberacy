@@ -4,6 +4,7 @@ import bodyParser from 'body-parser'
 import authToken from './middlewares/auth.mjs'
 import swaggerUi from 'swagger-ui-express'
 import {routerMan} from "./routes/manifestation.router.mjs";
+import {routerRef} from "./routes/references.router.mjs";
 import {config} from 'dotenv'
 import morgan from 'morgan'
 import file from 'fs'
@@ -31,6 +32,7 @@ app.use(authToken)
 // Routers
 app.use(routerAuth)
 app.use(routerMan)
+app.use(routerRef)
 
 app.listen(port, () => {
     console.log(`Server listen on port ${port}`)
