@@ -21,6 +21,15 @@ routerGeo.get("/department", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
+routerGeo.get("/department/:code/town", async (req, res) => {
+    // #swagger.tags = ['Geography']
+    // #swagger.description = 'Récupération des communes par département.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await geographyCtrl.GetTownsByDepartment(req.params.code)
+    res.status(response.status).send(response.data)
+});
+
 routerGeo.get("/town", async (req, res) => {
     // #swagger.tags = ['Geography']
     // #swagger.description = 'Récupération des communes.'

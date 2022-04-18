@@ -50,4 +50,27 @@ const GetTowns = () => {
     });
 }
 
-export default {GetRegions, GetDepartments, GetTowns}
+/**
+ * Liste des communes par départements
+ * @param code Code départements
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetTownsByDepartment = (code) => {
+
+    return new Promise((resolve, _) => {
+        if(!code) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            town.GetByDepartment(code).then((res) => {
+                const code = (res) ? 200 : 204;
+                resolve({status: code, data: res})
+            }).catch((e) => {
+                resolve({status: 500, data: e})
+            })
+        }
+    });
+}
+
+
+export default {GetRegions, GetDepartments, GetTowns, GetTownsByDepartment}

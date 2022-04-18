@@ -389,6 +389,28 @@
         ]
       }
     },
+    "/department/{code}/town": {
+      "get": {
+        "tags": [
+          "Geography"
+        ],
+        "description": "Récupération des communes par département.",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/town": {
       "get": {
         "tags": [
