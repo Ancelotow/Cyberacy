@@ -5,7 +5,7 @@
     "title": "Cyberacy API",
     "description": "Documentation for Cyberacy API."
   },
-  "host": "cyberacy.herokuapp.com",
+  "host": "localhost:3000",
   "basePath": "/",
   "schemes": [
     "http",
@@ -350,6 +350,51 @@
           "References"
         ],
         "description": "Récupération des civilités.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/region": {
+      "get": {
+        "tags": [
+          "Geography"
+        ],
+        "description": "Récupération des régions.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/department": {
+      "get": {
+        "tags": [
+          "Geography"
+        ],
+        "description": "Récupération des départements.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/town": {
+      "get": {
+        "tags": [
+          "Geography"
+        ],
+        "description": "Récupération des communes.",
         "parameters": [],
         "responses": {},
         "security": [

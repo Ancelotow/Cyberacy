@@ -2,11 +2,9 @@ import swaggerAutogen from 'swagger-autogen'
 
 const doc = {
     info: {
-        version: "1.0.0",
-        title: "Cyberacy API",
-        description: "Documentation for Cyberacy API."
+        version: "1.0.0", title: "Cyberacy API", description: "Documentation for Cyberacy API."
     },
-    host: "cyberacy.herokuapp.com",
+    host: "localhost:3000",
     basePath: "/",
     schemes: ['http', 'https'],
     consumes: ['application/json'],
@@ -23,5 +21,5 @@ const doc = {
 
 const autogen = swaggerAutogen()
 const outputFile = './swagger/swagger_output.json'
-const endpointsFiles = ['./routes/manifestation.router.mjs', './routes/auth.router.mjs', './routes/references.router.mjs']
+const endpointsFiles = ['./routes/manifestation.router.mjs', './routes/auth.router.mjs', './routes/references.router.mjs', './routes/geography.router.mjs']
 autogen(outputFile, endpointsFiles, doc)

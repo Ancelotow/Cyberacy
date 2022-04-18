@@ -1,0 +1,17 @@
+###
+# @name Get regions
+GET http://localhost:3000/region
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+
+###
+# @name Get departments
+GET http://localhost:3000/department
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+
+###
+# @name Get towns
+GET http://localhost:3000/department
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
