@@ -21,5 +21,12 @@ const doc = {
 
 const autogen = swaggerAutogen()
 const outputFile = './swagger/swagger_output.json'
-const endpointsFiles = ['./routes/manifestation.router.mjs', './routes/auth.router.mjs', './routes/references.router.mjs', './routes/geography.router.mjs']
+const endpointsFiles = [
+    './routes/manifestation.router.mjs',
+    './routes/auth.router.mjs',
+    './routes/references.router.mjs',
+    './routes/geography.router.mjs',
+    './routes/vote.router.mjs'
+]
+
 autogen(outputFile, endpointsFiles, doc)

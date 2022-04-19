@@ -89,6 +89,7 @@ create table vote (
     vte_date_start  timestamp not null,
     vte_date_end    timestamp not null,
     vte_num_round   int default(1) not null,
+    vte_nb_voter    int default(0) not null,
     tvo_id          int not null,
     twn_code_insee  varchar(15) null,
     dpt_code        varchar(5) null,
