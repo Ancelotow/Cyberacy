@@ -21,4 +21,13 @@ routerRef.get("/sex", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
+routerRef.get("/type_vote", async (req, res) => {
+    // #swagger.tags = ['References']
+    // #swagger.description = 'Récupération des types de vote.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await referencesCtrl.GetTypeVote()
+    res.status(response.status).send(response.data)
+});
+
 export {routerRef}

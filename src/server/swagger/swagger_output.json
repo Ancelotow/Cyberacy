@@ -359,6 +359,21 @@
         ]
       }
     },
+    "/type_vote": {
+      "get": {
+        "tags": [
+          "References"
+        ],
+        "description": "Récupération des types de vote.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/region": {
       "get": {
         "tags": [

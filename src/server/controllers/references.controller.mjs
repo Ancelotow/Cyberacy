@@ -1,5 +1,6 @@
 import type_step from "../models/step-type.mjs";
 import sex from "../models/sexe.mjs";
+import type_vote from "../models/type-vote.mjs";
 
 /**
  * Récupère la liste des types d'étapes
@@ -33,4 +34,20 @@ const GetSex = () => {
     });
 }
 
-export default {GetTypeStep, GetSex}
+/**
+ * Récupère la liste des types de votes
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetTypeVote = () => {
+    return new Promise((resolve, _) => {
+        type_vote.GetAll().then((res) => {
+            const code = (res) ? 200 : 204;
+            resolve({status: code, data: res})
+        }).catch((e) => {
+            resolve({status: 500, data: e})
+        })
+    });
+}
+
+export default {GetTypeStep, GetSex, GetTypeVote}
