@@ -462,6 +462,21 @@
           }
         ]
       }
+    },
+    "/vote": {
+      "post": {
+        "tags": [
+          "Vote"
+        ],
+        "description": "Ajout de un nouveau vote.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   }
 }
