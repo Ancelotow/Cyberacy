@@ -34,4 +34,20 @@ describe("Test récupération des références", () => {
             "id": 6, "name": "Référundum"
         }]
     })));
+
+    test("Récupération des bords politiques", () => references.GetPoliticalEdge().then((data) => expect(data).toMatchObject({
+        status: 200, data: [{
+            "id": 1, "name": "Extrême gauche"
+        }, {
+            "id": 2, "name": "Gauche"
+        }, {
+            "id": 3, "name": "Centre gauche"
+        }, {
+            "id": 4, "name": "Centre droite"
+        }, {
+            "id": 5, "name": "Droite"
+        }, {
+            "id": 6, "name": "Extrême droite"
+        }]
+    })));
 });

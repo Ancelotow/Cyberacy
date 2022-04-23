@@ -1,6 +1,7 @@
 import type_step from "../models/step-type.mjs";
 import sex from "../models/sexe.mjs";
 import type_vote from "../models/type-vote.mjs";
+import political_edge from "../models/political-edge.mjs";
 
 /**
  * Récupère la liste des types d'étapes
@@ -50,4 +51,20 @@ const GetTypeVote = () => {
     });
 }
 
-export default {GetTypeStep, GetSex, GetTypeVote}
+/**
+ * Récupère tous les bords politiques
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetPoliticalEdge = () => {
+    return new Promise((resolve, _) => {
+        political_edge.GetAll().then((res) => {
+            const code = (res) ? 200 : 204;
+            resolve({status: code, data: res})
+        }).catch((e) => {
+            resolve({status: 500, data: e})
+        })
+    });
+}
+
+export default {GetTypeStep, GetSex, GetTypeVote, GetPoliticalEdge}

@@ -57,6 +57,34 @@ begin
 end;
 $type_step$;
 
+do
+$type_step$
+    begin
+        if not exists (select * from political_edge where poe_id = 1) then
+            insert into political_edge(poe_id, poe_name) values (1, 'Extrême gauche');
+        end if;
+
+        if not exists (select * from political_edge where poe_id = 2) then
+            insert into political_edge(poe_id, poe_name) values (2, 'Gauche');
+        end if;
+
+        if not exists (select * from political_edge where poe_id = 3) then
+            insert into political_edge(poe_id, poe_name) values (3, 'Centre gauche');
+        end if;
+
+        if not exists (select * from political_edge where poe_id = 4) then
+            insert into political_edge(poe_id, poe_name) values (4, 'Centre droite');
+        end if;
+
+        if not exists (select * from political_edge where poe_id = 5) then
+            insert into political_edge(poe_id, poe_name) values (5, 'Droite');
+        end if;
+
+        if not exists (select * from political_edge where poe_id = 6) then
+            insert into political_edge(poe_id, poe_name) values (6, 'Extrême droite');
+        end if;
+    end;
+$type_step$;
 
 
 

@@ -30,4 +30,13 @@ routerRef.get("/type_vote", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
+routerRef.get("/political_edge", async (req, res) => {
+    // #swagger.tags = ['References']
+    // #swagger.description = 'Récupération des bords politiques.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await referencesCtrl.GetPoliticalEdge()
+    res.status(response.status).send(response.data)
+});
+
 export {routerRef}

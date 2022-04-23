@@ -374,6 +374,21 @@
         ]
       }
     },
+    "/political_edge": {
+      "get": {
+        "tags": [
+          "References"
+        ],
+        "description": "Récupération des bords politiques.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/region": {
       "get": {
         "tags": [
