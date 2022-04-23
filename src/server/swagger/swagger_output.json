@@ -329,7 +329,7 @@
         "responses": {}
       }
     },
-    "/step_type": {
+    "/type_step": {
       "get": {
         "tags": [
           "References"
