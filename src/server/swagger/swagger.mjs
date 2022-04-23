@@ -4,7 +4,7 @@ const doc = {
     info: {
         version: "1.0.0", title: "Cyberacy API", description: "Documentation for Cyberacy API."
     },
-    host: "localhost:3000",
+    host: "cyberacy.herokuapp.com",
     basePath: "/",
     schemes: ['http', 'https'],
     consumes: ['application/json'],
@@ -25,8 +25,7 @@ const endpointsFiles = [
     './routes/manifestation.router.mjs',
     './routes/auth.router.mjs',
     './routes/references.router.mjs',
-    './routes/geography.router.mjs',
-    './routes/vote.router.mjs'
+    './routes/geography.router.mjs'
 ]
 
 autogen(outputFile, endpointsFiles, doc)
