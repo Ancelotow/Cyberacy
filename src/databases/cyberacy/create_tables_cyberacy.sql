@@ -94,11 +94,13 @@ create table vote (
     twn_code_insee  varchar(15) null,
     dpt_code        varchar(5) null,
     reg_code_insee  varchar(15) null,
-    constraint  pk_vote             primary key (vte_id),
-    constraint  fk_vote_town        foreign key (twn_code_insee)    references town(twn_code_insee),
-    constraint  fk_vote_department  foreign key (dpt_code)          references department(dpt_code),
-    constraint  fk_vote_region      foreign key (reg_code_insee)    references region(reg_code_insee),
-    constraint  fk_vote_typevote    foreign key (tvo_id)            references type_vote(tvo_id)
+    pop_id          int null,
+    constraint  pk_vote                 primary key (vte_id),
+    constraint  fk_vote_town            foreign key (twn_code_insee)    references town(twn_code_insee),
+    constraint  fk_vote_department      foreign key (dpt_code)          references department(dpt_code),
+    constraint  fk_vote_region          foreign key (reg_code_insee)    references region(reg_code_insee),
+    constraint  fk_vote_typevote        foreign key (tvo_id)            references type_vote(tvo_id),
+    constraint  fk_vote_politicalparty  foreign key (pop_id)            references political_party(pop_id)
 );
 
 create table choice (

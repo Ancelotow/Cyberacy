@@ -25,7 +25,8 @@ const endpointsFiles = [
     './routes/manifestation.router.mjs',
     './routes/auth.router.mjs',
     './routes/references.router.mjs',
-    './routes/geography.router.mjs'
+    './routes/geography.router.mjs',
+    './routes/vote.router.mjs'
 ]
 
 autogen(outputFile, endpointsFiles, doc)
