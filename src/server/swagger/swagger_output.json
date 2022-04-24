@@ -498,8 +498,28 @@
         "tags": [
           "Parti politique"
         ],
-        "description": "Ajout d",
+        "description": "Ajout de un nouveau parti politique si il éxiste dans la BDD de INSEE.",
         "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Parti politique"
+        ],
+        "description": "Récupération des partis politiques.",
+        "parameters": [
+          {
+            "name": "siren",
+            "in": "query",
+            "description": "Recherher par le SIREN.",
+            "type": "string"
+          }
+        ],
         "responses": {},
         "security": [
           {

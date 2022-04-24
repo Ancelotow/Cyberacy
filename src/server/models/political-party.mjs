@@ -29,7 +29,7 @@ class PoliticalParty {
  */
 const Add = (party) => {
     return new Promise(async (resolve, reject) => {
-        GetBySiren(party.siren).then((resultExist) => {
+        GetAll(party.siren).then((resultExist) => {
             if(resultExist) {
                 resolve(false)
             } else {
@@ -61,41 +61,43 @@ const Add = (party) => {
 }
 
 /**
- * Récupération d'un parti politique depuis son SIREN
- * @param siren Le SIREN
+ * Récupère tous les partis politiques
+ * @param siren Le SIREN du parti politiques
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetBySiren = (siren) => {
+const GetAll = (siren = null) => {
     return new Promise((resolve, reject) => {
-        const request = `SELECT pop_id               as id,
-                                pop_name             as name,
-                                pop_url_logo         as url_logo,
-                                pop_date_create      as date_create,
-                                pop_description      as description,
-                                pop_is_delete        as is_delete,
-                                pop_date_delete      as date_delete,
-                                pop_object           as object,
-                                pop_address_street   as address_street,
-                                pop_siren            as siren,
-                                pop_chart            as chart,
-                                pop_iban             as iban,
-                                pop_url_bank_details as url_bank_details,
-                                pop_url_chart        as url_chart,
-                                poe_id               as id_political_edge,
-                                prs_nir              as nir,
-                                twn_code_insee       as town_code_insee
-                         FROM political_party
-                         WHERE pop_siren = '${siren}'`
+        let request = `SELECT pop_id               as id,
+                              pop_name             as name,
+                              pop_url_logo         as url_logo,
+                              pop_date_create      as date_create,
+                              pop_description      as description,
+                              pop_is_delete        as is_delete,
+                              pop_date_delete      as date_delete,
+                              pop_object           as object,
+                              pop_address_street   as address_street,
+                              pop_siren            as siren,
+                              pop_chart            as chart,
+                              pop_iban             as iban,
+                              pop_url_bank_details as url_bank_details,
+                              pop_url_chart        as url_chart,
+                              poe_id               as id_political_edge,
+                              prs_nir              as nir,
+                              twn_code_insee       as town_code_insee
+                       FROM political_party`
+        if (siren != null) {
+            request += ` WHERE pop_siren = ${siren}`
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows[0] : null
+                let res = (result.rows.length > 0) ? result.rows : null
                 resolve(res)
             }
         });
     });
 }
 
-export default {PoliticalParty, Add, GetBySiren}
+export default {PoliticalParty, Add, GetAll}

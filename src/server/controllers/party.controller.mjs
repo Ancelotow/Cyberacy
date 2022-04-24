@@ -67,4 +67,21 @@ const AddParty = (party) => {
     });
 }
 
-export default {AddParty}
+/**
+ * Récupère tous les partis politiques
+ * @param siren Le SIREN du parti politique
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetAllParty = (siren = null) => {
+    return new Promise((resolve, _) => {
+        partyMod.GetAll(siren).then((res) => {
+            const code = (res) ? 200 : 204;
+            resolve({status: code, data: res})
+        }).catch((e) => {
+            resolve({status: 500, data: e})
+        })
+    })
+}
+
+export default {AddParty, GetAllParty}
