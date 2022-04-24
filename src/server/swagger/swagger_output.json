@@ -528,20 +528,13 @@
         ]
       }
     },
-    "/political_party/{siren}/upload_logo": {
+    "/political_party/upload_logo": {
       "post": {
         "tags": [
           "Political party"
         ],
         "description": "Upload le logo du parti politique.",
-        "parameters": [
-          {
-            "name": "siren",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "201": {
             "description": "Created"

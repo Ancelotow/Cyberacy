@@ -26,7 +26,7 @@ routerParty.get("/political_party", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
-routerParty.post("/political_party/:siren/upload_logo", async (req, res) => {
+routerParty.post("/political_party/upload_logo", async (req, res) => {
     // #swagger.tags = ['Political party']
     // #swagger.description = 'Upload le logo du parti politique.'
     // #swagger.security = [{ "Bearer": [] }]
@@ -36,7 +36,7 @@ routerParty.post("/political_party/:siren/upload_logo", async (req, res) => {
             res.status(400).send("No file upload")
         } else {
             let party = req.files.party;
-            party.mv('./uploads/political_party/' + party.siren);
+            party.mv('./uploads/political_party/' + party.name);
             const datafile = {
                 name: party.name,
                 mimetype: party.mimetype,
