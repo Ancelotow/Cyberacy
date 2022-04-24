@@ -492,6 +492,21 @@
           }
         ]
       }
+    },
+    "/political_party": {
+      "post": {
+        "tags": [
+          "Parti politique"
+        ],
+        "description": "Ajout d",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   }
 }

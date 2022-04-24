@@ -1,0 +1,14 @@
+###
+# @name Add new political party
+POST http://localhost:3000/political_party
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTA4MTQwOTgsImV4cCI6MTY1MDkwMDQ5OH0.-uy_rlhXanpCRqlAr8K1t3JDkHEwK7CVcY1gfn_IBbM
+Content-Type: application/json
+
+{
+  "siren": "819004045",
+  "url_logo": "test",
+  "object": "test",
+  "id_political_edge": 2,
+  "nir": "875543548"
+}

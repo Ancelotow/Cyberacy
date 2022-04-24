@@ -28,14 +28,18 @@ class PoliticalParty {
  * @constructor
  */
 const Add = (party) => {
-    return new Promise((resolve, reject) => {
-        const description = (party.description == null) ? null : `'${party.description}'`
-        const chart = (party.chart == null) ? null : `'${party.chart}'`
-        const iban = (party.iban == null) ? null : `'${party.iban}'`
-        const url_bank_details = (party.url_bank_details == null) ? null : `'${party.url_bank_details}'`
-        const url_chart = (party.url_chart == null) ? null : `'${party.url_chart}'`
-        const date_create = (party.date_create == null) ? `'${new Date()}'` : `'${FormaterDate(party.date_create)}'`
-        const request = `INSERT INTO political_party (pop_name, pop_url_logo, pop_description, pop_object,
+    return new Promise(async (resolve, reject) => {
+        GetBySiren(party.siren).then((resultExist) => {
+            if(resultExist) {
+                resolve(false)
+            } else {
+                const description = (party.description == null) ? null : `'${party.description}'`
+                const chart = (party.chart == null) ? null : `'${party.chart}'`
+                const iban = (party.iban == null) ? null : `'${party.iban}'`
+                const url_bank_details = (party.url_bank_details == null) ? null : `'${party.url_bank_details}'`
+                const url_chart = (party.url_chart == null) ? null : `'${party.url_chart}'`
+                const date_create = (party.date_create == null) ? `'${new Date()}'` : `'${FormaterDate(party.date_create)}'`
+                const request = `INSERT INTO political_party (pop_name, pop_url_logo, pop_description, pop_object,
                                                       pop_address_street, pop_siren, pop_chart, pop_iban,
                                                       pop_url_bank_details, pop_url_chart, poe_id, prs_nir,
                                                       twn_code_insee, pop_date_create)
@@ -43,14 +47,55 @@ const Add = (party) => {
                                  '${party.address_street}', '${party.siren}', ${chart}, ${iban}, ${url_bank_details},
                                  ${url_chart}, ${party.id_political_edge}, '${party.nir}', '${party.town_code_insee}',
                                  ${date_create})`
-        pool.query(request, (error, _) => {
-            if (error) {
-                reject(error)
-            } else {
-                resolve(true)
+                console.log(request)
+                pool.query(request, (error, _) => {
+                    if (error) {
+                        reject(error)
+                    } else {
+                        resolve(true)
+                    }
+                });
             }
         });
     });
 }
 
-export default {PoliticalParty, Add}
+/**
+ * Récupération d'un parti politique depuis son SIREN
+ * @param siren Le SIREN
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetBySiren = (siren) => {
+    return new Promise((resolve, reject) => {
+        const request = `SELECT pop_id               as id,
+                                pop_name             as name,
+                                pop_url_logo         as url_logo,
+                                pop_date_create      as date_create,
+                                pop_description      as description,
+                                pop_is_delete        as is_delete,
+                                pop_date_delete      as date_delete,
+                                pop_object           as object,
+                                pop_address_street   as address_street,
+                                pop_siren            as siren,
+                                pop_chart            as chart,
+                                pop_iban             as iban,
+                                pop_url_bank_details as url_bank_details,
+                                pop_url_chart        as url_chart,
+                                poe_id               as id_political_edge,
+                                prs_nir              as nir,
+                                twn_code_insee       as town_code_insee
+                         FROM political_party
+                         WHERE pop_siren = '${siren}'`
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows[0] : null
+                resolve(res)
+            }
+        });
+    });
+}
+
+export default {PoliticalParty, Add, GetBySiren}

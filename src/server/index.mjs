@@ -7,6 +7,7 @@ import {routerMan} from "./routes/manifestation.router.mjs";
 import {routerRef} from "./routes/references.router.mjs";
 import {routerGeo} from "./routes/geography.router.mjs";
 import {routerVote} from "./routes/vote.router.mjs";
+import {routerParty} from "./routes/party.router.mjs";
 import jobGeography from "./cron/geography.cron.mjs"
 import {config} from 'dotenv'
 import morgan from 'morgan'
@@ -38,6 +39,7 @@ app.use(routerMan)
 app.use(routerGeo)
 app.use(routerRef)
 app.use(routerVote)
+app.use(routerParty)
 
 // Cron jobs
 jobGeography.startJob()
