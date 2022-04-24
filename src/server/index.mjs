@@ -9,6 +9,7 @@ import {routerGeo} from "./routes/geography.router.mjs";
 import {routerVote} from "./routes/vote.router.mjs";
 import {routerParty} from "./routes/party.router.mjs";
 import jobGeography from "./cron/geography.cron.mjs"
+import cors from 'cors'
 import {config} from 'dotenv'
 import morgan from 'morgan'
 import file from 'fs'
@@ -25,6 +26,9 @@ app.use(bodyParser.json({type: 'application/*+json'}))
 
 // Console
 app.use(morgan('dev'))
+
+// CORS
+app.use(cors());
 
 // Swagger
 const swagger = JSON.parse(file.readFileSync('./swagger/swagger_output.json', 'utf8'))

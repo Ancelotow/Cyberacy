@@ -496,7 +496,7 @@
     "/political_party": {
       "post": {
         "tags": [
-          "Parti politique"
+          "Political party"
         ],
         "description": "Ajout de un nouveau parti politique si il éxiste dans la BDD de INSEE.",
         "parameters": [],
@@ -509,7 +509,7 @@
       },
       "get": {
         "tags": [
-          "Parti politique"
+          "Political party"
         ],
         "description": "Récupération des partis politiques.",
         "parameters": [
@@ -521,6 +521,38 @@
           }
         ],
         "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party/{siren}/upload_logo": {
+      "post": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Upload le logo du parti politique.",
+        "parameters": [
+          {
+            "name": "siren",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
         "security": [
           {
             "Bearer": []
