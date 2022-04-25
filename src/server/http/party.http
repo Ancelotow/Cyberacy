@@ -33,3 +33,23 @@ DELETE http://localhost:3000/political_party/left
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTA5MTA5NTQsImV4cCI6MTY1MDk5NzM1NH0.kH7Np5aIyk3OnCjK5I8VtvT7sn-PQzv8aa0uZINvVGg
 Content-Type: application/json
+
+###
+# @name Add new annual fee
+POST http://localhost:3000/political_party/annual_fee
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTA5MTg4ODYsImV4cCI6MTY1MTAwNTI4Nn0.vGcuHHjzgUFw_Au3jjQZjDHKmZqzVfnzzFHi6vONElM
+Content-Type: application/json
+
+{
+  "year": 2019,
+  "id_political_party": 3,
+  "fee": 3.99
+}
+
+###
+# @name Get all  annual fee for a political party
+GET http://localhost:3000/political_party/annual_fee/3
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTA5MTg4ODYsImV4cCI6MTY1MTAwNTI4Nn0.vGcuHHjzgUFw_Au3jjQZjDHKmZqzVfnzzFHi6vONElM
+Content-Type: application/json

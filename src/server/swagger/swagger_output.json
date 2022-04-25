@@ -571,8 +571,45 @@
         "tags": [
           "Political party"
         ],
-        "description": "Partir d",
+        "description": "Partir d'un parti politique.",
         "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party/annual_fee": {
+      "post": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Ajoute une cotisation annuelle.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party/annual_fee/{id}": {
+      "get": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Récupère les cotisations annuelles d",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {},
         "security": [
           {

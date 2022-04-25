@@ -60,11 +60,29 @@ routerParty.post("/political_party/join/:id", async (req, res) => {
 
 routerParty.delete("/political_party/left", async (req, res) => {
     // #swagger.tags = ['Political party']
-    // #swagger.description = 'Partir d'un parti politique.'
+    // #swagger.description = "Partir d'un parti politique."
     // #swagger.security = [{ "Bearer": [] }]
 
     const nir = req.data.nir
     const response = await partyCtrl.LeftParty(nir)
+    res.status(response.status).send(response.data)
+});
+
+routerParty.post("/political_party/annual_fee", async (req, res) => {
+    // #swagger.tags = ['Political party']
+    // #swagger.description = 'Ajoute une cotisation annuelle.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await partyCtrl.AddAnnualFee(req.body)
+    res.status(response.status).send(response.data)
+});
+
+routerParty.get("/political_party/annual_fee/:id", async (req, res) => {
+    // #swagger.tags = ['Political party']
+    // #swagger.description = 'Récupère les cotisations annuelles d'un parti politique.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await partyCtrl.GetAnnualFeeByParty(req.params.id)
     res.status(response.status).send(response.data)
 });
 

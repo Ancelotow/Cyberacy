@@ -1,6 +1,7 @@
 import axios from "axios";
 import partyMod from "../models/political-party.mjs"
 import adherentMod from "../models/adherent.mjs";
+import feeMod from "../models/annual-fee.mjs";
 
 const uri_api_siren = "https://entreprise.data.gouv.fr/api/sirene/v3/unites_legales/"
 
@@ -139,4 +140,53 @@ const LeftParty = (nir) => {
     })
 }
 
-export default {AddParty, GetPoliticalParty, JoinParty, LeftParty}
+/**
+ * Ajoute une nouvelle cotisation annuelle
+ * @param annual_fee La cotisation annuelle
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const AddAnnualFee = (annual_fee) => {
+    return new Promise(async (resolve, _) => {
+        if (!annual_fee) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else if (!annual_fee.fee || !annual_fee.id_political_party | !annual_fee.year) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            feeMod.Add(annual_fee).then((res) => {
+                if (res) {
+                    resolve({status: 201, data: "The annual fee has been created."})
+                } else {
+                    resolve({status: 400, data: "An annual fee already existed fo this year."})
+                }
+            }).catch((e) => {
+                console.error(e)
+                resolve({status: 500, data: e})
+            })
+        }
+    });
+}
+
+/**
+ * Récupères les cotisations annuelles pour un parti politiques
+ * @param id_political_party
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetAnnualFeeByParty = (id_political_party) => {
+    return new Promise((resolve, _) => {
+        if (!id_political_party) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            feeMod.GetByPoliticalParty(id_political_party).then((res) => {
+                const code = (res) ? 200 : 204;
+                resolve({status: code, data: res})
+            }).catch((e) => {
+                console.error(e)
+                resolve({status: 500, data: e})
+            })
+        }
+    })
+}
+
+export default {AddParty, GetPoliticalParty, JoinParty, LeftParty, AddAnnualFee, GetAnnualFeeByParty}
