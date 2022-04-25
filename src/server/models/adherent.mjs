@@ -45,10 +45,11 @@ const Get = (nir = null, included_left = false, id_political_party = null) => {
     return new Promise((resolve, _) => {
         GetAll().then((listAdherent) => {
             if (listAdherent != null) {
-                const adherentsFilter = listAdherent.filter(adh => {
-                    return  ((nir != null && adh.nir === nir) || nir == null) &&
-                            ((!included_left && !adh.is_left) || included_left)
+                let adherentsFilter = listAdherent.filter(adh => {
+                    return ((nir != null && adh.nir === nir) || nir == null) &&
+                        ((!included_left && !adh.is_left) || included_left)
                 })
+                adherentsFilter = (adherentsFilter.count > 0) ? adherentsFilter : null
                 resolve(adherentsFilter)
             } else {
                 resolve(null)
@@ -86,4 +87,35 @@ const Add = (nir, id_political_party) => {
     });
 }
 
-export default {Adherent, Add, Get, GetAll}
+/**
+ * Part d'un parti politique
+ * @param nir Le NIR de la personne qui part
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const Left = (nir) => {
+    return new Promise((resolve, reject) => {
+        Get(nir, false, null).then((result) => {
+            if (result) {
+                const request = `UPDATE adherent
+                                 SET adh_is_left   = true,
+                                     adh_date_left = now()
+                                 WHERE prs_nir = '${nir}'
+                                 AND adh_is_left = false`
+                pool.query(request, (error, _) => {
+                    if (error) {
+                        reject(error)
+                    } else {
+                        resolve(true)
+                    }
+                });
+            } else {
+                resolve(false)
+            }
+        }).catch((e) => {
+            reject(e)
+        });
+    });
+}
+
+export default {Adherent, Add, Get, GetAll, Left}

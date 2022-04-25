@@ -11,3 +11,13 @@ describe("Test ajout d'un parti politique", () => {
         siren: "819004045", url_logo: "test", object: "test", id_political_edge: 2, nir: "875543548"
     }).then((data) => expect(data).toMatchObject({status: 400, data: "This political party already existed."})));
 });
+
+describe("Test rejoindre un parti politique", () => {
+    test("Rejoindre parti avec des paramètres manquants", () => party.JoinParty(null, 3).then((data) => expect(data).toMatchObject({
+        status: 400, data: "Missing parameters."
+    })));
+    test("Rejoindre parti alors que l'on est déjà adhérent", () => party.JoinParty("875543548", 3).then((data) => expect(data).toMatchObject({
+        status: 400,
+        data: "You already join on political party."
+    })));
+});

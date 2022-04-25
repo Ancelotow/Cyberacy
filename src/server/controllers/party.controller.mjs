@@ -102,7 +102,7 @@ const JoinParty = (nir, id_political_party) => {
         } else {
             adherentMod.Add(nir, id_political_party).then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "You join."})
+                    resolve({status: 201, data: "You join this political party."})
                 } else {
                     resolve({status: 400, data: "You already join on political party."})
                 }
@@ -114,4 +114,29 @@ const JoinParty = (nir, id_political_party) => {
     })
 }
 
-export default {AddParty, GetPoliticalParty, JoinParty}
+/**
+ * Partir d'un parti politique
+ * @param nir Le NIR de la personne qui part d'un parti politique
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const LeftParty = (nir) => {
+    return new Promise((resolve, _) => {
+        if (!nir) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            adherentMod.Left(nir).then((res) => {
+                if (res) {
+                    resolve({status: 201, data: "You left the political party."})
+                } else {
+                    resolve({status: 400, data: "You already left political party."})
+                }
+            }).catch((e) => {
+                console.error(e)
+                resolve({status: 500, data: e})
+            })
+        }
+    })
+}
+
+export default {AddParty, GetPoliticalParty, JoinParty, LeftParty}

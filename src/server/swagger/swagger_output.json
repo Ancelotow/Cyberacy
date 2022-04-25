@@ -566,6 +566,21 @@
         ]
       }
     },
+    "/political_party/left": {
+      "delete": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Partir d",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/political_party/upload_logo": {
       "post": {
         "tags": [

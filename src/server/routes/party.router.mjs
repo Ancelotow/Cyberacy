@@ -58,6 +58,16 @@ routerParty.post("/political_party/join/:id", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
+routerParty.delete("/political_party/left", async (req, res) => {
+    // #swagger.tags = ['Political party']
+    // #swagger.description = 'Partir d'un parti politique.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const nir = req.data.nir
+    const response = await partyCtrl.LeftParty(nir)
+    res.status(response.status).send(response.data)
+});
+
 routerParty.post("/political_party/upload_logo", async (req, res) => {
     // #swagger.tags = ['Political party']
     // #swagger.description = 'Upload le logo du parti politique.'
