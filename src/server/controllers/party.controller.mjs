@@ -1,5 +1,6 @@
 import axios from "axios";
 import partyMod from "../models/political-party.mjs"
+import adherentMod from "../models/adherent.mjs";
 
 const uri_api_siren = "https://entreprise.data.gouv.fr/api/sirene/v3/unites_legales/"
 
@@ -70,12 +71,15 @@ const AddParty = (party) => {
 /**
  * Récupère tous les partis politiques
  * @param siren Le SIREN du parti politique
+ * @param nir Le NIR de la personne
+ * @param includeLeft Inclure les partis où on est plus
+ * @param idPoliticalParty L'id du parti politique
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetAllParty = (siren = null) => {
+const GetPoliticalParty = (siren = null, nir = null, includeLeft = false, idPoliticalParty = null) => {
     return new Promise((resolve, _) => {
-        partyMod.GetAll(siren).then((res) => {
+        partyMod.Get(nir, includeLeft, siren, idPoliticalParty).then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {
@@ -84,4 +88,30 @@ const GetAllParty = (siren = null) => {
     })
 }
 
-export default {AddParty, GetAllParty}
+/**
+ * Adhère à un parti politique
+ * @param nir Le NIR de la personne qui adhère à un parti
+ * @param id_political_party L'id du parti politique auxquels on adhère
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const JoinParty = (nir, id_political_party) => {
+    return new Promise((resolve, _) => {
+        if (!nir || !id_political_party) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            adherentMod.Add(nir, id_political_party).then((res) => {
+                if (res) {
+                    resolve({status: 201, data: "You join."})
+                } else {
+                    resolve({status: 400, data: "You already join on political party."})
+                }
+            }).catch((e) => {
+                console.error(e)
+                resolve({status: 500, data: e})
+            })
+        }
+    })
+}
+
+export default {AddParty, GetPoliticalParty, JoinParty}

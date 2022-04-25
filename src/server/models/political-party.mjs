@@ -29,7 +29,7 @@ class PoliticalParty {
  */
 const Add = (party) => {
     return new Promise(async (resolve, reject) => {
-        GetAll(party.siren).then((resultExist) => {
+        Get(null, true, party.siren, null).then((resultExist) => {
             if(resultExist) {
                 resolve(false)
             } else {
@@ -62,33 +62,13 @@ const Add = (party) => {
 
 /**
  * Récupère tous les partis politiques
- * @param siren Le SIREN du parti politiques
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetAll = (siren = null) => {
+const GetAll = () => {
     return new Promise((resolve, reject) => {
-        let request = `SELECT pop_id               as id,
-                              pop_name             as name,
-                              pop_url_logo         as url_logo,
-                              pop_date_create      as date_create,
-                              pop_description      as description,
-                              pop_is_delete        as is_delete,
-                              pop_date_delete      as date_delete,
-                              pop_object           as object,
-                              pop_address_street   as address_street,
-                              pop_siren            as siren,
-                              pop_chart            as chart,
-                              pop_iban             as iban,
-                              pop_url_bank_details as url_bank_details,
-                              pop_url_chart        as url_chart,
-                              poe_id               as id_political_edge,
-                              prs_nir              as nir,
-                              twn_code_insee       as town_code_insee
-                       FROM political_party`
-        if (siren != null) {
-            request += ` WHERE pop_siren = ${siren}`
-        }
+        let request = `select *
+                       from filter_political_party()`
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -100,4 +80,31 @@ const GetAll = (siren = null) => {
     });
 }
 
-export default {PoliticalParty, Add, GetAll}
+/**
+ * Récupère les partis politiques en fonction du filtre
+ * @param siren Le SIREN du parti politique
+ * @param nir Le NIR de la personne
+ * @param includeLeft Inclure les partis où on est plus
+ * @param idPoliticalParty L'id du parti politique
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const Get = (nir = null, includeLeft = false, siren = null, idPoliticalParty = null) => {
+    return new Promise((resolve, reject) => {
+        const _nir = (nir == null) ? null : `'${nir}'`
+        const _siren = (siren == null) ? null : `'${siren}'`
+        const _idPoliticalParty = (idPoliticalParty == null) ? null : `${idPoliticalParty}`
+        let request = `select *
+                       from filter_political_party(${_nir}, ${_siren}, ${_idPoliticalParty}, ${includeLeft})`
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows : null
+                resolve(res)
+            }
+        });
+    });
+}
+
+export default {PoliticalParty, Add, GetAll, Get}

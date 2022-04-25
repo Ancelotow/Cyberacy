@@ -12,6 +12,7 @@ import jobGeography from "./cron/geography.cron.mjs"
 import cors from 'cors'
 import {config} from 'dotenv'
 import morgan from 'morgan'
+import fileUpload from 'express-fileupload'
 import file from 'fs'
 
 const app = express()
@@ -32,7 +33,7 @@ app.use(cors());
 
 // Swagger
 const swagger = JSON.parse(file.readFileSync('./swagger/swagger_output.json', 'utf8'))
-app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swagger, { swaggerOptions: { persistAuthorization: true } }))
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swagger, {swaggerOptions: {persistAuthorization: true}}))
 
 // Token JWT
 app.use(authToken)

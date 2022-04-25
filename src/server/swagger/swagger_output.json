@@ -518,6 +518,44 @@
             "in": "query",
             "description": "Recherher par le SIREN.",
             "type": "string"
+          },
+          {
+            "name": "mine",
+            "in": "query",
+            "description": "Recherher les partie auxquel on a adhéré.",
+            "type": "boolean"
+          },
+          {
+            "name": "includeLeft",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "idPoliticalParty",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party/join/{id}": {
+      "post": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Adhérer à un parti politique.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {},
