@@ -10,11 +10,12 @@ class Step_Type {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetAll = () => {
+const Get = () => {
     return new Promise((resolve, reject) => {
-        let request = `SELECT tst_id   as id,
-                              tst_name as name
-                       FROM type_step`
+        const request = {
+            text: 'SELECT tst_id as id, tst_name as name FROM type_step',
+            values: [],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -26,4 +27,4 @@ const GetAll = () => {
     });
 }
 
-export default {Step_Type, GetAll}
+export default {Step_Type, Get}

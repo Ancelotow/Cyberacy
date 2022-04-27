@@ -66,7 +66,7 @@ const AbortedManifestation = (id, reason) => {
  */
 const GetAllManifestations = (includeAborted = false, nir = null) => {
     return new Promise((resolve, _) => {
-        manifestation.GetAll(includeAborted, nir).then((res) => {
+        manifestation.Get(includeAborted, nir).then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {

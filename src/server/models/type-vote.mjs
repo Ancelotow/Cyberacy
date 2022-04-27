@@ -10,11 +10,12 @@ class TypeVote {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetAll = () => {
+const Get = () => {
     return new Promise((resolve, reject) => {
-        let request = `SELECT tvo_id   as id,
-                              tvo_name as name
-                       FROM type_vote`
+        const request = {
+            text: 'SELECT tvo_id as id, tvo_name as name FROM type_vote',
+            values: [],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -26,4 +27,4 @@ const GetAll = () => {
     });
 }
 
-export default {TypeVote, GetAll}
+export default {TypeVote, Get}

@@ -10,7 +10,7 @@ import political_edge from "../models/political-edge.mjs";
  */
 const GetTypeStep = () => {
     return new Promise((resolve, _) => {
-        type_step.GetAll().then((res) => {
+        type_step.Get().then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {
@@ -26,7 +26,7 @@ const GetTypeStep = () => {
  */
 const GetSex = () => {
     return new Promise((resolve, _) => {
-        sex.GetAll().then((res) => {
+        sex.Get().then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {
@@ -42,7 +42,7 @@ const GetSex = () => {
  */
 const GetTypeVote = () => {
     return new Promise((resolve, _) => {
-        type_vote.GetAll().then((res) => {
+        type_vote.Get().then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {
@@ -58,7 +58,7 @@ const GetTypeVote = () => {
  */
 const GetPoliticalEdge = () => {
     return new Promise((resolve, _) => {
-        political_edge.GetAll().then((res) => {
+        political_edge.Get().then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {

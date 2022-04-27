@@ -169,7 +169,7 @@ const AddAnnualFee = (annual_fee) => {
 
 /**
  * Récupères les cotisations annuelles pour un parti politiques
- * @param id_political_party
+ * @param id_political_party L'id du parti politique
  * @returns {Promise<unknown>}
  * @constructor
  */
@@ -178,7 +178,7 @@ const GetAnnualFeeByParty = (id_political_party) => {
         if (!id_political_party) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            feeMod.GetByPoliticalParty(id_political_party).then((res) => {
+            feeMod.Get(null, id_political_party).then((res) => {
                 const code = (res) ? 200 : 204;
                 resolve({status: code, data: res})
             }).catch((e) => {

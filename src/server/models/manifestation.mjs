@@ -17,33 +17,23 @@ class Manifestation {
 }
 
 /**
- * Récupère une manifestation par son Id
+ * Vérifie si la manifestation éxiste
  * @param id Id de la manifestation
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetById = (id) => {
+const IfExists = (id) => {
     return new Promise((resolve, reject) => {
-        const request = `SELECT man_id                   as id,
-                                man_name                 as name,
-                                man_date_start           as date_start,
-                                man_date_end             as date_end,
-                                man_is_aborted           as is_aborted,
-                                man_date_aborted         as date_aborted,
-                                man_date_create          as date_create,
-                                man_object               as object,
-                                man_security_description as security_description,
-                                man_nb_person_estimate   as nb_person_estimate,
-                                man_url_document_signed  as url_document_signed,
-                                man_reason_aborted       as reason_aborted
-                         FROM manifestation
-                         WHERE man_id = ${id}`
+        const request = {
+            text: 'SELECT COUNT(*) FROM manifestation WHERE man_id = $1',
+            values: [id],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
             } else {
                 let res = (result.rows.length > 0) ? result.rows[0] : null
-                resolve(res)
+                resolve(res.count > 0)
             }
         });
     });
@@ -57,15 +47,15 @@ const GetById = (id) => {
  */
 const Add = (manifestation) => {
     return new Promise((resolve, reject) => {
-        const request = `INSERT INTO manifestation (man_name, man_date_start, man_date_end,
-                                                    man_object, man_security_description, man_nb_person_estimate,
-                                                    man_url_document_signed)
-                         VALUES ('${manifestation.name}', '${FormaterDate(manifestation.date_start)}',
-                                 '${FormaterDate(manifestation.date_end)}', '${manifestation.object}',
-                                 '${manifestation.security_description}', ${manifestation.nb_person_estimate},
-                                 '${manifestation.url_document_signed}');`
+        const request = {
+            text: 'INSERT INTO manifestation (man_name, man_date_start, man_date_end, man_object, man_security_description, man_nb_person_estimate, man_url_document_signed) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+            values: [manifestation.name, manifestation.date_start, manifestation.date_end,
+                        manifestation.object, manifestation.security_description, manifestation.nb_person_estimate,
+                        manifestation.url_document_signed],
+        }
         pool.query(request, (error, _) => {
             if (error) {
+                console.error(error)
                 reject(error)
             } else {
                 resolve(true)
@@ -83,18 +73,18 @@ const Add = (manifestation) => {
  */
 const Aborted = (id, reason) => {
     return new Promise((resolve, reject) => {
-        GetById(id).then((result) => {
+        IfExists(id).then((result) => {
             if (result) {
                 if (result.is_aborted) {
                     resolve(true)
                 }
-                const request = `UPDATE manifestation
-                                 SET man_date_aborted   = '${FormaterDate(new Date())}',
-                                     man_is_aborted     = true,
-                                     man_reason_aborted = '${reason}'
-                                 WHERE man_id = ${id}`
+                const request = {
+                    text: 'UPDATE manifestation SET man_date_aborted = $1, man_is_aborted = true, man_reason_aborted = $2 WHERE man_id = $3',
+                    values: [new Date(), reason, id],
+                }
                 pool.query(request, (error, _) => {
                     if (error) {
+                        console.error(error)
                         reject(error)
                     } else {
                         resolve(true)
@@ -104,6 +94,8 @@ const Aborted = (id, reason) => {
                 resolve(false)
             }
         }).catch((e) => {
+            console.error(e)
+
             reject(e)
         });
     });
@@ -113,29 +105,15 @@ const Aborted = (id, reason) => {
  * Récupère toutes les manifestations
  * @param includeAborted Inclure les manifestations annulées
  * @param nir Les manifestations pour une personne
+ * @param id L'id de la manifestation'
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetAll = (includeAborted = false, nir = null) => {
+const Get = (includeAborted = false, nir = null, id = null) => {
     return new Promise((resolve, reject) => {
-        let request = `SELECT man.man_id               as id,
-                              man_name                 as name,
-                              man_date_start           as date_start,
-                              man_date_end             as date_end,
-                              man_is_aborted           as is_aborted,
-                              man_date_aborted         as date_aborted,
-                              man_date_create          as date_create,
-                              man_object               as object,
-                              man_security_description as security_description,
-                              man_nb_person_estimate   as nb_person_estimate,
-                              man_url_document_signed  as url_document_signed,
-                              man_reason_aborted       as reason_aborted
-                       FROM manifestation man`
-        if(nir) {
-            request += ` INNER JOIN manifestant mnf ON man.man_id = mnf.man_id AND mnf.prs_nir = '${nir}'`
-        }
-        if (!includeAborted) {
-            request += ` WHERE man_is_aborted = false`
+        const request = {
+            text: 'SELECT * FROM filter_manifestation($1, $2, $3)',
+            values: [nir, includeAborted, id],
         }
         pool.query(request, (error, result) => {
             if (error) {
@@ -148,7 +126,7 @@ const GetAll = (includeAborted = false, nir = null) => {
     });
 }
 
-export default {Manifestation, GetById, Add, Aborted, GetAll}
+export default {Manifestation, Add, Aborted, Get}
 
 
 

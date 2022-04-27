@@ -13,14 +13,12 @@ class AnnualFee {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetById = (year, id_political_party) => {
+const Get = (year = null, id_political_party = null) => {
     return new Promise((resolve, reject) => {
-        const request = `SELECT afe_year as year,
-                                pop_id   as id_political_party,
-                                afe_fee  as fee
-                         FROM annual_fee
-                         WHERE afe_year = ${year}
-                           AND pop_id = ${id_political_party}`
+        const request = {
+            text: 'SELECT * FROM filter_annual_fee($1, $2)',
+            values: [year, id_political_party],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -40,7 +38,7 @@ const GetById = (year, id_political_party) => {
  */
 const Add = (annual_fee) => {
     return new Promise((resolve, reject) => {
-        GetById(annual_fee.year, annual_fee.id_political_party).then((result) => {
+        Get(annual_fee.year, annual_fee.id_political_party).then((result) => {
             if (!result) {
                 const request = `INSERT INTO annual_fee (afe_year, pop_id, afe_fee)
                                  VALUES (${annual_fee.year}, ${annual_fee.id_political_party}, ${annual_fee.fee})`
@@ -60,28 +58,4 @@ const Add = (annual_fee) => {
     });
 }
 
-/**
- * Récupère la liste des cotisations annuelles pour un parti politiques
- * @param id_political_party L'id du parti politique
- * @returns {Promise<unknown>}
- * @constructor
- */
-const GetByPoliticalParty = ( id_political_party) => {
-    return new Promise((resolve, reject) => {
-        const request = `SELECT afe_year as year,
-                                pop_id   as id_political_party,
-                                afe_fee  as fee
-                         FROM annual_fee
-                         WHERE pop_id = ${id_political_party}`
-        pool.query(request, (error, result) => {
-            if (error) {
-                reject(error)
-            } else {
-                let res = (result.rows.length > 0) ? result.rows : null
-                resolve(res)
-            }
-        });
-    });
-}
-
-export default {AnnualFee, GetById, Add, GetByPoliticalParty}
+export default {AnnualFee, Get, Add}

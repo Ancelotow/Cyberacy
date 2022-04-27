@@ -10,11 +10,12 @@ class Sex {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetAll = () => {
+const Get = () => {
     return new Promise((resolve, reject) => {
-        let request = `SELECT sex_id   as id,
-                              sex_name as name
-                       FROM sex`
+        const request = {
+            text: 'SELECT sex_id as id, sex_name as name FROM sex',
+            values: [],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -26,4 +27,4 @@ const GetAll = () => {
     });
 }
 
-export default {Sex, GetAll}
+export default {Sex, Get}

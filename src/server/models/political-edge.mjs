@@ -10,11 +10,12 @@ class PoliticalEdge {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetAll = () => {
+const Get = () => {
     return new Promise((resolve, reject) => {
-        let request = `SELECT poe_id   as id,
-                              poe_name as name
-                       FROM political_edge`
+        const request = {
+            text: 'SELECT poe_id as id, poe_name as name FROM political_edge',
+            values: [],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -26,4 +27,4 @@ const GetAll = () => {
     });
 }
 
-export default {PoliticalEdge, GetAll}
+export default {PoliticalEdge, Get}
