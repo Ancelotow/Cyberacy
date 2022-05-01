@@ -1,0 +1,32 @@
+###
+# @name Get all meeting
+GET http://localhost:3000/meeting?includeAborted=true
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTE0MTkxOTYsImV4cCI6MTY1MTUwNTU5Nn0.jE2H2JSmi1XoS-LD5Bn2hNc16LNMOsNphOdlOOzCRBI
+
+###
+# @name Get all meeting (without aborted)
+GET http://localhost:3000/meeting
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTE0MTkxOTYsImV4cCI6MTY1MTUwNTU5Nn0.jE2H2JSmi1XoS-LD5Bn2hNc16LNMOsNphOdlOOzCRBI
+
+###
+# @name Get all meeting (mine)
+GET http://localhost:3000/meeting?mine=true
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTE0MTkxOTYsImV4cCI6MTY1MTUwNTU5Nn0.jE2H2JSmi1XoS-LD5Bn2hNc16LNMOsNphOdlOOzCRBI
+
+###
+# @name Add new meeting
+POST http://localhost:3000/meeting
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTE0MTkxOTYsImV4cCI6MTY1MTUwNTU5Nn0.jE2H2JSmi1XoS-LD5Bn2hNc16LNMOsNphOdlOOzCRBI
+Content-Type: application/json
+
+{
+  "name": "Présidentiel 2022",
+  "object": "Présidentiel",
+  "date_start": "2022-05-12",
+  "nb_time": 2.20,
+  "id_political_party": 3
+}

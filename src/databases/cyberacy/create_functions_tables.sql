@@ -106,12 +106,12 @@ create or replace function filter_adherent(_nir adherent.prs_nir%type default nu
                                            _include_left boolean default false)
     returns table
             (
-                id                   adherent.adh_id%type,
-                date_join            adherent.adh_date_join%type,
-                date_left            adherent.adh_date_left%type,
-                is_left              adherent.adh_is_left%type,
-                id_political_party   adherent.pop_id%type,
-                nir                  adherent.prs_nir%type
+                id                 adherent.adh_id%type,
+                date_join          adherent.adh_date_join%type,
+                date_left          adherent.adh_date_left%type,
+                is_left            adherent.adh_is_left%type,
+                id_political_party adherent.pop_id%type,
+                nir                adherent.prs_nir%type
             )
 as
 $filter$
@@ -125,8 +125,8 @@ begin
                prs_nir       as nir
         from adherent adh
         where (_nir is null or prs_nir = _nir)
-        and (_id is null or pop_id = _id)
-        and (_include_left = true or adh_is_left = false)
+          and (_id is null or pop_id = _id)
+          and (_include_left = true or adh_is_left = false)
         order by date_join;
 end;
 $filter$
@@ -134,12 +134,12 @@ $filter$
 
 -- Filtre pour la table annual_fee
 create or replace function filter_annual_fee(_year annual_fee.afe_year%type default null,
-                                            _pop_id annual_fee.pop_id%type default null)
+                                             _pop_id annual_fee.pop_id%type default null)
     returns table
             (
-                afe_year            annual_fee.afe_year%type,
-                id_political_party  annual_fee.pop_id%type,
-                fee                 annual_fee.afe_fee%type
+                year               annual_fee.afe_year%type,
+                id_political_party annual_fee.pop_id%type,
+                fee                annual_fee.afe_fee%type
             )
 as
 $filter$
@@ -151,6 +151,91 @@ begin
         from annual_fee
         where (_year is null or afe_year = _year)
           and (_pop_id is null or pop_id = _pop_id);
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table meeting
+create or replace function filter_meeting(_town meeting.twn_code_insee%type default null,
+                                          _pop_id meeting.pop_id%type default null,
+                                          _nir person.prs_nir%type default null,
+                                          _include_aborted meeting.mee_is_aborted%type default false,
+                                          _include_completed meeting.mee_is_aborted%type default true)
+    returns table
+            (
+                id                 meeting.mee_id%type,
+                name               meeting.mee_name%type,
+                object             meeting.mee_object%type,
+                description        meeting.mee_description%type,
+                date_start         meeting.mee_date_start%type,
+                nb_time            meeting.mee_nb_time%type,
+                is_aborted         meeting.mee_is_aborted%type,
+                reason_aborted     meeting.mee_reason_aborted%type,
+                nb_place           meeting.mee_nb_place%type,
+                nb_place_vacant    int,
+                address_street     meeting.mee_address_street%type,
+                link_twitch        meeting.mee_link_twitch%type,
+                id_political_party meeting.pop_id%type,
+                town_code_insee    meeting.twn_code_insee%type
+            )
+as
+$filter$
+begin
+    return query
+        select mee.mee_id                      as id,
+               mee_name                        as name,
+               mee_object                      as object,
+               mee_description                 as description,
+               mee_date_start                  as date_start,
+               mee_nb_time                     as nb_time,
+               mee_is_aborted                  as is_aborted,
+               mee_reason_aborted              as reason_aborted,
+               mee_nb_place                    as nb_place,
+               get_nb_place_vacant(mee.mee_id) as nb_place_vacant,
+               mee_address_street              as address_street,
+               mee_link_twitch                 as link_twitch,
+               mee.pop_id                      as id_political_party,
+               mee.twn_code_insee              as town_code_insee
+        from meeting mee
+                 left join participant ptc on mee.mee_id = ptc.mee_id
+        where (_include_aborted = true or mee_is_aborted = false)
+          and (_nir is null or ptc.prs_nir = _nir)
+          and (_pop_id is null or mee.pop_id = _pop_id)
+          and (_town is null or mee.twn_code_insee = _town)
+          and (_include_completed = true or nb_place_vacant > 0)
+        order by mee_date_start, mee_name desc;
+
+end;
+$filter$
+    language plpgsql;
+
+-- Filtre pour la participant
+create or replace function filter_participant(_id participant.mee_id%type,
+                                              _include_aborted participant.ptc_is_aborted%type default false)
+    returns table
+            (
+                id_meeting     participant.mee_id%type,
+                nir            participant.prs_nir%type,
+                date_joined    participant.ptc_date_joined%type,
+                is_aborted     participant.ptc_is_aborted%type,
+                date_aborted   participant.ptc_date_aborted%type,
+                reason_aborted participant.ptc_reason_aborted%type
+            )
+as
+$filter$
+begin
+    return query
+        select mee_id             as id_meeting,
+               prs_nir            as nir,
+               ptc_date_joined    as date_joined,
+               ptc_is_aborted     as is_aborted,
+               ptc_date_aborted   as date_aborted,
+               ptc_reason_aborted as reason_aborted
+        from participant
+        where mee_id = _id
+          and (_include_aborted = true or ptc_is_aborted = false)
+        order by ptc_date_joined desc;
 end;
 $filter$
     language plpgsql;

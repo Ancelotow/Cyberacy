@@ -642,6 +642,115 @@
           }
         ]
       }
+    },
+    "/meeting": {
+      "post": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Ajoute un nouveau meeting.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Récupération des meetings.",
+        "parameters": [
+          {
+            "name": "mine",
+            "in": "query",
+            "description": "Voir uniquement les meetings auxquelles je participe.",
+            "type": "boolean"
+          },
+          {
+            "name": "town",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "idPoliticalParty",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "includeAborted",
+            "in": "query",
+            "description": "Inclure les meetings annuler.",
+            "type": "boolean"
+          },
+          {
+            "name": "includeCompleted",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/meeting/aborted": {
+      "patch": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Annuler un meeting existant.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "any"
+                },
+                "reason": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/meeting/participate/{id}": {
+      "post": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Participer à un meeting.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   }
 }

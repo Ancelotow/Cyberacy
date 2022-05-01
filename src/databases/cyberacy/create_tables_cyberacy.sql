@@ -228,6 +228,7 @@ create table meeting (
     mee_nb_time         decimal not null,
     mee_is_aborted      boolean default(false) not null,
     mee_reason_aborted  varchar(250) null,
+    mee_date_aborted    timestamp,
     mee_nb_place        int null,
     mee_address_street  varchar(250) null,
     mee_link_twitch     varchar(150) null,
@@ -241,7 +242,7 @@ create table meeting (
 create table participant (
     mee_id              int not null,
     prs_nir             varchar(15) not null,
-    ptc_date_joined     timestamp not null,
+    ptc_date_joined     timestamp default(now()) not null,
     ptc_is_aborted      boolean default(false) not null,
     ptc_date_aborted    timestamp null,
     ptc_reason_aborted  varchar(250) null,

@@ -19,7 +19,7 @@ class Adherent {
 const Get = (nir = null, included_left = false, id_political_party = null) => {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'SELECT COUNT(*) FROM filter_adherent($1, $2, $3)',
+            text: 'SELECT * FROM filter_adherent($1, $2, $3)',
             values: [nir, id_political_party, included_left],
         }
         pool.query(request, (error, result) => {
