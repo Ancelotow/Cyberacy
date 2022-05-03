@@ -9,6 +9,7 @@ import {routerGeo} from "./routes/geography.router.mjs";
 import {routerVote} from "./routes/vote.router.mjs";
 import {routerParty} from "./routes/party.router.mjs";
 import {routerMee} from "./routes/meeting.router.mjs";
+import {routerMsg} from "./routes/messaging.router.mjs";
 import jobGeography from "./cron/geography.cron.mjs"
 import cors from 'cors'
 import {config} from 'dotenv'
@@ -47,6 +48,7 @@ app.use(routerRef)
 app.use(routerVote)
 app.use(routerParty)
 app.use(routerMee)
+app.use(routerMsg)
 
 // Cron jobs
 jobGeography.startJob()
