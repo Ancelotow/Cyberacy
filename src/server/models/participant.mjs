@@ -93,4 +93,38 @@ const Add = (nir, idMeeting) => {
     });
 }
 
-export default {Participant, Get, Add, IfExists}
+/**
+ * Annuler sa participation à un meeting
+ * @param nir Le NIR du participant
+ * @param idMeeting L'id du meeting
+ * @param reason Les raisons de l'annulation
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const Aborted = (nir, idMeeting, reason) => {
+    return new Promise((resolve, reject) => {
+        IfExists(nir, idMeeting).then((result) => {
+            if (result) {
+                const request = {
+                    text: 'UPDATE participant SET ptc_is_aborted = true, ptc_date_aborted = now(), ptc_reason_aborted = $1 WHERE mee_id = $3 AND prs_nir = $4 AND ptc_is_aborted = false',
+                    values: [reason, idMeeting, nir],
+                }
+                pool.query(request, (error, _) => {
+                    if (error) {
+                        console.error(error)
+                        reject(error)
+                    } else {
+                        resolve(true)
+                    }
+                });
+            } else {
+                resolve(false)
+            }
+        }).catch((e) => {
+            console.error(e)
+            reject(e)
+        });
+    });
+}
+
+export default {Participant, Get, Add, IfExists, Aborted}

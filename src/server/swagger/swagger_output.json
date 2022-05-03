@@ -98,7 +98,7 @@
         ]
       }
     },
-    "/manifestation/participate/{id}": {
+    "/manifestation/{id}/participate": {
       "post": {
         "tags": [
           "Manifestation"
@@ -142,7 +142,7 @@
         ]
       }
     },
-    "/manifestation/option/{id}": {
+    "/manifestation/{id}/option": {
       "get": {
         "tags": [
           "Manifestation"
@@ -162,7 +162,9 @@
             "Bearer": []
           }
         ]
-      },
+      }
+    },
+    "/manifestation/option/{id}": {
       "delete": {
         "tags": [
           "Manifestation"
@@ -199,7 +201,7 @@
         ]
       }
     },
-    "/manifestation/step/{id}": {
+    "/manifestation/{id}/step": {
       "get": {
         "tags": [
           "Manifestation"
@@ -219,7 +221,9 @@
             "Bearer": []
           }
         ]
-      },
+      }
+    },
+    "/manifestation/step/{id}": {
       "delete": {
         "tags": [
           "Manifestation"
@@ -544,7 +548,7 @@
         ]
       }
     },
-    "/political_party/join/{id}": {
+    "/political_party/{id}/join": {
       "post": {
         "tags": [
           "Political party"
@@ -596,7 +600,7 @@
         ]
       }
     },
-    "/political_party/annual_fee/{id}": {
+    "/political_party/{id}/annual_fee": {
       "get": {
         "tags": [
           "Political party"
@@ -741,6 +745,32 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Annuler sa participation à un meeting.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reason",
+            "in": "query",
+            "description": "La raison de l annulation",
             "type": "string"
           }
         ],

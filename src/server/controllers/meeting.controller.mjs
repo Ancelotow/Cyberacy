@@ -104,4 +104,31 @@ const AddParticipant = (nir, idMeeting) => {
     });
 }
 
-export default {AddParticipant, AddMeeting, AbortedMeeting, GetMeeting}
+/**
+ * Annuler une participation
+ * @param nir Le NIR du participant
+ * @param idMeeting L'id du meeting
+ * @param reason La raison de l'annulation
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const AbortedParticipant = (nir, idMeeting, reason = null) => {
+    return new Promise((resolve, _) => {
+        if (!nir || !idMeeting) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            participantMod.Aborted(nir, idMeeting, reason).then((res) => {
+                if (res) {
+                    resolve({status: 200, data: "This participation has been aborted."})
+                } else {
+                    resolve({status: 400, data: "This participant not existed or already aborted."})
+                }
+            }).catch((e) => {
+                console.error(e)
+                resolve({status: 500, data: e})
+            })
+        }
+    });
+}
+
+export default {AddParticipant, AddMeeting, AbortedMeeting, GetMeeting, AbortedParticipant}

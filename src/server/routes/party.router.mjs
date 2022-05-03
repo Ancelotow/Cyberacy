@@ -48,7 +48,7 @@ routerParty.get("/political_party", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
-routerParty.post("/political_party/join/:id", async (req, res) => {
+routerParty.post("/political_party/:id/join", async (req, res) => {
     // #swagger.tags = ['Political party']
     // #swagger.description = 'Adhérer à un parti politique.'
     // #swagger.security = [{ "Bearer": [] }]
@@ -77,7 +77,7 @@ routerParty.post("/political_party/annual_fee", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
-routerParty.get("/political_party/annual_fee/:id", async (req, res) => {
+routerParty.get("/political_party/:id/annual_fee", async (req, res) => {
     // #swagger.tags = ['Political party']
     // #swagger.description = 'Récupère les cotisations annuelles d'un parti politique.'
     // #swagger.security = [{ "Bearer": [] }]

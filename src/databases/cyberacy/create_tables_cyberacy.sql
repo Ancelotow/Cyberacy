@@ -268,7 +268,7 @@ create table thread (
     thr_main        boolean default(false) not null,
     thr_name        varchar(50) not null,
     thr_description varchar(250) null,
-    thr_date_create timestamp not null,
+    thr_date_create timestamp default(now()) not null,
     thr_is_delete   boolean default(false) not null,
     thr_date_delete timestamp null,
     thr_is_private  boolean default(false) not null,

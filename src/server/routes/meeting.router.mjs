@@ -66,4 +66,19 @@ routerMee.post("/meeting/participate/:id", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
+routerMee.delete("/meeting/participate/:id", async (req, res) => {
+    // #swagger.tags = ['Meeting']
+    // #swagger.description = 'Annuler sa participation à un meeting.'
+    // #swagger.security = [{ "Bearer": [] }]
+    /* #swagger.parameters['reason'] = {
+          in: 'query',
+          description: 'La raison de l annulation',
+          type: 'string'
+   } */
+
+    const nir = req.data.nir
+    const response = await meetingCtrl.AbortedParticipant(nir, req.params.id, req.query.reason)
+    res.status(response.status).send(response.data)
+});
+
 export {routerMee}

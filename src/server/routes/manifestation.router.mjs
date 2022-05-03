@@ -41,7 +41,7 @@ routerMan.get("/manifestation", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
-routerMan.post("/manifestation/participate/:id", async (req, res) => {
+routerMan.post("/manifestation/:id/participate", async (req, res) => {
     // #swagger.tags = ['Manifestation']
     // #swagger.description = 'Participer à une manifestations.'
     // #swagger.security = [{ "Bearer": [] }]
@@ -64,7 +64,7 @@ routerMan.post("/manifestation/option", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
-routerMan.get("/manifestation/option/:id", async (req, res) => {
+routerMan.get("/manifestation/:id/option", async (req, res) => {
     // #swagger.tags = ['Manifestation']
     // #swagger.description = 'Récupérer les options de une manifestation.'
     // #swagger.security = [{ "Bearer": [] }]
@@ -91,7 +91,7 @@ routerMan.post("/manifestation/step", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
-routerMan.get("/manifestation/step/:id", async (req, res) => {
+routerMan.get("/manifestation/:id/step", async (req, res) => {
     // #swagger.tags = ['Manifestation']
     // #swagger.description = 'Récupérer les étapes d\'une manifestation.'
     // #swagger.security = [{ "Bearer": [] }]
