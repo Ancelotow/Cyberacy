@@ -781,6 +781,84 @@
           }
         ]
       }
+    },
+    "/thread": {
+      "post": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Ajout d un nouveau Thread.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Modifie un thread",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/thread/{id}/main/{id_political_party}": {
+      "patch": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Modifie le thread principal d un parti politique",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id_political_party",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/thread/{id}": {
+      "delete": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Supprime un thread existant",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   }
 }
