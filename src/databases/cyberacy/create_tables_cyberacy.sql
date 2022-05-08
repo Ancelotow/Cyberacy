@@ -8,9 +8,9 @@ create table political_edge
 create table role
 (
     rle_id          int                not null,
-    rle_title       varchar(25)        not null,
-    rle_description varchar(250)       null,
-    rle_code        varchar(20) unique not null,
+    rle_title       varchar(50)        not null,
+    rle_description varchar(500)       null,
+    rle_code        varchar(100) unique not null,
     constraint pk_role primary key (rle_id)
 );
 

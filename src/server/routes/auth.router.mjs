@@ -15,7 +15,7 @@ routerAuth.post("/login_app", async (req, res) => {
     // #swagger.tags = ['Authentification']
     // #swagger.description = 'Connexion et retourne le Bearer token (pour application Android).'
 
-    const response = await Authentication(req.body.nir, req.body.password)
+    const response = await Authentication(req.body.nir, req.body.password, "APP_ANDROID#CONNECTION")
     res.status(response.status).send(response.data)
 });
 
@@ -23,7 +23,7 @@ routerAuth.post("/login_stats", async (req, res) => {
     // #swagger.tags = ['Authentification']
     // #swagger.description = 'Connexion et retourne le Bearer token (pour application de statistiques IOS).'
 
-    const response = await Authentication(req.body.nir, req.body.password)
+    const response = await Authentication(req.body.nir, req.body.password, "APP_IOS#CONNECTION")
     res.status(response.status).send(response.data)
 });
 
@@ -31,7 +31,7 @@ routerAuth.post("/login_bo", async (req, res) => {
     // #swagger.tags = ['Authentification']
     // #swagger.description = 'Connexion et retourne le Bearer token (pour le back-office Flutter).'
 
-    const response = await Authentication(req.body.nir, req.body.password)
+    const response = await Authentication(req.body.nir, req.body.password, "BO#CONNECTION")
     res.status(response.status).send(response.data)
 });
 

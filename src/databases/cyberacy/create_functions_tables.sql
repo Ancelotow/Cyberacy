@@ -240,3 +240,35 @@ end;
 $filter$
     language plpgsql;
 
+-- Filtre pour la table person
+create or replace function filter_person(_nir person.prs_nir%type default null)
+    returns table
+            (
+                nir            person.prs_nir%type,
+                firstname      person.prs_firstname%type,
+                lastname       person.prs_lastname%type,
+                email          person.prs_email%type,
+                birthday       person.prs_birthday%type,
+                address_street person.prs_address_street%type,
+                town           person.twn_code_insee%type,
+                sex            person.sex_id%type,
+                profile        person.prf_id%type
+            )
+as
+$filter$
+begin
+    return query
+        SELECT prs_nir            as nir,
+               prs_firstname      as firstname,
+               prs_lastname       as lastname,
+               prs_email          as email,
+               prs_birthday       as birthday,
+               prs_address_street as address_street,
+               twn_code_insee     as town,
+               sex_id             as sex,
+               prf_id             as profile
+        FROM person
+        WHERE (_nir is null or prs_nir = _nir);
+end;
+$filter$
+    language plpgsql;

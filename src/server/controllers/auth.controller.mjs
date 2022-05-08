@@ -1,4 +1,4 @@
-import {Person, Add, GetByIdAndPassword} from '../models/person.mjs'
+import {Person, Add, GetByIdAndPassword, IsGranted} from '../models/person.mjs'
 import jwt from "jsonwebtoken"
 
 /**
@@ -34,13 +34,29 @@ const Register = (person) => {
  * Authentification d'un utilisateur
  * @param nir Le NIR (aussi appelé numéro de sécurité sociale)
  * @param password Le mot de passe
+ * @param code_role Le code du role
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Authentication = (nir, password) => {
-    return new Promise((resolve, _) => {
+const Authentication = async (nir, password, code_role) => {
+    return new Promise(async (resolve, _) => {
         if(nir == null || password == null) {
             resolve({status: 400, data: "Missing parameters."})
+        } else if (code_role == null) {
+            resolve({status: 500, data: "Missing code role."})
+        }
+        try{
+            const res = await GetByIdAndPassword(nir, password);
+            if(!res) {
+                resolve({status: 401, data: "This NIR and password not matching."})
+            }
+            const isGranted = await IsGranted(nir, code_role);
+            if(!isGranted) {
+                resolve({status: 401, data: "You are not allowed to access at this ressources."})
+            }
+            resolve({status: 200, data: GenerateToken(nir)})
+        } catch(error) {
+            resolve({status: 500, data: error})
         }
         GetByIdAndPassword(nir, password).then((res) => {
             if(!res) {
@@ -48,7 +64,6 @@ const Authentication = (nir, password) => {
             }
             resolve({status: 200, data: GenerateToken(nir)})
         }).catch((e) => {
-            resolve({status: 500, data: e})
         })
     });
 }

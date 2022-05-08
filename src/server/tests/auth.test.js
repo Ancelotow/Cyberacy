@@ -31,11 +31,18 @@ describe("Test resgiter", () => {
 });
 
 describe("Test login", () => {
-    test("Connexion avec paramètres manquants", () => Authentication("541397454", null).then((data) => expect(data).toMatchObject({
+    test("Connexion avec paramètres manquants", () => Authentication("541397454", null, "APP_IOS#CONNECTION").then((data) => expect(data).toMatchObject({
         status: 400, data: "Missing parameters."
     })));
-    test("Connexion avec identifiants invalides", () => Authentication("541397454", "tt").then((data) => expect(data).toMatchObject({
+    test("Connexion avec identifiants invalides", () => Authentication("541397454", "tt", "APP_IOS#CONNECTION").then((data) => expect(data).toMatchObject({
         status: 401,
         data: "This NIR and password not matching."
+    })));
+    test("Connexion sur une ressources dont on a pas les droits", () => Authentication("541397454", "test", "APP_IOS#CONNECTION").then((data) => expect(data).toMatchObject({
+        status: 401,
+        data: "You are not allowed to access at this ressources."
+    })));
+    test("Connexion avec succès", () => Authentication("875543548", "test", "APP_IOS#CONNECTION").then((data) => expect(data).toMatchObject({
+        status: 200
     })));
 });
