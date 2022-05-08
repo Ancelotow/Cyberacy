@@ -22,9 +22,9 @@ describe("Test resgiter", () => {
         status: 400, data: "Missing parameters."
     })));
     person.firstname = "Jean"
-    /*test("Nouvel ajout normal", () => Register(person).then((data) => expect(data).toMatchObject({
-        status: 201, data: "Person has been created."
-    })));*/
+    test("Nouvel ajout normal", () => Register(person).then((data) => expect(data).not.toMatchObject({
+        status: 500
+    })));
     test("Ajout d'un éxistant", () => Register(person).then((data) => expect(data).toMatchObject({
         status: 400, data: "This person already existed."
     })));

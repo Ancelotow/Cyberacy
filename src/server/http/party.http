@@ -1,8 +1,8 @@
 ###
 # @name Add new political party
-POST http://localhost:3000/political_party
+POST {{url}}/political_party
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTA4MTQwOTgsImV4cCI6MTY1MDkwMDQ5OH0.-uy_rlhXanpCRqlAr8K1t3JDkHEwK7CVcY1gfn_IBbM
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
@@ -15,30 +15,30 @@ Content-Type: application/json
 
 ###
 # @name Get all political party
-GET http://localhost:3000/political_party?mine=true&includeLeft=false
+GET {{url}}/political_party?mine=true&includeLeft=false
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTE0MTkxOTYsImV4cCI6MTY1MTUwNTU5Nn0.jE2H2JSmi1XoS-LD5Bn2hNc16LNMOsNphOdlOOzCRBI
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 ###
 # @name Join a political party
-POST http://localhost:3000/political_party/join/3
+POST {{url}}/political_party/join/3
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTA5MTA5NTQsImV4cCI6MTY1MDk5NzM1NH0.kH7Np5aIyk3OnCjK5I8VtvT7sn-PQzv8aa0uZINvVGg
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 ###
 # @name Left political party
-DELETE http://localhost:3000/political_party/left
+DELETE {{url}}/political_party/left
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTA5MTA5NTQsImV4cCI6MTY1MDk5NzM1NH0.kH7Np5aIyk3OnCjK5I8VtvT7sn-PQzv8aa0uZINvVGg
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 ###
 # @name Add new annual fee
-POST http://localhost:3000/political_party/annual_fee
+POST {{url}}/political_party/annual_fee
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTA5MTg4ODYsImV4cCI6MTY1MTAwNTI4Nn0.vGcuHHjzgUFw_Au3jjQZjDHKmZqzVfnzzFHi6vONElM
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
@@ -49,7 +49,7 @@ Content-Type: application/json
 
 ###
 # @name Get all  annual fee for a political party
-GET http://localhost:3000/political_party/annual_fee/3
+GET {{url}}/political_party/annual_fee/3
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTA5MTg4ODYsImV4cCI6MTY1MTAwNTI4Nn0.vGcuHHjzgUFw_Au3jjQZjDHKmZqzVfnzzFHi6vONElM
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json

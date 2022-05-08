@@ -1,29 +1,29 @@
 ###
 # @name Get regions
-GET http://localhost:3000/region
+GET {{url}}/region
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get departments
-GET http://localhost:3000/department
+GET {{url}}/department
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get towns
-GET http://localhost:3000/town
+GET {{url}}/town
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get towns by department
-GET http://localhost:3000/department/94/town
+GET {{url}}/department/94/town
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get departments by region
-GET http://localhost:3000/region/11/department
+GET {{url}}/region/11/department
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+Authorization: Bearer {{jwt_token}}

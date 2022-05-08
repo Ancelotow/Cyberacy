@@ -79,7 +79,7 @@ const Aborted = (id, reason) => {
             if (result) {
                 const request = {
                     text: 'UPDATE meeting SET mee_is_aborted = true, mee_reason_aborted = $1, mee_date_aborted = now() WHERE mee_id = $2 AND mee_is_aborted = false',
-                    values: [id, reason],
+                    values: [reason, id],
                 }
                 pool.query(request, (error, _) => {
                     if (error) {

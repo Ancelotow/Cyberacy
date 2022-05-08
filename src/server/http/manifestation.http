@@ -1,26 +1,26 @@
 ###
 # @name Get all manifestation
-GET http://localhost:3000/manifestation?includeAborted=true
+GET {{url}}/manifestation?includeAborted=true
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MTMwMDQsImV4cCI6MTY0OTU5OTQwNH0.n4ERguJqgu6PAwrpRWt2MguIE7T57HL0YlKEIYpNwX0
+Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get all manifestation (without aborted)
-GET http://localhost:3000/manifestation
+GET {{url}}/manifestation
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MTMwMDQsImV4cCI6MTY0OTU5OTQwNH0.n4ERguJqgu6PAwrpRWt2MguIE7T57HL0YlKEIYpNwX0
+Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get all manifestation (mine)
-GET http://localhost:3000/manifestation?mine=true
+GET {{url}}/manifestation?mine=true
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MTMwMDQsImV4cCI6MTY0OTU5OTQwNH0.n4ERguJqgu6PAwrpRWt2MguIE7T57HL0YlKEIYpNwX0
+Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Aborted manifestation
-PATCH http://localhost:3000/manifestation/aborted
+PATCH {{url}}/manifestation/aborted
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDkzMjEzOTUsImV4cCI6MTY0OTQwNzc5NX0.j8gLqLq3wReClks61WpwnNzvGccOJNxxIVy0sBPizmI
+Authorization: Bearer {{jwt_token}}{{jwt_token}}
 Content-Type: application/json
 
 {
@@ -30,16 +30,16 @@ Content-Type: application/json
 
 ###
 # @name Participate to manifestation
-POST http://localhost:3000/manifestation/participate/2
+POST {{url}}/manifestation/participate/2
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MTMwMDQsImV4cCI6MTY0OTU5OTQwNH0.n4ERguJqgu6PAwrpRWt2MguIE7T57HL0YlKEIYpNwX0
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 ###
 # @name Add new option to manifestation
-POST http://localhost:3000/manifestation/option
+POST {{url}}/manifestation/option
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MjE0MjUsImV4cCI6MTY0OTYwNzgyNX0.lKBuuCJm0vreUQ25jfVAbbRMuMoNBAk5lHqRiO-DdIM
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
@@ -49,23 +49,23 @@ Content-Type: application/json
 
 ###
 # @name Get options from manifestation
-GET http://localhost:3000/manifestation/option/3
+GET {{url}}/manifestation/option/3
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 ###
 # @name Delete options of manifestation
-DELETE http://localhost:3000/manifestation/option/2
+DELETE {{url}}/manifestation/option/2
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NDk1MjE0MjUsImV4cCI6MTY0OTYwNzgyNX0.lKBuuCJm0vreUQ25jfVAbbRMuMoNBAk5lHqRiO-DdIM
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 ###
 # @name Add new step to manifestation
-POST http://localhost:3000/manifestation/step
+POST{{url}}/manifestation/step
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
@@ -78,14 +78,14 @@ Content-Type: application/json
 
 ###
 # @name Get steps from manifestation
-GET http://localhost:3000/manifestation/step/3
+GET {{url}}/manifestation/step/3
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 ###
 # @name Delete step of manifestation
-DELETE http://localhost:3000/manifestation/step/2
+DELETE {{url}}/manifestation/step/2
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json

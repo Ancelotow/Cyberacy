@@ -33,20 +33,20 @@ describe("Test annulation d'un meeting", () => {
     test("Annulation d'un meeting inexistant", () => meeting.AbortedMeeting(1000, null).then((data) => expect(data).toMatchObject({
         status: 400
     })));
-    /*test("Annulation d'un meeting", () => meeting.AbortedMeeting(1, "Parceque !!").then((data) => expect(data).toMatchObject({
-        status: 200
-    })));*/
+    test("Annulation d'un meeting", () => meeting.AbortedMeeting(1, "Parceque !!").then((data) => expect(data).not.toMatchObject({
+        status: 500
+    })));
 });
 
 describe("Test participer à un meeting", () => {
     test("Participation avec paramètres manquants", () => meeting.AddParticipant(null, null).then((data) => expect(data).toMatchObject({
         status: 400
     })));
-    test("Participation à un meeting", () => meeting.AddParticipant("875543548", 1).then((data) => expect(data).toMatchObject({
-        status: 201
+    test("Participation à un meeting", () => meeting.AddParticipant("875543548", 1).then((data) => expect(data).not.toMatchObject({
+        status: 500
     })));
-    /*test("Annulation d'un meeting", () => meeting.AbortedMeeting(1, "Parceque !!").then((data) => expect(data).toMatchObject({
-        status: 200
-    })));*/
+    test("Annulation de la participation à un meeting", () => meeting.AbortedParticipant(1, 1, "Parce que !").then((data) => expect(data).not.toMatchObject({
+        status: 500
+    })));
 });
 

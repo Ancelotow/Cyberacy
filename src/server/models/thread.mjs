@@ -21,9 +21,10 @@ class Thread {
  */
 const Add = (thread) => {
     return new Promise((resolve, reject) => {
+        const is_private = (thread.is_private == null) ? false : thread.is_private
         const request = {
             text: 'insert into thread(thr_name, thr_description, thr_is_private, thr_url_logo, pop_id) values ($1, $2, $3, $4, $5)',
-            values: [thread.name, thread.description, thread.is_private, thread.url_logo, thread.id_political_party],
+            values: [thread.name, thread.description, is_private, thread.url_logo, thread.id_political_party],
         }
         pool.query(request, (error, _) => {
             if (error) {
@@ -146,9 +147,10 @@ const Update = (thread) => {
     return new Promise((resolve, reject) => {
         IfExists(thread.id).then(async (result) => {
             if (result) {
+                const is_private = (thread.is_private == null) ? false : thread.is_private
                 const request = {
                     text: 'UPDATE thread SET thr_name = $1, thr_description = $2, thr_is_private = $3, thr_url_logo = $4 WHERE thr_id = $5',
-                    values: [thread.name, thread.description, thread.is_private, thread.url_logo, thread.id],
+                    values: [thread.name, thread.description, is_private, thread.url_logo, thread.id],
                 }
                 pool.query(request, (error, _) => {
                     if (error) {

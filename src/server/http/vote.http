@@ -1,8 +1,8 @@
 ###
 # @name Add new vote
-POST http://localhost:3000/vote
+POST {{url}}/vote
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTA2OTg3MDUsImV4cCI6MTY1MDc4NTEwNX0.B9HzTJ3Dd3YOzh-qZAGK6NuKhp02PGnp5kyK6JRviUE
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {

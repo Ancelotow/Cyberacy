@@ -1,23 +1,23 @@
 ###
 # @name Get types step
-GET http://localhost:3000/step_type
+GET {{url}}/step_type
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get sex
-GET http://localhost:3000/sex
+GET {{url}}/sex
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTAyOTMxMDMsImV4cCI6MTY1MDM3OTUwM30.b-Tj2xcERKz17eMYW8ljS1hKNNKhWO39jK2YLp9HkzI
+Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get type vote
-GET http://localhost:3000/type_vote
+GET {{url}}/type_vote
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTA2OTg3MDUsImV4cCI6MTY1MDc4NTEwNX0.B9HzTJ3Dd3YOzh-qZAGK6NuKhp02PGnp5kyK6JRviUE
+Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get political edge
-GET http://localhost:3000/political_edge
+GET {{url}}/political_edge
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTA2OTg3MDUsImV4cCI6MTY1MDc4NTEwNX0.B9HzTJ3Dd3YOzh-qZAGK6NuKhp02PGnp5kyK6JRviUE
+Authorization: Bearer {{jwt_token}}

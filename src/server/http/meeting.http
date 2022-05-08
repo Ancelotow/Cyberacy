@@ -1,26 +1,26 @@
 ###
 # @name Get all meeting
-GET http://localhost:3000/meeting?includeAborted=true
+GET {{url}}/meeting?includeAborted=true
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTE0MTkxOTYsImV4cCI6MTY1MTUwNTU5Nn0.jE2H2JSmi1XoS-LD5Bn2hNc16LNMOsNphOdlOOzCRBI
+Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get all meeting (without aborted)
-GET http://localhost:3000/meeting
+GET http://localhost:3000{{url}}/meeting
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTE0MTkxOTYsImV4cCI6MTY1MTUwNTU5Nn0.jE2H2JSmi1XoS-LD5Bn2hNc16LNMOsNphOdlOOzCRBI
+Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get all meeting (mine)
-GET http://localhost:3000/meeting?mine=true
+GET {{url}}/meeting?mine=true
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTE0MTkxOTYsImV4cCI6MTY1MTUwNTU5Nn0.jE2H2JSmi1XoS-LD5Bn2hNc16LNMOsNphOdlOOzCRBI
+Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Add new meeting
-POST http://localhost:3000/meeting
+POST {{url}}/meeting
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaXIiOiI4NzU1NDM1NDgiLCJpYXQiOjE2NTE0MTkxOTYsImV4cCI6MTY1MTUwNTU5Nn0.jE2H2JSmi1XoS-LD5Bn2hNc16LNMOsNphOdlOOzCRBI
+Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {

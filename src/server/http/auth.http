@@ -1,6 +1,6 @@
 ###
 # @name Register
-POST http://localhost:3000/register
+POST {{url}}/register
 Accept: application/json
 Content-Type: application/json
 
@@ -19,7 +19,7 @@ Content-Type: application/json
 
 ###
 # @name Login App
-POST http://localhost:3000/login_app
+POST {{url}}/login_app
 Accept: application/json
 Content-Type: application/json
 
@@ -30,7 +30,7 @@ Content-Type: application/json
 
 ###
 # @name Login BO
-POST http://localhost:3000/login_bo
+POST {{url}}/login_bo
 Accept: application/json
 Content-Type: application/json
 
@@ -41,7 +41,7 @@ Content-Type: application/json
 
 ###
 # @name Login Stats
-POST http://localhost:3000/login_stats
+POST {{url}}/login_stats
 Accept: application/json
 Content-Type: application/json
 

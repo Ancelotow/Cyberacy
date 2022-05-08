@@ -40,9 +40,9 @@ describe("Test annulation d'une manifestations", () => {
     test("Annulation d'une manifestation n'existant pas", () => manifestation.AbortedManifestation(1000, null).then((data) => expect(data).toMatchObject({
         status: 400
     })));
-    /*test("Annulation d'une manifestation", () => manifestation.AbortedManifestation(3, "Plus envi").then((data) => expect(data).toMatchObject({
-        status: 200
-    })));*/
+    test("Annulation d'une manifestation", () => manifestation.AbortedManifestation(3, "Plus envi").then((data) => expect(data).not.toMatchObject({
+        status: 500
+    })));
 })
 
 describe("Test participation à une manifestations", () => {

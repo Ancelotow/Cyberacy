@@ -10,7 +10,7 @@ const AddThread = (thread) => {
     return new Promise(async (resolve, _) => {
         if (!thread) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!thread.id || !thread.name || !thread.id_political_party) {
+        } else if (!thread.name || !thread.id_political_party) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
             threadMod.Add(thread).then((res) => {
@@ -40,7 +40,7 @@ const DeleteThread = (id) => {
         } else {
             threadMod.Delete(id).then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "Thread has been deleted."})
+                    resolve({status: 200, data: "Thread has been deleted."})
                 } else {
                     resolve({status: 400, data: "This thread not existed."})
                 }
@@ -66,7 +66,7 @@ const ChangeMainThread = (id, id_political_party) => {
         } else {
             threadMod.ChangeMainThread(id, id_political_party).then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "The main thread has been updated."})
+                    resolve({status: 200, data: "The main thread has been updated."})
                 } else {
                     resolve({status: 400, data: "This main thread not existed."})
                 }
@@ -93,7 +93,7 @@ const UpdateThread = (thread) => {
         } else {
             threadMod.Update(thread).then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "Thread has been updated."})
+                    resolve({status: 200, data: "Thread has been updated."})
                 } else {
                     resolve({status: 400, data: "This thread not existed."})
                 }
