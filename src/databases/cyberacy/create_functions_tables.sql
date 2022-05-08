@@ -210,7 +210,7 @@ end;
 $filter$
     language plpgsql;
 
--- Filtre pour la participant
+-- Filtre pour la table participant
 create or replace function filter_participant(_id participant.mee_id%type,
                                               _include_aborted participant.ptc_is_aborted%type default false)
     returns table
@@ -239,3 +239,4 @@ begin
 end;
 $filter$
     language plpgsql;
+
