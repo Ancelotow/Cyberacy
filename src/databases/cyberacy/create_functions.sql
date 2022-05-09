@@ -38,7 +38,7 @@ begin
                            join link_role_profile lrp on rle.rle_id = lrp.rle_id
                            join profile prf on lrp.prf_id = prf.prf_id and prf_is_delete = false
                            join person prs on lrp.prf_id = prs.prf_id and prs.prs_nir = nir
-                  where rle.rle_code = rle_code);
+                  where rle.rle_code = code);
 
 end;
 $body$

@@ -783,6 +783,26 @@
       }
     },
     "/thread": {
+      "get": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Récupère les thread",
+        "parameters": [
+          {
+            "name": "onlyMine",
+            "in": "query",
+            "description": "Uniquement les threads où je suis",
+            "type": "boolean"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
       "post": {
         "tags": [
           "Messaging"

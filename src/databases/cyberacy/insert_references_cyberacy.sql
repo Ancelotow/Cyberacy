@@ -84,6 +84,14 @@ $role$
             insert into role(rle_id, rle_title, rle_description, rle_code)
             values (6, 'Accès au module "Vote"', 'Accéder au module "Vote"', 'MODULE_VOTE#ACCESS');
         end if;
+        if not exists(select * from role where rle_id = 7) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (7, 'THREAD : Lecture', 'Voir la liste des threads', 'THREAD#READ');
+        end if;
+        if not exists(select * from role where rle_id = 8) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (8, 'THREAD : Lecture tout', 'Voir la liste de tout les threads', 'THREAD#READ_ALL');
+        end if;
     end;
 $role$;
 

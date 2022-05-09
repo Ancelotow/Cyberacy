@@ -1,4 +1,11 @@
 ###
+# @name Get thread
+GET {{url}}/thread
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
 # @name Add thread
 POST {{url}}/thread
 Accept: application/json

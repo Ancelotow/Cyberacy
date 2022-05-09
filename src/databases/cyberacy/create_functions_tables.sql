@@ -258,7 +258,7 @@ as
 $filter$
 begin
     return query
-        SELECT prs_nir            as nir,
+        select prs_nir            as nir,
                prs_firstname      as firstname,
                prs_lastname       as lastname,
                prs_email          as email,
@@ -267,8 +267,52 @@ begin
                twn_code_insee     as town,
                sex_id             as sex,
                prf_id             as profile
-        FROM person
-        WHERE (_nir is null or prs_nir = _nir);
+        from person
+        where (_nir is null or prs_nir = _nir);
+end;
+$filter$
+    language plpgsql;
+
+-- Filtre pour la table person
+create or replace function filter_thread(_nir person.prs_nir%type, _only_mine boolean default true)
+    returns table
+            (
+                id                 thread.thr_id%type,
+                name               thread.thr_name%type,
+                main               thread.thr_main%type,
+                description        thread.thr_description%type,
+                date_create        thread.thr_date_create%type,
+                is_delete          thread.thr_is_delete%type,
+                date_delete        thread.thr_date_delete%type,
+                is_private         thread.thr_is_private%type,
+                url_logo           thread.thr_url_logo%type,
+                id_political_party thread.pop_id%type
+            )
+as
+$filter$
+declare
+    is_granted     boolean := is_granted(_nir, 'THREAD#READ');
+    is_granted_all boolean := is_granted(_nir, 'THREAD#READ_ALL');
+begin
+    return query
+        select thr.thr_id      as id,
+               thr_name        as name,
+               thr_main        as main,
+               thr_description as description,
+               thr_date_create as date_create,
+               thr_is_delete   as is_delete,
+               thr_date_delete as date_delete,
+               thr_is_private  as is_private,
+               thr_url_logo    as url_logo,
+               thr.pop_id      as id_political_party
+        from thread thr
+                 left join member mem on thr.thr_id = mem.thr_id
+                 left join adherent adh on mem.adh_id = adh.adh_id and adh.prs_nir = _nir
+        where ((_only_mine = false and
+                (is_granted_all = true or (thr.pop_id = adh.pop_id and thr_is_private = false))) or
+                (is_granted = true and adh.adh_id is not null))
+            and thr_is_delete = false
+        order by name;
 end;
 $filter$
     language plpgsql;

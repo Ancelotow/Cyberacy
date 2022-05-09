@@ -28,3 +28,9 @@ describe("Test modification d'un Thread", () => {
     })));
 });
 
+describe("Test récupération des Threads", () => {
+    test("Récupération des thread avec des droits", () => messaging.GetThread("875543548").then((data) => expect(data).toMatchObject({
+        status: 200
+    })));
+});
+

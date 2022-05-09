@@ -24,7 +24,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "nir": "875543548",
+  "nir": "541397454",
   "password": "test"
 }
 
@@ -35,7 +35,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "nir": "875543548",
+  "nir": "541397454",
   "password": "test"
 }
 
@@ -46,7 +46,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "nir": "875543548",
+  "nir": "541397454",
   "password": "test"
 }
 

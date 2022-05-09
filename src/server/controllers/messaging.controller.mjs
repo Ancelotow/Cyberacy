@@ -105,4 +105,23 @@ const UpdateThread = (thread) => {
     });
 }
 
-export default {AddThread, UpdateThread, DeleteThread, ChangeMainThread}
+/**
+ * Récupère les threads selon les filtres et les droits
+ * @param nir Le NIR de la personne
+ * @param onlyMine Récupérer uniquement les threads où la personne est membre
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetThread = (nir, onlyMine = true) => {
+    return new Promise((resolve, _) => {
+        threadMod.Get(nir, onlyMine).then((res) => {
+            const code = (res) ? 200 : 204;
+            resolve({status: code, data: res})
+        }).catch((e) => {
+            console.error(e)
+            resolve({status: 500, data: e})
+        })
+    });
+}
+
+export default {AddThread, UpdateThread, DeleteThread, ChangeMainThread, GetThread}

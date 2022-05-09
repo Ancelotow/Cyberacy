@@ -37,6 +37,30 @@ const Add = (thread) => {
 }
 
 /**
+ * Récupère les threads selon les filtres et les droits
+ * @param nir Le NIR de la personne
+ * @param onlyMine Récupérer uniquement les threads où la personne est membre
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const Get = (nir, onlyMine = true) => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'select * from filter_thread($1, $2)',
+            values: [nir, onlyMine],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows : null
+                resolve(res)
+            }
+        });
+    });
+}
+
+/**
  * Vérifie si un thread éxiste ou non selon l'id
  * @param id L'id du thread
  * @returns {Promise<unknown>}
@@ -170,4 +194,4 @@ const Update = (thread) => {
     });
 }
 
-export default {Thread, Add, ChangeMainThread, Delete, IfExists, Update}
+export default {Thread, Add, ChangeMainThread, Delete, IfExists, Update, Get}

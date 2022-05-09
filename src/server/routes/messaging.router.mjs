@@ -3,6 +3,21 @@ import express from "express"
 
 const routerMsg = express.Router()
 
+routerMsg.get("/thread", async (req, res) => {
+    // #swagger.tags = ['Messaging']
+    // #swagger.description = 'Récupère les thread'
+    // #swagger.security = [{ "Bearer": [] }]
+    /* #swagger.parameters['onlyMine'] = {
+         in: 'query',
+         description: 'Uniquement les threads où je suis',
+         type: 'boolean'
+    } */
+
+    const onlyMine = (req.query.onlyMine == null) ? false : req.query.onlyMine
+    const response = await messagingCtrl.GetThread(req.data.nir, onlyMine)
+    res.status(response.status).send(response.data)
+});
+
 routerMsg.post("/thread", async (req, res) => {
     // #swagger.tags = ['Messaging']
     // #swagger.description = 'Ajout d un nouveau Thread.'
@@ -38,5 +53,6 @@ routerMsg.put("/thread", async (req, res) => {
     const response = await messagingCtrl.UpdateThread(req.body)
     res.status(response.status).send(response.data)
 });
+
 
 export {routerMsg}
