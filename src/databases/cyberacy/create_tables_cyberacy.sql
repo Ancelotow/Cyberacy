@@ -1,3 +1,14 @@
+create table document
+(
+    doc_id            serial       not null,
+    doc_original_name varchar(100) not null,
+    doc_filename      varchar(150) not null,
+    doc_path          varchar(250) not null,
+    doc_mime_type     varchar(50)  not null,
+    doc_size          int          not null,
+    constraint pk_document primary key (doc_id)
+);
+
 create table political_edge
 (
     poe_id   int         not null,
@@ -225,10 +236,16 @@ create table political_party
     poe_id               int                       not null,
     prs_nir              varchar(20)               not null,
     twn_code_insee       varchar(15)               not null,
+    doc_id_logo          int                       null,
+    doc_id_chart         int                       null,
+    doc_id_bank_details  int                       null,
     constraint pk_politicalparty primary key (pop_id),
     constraint fk_politicalparty_person foreign key (prs_nir) references person (prs_nir),
     constraint fk_politicalparty_politicaledge foreign key (poe_id) references political_edge (poe_id),
-    constraint fk_politicalparty_town foreign key (twn_code_insee) references town (twn_code_insee)
+    constraint fk_politicalparty_town foreign key (twn_code_insee) references town (twn_code_insee),
+    constraint fk_politicalparty_documentlogo foreign key (doc_id_logo) references document (doc_id),
+    constraint fk_politicalparty_documentchart foreign key (doc_id_chart) references document (doc_id),
+    constraint fk_politicalparty_documentbankdetails foreign key (doc_id_bank_details) references document (doc_id)
 );
 
 create table annual_fee

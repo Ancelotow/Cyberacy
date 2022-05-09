@@ -19,6 +19,9 @@ class PoliticalParty {
     id_political_edge
     nir
     town_code_insee
+    doc_logo
+    doc_bank_details
+    doc_chart
 }
 
 /**
@@ -33,21 +36,10 @@ const Add = (party) => {
             if(resultExist) {
                 resolve(false)
             } else {
-                const description = (party.description == null) ? null : `'${party.description}'`
-                const chart = (party.chart == null) ? null : `'${party.chart}'`
-                const iban = (party.iban == null) ? null : `'${party.iban}'`
-                const url_bank_details = (party.url_bank_details == null) ? null : `'${party.url_bank_details}'`
-                const url_chart = (party.url_chart == null) ? null : `'${party.url_chart}'`
-                const date_create = (party.date_create == null) ? `'${new Date()}'` : `'${FormaterDate(party.date_create)}'`
-                const request = `INSERT INTO political_party (pop_name, pop_url_logo, pop_description, pop_object,
-                                                      pop_address_street, pop_siren, pop_chart, pop_iban,
-                                                      pop_url_bank_details, pop_url_chart, poe_id, prs_nir,
-                                                      twn_code_insee, pop_date_create)
-                         VALUES ('${party.name}', '${party.url_logo}', ${description}, '${party.object}',
-                                 '${party.address_street}', '${party.siren}', ${chart}, ${iban}, ${url_bank_details},
-                                 ${url_chart}, ${party.id_political_edge}, '${party.nir}', '${party.town_code_insee}',
-                                 ${date_create})`
-                console.log(request)
+                const request = {
+                    text: 'INSERT INTO political_party (pop_name, pop_description, pop_object, pop_address_street, pop_siren, pop_chart, pop_iban, poe_id, prs_nir, twn_code_insee, pop_date_create) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
+                    values: [party.name, party.description, party.object, party.address_street, party.siren, party.chart, party.iban, party.id_political_edge, party.nir, party.town_code_insee, party.date_create],
+                }
                 pool.query(request, (error, _) => {
                     if (error) {
                         reject(error)
@@ -67,8 +59,10 @@ const Add = (party) => {
  */
 const GetAll = () => {
     return new Promise((resolve, reject) => {
-        let request = `select *
-                       from filter_political_party()`
+        const request = {
+            text: 'SELECT * FROM filter_political_party()',
+            values: [],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -94,8 +88,10 @@ const Get = (nir = null, includeLeft = false, siren = null, idPoliticalParty = n
         const _nir = (nir == null) ? null : `'${nir}'`
         const _siren = (siren == null) ? null : `'${siren}'`
         const _idPoliticalParty = (idPoliticalParty == null) ? null : `${idPoliticalParty}`
-        let request = `select *
-                       from filter_political_party(${_nir}, ${_siren}, ${_idPoliticalParty}, ${includeLeft})`
+        const request = {
+            text: 'SELECT * FROM filter_political_party($1, $2, $3, $4)',
+            values: [_nir, _siren, _idPoliticalParty, includeLeft],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -107,4 +103,91 @@ const Get = (nir = null, includeLeft = false, siren = null, idPoliticalParty = n
     });
 }
 
-export default {PoliticalParty, Add, GetAll, Get}
+/**
+ * Modifie le logo du parti politique
+ * @param idLogo L'id du document du logo
+ * @param id L'id du parti politique
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const UpdateLogo = (idLogo, id) => {
+    return new Promise(async (resolve, reject) => {
+        Get(null, true, null, id).then((resultExist) => {
+            if(!resultExist) {
+                resolve(false)
+            } else {
+                const request = {
+                    text: 'UPDATE political_party SET doc_id_logo = $1 WHERE pop_id = $2',
+                    values: [idLogo, id],
+                }
+                pool.query(request, (error, _) => {
+                    if (error) {
+                        reject(error)
+                    } else {
+                        resolve(true)
+                    }
+                });
+            }
+        });
+    });
+}
+
+/**
+ * Modifie la charte du parti politique
+ * @param idChart L'id du document contenant la charte du parti politique
+ * @param id L'id du parti politique
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const UpdateChart = (idChart, id) => {
+    return new Promise(async (resolve, reject) => {
+        Get(null, true, null, id).then((resultExist) => {
+            if(!resultExist) {
+                resolve(false)
+            } else {
+                const request = {
+                    text: 'UPDATE political_party SET doc_id_chart = $1 WHERE pop_id = $2',
+                    values: [idChart, id],
+                }
+                pool.query(request, (error, _) => {
+                    if (error) {
+                        reject(error)
+                    } else {
+                        resolve(true)
+                    }
+                });
+            }
+        });
+    });
+}
+
+/**
+ * Modifie les détails bancaires du parti politique
+ * @param idBankDetails L'id du document contenant les détails bancaires
+ * @param id L'id du parti politique
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const UpdateBankDetails = (idBankDetails, id) => {
+    return new Promise(async (resolve, reject) => {
+        Get(null, true, null, id).then((resultExist) => {
+            if(!resultExist) {
+                resolve(false)
+            } else {
+                const request = {
+                    text: 'UPDATE political_party SET doc_id_bank_details = $1 WHERE pop_id = $2',
+                    values: [idBankDetails, id],
+                }
+                pool.query(request, (error, _) => {
+                    if (error) {
+                        reject(error)
+                    } else {
+                        resolve(true)
+                    }
+                });
+            }
+        });
+    });
+}
+
+export default {PoliticalParty, Add, GetAll, Get, UpdateLogo, UpdateChart, UpdateBankDetails}

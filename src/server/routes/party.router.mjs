@@ -1,10 +1,9 @@
 import partyCtrl from "../controllers/party.controller.mjs";
 import express from "express"
-import fileUpload from "express-fileupload";
+import {createUpload} from "../middlewares/upload-file.mjs";
 
 const routerParty = express.Router()
-
-routerParty.use(fileUpload({ safeFileNames: true, preserveExtension: true }))
+const upload = createUpload()
 
 routerParty.post("/political_party", async (req, res) => {
     // #swagger.tags = ['Political party']
@@ -86,29 +85,31 @@ routerParty.get("/political_party/:id/annual_fee", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
-routerParty.post("/political_party/upload_logo", async (req, res) => {
+routerParty.post("/political_party/:id/upload_logo",  upload.single('logo'), async (req, res) => {
     // #swagger.tags = ['Political party']
     // #swagger.description = 'Upload le logo du parti politique.'
     // #swagger.security = [{ "Bearer": [] }]
-    console.log(req.files)
 
-    try {
-        if (!req.files || Object.keys(req.files).length === 0) {
-            res.status(400).send("No file upload")
-        } else {
+    const response = await partyCtrl.UploadLogo(req.file, req.params.id)
+    res.status(response.status).send(response.data)
+});
 
-            let party = req.files.party;
-            party.mv('./uploads/political_party/' + party.name);
-            const datafile = {
-                name: party.name,
-                mimetype: party.mimetype,
-                size: party.size
-            }
-            res.status(201).send(datafile)
-        }
-    } catch (err) {
-        res.status(500).send(err);
-    }
+routerParty.post("/political_party/:id/upload_chart",  upload.single('chart'), async (req, res) => {
+    // #swagger.tags = ['Political party']
+    // #swagger.description = 'Upload la charte du parti politique.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await partyCtrl.UploadChart(req.file, req.params.id)
+    res.status(response.status).send(response.data)
+});
+
+routerParty.post("/political_party/:id/upload_bank_details",  upload.single('bank_details'), async (req, res) => {
+    // #swagger.tags = ['Political party']
+    // #swagger.description = 'Upload les détails bancaires du parti politique.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await partyCtrl.UploadChart(req.file, req.params.id)
+    res.status(response.status).send(response.data)
 });
 
 export {routerParty}

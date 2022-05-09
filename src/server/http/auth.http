@@ -24,7 +24,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "nir": "541397454",
+  "nir": "875543548",
   "password": "test"
 }
 

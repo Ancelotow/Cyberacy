@@ -53,3 +53,10 @@ GET {{url}}/political_party/annual_fee/3
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
+
+###
+# @name Upload logo
+GET {{url}}/political_party/upload_logo
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json

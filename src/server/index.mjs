@@ -14,7 +14,6 @@ import jobGeography from "./cron/geography.cron.mjs"
 import cors from 'cors'
 import {config} from 'dotenv'
 import morgan from 'morgan'
-import fileUpload from 'express-fileupload'
 import file from 'fs'
 
 const app = express()
@@ -23,7 +22,7 @@ config()
 const port = process.env.PORT
 
 // Body parser
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(bodyParser.json({type: 'application/*+json'}))
 
@@ -39,6 +38,8 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swagger, {swaggerOptions: {
 
 // Token JWT
 app.use(authToken)
+
+
 
 // Routers
 app.use(routerAuth)

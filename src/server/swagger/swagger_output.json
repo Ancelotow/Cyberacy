@@ -622,24 +622,65 @@
         ]
       }
     },
-    "/political_party/upload_logo": {
+    "/political_party/{id}/upload_logo": {
       "post": {
         "tags": [
           "Political party"
         ],
         "description": "Upload le logo du parti politique.",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
-        },
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party/{id}/upload_chart": {
+      "post": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Upload la charte du parti politique.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party/{id}/upload_bank_details": {
+      "post": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Upload les détails bancaires du parti politique.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
         "security": [
           {
             "Bearer": []
