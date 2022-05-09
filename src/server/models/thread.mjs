@@ -46,7 +46,7 @@ const Add = (thread) => {
 const Get = (nir, onlyMine = true) => {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'select * from filter_thread($1, $2)',
+            text: 'SELECT * FROM filter_thread($1, $2)',
             values: [nir, onlyMine],
         }
         pool.query(request, (error, result) => {

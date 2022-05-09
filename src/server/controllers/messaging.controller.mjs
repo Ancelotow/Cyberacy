@@ -1,4 +1,6 @@
 import threadMod from "../models/thread.mjs";
+import messageMod from "../models/message.mjs";
+import memberMod from "../models/member.mjs";
 
 /**
  * Ajoute un nouveau thread
@@ -20,7 +22,7 @@ const AddThread = (thread) => {
                     resolve({status: 400, data: "This thread already existed."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -45,7 +47,7 @@ const DeleteThread = (id) => {
                     resolve({status: 400, data: "This thread not existed."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -71,7 +73,7 @@ const ChangeMainThread = (id, id_political_party) => {
                     resolve({status: 400, data: "This main thread not existed."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -98,7 +100,7 @@ const UpdateThread = (thread) => {
                     resolve({status: 400, data: "This thread not existed."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -118,10 +120,62 @@ const GetThread = (nir, onlyMine = true) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {
-            console.error(e)
+            if(e.code === '23503') resolve({status: 400, data: e.message})
             resolve({status: 500, data: e})
         })
     });
 }
 
-export default {AddThread, UpdateThread, DeleteThread, ChangeMainThread, GetThread}
+/**
+ * Publie un nouveau message
+ * @param nir Le NIR de la personne qui publie le message
+ * @param idThread L'ID du thread
+ * @param message Le message à publier
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const AddMessage = (nir, idThread, message) => {
+    return new Promise(async (resolve, _) => {
+        if (!idThread || !message) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            const idMember = await memberMod.GetMemberIdByNIR(nir, idThread);
+            if (idMember === null) {
+                resolve({status: 400, data: "You are not in this thread."})
+            } else {
+                messageMod.Add(message, idThread, idMember).then((res) => {
+                    if (res) {
+                        resolve({status: 201, data: "The message has been published."})
+                    } else {
+                        resolve({status: 400, data: "This message already published."})
+                    }
+                }).catch((e) => {
+                    console.error(e)
+                    if(e.code === '23503') resolve({status: 400, data: e.message})
+                    resolve({status: 500, data: e})
+                })
+            }
+
+        }
+    });
+}
+
+/**
+ * Retourne les messages sur un thread donné
+ * @param nir Le NIR de la personne
+ * @param idThread L'ID du thread
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetMessage = (nir, idThread) => {
+    return new Promise((resolve, _) => {
+        messageMod.Get(nir, idThread).then((res) => {
+            const code = (res) ? 200 : 204;
+            resolve({status: code, data: res})
+        }).catch((e) => {
+            resolve({status: 500, data: e})
+        })
+    });
+}
+
+export default {AddThread, UpdateThread, DeleteThread, ChangeMainThread, GetThread, AddMessage, GetMessage}

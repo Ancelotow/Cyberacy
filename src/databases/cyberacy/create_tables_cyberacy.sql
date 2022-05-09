@@ -7,9 +7,9 @@ create table political_edge
 
 create table role
 (
-    rle_id          int                not null,
-    rle_title       varchar(50)        not null,
-    rle_description varchar(500)       null,
+    rle_id          int                 not null,
+    rle_title       varchar(50)         not null,
+    rle_description varchar(500)        null,
     rle_code        varchar(100) unique not null,
     constraint pk_role primary key (rle_id)
 );
@@ -319,11 +319,11 @@ create table member
 
 create table message
 (
-    msg_id             serial        not null,
-    msg_message        varchar(1000) not null,
-    msg_date_published timestamp     not null,
-    thr_id             int           not null,
-    mem_id             int           not null,
+    msg_id             serial                    not null,
+    msg_message        varchar(1000)             not null,
+    msg_date_published timestamp default (now()) not null,
+    thr_id             int                       not null,
+    mem_id             int                       not null,
     constraint pk_message primary key (msg_id),
     constraint fk_message_member foreign key (mem_id) references member (mem_id),
     constraint fk_message_thread foreign key (thr_id) references thread (thr_id)

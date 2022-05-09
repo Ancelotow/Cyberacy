@@ -92,6 +92,14 @@ $role$
             insert into role(rle_id, rle_title, rle_description, rle_code)
             values (8, 'THREAD : Lecture tout', 'Voir la liste de tout les threads', 'THREAD#READ_ALL');
         end if;
+        if not exists(select * from role where rle_id = 9) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (9, 'MESSAGE : Publier', 'Pouvoir ajouter un message', 'MESSAGE#PUBLISH');
+        end if;
+        if not exists(select * from role where rle_id = 10) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (10, 'MESSAGE : Lecture', 'Lire les message', 'MESSAGE#READ');
+        end if;
     end;
 $role$;
 

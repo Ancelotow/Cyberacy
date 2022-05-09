@@ -273,7 +273,7 @@ end;
 $filter$
     language plpgsql;
 
--- Filtre pour la table person
+-- Filtre pour la table thread
 create or replace function filter_thread(_nir person.prs_nir%type, _only_mine boolean default true)
     returns table
             (
@@ -306,13 +306,49 @@ begin
                thr_url_logo    as url_logo,
                thr.pop_id      as id_political_party
         from thread thr
-                 left join member mem on thr.thr_id = mem.thr_id
+                 left join member mem on thr.thr_id = mem.thr_id and mem.mem_is_left = false
                  left join adherent adh on mem.adh_id = adh.adh_id and adh.prs_nir = _nir
         where ((_only_mine = false and
                 (is_granted_all = true or (thr.pop_id = adh.pop_id and thr_is_private = false))) or
-                (is_granted = true and adh.adh_id is not null))
-            and thr_is_delete = false
+               (is_granted = true and adh.adh_id is not null))
+          and thr_is_delete = false
         order by name;
+end;
+$filter$
+    language plpgsql;
+
+-- Filtre pour la table message
+create or replace function filter_message(_nir person.prs_nir%type, _thr_id message.thr_id%type)
+    returns table
+            (
+                id             message.msg_id%type,
+                firstname      person.prs_firstname%type,
+                lastname       person.prs_lastname%type,
+                message        message.msg_message%type,
+                date_published message.msg_date_published%type,
+                id_thread      message.thr_id%type,
+                id_member      message.mem_id%type
+            )
+as
+$filter$
+declare
+    is_granted boolean := is_granted(_nir, 'MESSAGE#READ');
+begin
+    return query
+        select msg.msg_id         as id,
+               prs_firstname      as firstname,
+               prs_lastname       as lastname,
+               msg_message        as type,
+               msg_date_published as date_published,
+               msg.thr_id         as id_thread,
+               msg.mem_id         as id_member
+        from message msg
+                 join thread thr on msg.thr_id = thr.thr_id and thr.thr_id = _thr_id
+                 join member mem on msg.mem_id = mem.mem_id and mem.mem_is_left = false
+                 join adherent adh on mem.adh_id = adh.adh_id and adh.prs_nir = _nir
+                 join person prs on adh.prs_nir = prs.prs_nir
+        where is_granted = true
+        order by msg_date_published;
 end;
 $filter$
     language plpgsql;

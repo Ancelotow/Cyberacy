@@ -43,3 +43,26 @@ begin
 end;
 $body$
     language plpgsql;
+
+
+-- Récupère l'ID d'un membre par son NIR
+create or replace function get_id_member_by_nir(nir person.prs_nir%type, id_thread member.thr_id%type)
+    returns int
+as
+$body$
+declare
+    id int;
+begin
+
+    select mem.mem_id
+    into id
+    from member mem
+             join adherent adh on adh.adh_id = mem.adh_id and adh.prs_nir = nir
+    where thr_id = id_thread
+      and mem_is_left = false;
+
+    return nullif(id, -1);
+
+end;
+$body$
+    language plpgsql;

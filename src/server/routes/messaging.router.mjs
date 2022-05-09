@@ -54,5 +54,24 @@ routerMsg.put("/thread", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
+routerMsg.get("/thread/:id/message", async (req, res) => {
+    // #swagger.tags = ['Messaging']
+    // #swagger.description = 'Récupère les messages un thread'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await messagingCtrl.GetMessage(req.data.nir, req.params.id)
+    res.status(response.status).send(response.data)
+});
+
+routerMsg.post("/thread/:id/message", async (req, res) => {
+    // #swagger.tags = ['Messaging']
+    // #swagger.produces = ['application/json']
+    // #swagger.consumes = ['text/plain']
+    // #swagger.description = 'Publier un nouveau message sur un thread donné.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await messagingCtrl.AddMessage(req.data.nir, req.params.id, req.body)
+    res.status(response.status).send(response.data)
+});
 
 export {routerMsg}

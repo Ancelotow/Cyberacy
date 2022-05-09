@@ -63,3 +63,26 @@ create trigger trg_join_political_party
     for each row
 execute procedure join_main_thread();
 
+
+-- Trigger BEFORE INSERT pour la table "message"
+create or replace function add_message()
+    returns trigger
+as
+$trigger$
+begin
+    if not exists(select *
+                  from member
+                  where mem_id = new.mem_id
+                    and mem_is_left = false) then
+        raise 'The member % not existed or is left', new.mem_id using errcode = '23503';
+    end if;
+    return new;
+end
+$trigger$
+    language plpgsql;
+
+create trigger trg_add_message
+    before insert
+    on message
+    for each row
+execute procedure add_message();

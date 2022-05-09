@@ -879,6 +879,54 @@
           }
         ]
       }
+    },
+    "/thread/{id}/message": {
+      "get": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Récupère les messages un thread",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Publier un nouveau message sur un thread donné.",
+        "consumes": [
+          "text/plain"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   }
 }

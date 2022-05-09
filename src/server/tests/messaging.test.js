@@ -37,3 +37,22 @@ describe("Test récupération des Threads", () => {
     })));
 });
 
+describe("Test récupération des Messages", () => {
+    test("Récupération des messages", () => messaging.GetMessage("875543548", 29).then((data) => expect(data).not.toMatchObject({
+        status: 500
+    })));
+});
+
+describe("Test publication d'un Messages", () => {
+    test("Publication d'un message avec paramètres manquants", () => messaging.AddMessage("875543548", 29, null).then((data) => expect(data).toMatchObject({
+        status: 400
+    })));
+    test("Publication d'un message avec un non-membre du thread", () => messaging.AddMessage("987465257", 29, "Message test").then((data) => expect(data).toMatchObject({
+        status: 400,
+        data: "You are not in this thread."
+    })));
+    test("Publication d'un message", () => messaging.AddMessage("875543548", 29, "Message test").then((data) => expect(data).toMatchObject({
+        status: 201
+    })));
+});
+
