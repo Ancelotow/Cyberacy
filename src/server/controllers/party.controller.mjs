@@ -28,6 +28,7 @@ function GetAssociationFromGov(party) {
             if(error.response.status === 404){
                 resolve(null)
             } else {
+                if(error.code === '23503') resolve({status: 400, data: error.message})
                 reject(error)
             }
         });
@@ -60,7 +61,7 @@ const AddParty = (party) => {
                             resolve({status: 400, data: "This political party already existed."})
                         }
                     }).catch((e) => {
-                        console.error(e)
+                        if(e.code === '23503') resolve({status: 400, data: e.message})
                         resolve({status: 500, data: e})
                     })
                 }
@@ -84,6 +85,7 @@ const GetPoliticalParty = (siren = null, nir = null, includeLeft = false, idPoli
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {
+            if(e.code === '23503') resolve({status: 400, data: e.message})
             resolve({status: 500, data: e})
         })
     })
@@ -108,7 +110,7 @@ const JoinParty = (nir, id_political_party) => {
                     resolve({status: 400, data: "You already join on political party."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -133,7 +135,7 @@ const LeftParty = (nir) => {
                     resolve({status: 400, data: "You already left political party."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -160,7 +162,7 @@ const AddAnnualFee = (annual_fee) => {
                     resolve({status: 400, data: "An annual fee already existed fo this year."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -182,7 +184,7 @@ const GetAnnualFeeByParty = (id_political_party) => {
                 const code = (res) ? 200 : 204;
                 resolve({status: code, data: res})
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }

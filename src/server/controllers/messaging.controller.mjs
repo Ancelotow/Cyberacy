@@ -150,7 +150,6 @@ const AddMessage = (nir, idThread, message) => {
                         resolve({status: 400, data: "This message already published."})
                     }
                 }).catch((e) => {
-                    console.error(e)
                     if(e.code === '23503') resolve({status: 400, data: e.message})
                     resolve({status: 500, data: e})
                 })

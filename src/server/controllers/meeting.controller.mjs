@@ -23,7 +23,7 @@ const AddMeeting = (meeting) => {
                     resolve({status: 400, data: "This meeting already existed."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -49,7 +49,7 @@ const AbortedMeeting = (id, reason = null) => {
                     resolve({status: 400, data: "This meeting not existed or already aborted."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -72,7 +72,7 @@ const GetMeeting = (town = null, idPoliticalParty = null, nir = null, includeAbo
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {
-            console.error(e)
+            if(e.code === '23503') resolve({status: 400, data: e.message})
             resolve({status: 500, data: e})
         })
     });
@@ -97,7 +97,7 @@ const AddParticipant = (nir, idMeeting) => {
                     resolve({status: 400, data: "This participant not existed."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -124,7 +124,7 @@ const AbortedParticipant = (nir, idMeeting, reason = null) => {
                     resolve({status: 400, data: "This participant not existed or already aborted."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }

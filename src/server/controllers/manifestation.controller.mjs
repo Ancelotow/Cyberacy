@@ -25,7 +25,7 @@ const AddManifestation = (manif) => {
                     resolve({status: 400, data: "This manifestation already existed."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -51,6 +51,7 @@ const AbortedManifestation = (id, reason) => {
                     resolve({status: 400, data: "This manifestation not exist."})
                 }
             }).catch((e) => {
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -70,6 +71,7 @@ const GetAllManifestations = (includeAborted = false, nir = null) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {
+            if(e.code === '23503') resolve({status: 400, data: e.message})
             resolve({status: 500, data: e})
         })
     })
@@ -93,7 +95,7 @@ const Participate = (nir, id_manifestation) => {
                     resolve({status: 400, data: "You already participate."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -115,6 +117,7 @@ const GetOptions = (id_manifestation) => {
                 const code = (res) ? 200 : 204;
                 resolve({status: code, data: res})
             }).catch((e) => {
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -139,7 +142,7 @@ const AddOption = (opt) => {
                     resolve({status: 400, data: "This option already existed."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -164,6 +167,7 @@ const DeleteOption = (id) => {
                     resolve({status: 400, data: "This option does not existed."})
                 }
             }).catch((e) => {
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -190,7 +194,7 @@ const AddStep = (stp) => {
                     resolve({status: 400, data: "This step already existed."})
                 }
             }).catch((e) => {
-                console.error(e)
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -215,6 +219,7 @@ const DeleteStep = (id) => {
                     resolve({status: 400, data: "This step does not existed."})
                 }
             }).catch((e) => {
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
@@ -236,6 +241,7 @@ const GetSteps = (id_manifestation) => {
                 const code = (res) ? 200 : 204;
                 resolve({status: code, data: res})
             }).catch((e) => {
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }

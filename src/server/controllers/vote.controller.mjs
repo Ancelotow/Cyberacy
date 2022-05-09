@@ -63,7 +63,6 @@ const AddVote = (vote) => {
                         resolve({status: 400, data: "This vote already existed."})
                     }
                 }).catch((e) => {
-                    console.error(e)
                     resolve({status: 500, data: e})
                 })
             }
