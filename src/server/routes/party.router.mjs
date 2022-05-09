@@ -90,6 +90,7 @@ routerParty.post("/political_party/:id/upload_logo",  upload.single('logo'), asy
     // #swagger.description = 'Upload le logo du parti politique.'
     // #swagger.security = [{ "Bearer": [] }]
 
+    console.log(req.file)
     const response = await partyCtrl.UploadLogo(req.file, req.params.id)
     res.status(response.status).send(response.data)
 });
