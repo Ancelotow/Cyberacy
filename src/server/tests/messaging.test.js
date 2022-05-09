@@ -29,8 +29,11 @@ describe("Test modification d'un Thread", () => {
 });
 
 describe("Test récupération des Threads", () => {
-    test("Récupération des thread avec des droits", () => messaging.GetThread("875543548").then((data) => expect(data).toMatchObject({
+    test("Récupération des thread avec des droits", () => messaging.GetThread("875543548", false).then((data) => expect(data).toMatchObject({
         status: 200
+    })));
+    test("Récupération des thread sans droits", () => messaging.GetThread("541397454", false).then((data) => expect(data).toMatchObject({
+        status: 204
     })));
 });
 
