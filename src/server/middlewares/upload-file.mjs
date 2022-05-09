@@ -6,7 +6,7 @@ const createUpload = () => {
     const __dirname = path.resolve()
     const storage = multer.diskStorage({
         destination: function (request, file, callback) {
-            callback(null, path.join(__dirname, '/uploads/'));
+            callback(null, './uploads/');
         },
         filename: function (request, file, callback) {
             const today = new Date()
