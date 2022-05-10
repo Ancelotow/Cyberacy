@@ -74,4 +74,40 @@ routerMsg.post("/thread/:id/message", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
+routerMsg.get("/thread/:id/member", async (req, res) => {
+    // #swagger.tags = ['Messaging']
+    // #swagger.description = 'Voir les membres du thread'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await messagingCtrl.GetMember(req.data.nir, req.params.id)
+    res.status(response.status).send(response.data)
+});
+
+routerMsg.post("/thread/:id/join", async (req, res) => {
+    // #swagger.tags = ['Messaging']
+    // #swagger.description = 'Rejoindre le thread'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await messagingCtrl.JoinThread(req.data.nir, req.params.id)
+    res.status(response.status).send(response.data)
+});
+
+routerMsg.delete("/thread/:id/left", async (req, res) => {
+    // #swagger.tags = ['Messaging']
+    // #swagger.description = 'Quitter le thread'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await messagingCtrl.LeftThread(req.data.nir, req.params.id)
+    res.status(response.status).send(response.data)
+});
+
+routerMsg.patch("/thread/:id/mute/:mute", async (req, res) => {
+    // #swagger.tags = ['Messaging']
+    // #swagger.description = 'Mute/Unmute le thread'
+    // #swagger.security = [{ "Bearer": [] }]
+    const mute = (req.params.mute === 'true');
+    const response = await messagingCtrl.MuteThread(req.data.nir, req.params.id, mute)
+    res.status(response.status).send(response.data)
+});
+
 export {routerMsg}

@@ -968,6 +968,100 @@
           }
         ]
       }
+    },
+    "/thread/{id}/member": {
+      "get": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Voir les membres du thread",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/thread/{id}/join": {
+      "post": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Rejoindre le thread",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/thread/{id}/left": {
+      "delete": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Quitter le thread",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/thread/{id}/mute/{mute}": {
+      "patch": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Mute/Unmute le thread",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "mute",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   }
 }

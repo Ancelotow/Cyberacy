@@ -58,3 +58,31 @@ GET {{url}}/thread/29/message
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
+
+###
+# @name Get members
+GET {{url}}/thread/29/member
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Join thread
+POST {{url}}/thread/29/join
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Left thread
+DELETE {{url}}/thread/29/left
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Mute/Unmute thread
+PATCH {{url}}/thread/29/mute/true
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json

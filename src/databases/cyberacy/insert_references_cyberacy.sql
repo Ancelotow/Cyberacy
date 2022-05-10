@@ -98,7 +98,15 @@ $role$
         end if;
         if not exists(select * from role where rle_id = 10) then
             insert into role(rle_id, rle_title, rle_description, rle_code)
-            values (10, 'MESSAGE : Lecture', 'Lire les message', 'MESSAGE#READ');
+            values (10, 'MESSAGE : Lecture', 'Lire les messages d''un thread', 'MESSAGE#READ');
+        end if;
+        if not exists(select * from role where rle_id = 11) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (11, 'MEMBRES : Lecture', 'Voir les membres d''un thread', 'MEMBER#READ');
+        end if;
+        if not exists(select * from role where rle_id = 12) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (12, 'THREAD : Join', 'Pouvoir rejoindre un thread', 'THREAD#JOIN');
         end if;
     end;
 $role$;

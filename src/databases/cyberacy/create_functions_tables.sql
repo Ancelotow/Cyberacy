@@ -352,3 +352,41 @@ begin
 end;
 $filter$
     language plpgsql;
+
+-- Filtre pour la table membre
+create or replace function filter_membres(_nir person.prs_nir%type, _thr_id message.thr_id%type)
+    returns table
+            (
+                id          member.mem_id%type,
+                firstname   person.prs_firstname%type,
+                lastname    person.prs_lastname%type,
+                date_left   member.mem_date_left%type,
+                is_left     member.mem_is_left%type,
+                mute_thread member.mem_mute_thread%type,
+                id_thread   member.thr_id%type,
+                id_adherent member.adh_id%type
+            )
+as
+$filter$
+declare
+    is_granted boolean := is_granted(_nir, 'MEMBER#READ');
+begin
+    return query
+        select mem.mem_id      as id,
+               prs_firstname   as firstname,
+               prs_lastname    as lastname,
+               mem_date_left   as date_left,
+               mem_is_left     as is_left,
+               mem_mute_thread as mute_thread,
+               mem.thr_id      as id_thread,
+               mem.adh_id      as id_adherent
+        from member mem
+                 join adherent adh on mem.adh_id = adh.adh_id and adh.prs_nir = _nir
+                 join person prs on adh.prs_nir = prs.prs_nir
+                 join filter_thread(_nir, false) thr on thr.id = mem.thr_id
+        where is_granted = true
+        and mem.thr_id = thr_id
+        order by lastname, firstname;
+end;
+$filter$
+    language plpgsql;

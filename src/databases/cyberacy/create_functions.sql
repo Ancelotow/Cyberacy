@@ -66,3 +66,26 @@ begin
 end;
 $body$
     language plpgsql;
+
+-- Récupère l'ID d'un adhérent par son NIR
+create or replace function get_id_adherent_by_nir(nir person.prs_nir%type, id_thread thread.thr_id%type)
+    returns int
+as
+$body$
+declare
+    id int;
+begin
+
+    select adh.adh_id
+    into id
+    from adherent adh
+             join political_party pop on pop.pop_id = adh.pop_id
+             join thread thr on pop.pop_id = thr.pop_id and thr.thr_id = id_thread
+    where adh.prs_nir = nir
+      and adh.adh_is_left = false;
+
+    return nullif(id, -1);
+
+end;
+$body$
+    language plpgsql;

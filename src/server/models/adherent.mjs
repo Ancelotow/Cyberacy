@@ -94,4 +94,28 @@ const Left = (nir) => {
     });
 }
 
-export default {Adherent, Add, Get, Left}
+/**
+ * Récupère l'id de l'adhérent en fonction du NIR et du thread
+ * @param nir Le NIR de la personne
+ * @param idThread L'id du thread
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetAdherentIdByNIR = (nir, idThread) => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT * FROM get_id_adherent_by_nir($1, $2)',
+            values: [nir, idThread],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows[0] : null
+                resolve(res.get_id_adherent_by_nir)
+            }
+        });
+    });
+}
+
+export default {Adherent, Add, Get, Left, GetAdherentIdByNIR}
