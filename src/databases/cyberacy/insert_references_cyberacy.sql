@@ -37,6 +37,14 @@ $type_vote$
         if not exists(select * from type_vote where tvo_id = 6) then
             insert into type_vote(tvo_id, tvo_name) values (6, 'Référundum');
         end if;
+
+        if not exists(select * from type_vote where tvo_id = 7) then
+            insert into type_vote(tvo_id, tvo_name) values (7, 'Sondage privé');
+        end if;
+
+        if not exists(select * from type_vote where tvo_id = 8) then
+            insert into type_vote(tvo_id, tvo_name) values (8, 'Sondage public');
+        end if;
     end;
 $type_vote$;
 

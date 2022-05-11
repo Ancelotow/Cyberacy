@@ -104,50 +104,6 @@ create table person
     constraint fk_person_profile foreign key (prf_id) references profile (prf_id)
 );
 
-create table vote
-(
-    vte_id         serial          not null,
-    vte_name       varchar(50)     not null,
-    vte_date_start timestamp       not null,
-    vte_date_end   timestamp       not null,
-    vte_num_round  int default (1) not null,
-    vte_nb_voter   int default (0) not null,
-    tvo_id         int             not null,
-    twn_code_insee varchar(15)     null,
-    dpt_code       varchar(5)      null,
-    reg_code_insee varchar(15)     null,
-    pop_id         int             null,
-    constraint pk_vote primary key (vte_id),
-    constraint fk_vote_town foreign key (twn_code_insee) references town (twn_code_insee),
-    constraint fk_vote_department foreign key (dpt_code) references department (dpt_code),
-    constraint fk_vote_region foreign key (reg_code_insee) references region (reg_code_insee),
-    constraint fk_vote_typevote foreign key (tvo_id) references type_vote (tvo_id),
-    constraint fk_vote_politicalparty foreign key (pop_id) references political_party (pop_id)
-);
-
-create table choice
-(
-    cho_order       int             not null,
-    vte_id          int             not null,
-    cho_name        varchar(50)     not null,
-    cho_nb_vote     int default (0) not null,
-    cho_description varchar(250)    null,
-    prs_nir         varchar(20)     null,
-    constraint pk_choice primary key (cho_order, vte_id),
-    constraint fk_choice_vote foreign key (vte_id) references vote (vte_id),
-    constraint fk_choice_person foreign key (prs_nir) references person (prs_nir)
-);
-
-create table link_person_vote
-(
-    vte_id        int         not null,
-    prs_nir       varchar(15) not null,
-    lpv_date_vote timestamp   not null,
-    constraint pk_linkpersonvote primary key (vte_id, prs_nir),
-    constraint fk_linkpersonvote_vote foreign key (vte_id) references vote (vte_id),
-    constraint fk_linkpersonvote_person foreign key (prs_nir) references person (prs_nir)
-);
-
 create table manifestation
 (
     man_id                   serial                    not null,
@@ -344,4 +300,59 @@ create table message
     constraint pk_message primary key (msg_id),
     constraint fk_message_member foreign key (mem_id) references member (mem_id),
     constraint fk_message_thread foreign key (thr_id) references thread (thr_id)
+);
+
+create table vote
+(
+    vte_id         serial      not null,
+    vte_name       varchar(50) not null,
+    tvo_id         int         not null,
+    twn_code_insee varchar(15) null,
+    dpt_code       varchar(5)  null,
+    reg_code_insee varchar(15) null,
+    pop_id         int         null,
+    constraint pk_vote primary key (vte_id),
+    constraint fk_vote_town foreign key (twn_code_insee) references town (twn_code_insee),
+    constraint fk_vote_department foreign key (dpt_code) references department (dpt_code),
+    constraint fk_vote_region foreign key (reg_code_insee) references region (reg_code_insee),
+    constraint fk_vote_typevote foreign key (tvo_id) references type_vote (tvo_id),
+    constraint fk_vote_politicalparty foreign key (pop_id) references political_party (pop_id)
+);
+
+create table round
+(
+    rnd_num        int         not null,
+    rnd_name       varchar(50) not null,
+    rnd_date_start timestamp   not null,
+    rnd_date_end   timestamp   not null,
+    rnd_nb_voter   int         not null,
+    vte_id         int         not null,
+    constraint pk_round primary key (rnd_num, vte_id),
+    constraint fk_round_vote foreign key (vte_id) references vote (vte_id)
+);
+
+create table choice
+(
+    cho_order       int             not null,
+    rnd_num         int             not null,
+    vte_id          int             not null,
+    cho_name        varchar(50)     not null,
+    cho_nb_vote     int default (0) not null,
+    cho_description varchar(250)    null,
+    prs_nir         varchar(20)     null,
+    constraint pk_choice primary key (cho_order, rnd_num),
+    constraint fk_choice_vote foreign key (rnd_num, vte_id) references round (rnd_num, vte_id),
+    constraint fk_choice_person foreign key (prs_nir) references person (prs_nir)
+);
+
+
+create table link_person_round
+(
+    rnd_num       int         not null,
+    vte_id        int         not null,
+    prs_nir       varchar(15) not null,
+    lpv_date_vote timestamp   not null,
+    constraint pk_linkpersonround primary key (vte_id, prs_nir),
+    constraint fk_linkpersonround_round foreign key (vte_id, rnd_num) references round (vte_id, rnd_num),
+    constraint fk_linkpersonround_person foreign key (prs_nir) references person (prs_nir)
 );
