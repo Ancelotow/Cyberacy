@@ -51,8 +51,8 @@ describe("Test publication d'un Messages", () => {
         status: 400,
         data: "You are not in this thread."
     })));
-    test("Publication d'un message", () => messaging.AddMessage("875543548", 29, "Message test").then((data) => expect(data).toMatchObject({
-        status: 201
+    test("Publication d'un message", () => messaging.AddMessage("875543548", 29, "Message test").then((data) => expect(data).not.toMatchObject({
+        status: 500
     })));
 });
 

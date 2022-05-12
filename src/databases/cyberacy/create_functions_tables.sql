@@ -55,6 +55,7 @@ end;
 $filter$
     language plpgsql;
 
+
 -- Filtre pour la table manifestation
 create or replace function filter_manifestation(_nir adherent.prs_nir%type default null,
                                                 _include_aborted boolean default false,
@@ -100,6 +101,7 @@ end;
 $filter$
     language plpgsql;
 
+
 -- Filtre pour la table Adhérent
 create or replace function filter_adherent(_nir adherent.prs_nir%type default null,
                                            _id political_party.pop_id%type default null,
@@ -131,6 +133,7 @@ begin
 end;
 $filter$
     language plpgsql;
+
 
 -- Filtre pour la table annual_fee
 create or replace function filter_annual_fee(_year annual_fee.afe_year%type default null,
@@ -210,6 +213,7 @@ end;
 $filter$
     language plpgsql;
 
+
 -- Filtre pour la table participant
 create or replace function filter_participant(_id participant.mee_id%type,
                                               _include_aborted participant.ptc_is_aborted%type default false)
@@ -239,6 +243,7 @@ begin
 end;
 $filter$
     language plpgsql;
+
 
 -- Filtre pour la table person
 create or replace function filter_person(_nir person.prs_nir%type default null)
@@ -272,6 +277,7 @@ begin
 end;
 $filter$
     language plpgsql;
+
 
 -- Filtre pour la table thread
 create or replace function filter_thread(_nir person.prs_nir%type, _only_mine boolean default true)
@@ -317,6 +323,7 @@ end;
 $filter$
     language plpgsql;
 
+
 -- Filtre pour la table message
 create or replace function filter_message(_nir person.prs_nir%type, _thr_id message.thr_id%type)
     returns table
@@ -353,6 +360,7 @@ end;
 $filter$
     language plpgsql;
 
+
 -- Filtre pour la table membre
 create or replace function filter_membres(_nir person.prs_nir%type, _thr_id message.thr_id%type)
     returns table
@@ -385,8 +393,81 @@ begin
                  join person prs on adh.prs_nir = prs.prs_nir
                  join filter_thread(_nir, false) thr on thr.id = mem.thr_id
         where is_granted = true
-        and mem.thr_id = thr_id
+          and mem.thr_id = thr_id
         order by lastname, firstname;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table vote
+create or replace function filter_vote(_nir person.prs_nir%type, _include_finish boolean default false,
+                                       _include_future boolean default true, _tvo_id vote.tvo_id%type default null)
+    returns table
+            (
+                id                 vote.vte_id%type,
+                name               vote.vte_name%type,
+                id_type_vote       vote.tvo_id%type,
+                town_code_insee    vote.twn_code_insee%type,
+                department_code    vote.dpt_code%type,
+                reg_code_insee     vote.reg_code_insee%type,
+                id_political_party vote.pop_id%type
+            )
+as
+$filter$
+declare
+    is_granted     boolean   := is_granted(_nir, 'VOTE#READ');
+    is_granted_all boolean   := is_granted(_nir, 'VOTE#READ_ALL');
+    today          timestamp := now();
+begin
+    return query
+        select vte.vte_id         as id,
+               vte_name           as name,
+               vte.tvo_id         as id_type_vote,
+               vte.twn_code_insee as town_code_insee,
+               vte.dpt_code       as department_code,
+               vte.reg_code_insee as reg_code_insee,
+               vte.pop_id         as id_political_party
+        from vote vte
+                 left join round rnd on vte.vte_id = rnd.vte_id
+                 left join adherent adh on vte.pop_id = adh.pop_id and adh_is_left = false and adh.prs_nir = _nir
+        where (is_granted = true or is_granted_all = true)
+          and (_tvo_id is null or vte.tvo_id = _tvo_id)
+          and ((vte.tvo_id = 7 and (is_granted_all = true or adh.adh_id is not null)) or vte.tvo_id <> 7)
+          and ((_include_finish = true and rnd.rnd_date_end >= today) or _include_finish = false)
+          and ((_include_future = true and rnd.rnd_date_start <= today) or _include_future = false)
+        order by rnd_date_start;
+end;
+$filter$
+    language plpgsql;
+
+-- Filtre pour la table round
+create or replace function filter_round(_nir person.prs_nir%type, _include_finish boolean default false,
+                                        _include_future boolean default true, _tvo_id vote.tvo_id%type default null,
+                                        _vte_id round.vte_id%type default null)
+    returns table
+            (
+                num        round.rnd_num%type,
+                name       round.rnd_name%type,
+                date_start round.rnd_date_start%type,
+                date_end   round.rnd_date_end%type,
+                nb_voter   round.rnd_nb_voter%type,
+                id_vote    round.vte_id%type
+            )
+as
+$filter$
+begin
+    return query
+        select rnd_num        as num,
+               rnd_name       as name,
+               rnd_date_start as date_start,
+               rnd_date_end   as date_end,
+               rnd_nb_voter   as nb_voter,
+               vte_id         as id_vote
+        from round rnd
+                 join filter_vote(_nir, _include_finish, _include_future, _tvo_id) vte on rnd.vte_id = vte.id
+        where (_vte_id is null or rnd.vte_id = _vte_id)
+        order by rnd_date_start, rnd_num;
 end;
 $filter$
     language plpgsql;

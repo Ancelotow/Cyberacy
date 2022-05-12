@@ -32,21 +32,19 @@ class PoliticalParty {
  */
 const Add = (party) => {
     return new Promise(async (resolve, reject) => {
-        Get(null, true, party.siren, null).then((resultExist) => {
-            if(resultExist) {
-                resolve(false)
+        const isExisted = await IfExistsBySiren(party.siren)
+        if(isExisted){
+            resolve(false)
+        }
+        const request = {
+            text: 'INSERT INTO political_party (pop_name, pop_description, pop_object, pop_address_street, pop_siren, pop_chart, pop_iban, poe_id, prs_nir, twn_code_insee, pop_date_create) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
+            values: [party.name, party.description, party.object, party.address_street, party.siren, party.chart, party.iban, party.id_political_edge, party.nir, party.town_code_insee, party.date_create],
+        }
+        pool.query(request, (error, _) => {
+            if (error) {
+                reject(error)
             } else {
-                const request = {
-                    text: 'INSERT INTO political_party (pop_name, pop_description, pop_object, pop_address_street, pop_siren, pop_chart, pop_iban, poe_id, prs_nir, twn_code_insee, pop_date_create) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
-                    values: [party.name, party.description, party.object, party.address_street, party.siren, party.chart, party.iban, party.id_political_edge, party.nir, party.town_code_insee, party.date_create],
-                }
-                pool.query(request, (error, _) => {
-                    if (error) {
-                        reject(error)
-                    } else {
-                        resolve(true)
-                    }
-                });
+                resolve(true)
             }
         });
     });
@@ -112,21 +110,19 @@ const Get = (nir = null, includeLeft = false, siren = null, idPoliticalParty = n
  */
 const UpdateLogo = (idLogo, id) => {
     return new Promise(async (resolve, reject) => {
-        Get(null, true, null, id).then((resultExist) => {
-            if(!resultExist) {
-                resolve(false)
+        const isExisted = await IfExists(id)
+        if(isExisted){
+            resolve(false)
+        }
+        const request = {
+            text: 'UPDATE political_party SET doc_id_logo = $1 WHERE pop_id = $2',
+            values: [idLogo, id],
+        }
+        pool.query(request, (error, _) => {
+            if (error) {
+                reject(error)
             } else {
-                const request = {
-                    text: 'UPDATE political_party SET doc_id_logo = $1 WHERE pop_id = $2',
-                    values: [idLogo, id],
-                }
-                pool.query(request, (error, _) => {
-                    if (error) {
-                        reject(error)
-                    } else {
-                        resolve(true)
-                    }
-                });
+                resolve(true)
             }
         });
     });
@@ -141,21 +137,19 @@ const UpdateLogo = (idLogo, id) => {
  */
 const UpdateChart = (idChart, id) => {
     return new Promise(async (resolve, reject) => {
-        Get(null, true, null, id).then((resultExist) => {
-            if(!resultExist) {
-                resolve(false)
+        const isExisted = await IfExists(id)
+        if(isExisted){
+            resolve(false)
+        }
+        const request = {
+            text: 'UPDATE political_party SET doc_id_chart = $1 WHERE pop_id = $2',
+            values: [idChart, id],
+        }
+        pool.query(request, (error, _) => {
+            if (error) {
+                reject(error)
             } else {
-                const request = {
-                    text: 'UPDATE political_party SET doc_id_chart = $1 WHERE pop_id = $2',
-                    values: [idChart, id],
-                }
-                pool.query(request, (error, _) => {
-                    if (error) {
-                        reject(error)
-                    } else {
-                        resolve(true)
-                    }
-                });
+                resolve(true)
             }
         });
     });
@@ -170,24 +164,76 @@ const UpdateChart = (idChart, id) => {
  */
 const UpdateBankDetails = (idBankDetails, id) => {
     return new Promise(async (resolve, reject) => {
-        Get(null, true, null, id).then((resultExist) => {
-            if(!resultExist) {
-                resolve(false)
+        const isExisted = await IfExists(id)
+        if(isExisted){
+            resolve(false)
+        }
+        const request = {
+            text: 'UPDATE political_party SET doc_id_bank_details = $1 WHERE pop_id = $2',
+            values: [idBankDetails, id],
+        }
+        pool.query(request, (error, _) => {
+            if (error) {
+                reject(error)
             } else {
-                const request = {
-                    text: 'UPDATE political_party SET doc_id_bank_details = $1 WHERE pop_id = $2',
-                    values: [idBankDetails, id],
-                }
-                pool.query(request, (error, _) => {
-                    if (error) {
-                        reject(error)
-                    } else {
-                        resolve(true)
-                    }
-                });
+                resolve(true)
             }
         });
     });
 }
 
-export default {PoliticalParty, Add, GetAll, Get, UpdateLogo, UpdateChart, UpdateBankDetails}
+/**
+ * Vérifie si un parti politique existe déjà par le SIREN
+ * @param siren Le SIREN du parti
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const IfExistsBySiren = (siren) => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT COUNT(*) FROM political_party WHERE pop_siren = $1',
+            values: [siren],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows[0] : null
+                if (res && res.count > 0) {
+                    resolve(true)
+                } else {
+                    resolve(false)
+                }
+            }
+        });
+    });
+}
+
+/**
+ * Vérifie si un parti politique existe déjà par son ID
+ * @param id L'id du parti politique
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const IfExists = (id) => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT COUNT(*) FROM political_party WHERE pop_id = $1',
+            values: [id],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows[0] : null
+                if (res && res.count > 0) {
+                    resolve(true)
+                } else {
+                    resolve(false)
+                }
+            }
+        });
+    });
+}
+
+export default {PoliticalParty, Add, GetAll, Get, UpdateLogo, UpdateChart, UpdateBankDetails, IfExistsBySiren, IfExists}

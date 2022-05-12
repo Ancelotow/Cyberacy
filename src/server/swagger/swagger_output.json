@@ -495,6 +495,100 @@
             "Bearer": []
           }
         ]
+      },
+      "get": {
+        "tags": [
+          "Vote"
+        ],
+        "description": "Récupère les votes.",
+        "parameters": [
+          {
+            "name": "includeFinish",
+            "in": "query",
+            "description": "Inclure les votes passés (exclus par défaut)",
+            "type": "boolean"
+          },
+          {
+            "name": "includeFuture",
+            "in": "query",
+            "description": "Inclure les futures votes (include pas défaut)",
+            "type": "boolean"
+          },
+          {
+            "name": "idTypeVote",
+            "in": "query",
+            "description": "Le type de votes",
+            "type": "int"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/vote/{id}/round": {
+      "post": {
+        "tags": [
+          "Vote"
+        ],
+        "description": "Ajout de un nouveau tour de vote.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/round": {
+      "get": {
+        "tags": [
+          "Vote"
+        ],
+        "description": "Récupère les tours de vote.",
+        "parameters": [
+          {
+            "name": "includeFinish",
+            "in": "query",
+            "description": "Inclure les votes passés (exclus par défaut)",
+            "type": "boolean"
+          },
+          {
+            "name": "includeFuture",
+            "in": "query",
+            "description": "Inclure les futures votes (include pas défaut)",
+            "type": "boolean"
+          },
+          {
+            "name": "idTypeVote",
+            "in": "query",
+            "description": "Le type de votes",
+            "type": "int"
+          },
+          {
+            "name": "idVote",
+            "in": "query",
+            "description": "Le vote",
+            "type": "int"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/political_party": {

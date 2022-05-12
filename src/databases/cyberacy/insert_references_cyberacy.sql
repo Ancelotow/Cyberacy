@@ -116,6 +116,14 @@ $role$
             insert into role(rle_id, rle_title, rle_description, rle_code)
             values (12, 'THREAD : Join', 'Pouvoir rejoindre un thread', 'THREAD#JOIN');
         end if;
+        if not exists(select * from role where rle_id = 13) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (13, 'VOTE : Lecture', 'Pouvoir voir les votes (sondage privé exclus)', 'VOTE#READ');
+        end if;
+        if not exists(select * from role where rle_id = 14) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (14, 'VOTE : Lecture tout', 'Pouvoir voir les votes (sondage privé inclus)', 'VOTE#READ_ALL');
+        end if;
     end;
 $role$;
 

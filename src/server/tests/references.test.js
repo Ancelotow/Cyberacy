@@ -20,19 +20,7 @@ describe("Test récupération des références", () => {
     })));
 
     test("Récupération des types de vote", () => references.GetTypeVote().then((data) => expect(data).toMatchObject({
-        status: 200, data: [{
-            "id": 1, "name": "Présidentiel"
-        }, {
-            "id": 2, "name": "Régional"
-        }, {
-            "id": 3, "name": "Départemental"
-        }, {
-            "id": 4, "name": "Municipal"
-        }, {
-            "id": 5, "name": "Législative"
-        }, {
-            "id": 6, "name": "Référundum"
-        }]
+        status: 200
     })));
 
     test("Récupération des bords politiques", () => references.GetPoliticalEdge().then((data) => expect(data).toMatchObject({

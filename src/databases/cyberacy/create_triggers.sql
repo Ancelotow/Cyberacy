@@ -86,3 +86,37 @@ create trigger trg_add_message
     on message
     for each row
 execute procedure add_message();
+
+
+-- Trigger BEFORE INSERT pour la table "round"
+create or replace function add_round()
+    returns trigger
+as
+$trigger$
+declare
+    num int;
+begin
+    if new.rnd_num is null then
+        select rnd_num
+        into num
+        from round
+        where vte_id = new.vte_id
+        order by rnd_num desc
+        limit 1;
+
+        if num is null then
+            new.rnd_num := 1;
+        else
+            new.rnd_num := num + 1;
+        end if;
+    end if;
+    return new;
+end
+$trigger$
+    language plpgsql;
+
+create trigger trg_add_round
+    before insert
+    on round
+    for each row
+execute procedure add_round();
