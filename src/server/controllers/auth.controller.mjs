@@ -12,7 +12,7 @@ const Register = (person) => {
             resolve({status: 400, data: "Missing parameters."})
         } else if (person.nir == null || person.firstname == null || person.lastname == null) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (person.sex == null || person.town == null) {
+        } else if (person.sex == null || person.town_code_insee == null) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
             Add(person).then((res) => {
@@ -22,8 +22,7 @@ const Register = (person) => {
                     resolve({status: 400, data: "This person already existed."})
                 }
             }).catch((e) => {
-                console.error(e)
-
+                if(e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }

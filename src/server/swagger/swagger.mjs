@@ -1,4 +1,5 @@
 import swaggerAutogen from 'swagger-autogen'
+import models from './models.mjs'
 
 const doc = {
     info: {
@@ -7,8 +8,10 @@ const doc = {
     host: "cyberacy.herokuapp.com",
     basePath: "/",
     schemes: ['http', 'https'],
-    consumes: ['application/json'],
     produces: ['application/json'],
+    definitions: {
+        ...models
+    },
     securityDefinitions: {
         Bearer: {
             type: "apiKey",
@@ -21,15 +24,6 @@ const doc = {
 
 const autogen = swaggerAutogen()
 const outputFile = './swagger/swagger_output.json'
-const endpointsFiles = [
-    './routes/manifestation.router.mjs',
-    './routes/auth.router.mjs',
-    './routes/references.router.mjs',
-    './routes/geography.router.mjs',
-    './routes/vote.router.mjs',
-    './routes/party.router.mjs',
-    './routes/meeting.router.mjs',
-    './routes/messaging.router.mjs'
-]
+const endpointsFiles = ['./routes/manifestation.router.mjs', './routes/auth.router.mjs', './routes/references.router.mjs', './routes/geography.router.mjs', './routes/vote.router.mjs', './routes/party.router.mjs', './routes/meeting.router.mjs', './routes/messaging.router.mjs']
 
 autogen(outputFile, endpointsFiles, doc)

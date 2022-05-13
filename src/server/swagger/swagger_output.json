@@ -19,9 +19,6 @@
       "description": "Rentrez un token valide dans le format **Bearer &lt;token>**"
     }
   },
-  "consumes": [
-    "application/json"
-  ],
   "produces": [
     "application/json"
   ],
@@ -251,7 +248,22 @@
           "Authentification"
         ],
         "description": "Créer un compte basé sur le NIR (numéro de sécurité sociale).",
-        "parameters": [],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "person",
+            "in": "body",
+            "description": "Add a new person",
+            "schema": {
+              "$ref": "#/definitions/Person"
+            }
+          }
+        ],
         "responses": {}
       }
     },
@@ -261,20 +273,19 @@
           "Authentification"
         ],
         "description": "Connexion et retourne le Bearer token (pour application Android).",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
-            "name": "body",
+            "name": "connection",
             "in": "body",
+            "description": "Informations de connexion",
             "schema": {
-              "type": "object",
-              "properties": {
-                "nir": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Connection"
             }
           }
         ],
@@ -287,20 +298,19 @@
           "Authentification"
         ],
         "description": "Connexion et retourne le Bearer token (pour application de statistiques IOS).",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
-            "name": "body",
+            "name": "connection",
             "in": "body",
+            "description": "Informations de connexion",
             "schema": {
-              "type": "object",
-              "properties": {
-                "nir": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Connection"
             }
           }
         ],
@@ -313,20 +323,19 @@
           "Authentification"
         ],
         "description": "Connexion et retourne le Bearer token (pour le back-office Flutter).",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
-            "name": "body",
+            "name": "connection",
             "in": "body",
+            "description": "Informations de connexion",
             "schema": {
-              "type": "object",
-              "properties": {
-                "nir": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Connection"
             }
           }
         ],
@@ -1155,6 +1164,66 @@
             "Bearer": []
           }
         ]
+      }
+    }
+  },
+  "definitions": {
+    "Connection": {
+      "type": "object",
+      "properties": {
+        "nir": {
+          "type": "string",
+          "example": "012457832032045"
+        },
+        "password": {
+          "type": "string",
+          "example": "azerty1234!"
+        }
+      }
+    },
+    "Person": {
+      "type": "object",
+      "properties": {
+        "nir": {
+          "type": "string",
+          "example": "012457832032045"
+        },
+        "firstname": {
+          "type": "string",
+          "example": "Ronald"
+        },
+        "lastname": {
+          "type": "string",
+          "example": "TOLKIEN"
+        },
+        "email": {
+          "type": "string",
+          "example": "test@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "azerty1234!"
+        },
+        "birthday": {
+          "type": "string",
+          "example": "1998-05-23"
+        },
+        "address_street": {
+          "type": "string",
+          "example": "39 rue des rosiers"
+        },
+        "town_code_insee": {
+          "type": "string",
+          "example": "11003"
+        },
+        "sex": {
+          "type": "number",
+          "example": 1
+        },
+        "profile": {
+          "type": "number",
+          "example": 1
+        }
       }
     }
   }

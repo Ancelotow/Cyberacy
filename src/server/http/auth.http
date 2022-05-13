@@ -5,18 +5,17 @@ Accept: application/json
 Content-Type: application/json
 
 {
-        "nir": "875543548",
-        "firstname": "Jean",
-        "lastname": "DUPOND",
-        "email": "jdupond@gmail.com",
-        "password": "test",
-        "birthday": "12-02-2001",
-        "address_street": "rue des sycomores",
-        "town": "94079",
-        "sex": 1,
-        "profile": null
+  "nir": "012457832032045",
+  "firstname": "Ronald",
+  "lastname": "TOLKIEN",
+  "email": "test@gmail.com",
+  "password": "azerty1234!",
+  "birthday": "2000-02-04",
+  "address_street": "39 rue des rosiers",
+  "town_code_insee": "11003",
+  "sex": 1,
+  "profile": 1
 }
-
 ###
 # @name Login App
 POST {{url}}/login_app
