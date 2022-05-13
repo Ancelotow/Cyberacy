@@ -1002,7 +1002,16 @@
           "Messaging"
         ],
         "description": "Ajout d un nouveau Thread.",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "thread",
+            "in": "body",
+            "description": "Le nouveau thread",
+            "schema": {
+              "$ref": "#/definitions/AddThread"
+            }
+          }
+        ],
         "responses": {},
         "security": [
           {
@@ -1015,7 +1024,16 @@
           "Messaging"
         ],
         "description": "Modifie un thread",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "thread",
+            "in": "body",
+            "description": "Le thread modifié",
+            "schema": {
+              "$ref": "#/definitions/UpdateThread"
+            }
+          }
+        ],
         "responses": {},
         "security": [
           {
@@ -1119,7 +1137,13 @@
           {
             "Bearer": []
           }
-        ]
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": "Ceci est mon nouveau message. Super !!!!!"
+          }
+        }
       }
     },
     "/thread/{id}/member": {
@@ -1522,6 +1546,52 @@
         "town_code_insee": {
           "type": "string",
           "example": "11003"
+        }
+      }
+    },
+    "AddThread": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Chat législative 2022"
+        },
+        "description": {
+          "type": "string",
+          "example": "Discussion concernant les législatives de Juin 2022"
+        },
+        "is_private": {
+          "type": "boolean",
+          "example": true
+        },
+        "id_political_party": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "UpdateThread": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Chat législative 2022"
+        },
+        "description": {
+          "type": "string",
+          "example": "Discussion concernant les législatives de Juin 2022"
+        },
+        "is_private": {
+          "type": "boolean",
+          "example": true
+        },
+        "id_political_party": {
+          "type": "number",
+          "example": 1
         }
       }
     }

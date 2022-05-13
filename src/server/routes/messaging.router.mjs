@@ -22,6 +22,11 @@ routerMsg.post("/thread", async (req, res) => {
     // #swagger.tags = ['Messaging']
     // #swagger.description = 'Ajout d un nouveau Thread.'
     // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['thread'] = {
+                       in: 'body',
+                       description: 'Le nouveau thread',
+                       schema: { $ref: '#/definitions/AddThread' }
+    } */
 
     const response = await messagingCtrl.AddThread(req.body)
     res.status(response.status).send(response.data)
@@ -49,6 +54,11 @@ routerMsg.put("/thread", async (req, res) => {
     // #swagger.tags = ['Messaging']
     // #swagger.description = 'Modifie un thread'
     // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['thread'] = {
+                       in: 'body',
+                       description: 'Le thread modifié',
+                       schema: { $ref: '#/definitions/UpdateThread' }
+    } */
 
     const response = await messagingCtrl.UpdateThread(req.body)
     res.status(response.status).send(response.data)
@@ -69,6 +79,13 @@ routerMsg.post("/thread/:id/message", async (req, res) => {
     // #swagger.consumes = ['text/plain']
     // #swagger.description = 'Publier un nouveau message sur un thread donné.'
     // #swagger.security = [{ "Bearer": [] }]
+    /* #swagger.requestBody = {
+              required: true,
+              content: {
+                "text/plain": "Ceci est mon nouveau message. Super !!!!!"
+            }
+          }
+    */
 
     const response = await messagingCtrl.AddMessage(req.data.nir, req.params.id, req.body)
     res.status(response.status).send(response.data)

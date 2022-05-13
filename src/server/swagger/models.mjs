@@ -94,6 +94,21 @@ export default  {
         link_twitch: "https://www.twitch.tv/samueletienne",
         id_political_party: 1,
         town_code_insee: "11003"
-    }
+    },
+
+    AddThread: {
+        name: "Chat législative 2022",
+        description: "Discussion concernant les législatives de Juin 2022",
+        is_private: true,
+        id_political_party: 1
+    },
+
+    UpdateThread: {
+        id: 1,
+        name: "Chat législative 2022",
+        description: "Discussion concernant les législatives de Juin 2022",
+        is_private: true,
+        id_political_party: 1
+    },
 
 };
