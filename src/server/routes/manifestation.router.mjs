@@ -69,7 +69,7 @@ routerMan.post("/manifestation/option", async (req, res) => {
     // #swagger.tags = ['Manifestation']
     // #swagger.description = 'Ajouter une option à une manifestation.'
     // #swagger.security = [{ "Bearer": [] }]
-    /*  #swagger.parameters['manifestation'] = {
+    /*  #swagger.parameters['option'] = {
                                in: 'body',
                                description: 'La nouvelle option de manifestation',
                                schema: { $ref: '#/definitions/AddOptionManifestation' }
@@ -101,7 +101,7 @@ routerMan.post("/manifestation/step", async (req, res) => {
     // #swagger.tags = ['Manifestation']
     // #swagger.description = 'Ajouter une étape à une manifestation.'
     // #swagger.security = [{ "Bearer": [] }]
-    /*  #swagger.parameters['manifestation'] = {
+    /*  #swagger.parameters['step'] = {
                                in: 'body',
                                description: 'La nouvelle étape de manifestation',
                                schema: { $ref: '#/definitions/AddStepManifestation' }

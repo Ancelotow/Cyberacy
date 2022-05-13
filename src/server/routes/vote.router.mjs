@@ -7,6 +7,11 @@ routerVote.post("/vote", async (req, res) => {
     // #swagger.tags = ['Vote']
     // #swagger.description = 'Ajout de un nouveau vote.'
     // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['vote'] = {
+                               in: 'body',
+                               description: 'Le nouveau vote',
+                               schema: { $ref: '#/definitions/AddVote' }
+    } */
 
     const response = await voteCtrl.AddVote(req.body)
     res.status(response.status).send(response.data)
@@ -42,6 +47,12 @@ routerVote.post("/vote/:id/round", async (req, res) => {
     // #swagger.tags = ['Vote']
     // #swagger.description = 'Ajout de un nouveau tour de vote.'
     // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['round'] = {
+                               in: 'body',
+                               description: 'Le nouveau tour de vote',
+                               schema: { $ref: '#/definitions/AddRoundVote' }
+    } */
+
 
     const response = await voteCtrl.AddRound(req.body, req.params.id)
     res.status(response.status).send(response.data)

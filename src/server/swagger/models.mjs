@@ -45,4 +45,22 @@ export default  {
         id_step_type: 1,
         town_code_insee: "11003"
     },
+
+    AddVote: {
+        name: "Présidentiel 2022",
+        id_type_vote: 1,
+        town_code_insee: "11003",
+        department_code: "94",
+        reg_code_insee: "1",
+        id_political_party: 1,
+    },
+
+    AddRoundVote: {
+        name: "Présidentiel 2022 : 29/04/2022",
+        num: 1,
+        date_start: "2022-04-29 08:00",
+        date_end: "2022-04-29 20:00",
+        nb_voter: 58000000,
+    },
+
 };

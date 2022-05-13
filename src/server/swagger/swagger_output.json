@@ -134,7 +134,7 @@
         "description": "Ajouter une option à une manifestation.",
         "parameters": [
           {
-            "name": "manifestation",
+            "name": "option",
             "in": "body",
             "description": "La nouvelle option de manifestation",
             "schema": {
@@ -202,7 +202,7 @@
         "description": "Ajouter une étape à une manifestation.",
         "parameters": [
           {
-            "name": "manifestation",
+            "name": "step",
             "in": "body",
             "description": "La nouvelle étape de manifestation",
             "schema": {
@@ -517,7 +517,16 @@
           "Vote"
         ],
         "description": "Ajout de un nouveau vote.",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "vote",
+            "in": "body",
+            "description": "Le nouveau vote",
+            "schema": {
+              "$ref": "#/definitions/AddVote"
+            }
+          }
+        ],
         "responses": {},
         "security": [
           {
@@ -570,6 +579,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "round",
+            "in": "body",
+            "description": "Le nouveau tour de vote",
+            "schema": {
+              "$ref": "#/definitions/AddRoundVote"
+            }
           }
         ],
         "responses": {},
@@ -1327,6 +1344,60 @@
         "town_code_insee": {
           "type": "string",
           "example": "11003"
+        }
+      }
+    },
+    "AddVote": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Présidentiel 2022"
+        },
+        "id_type_vote": {
+          "type": "number",
+          "example": 1
+        },
+        "town_code_insee": {
+          "type": "string",
+          "example": "11003"
+        },
+        "department_code": {
+          "type": "string",
+          "example": "94"
+        },
+        "reg_code_insee": {
+          "type": "string",
+          "example": "1"
+        },
+        "id_political_party": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "AddRoundVote": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Présidentiel 2022 : 29/04/2022"
+        },
+        "num": {
+          "type": "number",
+          "example": 1
+        },
+        "date_start": {
+          "type": "string",
+          "example": "2022-04-29 08:00"
+        },
+        "date_end": {
+          "type": "string",
+          "example": "2022-04-29 20:00"
+        },
+        "nb_voter": {
+          "type": "number",
+          "example": 58000000
         }
       }
     }
