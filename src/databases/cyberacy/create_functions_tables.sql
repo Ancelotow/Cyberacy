@@ -441,6 +441,7 @@ end;
 $filter$
     language plpgsql;
 
+
 -- Filtre pour la table round
 create or replace function filter_round(_nir person.prs_nir%type, _include_finish boolean default false,
                                         _include_future boolean default true, _tvo_id vote.tvo_id%type default null,
@@ -468,6 +469,43 @@ begin
                  join filter_vote(_nir, _include_finish, _include_future, _tvo_id) vte on rnd.vte_id = vte.id
         where (_vte_id is null or rnd.vte_id = _vte_id)
         order by rnd_date_start, rnd_num;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table choice
+create or replace function filter_choice(_nir person.prs_nir%type, _vte_id round.vte_id%type,
+                                         _rnd_num round.rnd_num%type)
+    returns table
+            (
+                id           choice.cho_id%type,
+                name         choice.cho_name%type,
+                choice_order choice.cho_order%type,
+                nb_vote      choice.cho_nb_vote%type,
+                num_round    choice.rnd_num%type,
+                id_vote      choice.vte_id%type,
+                description  choice.cho_description%type,
+                candidat_nir choice.prs_nir%type,
+                candidat     varchar(150)
+            )
+as
+$filter$
+begin
+    return query
+        select cho.cho_id                               as id,
+               cho_name                                 as name,
+               cho_order                                as choice_order,
+               cho_nb_vote                              as nb_vote,
+               cho.rnd_num                              as num_round,
+               cho.vte_id                               as id_vote,
+               cho_description                          as description,
+               cho.prs_nir                              as candidat_nir,
+               concat(prs_lastname, ' ', prs_firstname) as candidat
+        from choice cho
+                 join filter_round(_nir, true, true, null, _vte_id) rnd on rnd.num = _rnd_num
+                 left join person prs on cho.prs_nir = prs.prs_nir
+        order by cho_order, cho_name;
 end;
 $filter$
     language plpgsql;

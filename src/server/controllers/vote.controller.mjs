@@ -1,5 +1,7 @@
 import voteMod from "../models/vote.mjs";
 import roundMod from "../models/round.mjs";
+import linkMod from "../models/link-person-round.mjs";
+import choiceMod from "../models/choice.mjs";
 
 const EnumTypeVote = Object.freeze({
     Presidential: 1,
@@ -153,4 +155,85 @@ const AddRound = (round, idVote) => {
     });
 }
 
-export default {EnumTypeVote, AddVote, GetVote, GetRound, AddRound}
+/**
+ * Récupère la liste des choix sur un tour de vote donné
+ * @param nir Le NIR de l'utilisateur
+ * @param numRound Le numéro du tour de vote
+ * @param idVote L'id du vote
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetChoice = (nir, numRound, idVote) => {
+    return new Promise((resolve, _) => {
+        choiceMod.Get(nir, numRound, idVote).then((res) => {
+            const code = (res) ? 200 : 204;
+            resolve({status: code, data: res})
+        }).catch((e) => {
+            if(e.code === '23503') resolve({status: 400, data: e.message})
+            resolve({status: 500, data: e})
+        })
+    });
+}
+
+/**
+ * Ajoute un nouveau choix sur un tour de vote
+ * @param choice Le nouveau choix
+ * @param numRound Le numéro du tour de vote
+ * @param idVote L'id du vote
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const AddChoice = (choice, numRound, idVote) => {
+    return new Promise((resolve, _) => {
+        if (!choice) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else if (!choice.name || !choice.choice_order) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else if (!numRound || !idVote) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            choice.id_vote = idVote
+            choice.num_round = numRound
+            choiceMod.Add(choice).then((res) => {
+                if (res) {
+                    resolve({status: 201, data: "Choice has been created."})
+                } else {
+                    resolve({status: 400, data: "This choice already existed."})
+                }
+            }).catch((e) => {
+                if(e.code === '23503') resolve({status: 400, data: e.message})
+                resolve({status: 500, data: e})
+            })
+        }
+    });
+}
+
+/**
+ * Permet à un utilisateur de voter
+ * @param nir Le NIR du votant
+ * @param numRound Le numéro du tour de vote
+ * @param idVote L'id du vote
+ * @param idChoice L'id du chois
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const ToVote = (nir, numRound, idVote, idChoice) => {
+    return new Promise(async (resolve, _) => {
+        if (!idChoice || !numRound || !idVote) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            const isExisted = await linkMod.IfExists(idVote, numRound, nir)
+            if(isExisted){
+                return resolve({status: 400, data: "You have already voted for this round."})
+            }
+            choiceMod.AddVoter(nir, numRound, idVote, idChoice).then((res) => {
+                resolve({status: 201, data: "Your vote has been take into account."})
+            }).catch((e) => {
+                if(e.code === '23503') resolve({status: 400, data: e.message})
+                resolve({status: 500, data: e})
+            })
+        }
+    });
+}
+
+export default {EnumTypeVote, AddVote, GetVote, GetRound, AddRound, GetChoice, AddChoice, ToVote}

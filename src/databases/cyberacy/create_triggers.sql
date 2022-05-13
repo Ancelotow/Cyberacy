@@ -120,3 +120,64 @@ create trigger trg_add_round
     on round
     for each row
 execute procedure add_round();
+
+
+-- Trigger BEFORE INSERT pour la table "choice"
+create or replace function add_choice()
+    returns trigger
+as
+$trigger$
+declare
+    date_vote timestamp;
+begin
+    select rnd_date_start
+    into date_vote
+    from round
+    where rnd_num = new.rnd_num
+      and vte_id = new.vte_id;
+
+    if date_vote <= now() then
+        raise 'You cannot add a new choice when vote has started.' using errcode = '23503';
+    end if;
+
+    return new;
+end
+$trigger$
+    language plpgsql;
+
+create trigger trg_add_choice
+    before insert
+    on choice
+    for each row
+execute procedure add_choice();
+
+
+-- Trigger BEFORE UPDATE pour la table "choice"
+create or replace function add_vote_for_choice()
+    returns trigger
+as
+$trigger$
+declare
+    date_vote_started timestamp;
+    date_vote_ended   timestamp;
+begin
+    select rnd_date_start, rnd_date_end
+    into date_vote_started, date_vote_ended
+    from round
+    where rnd_num = new.rnd_num
+      and vte_id = new.vte_id;
+
+    if date_vote_started <= now() or date_vote_ended >= now() then
+        raise 'You cannot vote before or after the vote.' using errcode = '23503';
+    end if;
+
+    return new;
+end
+$trigger$
+    language plpgsql;
+
+create trigger trg_add_add_vote_for_choice
+    before update
+    on choice
+    for each row
+execute procedure add_vote_for_choice();

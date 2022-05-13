@@ -7,7 +7,7 @@ const doc = {
     },
     host: "cyberacy.herokuapp.com",
     basePath: "/",
-    schemes: ['http', 'https'],
+    schemes: ['https'],
     produces: ['application/json'],
     definitions: {
         ...models

@@ -333,14 +333,15 @@ create table round
 
 create table choice
 (
+    cho_id          serial          not null,
+    cho_name        varchar(50)     not null,
     cho_order       int             not null,
+    cho_nb_vote     int default (0) not null,
     rnd_num         int             not null,
     vte_id          int             not null,
-    cho_name        varchar(50)     not null,
-    cho_nb_vote     int default (0) not null,
     cho_description varchar(250)    null,
     prs_nir         varchar(20)     null,
-    constraint pk_choice primary key (cho_order, rnd_num),
+    constraint pk_choice primary key (cho_id),
     constraint fk_choice_vote foreign key (rnd_num, vte_id) references round (rnd_num, vte_id),
     constraint fk_choice_person foreign key (prs_nir) references person (prs_nir)
 );
@@ -348,10 +349,10 @@ create table choice
 
 create table link_person_round
 (
-    rnd_num       int         not null,
-    vte_id        int         not null,
-    prs_nir       varchar(15) not null,
-    lpv_date_vote timestamp   not null,
+    rnd_num       int                       not null,
+    vte_id        int                       not null,
+    prs_nir       varchar(15)               not null,
+    lpv_date_vote timestamp default (now()) not null,
     constraint pk_linkpersonround primary key (vte_id, prs_nir),
     constraint fk_linkpersonround_round foreign key (vte_id, rnd_num) references round (vte_id, rnd_num),
     constraint fk_linkpersonround_person foreign key (prs_nir) references person (prs_nir)

@@ -89,3 +89,39 @@ begin
 end;
 $body$
     language plpgsql;
+
+-- Ajoute un nouveau votant sur un choix
+create or replace function add_vote_to_choice(nir person.prs_nir%type, id_choice choice.cho_id%type,
+                                              _rnd_num link_person_round.rnd_num%type,
+                                              _vte_id link_person_round.vte_id%type)
+    returns void
+as
+$body$
+declare
+    nb_vote int;
+begin
+
+    select cho_nb_vote
+    into nb_vote
+    from choice
+    where cho_id = id_choice
+      and vte_id = _vte_id
+      and rnd_num = _rnd_num;
+
+    if nb_vote is null then
+        raise 'This choice not existed in this round.' using errcode = '23503';
+    end if;
+
+    nb_vote := nb_vote + 1;
+
+    insert into link_person_round (rnd_num, vte_id, prs_nir) values (_rnd_num, _vte_id, nir);
+
+    update choice
+    set cho_nb_vote = nb_vote
+    where cho_id = id_choice
+      and vte_id = _vte_id
+      and rnd_num = _rnd_num;
+
+end;
+$body$
+    language plpgsql;

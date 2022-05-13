@@ -89,4 +89,43 @@ routerVote.get("/round", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
+routerVote.post("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
+    // #swagger.tags = ['Vote']
+    // #swagger.description = 'Ajout de un nouveau choix.'
+    // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['choice'] = {
+                               in: 'body',
+                               description: 'Le nouveau tour de vote',
+                               schema: { $ref: '#/definitions/AddChoice' }
+    } */
+
+
+    const response = await voteCtrl.AddChoice(req.body, req.params.id_vote, req.params.num_round)
+    res.status(response.status).send(response.data)
+});
+
+routerVote.get("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
+    // #swagger.tags = ['Vote']
+    // #swagger.description = 'Récupère les choix pour un tour de vote donné.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await voteCtrl.GetChoice(req.data.nir, req.params.num_round, req.params.id_vote)
+    res.status(response.status).send(response.data)
+});
+
+routerVote.post("/vote/:id_vote/round/:num_round", async (req, res) => {
+    // #swagger.tags = ['Vote']
+    // #swagger.description = 'Voter pour un tour de vote donné'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    let idChoice;
+    try{
+        idChoice = parseInt(req.body)
+    } catch (e) {
+        res.status(400).send(e.message)
+    }
+    const response = await voteCtrl.ToVote(req.data.nir, req.params.num_round, req.params.id_vote, idChoice)
+    res.status(response.status).send(response.data)
+});
+
 export {routerVote}
