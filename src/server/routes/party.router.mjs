@@ -9,6 +9,11 @@ routerParty.post("/political_party", async (req, res) => {
     // #swagger.tags = ['Political party']
     // #swagger.description = 'Ajout de un nouveau parti politique si il éxiste dans la BDD de INSEE.'
     // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['political_party'] = {
+                               in: 'body',
+                               description: 'Le nouveau parti politique',
+                               schema: { $ref: '#/definitions/AddPoliticalParty' }
+    } */
 
     const response = await partyCtrl.AddParty(req.body)
     res.status(response.status).send(response.data)
@@ -71,6 +76,11 @@ routerParty.post("/political_party/annual_fee", async (req, res) => {
     // #swagger.tags = ['Political party']
     // #swagger.description = 'Ajoute une cotisation annuelle.'
     // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['political_party'] = {
+                               in: 'body',
+                               description: 'Les nouvelles cotisations annuelles de un parti politique',
+                               schema: { $ref: '#/definitions/AddAnnualFee' }
+    } */
 
     const response = await partyCtrl.AddAnnualFee(req.body)
     res.status(response.status).send(response.data)

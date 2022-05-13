@@ -63,4 +63,24 @@ export default  {
         nb_voter: 58000000,
     },
 
+    AddPoliticalParty: {
+        name: "Horizon",
+        date_create: "2021-10-05",
+        description: "Nouveau parti politique d'Edouard Philippe",
+        object: "Partie polique Horizon",
+        address_street: "23 avenu Jules Vernes",
+        siren: "254587",
+        chart: "Règle n°1: Il est interdit de parler du fight club.\n Règle n°2 : Il est interdit de parler du fight club",
+        iban: "FR78778ADA",
+        id_political_edge: 1,
+        nir: "012457832032045",
+        town_code_insee: "11003"
+    },
+
+    AddAnnualFee: {
+        year: 2022,
+        id_political_party: 1,
+        fee: 20.99
+    }
+
 };

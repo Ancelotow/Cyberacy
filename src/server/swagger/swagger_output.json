@@ -109,13 +109,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "parameter",
-            "required": true,
-            "type": "number",
-            "description": "Id de la manifestation."
           }
         ],
         "responses": {},
@@ -643,7 +636,16 @@
           "Political party"
         ],
         "description": "Ajout de un nouveau parti politique si il éxiste dans la BDD de INSEE.",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "political_party",
+            "in": "body",
+            "description": "Le nouveau parti politique",
+            "schema": {
+              "$ref": "#/definitions/AddPoliticalParty"
+            }
+          }
+        ],
         "responses": {},
         "security": [
           {
@@ -731,7 +733,16 @@
           "Political party"
         ],
         "description": "Ajoute une cotisation annuelle.",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "political_party",
+            "in": "body",
+            "description": "Les nouvelles cotisations annuelles de un parti politique",
+            "schema": {
+              "$ref": "#/definitions/AddAnnualFee"
+            }
+          }
+        ],
         "responses": {},
         "security": [
           {
@@ -1398,6 +1409,72 @@
         "nb_voter": {
           "type": "number",
           "example": 58000000
+        }
+      }
+    },
+    "AddPoliticalParty": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Horizon"
+        },
+        "date_create": {
+          "type": "string",
+          "example": "2021-10-05"
+        },
+        "description": {
+          "type": "string",
+          "example": "Nouveau parti politique d'Edouard Philippe"
+        },
+        "object": {
+          "type": "string",
+          "example": "Partie polique Horizon"
+        },
+        "address_street": {
+          "type": "string",
+          "example": "23 avenu Jules Vernes"
+        },
+        "siren": {
+          "type": "string",
+          "example": "254587"
+        },
+        "chart": {
+          "type": "string",
+          "example": "Règle n°1: Il est interdit de parler du fight club.\n Règle n°2 : Il est interdit de parler du fight club"
+        },
+        "iban": {
+          "type": "string",
+          "example": "FR78778ADA"
+        },
+        "id_political_edge": {
+          "type": "number",
+          "example": 1
+        },
+        "nir": {
+          "type": "string",
+          "example": "012457832032045"
+        },
+        "town_code_insee": {
+          "type": "string",
+          "example": "11003"
+        }
+      }
+    },
+    "AddAnnualFee": {
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": "number",
+          "example": 2022
+        },
+        "id_political_party": {
+          "type": "number",
+          "example": 1
+        },
+        "fee": {
+          "type": "number",
+          "example": 20.99
         }
       }
     }

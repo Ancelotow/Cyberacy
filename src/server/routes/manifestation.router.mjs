@@ -55,11 +55,7 @@ routerMan.post("/manifestation/:id/participate", async (req, res) => {
     // #swagger.tags = ['Manifestation']
     // #swagger.description = 'Participer à une manifestations.'
     // #swagger.security = [{ "Bearer": [] }]
-    /* #swagger.parameters['id'] = {
-	       in: 'parameter',
-           description: 'Id de la manifestation.',
-           type: 'number'
-    } */
+
     const nir = req.data.nir
     const response = await manifestationCtrl.Participate(nir, req.params.id)
     res.status(response.status).send(response.data)
