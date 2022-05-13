@@ -845,7 +845,16 @@
           "Meeting"
         ],
         "description": "Ajoute un nouveau meeting.",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "meeting",
+            "in": "body",
+            "description": "Le nouveau meeting",
+            "schema": {
+              "$ref": "#/definitions/AddMeeting"
+            }
+          }
+        ],
         "responses": {},
         "security": [
           {
@@ -903,18 +912,11 @@
         "description": "Annuler un meeting existant.",
         "parameters": [
           {
-            "name": "body",
+            "name": "aborted",
             "in": "body",
+            "description": "Annulation du meeting",
             "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "example": "any"
-                },
-                "reason": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Aborted"
             }
           }
         ],
@@ -1475,6 +1477,51 @@
         "fee": {
           "type": "number",
           "example": 20.99
+        }
+      }
+    },
+    "AddMeeting": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Présidentielle 2022 : Bercy !"
+        },
+        "object": {
+          "type": "string",
+          "example": "élections présidentielles 2022"
+        },
+        "description": {
+          "type": "string",
+          "example": "Meeting pour préparer les élections présidentielles 2022 à l'Accord Hotel Arena"
+        },
+        "date_start": {
+          "type": "string",
+          "example": "2022-01-20 17:45"
+        },
+        "nb_time": {
+          "type": "number",
+          "example": 2.75
+        },
+        "nb_place": {
+          "type": "number",
+          "example": 5000
+        },
+        "street_address": {
+          "type": "string",
+          "example": "Accord Hotel Arena"
+        },
+        "link_twitch": {
+          "type": "string",
+          "example": "https://www.twitch.tv/samueletienne"
+        },
+        "id_political_party": {
+          "type": "number",
+          "example": 1
+        },
+        "town_code_insee": {
+          "type": "string",
+          "example": "11003"
         }
       }
     }

@@ -7,6 +7,11 @@ routerMee.post("/meeting", async (req, res) => {
     // #swagger.tags = ['Meeting']
     // #swagger.description = 'Ajoute un nouveau meeting.'
     // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['meeting'] = {
+                               in: 'body',
+                               description: 'Le nouveau meeting',
+                               schema: { $ref: '#/definitions/AddMeeting' }
+    } */
 
     const response = await meetingCtrl.AddMeeting(req.body)
     res.status(response.status).send(response.data)
@@ -16,6 +21,11 @@ routerMee.patch("/meeting/aborted", async (req, res) => {
     // #swagger.tags = ['Meeting']
     // #swagger.description = 'Annuler un meeting existant.'
     // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['aborted'] = {
+                               in: 'body',
+                               description: 'Annulation du meeting',
+                               schema: { $ref: '#/definitions/Aborted' }
+    } */
 
     const response = await meetingCtrl.AbortedMeeting(req.body.id, req.body.reason)
     res.status(response.status).send(response.data)

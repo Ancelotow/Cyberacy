@@ -81,6 +81,19 @@ export default  {
         year: 2022,
         id_political_party: 1,
         fee: 20.99
+    },
+
+    AddMeeting: {
+        name: "Présidentielle 2022 : Bercy !",
+        object: "élections présidentielles 2022",
+        description: "Meeting pour préparer les élections présidentielles 2022 à l'Accord Hotel Arena",
+        date_start: "2022-01-20 17:45",
+        nb_time: 2.75,
+        nb_place: 5000,
+        street_address: "Accord Hotel Arena",
+        link_twitch: "https://www.twitch.tv/samueletienne",
+        id_political_party: 1,
+        town_code_insee: "11003"
     }
 
 };
