@@ -29,7 +29,16 @@
           "Manifestation"
         ],
         "description": "Ajouter une nouvelle manifestation.",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "manifestation",
+            "in": "body",
+            "description": "La nouvelle manifestation",
+            "schema": {
+              "$ref": "#/definitions/AddManifestation"
+            }
+          }
+        ],
         "responses": {},
         "security": [
           {
@@ -72,18 +81,11 @@
         "description": "Annuler une manifestation existante.",
         "parameters": [
           {
-            "name": "body",
+            "name": "manifestation",
             "in": "body",
+            "description": "Raison de l annulation de la manifestation",
             "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "example": "any"
-                },
-                "reason": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Aborted"
             }
           }
         ],
@@ -130,7 +132,16 @@
           "Manifestation"
         ],
         "description": "Ajouter une option à une manifestation.",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "manifestation",
+            "in": "body",
+            "description": "La nouvelle option de manifestation",
+            "schema": {
+              "$ref": "#/definitions/AddOptionManifestation"
+            }
+          }
+        ],
         "responses": {},
         "security": [
           {
@@ -189,7 +200,16 @@
           "Manifestation"
         ],
         "description": "Ajouter une étape à une manifestation.",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "manifestation",
+            "in": "body",
+            "description": "La nouvelle étape de manifestation",
+            "schema": {
+              "$ref": "#/definitions/AddStepManifestation"
+            }
+          }
+        ],
         "responses": {},
         "security": [
           {
@@ -258,7 +278,7 @@
           {
             "name": "person",
             "in": "body",
-            "description": "Add a new person",
+            "description": "La nouvelle personne",
             "schema": {
               "$ref": "#/definitions/Person"
             }
@@ -1223,6 +1243,90 @@
         "profile": {
           "type": "number",
           "example": 1
+        }
+      }
+    },
+    "AddManifestation": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Les gilets jaunes"
+        },
+        "date_start": {
+          "type": "string",
+          "example": "2019-10-02 08:00"
+        },
+        "date_end": {
+          "type": "string",
+          "example": "2019-10-02 20:00"
+        },
+        "object": {
+          "type": "string",
+          "example": "Gilets Jaunes"
+        },
+        "security_description": {
+          "type": "string",
+          "example": "Police"
+        },
+        "nb_person_estimate": {
+          "type": "number",
+          "example": 2000
+        }
+      }
+    },
+    "Aborted": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "reason": {
+          "type": "string",
+          "example": "Orage de prévu"
+        }
+      }
+    },
+    "AddOptionManifestation": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Hauts-parleurs"
+        },
+        "description": {
+          "type": "string",
+          "example": "Hauts-parleurs afin de diffuser de la musique et le discours des organisateurs"
+        },
+        "id_manifestation": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "AddStepManifestation": {
+      "type": "object",
+      "properties": {
+        "address_street": {
+          "type": "string",
+          "example": "23 avenue du Générale De Gaulle"
+        },
+        "date_arrived": {
+          "type": "string",
+          "example": "2019-10-02 08:10"
+        },
+        "id_manifestation": {
+          "type": "number",
+          "example": 1
+        },
+        "id_step_type": {
+          "type": "number",
+          "example": 1
+        },
+        "town_code_insee": {
+          "type": "string",
+          "example": "11003"
         }
       }
     }

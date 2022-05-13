@@ -10,7 +10,7 @@ routerAuth.post("/register", async (req, res) => {
     // #swagger.consumes = ['application/json']
     /*  #swagger.parameters['person'] = {
                    in: 'body',
-                   description: 'Add a new person',
+                   description: 'La nouvelle personne',
                    schema: { $ref: '#/definitions/Person' }
     } */
 

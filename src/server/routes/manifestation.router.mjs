@@ -7,6 +7,11 @@ routerMan.post("/manifestation", async (req, res) => {
     // #swagger.tags = ['Manifestation']
     // #swagger.description = 'Ajouter une nouvelle manifestation.'
     // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['manifestation'] = {
+                               in: 'body',
+                               description: 'La nouvelle manifestation',
+                               schema: { $ref: '#/definitions/AddManifestation' }
+    } */
 
     const response = await manifestationCtrl.AddManifestation(req.body)
     res.status(response.status).send(response.data)
@@ -16,6 +21,11 @@ routerMan.patch("/manifestation/aborted", async (req, res) => {
     // #swagger.tags = ['Manifestation']
     // #swagger.description = 'Annuler une manifestation existante.'
     // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['manifestation'] = {
+                               in: 'body',
+                               description: 'Raison de l annulation de la manifestation',
+                               schema: { $ref: '#/definitions/Aborted' }
+    } */
 
     const response = await manifestationCtrl.AbortedManifestation(req.body.id, req.body.reason)
     res.status(response.status).send(response.data)
@@ -59,6 +69,11 @@ routerMan.post("/manifestation/option", async (req, res) => {
     // #swagger.tags = ['Manifestation']
     // #swagger.description = 'Ajouter une option à une manifestation.'
     // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['manifestation'] = {
+                               in: 'body',
+                               description: 'La nouvelle option de manifestation',
+                               schema: { $ref: '#/definitions/AddOptionManifestation' }
+    } */
 
     const response = await manifestationCtrl.AddOption(req.body)
     res.status(response.status).send(response.data)
@@ -86,6 +101,11 @@ routerMan.post("/manifestation/step", async (req, res) => {
     // #swagger.tags = ['Manifestation']
     // #swagger.description = 'Ajouter une étape à une manifestation.'
     // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['manifestation'] = {
+                               in: 'body',
+                               description: 'La nouvelle étape de manifestation',
+                               schema: { $ref: '#/definitions/AddStepManifestation' }
+    } */
 
     const response = await manifestationCtrl.AddStep(req.body)
     res.status(response.status).send(response.data)
