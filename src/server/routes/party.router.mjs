@@ -36,7 +36,7 @@ routerParty.get("/political_party", async (req, res) => {
     /* #swagger.parameters['includeLeft'] = {
 	       in: 'query',
            description: 'Inclure les partis que l'on a quitté.',
-           type: 'string'
+           type: 'boolean'
     } */
     /* #swagger.parameters['idPoliticalParty'] = {
 	       in: 'query',
