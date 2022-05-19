@@ -767,7 +767,8 @@
           {
             "name": "includeLeft",
             "in": "query",
-            "type": "string"
+            "description": "Inclure les partis que l on a quitté.",
+            "type": "boolean"
           },
           {
             "name": "idPoliticalParty",
