@@ -21,3 +21,9 @@ Authorization: Bearer {{jwt_token}}
 GET {{url}}/statistics/political_party/meeting?sort=year
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get annual fee
+GET {{url}}/statistics/political_party/annual_fee
+Accept: application/json
+Authorization: Bearer {{jwt_token}}

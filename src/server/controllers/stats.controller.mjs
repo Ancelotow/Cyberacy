@@ -134,4 +134,33 @@ const GetNbMeetingByYear = (nir) => {
     });
 }
 
-export default {GetNbAdherentByMonth, GetNbAdherentByYear, GetNbMeetingByMonth, GetNbMeetingByYear}
+/**
+ * Statistiques : Récupère les cotisations annuelles par parti politique et le total récolté
+ * @param nir Le NIR de l'utilisateur
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetAnnualFee = (nir) => {
+    return new Promise(async (resolve, _) => {
+        if (!nir) {
+            resolve({status: 400, data: "Missing parameters."})
+            return;
+        }
+        try {
+            let stats = await partyMod.GetAnnualFee(nir);
+            if (stats == null) {
+                resolve({status: 204, data: "You haven't join any political party."})
+                return;
+            }
+            const statsParty = groupBy(stats, function(n) {
+                return n.party_name;
+            });
+            resolve({status: 200, data: statsParty})
+        } catch (e) {
+            console.error(e)
+            resolve({status: 500, data: e})
+        }
+    });
+}
+
+export default {GetNbAdherentByMonth, GetNbAdherentByYear, GetNbMeetingByMonth, GetNbMeetingByYear, GetAnnualFee}

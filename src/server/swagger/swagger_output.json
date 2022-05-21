@@ -1389,6 +1389,21 @@
           }
         ]
       }
+    },
+    "/statistics/political_party/annual_fee": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération des cotisations annuelles sur un parti politique avec le total récolté.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   },
   "definitions": {

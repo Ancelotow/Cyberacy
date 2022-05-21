@@ -544,7 +544,7 @@ $filter$
 
 -- Statistiques pour les parties politiques (nb meeting)
 create or replace function stats_meeting_from_party(_nir adherent.prs_nir%type,
-                                                     _year int default extract(year from now()))
+                                                    _year int default extract(year from now()))
     returns table
             (
                 id_political_party adherent.pop_id%type,
@@ -569,8 +569,36 @@ begin
         from generate_series(make_date(_year, 01, 01), make_date(_year, 12, 01), '1 month') dte,
              meeting mee
                  join political_party pop on mee.pop_id = pop.pop_id
-                join adherent adh on pop.pop_id = adh.pop_id and adh.prs_nir = _nir and adh.adh_is_left = false
+                 join adherent adh on pop.pop_id = adh.pop_id and adh.prs_nir = _nir and adh.adh_is_left = false
         order by year, month;
+end;
+$filter$
+    language plpgsql;
+
+-- Statistiques pour les parties politiques (cotisation annuelles)
+create or replace function stats_fee_from_party(_nir adherent.prs_nir%type)
+    returns table
+            (
+                id_political_party adherent.pop_id%type,
+                party_name         political_party.pop_name%type,
+                total_fee          decimal,
+                annual_fee         decimal,
+                year               int
+            )
+as
+$filter$
+begin
+    return query
+        select distinct afe.pop_id                                                             as id_political_party,
+                        pop.pop_name                                                           as party_name,
+                        (select sum(sta.nb_adherent)
+                         from stats_adherent_from_party(_nir, afe.afe_year) sta) * afe.afe_fee as total_fee,
+                        afe.afe_fee                                                            as annual_fee,
+                        afe.afe_year                                                           as year
+        from annual_fee afe
+                 join political_party pop on afe.pop_id = pop.pop_id
+                 join adherent adh on pop.pop_id = adh.pop_id and adh.prs_nir = _nir and adh.adh_is_left = false
+        order by year;
 end;
 $filter$
     language plpgsql;

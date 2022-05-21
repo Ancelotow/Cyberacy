@@ -41,6 +41,14 @@ class StatsMeeting {
     nb_participant
 }
 
+class StatsAnnualFee {
+    id_political_party
+    party_name
+    year
+    total_fee
+    annual_fee
+}
+
 /**
  * Ajoute un nouveau parti politique
  * @param party
@@ -301,10 +309,34 @@ const GetNbMeeting = (nir, year = new Date().getFullYear()) => {
     });
 }
 
+/**
+ * Statistiques : Récupère les cotisations annuelles par parti politique et le total récolté
+ * @param nir Le NIR de l'adhérent
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetAnnualFee = (nir) => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT * FROM stats_fee_from_party($1)',
+            values: [nir],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows : null
+                resolve(res)
+            }
+        });
+    });
+}
+
 export default {
     PoliticalParty,
     StatsAdherent,
     StatsMeeting,
+    StatsAnnualFee,
     Add,
     GetAll,
     Get,
@@ -314,5 +346,6 @@ export default {
     IfExistsBySiren,
     IfExists,
     GetNbAdherent,
-    GetNbMeeting
+    GetNbMeeting,
+    GetAnnualFee
 }

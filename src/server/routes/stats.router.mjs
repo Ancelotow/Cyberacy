@@ -65,4 +65,13 @@ routerStats.get("/statistics/political_party/meeting", async (req, res) => {
     }
 });
 
+routerStats.get("/statistics/political_party/annual_fee", async (req, res) => {
+    // #swagger.tags = ['Statistiques']
+    // #swagger.description = 'Récupération des cotisations annuelles sur un parti politique avec le total récolté.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await statsCtrl.GetAnnualFee(req.data.nir)
+    res.status(response.status).send(response.data)
+});
+
 export {routerStats}
