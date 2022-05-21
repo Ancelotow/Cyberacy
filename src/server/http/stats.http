@@ -9,3 +9,15 @@ Authorization: Bearer {{jwt_token}}
 GET {{url}}/statistics/political_party/adherent?sort=year
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get nb meeting by month
+GET {{url}}/statistics/political_party/meeting?sort=month
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get nb meeting by year
+GET {{url}}/statistics/political_party/meeting?sort=year
+Accept: application/json
+Authorization: Bearer {{jwt_token}}

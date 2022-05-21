@@ -1351,6 +1351,44 @@
           }
         ]
       }
+    },
+    "/statistics/political_party/meeting": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération du nombres de meeting et de pariticpation sur un parti politique par mois sur une année.",
+        "parameters": [
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Trier par ans (year) ou par mois (month)",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "year",
+                "month"
+              ]
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "L année pour le tri",
+            "type": "int"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   },
   "definitions": {

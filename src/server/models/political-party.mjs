@@ -24,12 +24,21 @@ class PoliticalParty {
     doc_chart
 }
 
-class StatsPoliticalParty {
+class StatsAdherent {
     id_political_party
     party_name
     month
     year
     nb_adherent
+}
+
+class StatsMeeting {
+    id_political_party
+    party_name
+    month
+    year
+    nb_meeting
+    nb_participant
 }
 
 /**
@@ -268,9 +277,34 @@ const GetNbAdherent = (nir, year = new Date().getFullYear()) => {
     });
 }
 
+/**
+ * Statistiques : Récupère le nombre de meeting et le nombre de participant pour un parti politiue par an et par mois
+ * @param nir Le NIR de l'ahdérent
+ * @param year L'année du tri
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetNbMeeting = (nir, year = new Date().getFullYear()) => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT * FROM stats_meeting_from_party($1, $2)',
+            values: [nir, year],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows : null
+                resolve(res)
+            }
+        });
+    });
+}
+
 export default {
     PoliticalParty,
-    StatsPoliticalParty,
+    StatsAdherent,
+    StatsMeeting,
     Add,
     GetAll,
     Get,
@@ -279,5 +313,6 @@ export default {
     UpdateBankDetails,
     IfExistsBySiren,
     IfExists,
-    GetNbAdherent
+    GetNbAdherent,
+    GetNbMeeting
 }

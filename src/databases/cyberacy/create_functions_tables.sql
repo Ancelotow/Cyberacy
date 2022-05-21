@@ -511,7 +511,7 @@ $filter$
     language plpgsql;
 
 
--- Statistiques pour les parties politiques (nb meeting)
+-- Statistiques pour les parties politiques (nb adherents)
 create or replace function stats_adherent_from_party(_nir adherent.prs_nir%type,
                                                      _year int default extract(year from now()))
     returns table
@@ -542,8 +542,8 @@ end;
 $filter$
     language plpgsql;
 
--- Statistiques pour les parties politiques (nb adherents)
-create or replace function stats_adherent_from_party(_nir adherent.prs_nir%type,
+-- Statistiques pour les parties politiques (nb meeting)
+create or replace function stats_meeting_from_party(_nir adherent.prs_nir%type,
                                                      _year int default extract(year from now()))
     returns table
             (
@@ -551,23 +551,25 @@ create or replace function stats_adherent_from_party(_nir adherent.prs_nir%type,
                 party_name         political_party.pop_name%type,
                 month              int,
                 year               int,
-                nb_adherent        int
+                nb_meeting         int,
+                nb_participant     int
             )
 as
 $filter$
 begin
     return query
-        select distinct adh.pop_id                   as id_political_party,
-                        pop.pop_name                 as party_name,
-                        extract(month from dte)::int as month,
-                        extract(year from dte)::int  as year,
-                        get_nb_adherent(extract(month from dte)::int, extract(year from dte)::int,
-                                        adh.pop_id)  as nb_adherent
+        select distinct mee.pop_id                           as id_political_party,
+                        pop.pop_name                         as party_name,
+                        extract(month from dte)::int         as month,
+                        extract(year from dte)::int          as year,
+                        get_nb_meeting(extract(month from dte)::int, extract(year from dte)::int,
+                                       mee.pop_id)           as nb_meeting,
+                        get_nb_participant_total(extract(month from dte)::int, extract(year from dte)::int,
+                                                 mee.pop_id) as nb_participant
         from generate_series(make_date(_year, 01, 01), make_date(_year, 12, 01), '1 month') dte,
-             adherent adh
-                 join political_party pop on adh.pop_id = pop.pop_id
-        where adh.prs_nir = _nir
-          and adh.adh_is_left = false
+             meeting mee
+                 join political_party pop on mee.pop_id = pop.pop_id
+                join adherent adh on pop.pop_id = adh.pop_id and adh.prs_nir = _nir and adh.adh_is_left = false
         order by year, month;
 end;
 $filter$

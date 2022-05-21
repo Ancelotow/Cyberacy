@@ -4,8 +4,27 @@ create or replace function get_nb_place_vacant(id meeting.mee_id%type)
 as
 $body$
 declare
+    nb_place int;
+begin
+
+    select mee_nb_place - get_nb_participant(mee_id)
+    into nb_place
+    from meeting
+    where mee_id = id;
+
+    return nb_place;
+
+end;
+$body$
+    language plpgsql;
+
+-- Nombre de participant pour un meeting
+create or replace function get_nb_participant(id meeting.mee_id%type)
+    returns int
+as
+$body$
+declare
     nb_participant int;
-    nb_place       int;
 begin
 
     select count(*)
@@ -14,17 +33,15 @@ begin
     where mee_id = id
       and ptc_is_aborted = false;
 
-    select mee_nb_place
-    into nb_place
-    from meeting
-    where mee_id = id;
+    if nb_participant is null then
+        nb_participant := 0;
+    end if;
 
-    return (nb_place - nb_participant);
+    return nb_participant;
 
 end;
 $body$
     language plpgsql;
-
 
 -- Vérifie s'il à les droits pour un role donné
 create or replace function is_granted(nir person.prs_nir%type, code role.rle_code%type)
@@ -180,6 +197,34 @@ begin
       and extract(year from mee_date_start) = year
       and mee_is_aborted = false
       and pop_id = _pop_id;
+
+    return count;
+
+end;
+$body$
+    language plpgsql;
+
+
+-- Récupère le nombre de meeting par mois sur un an
+create or replace function get_nb_participant_total(month int, year int, _pop_id int)
+    returns int
+as
+$body$
+declare
+    count int;
+begin
+
+    select sum(get_nb_participant(mee_id))
+    into count
+    from meeting
+    where extract(year from mee_date_start) = year
+      and extract(month from mee_date_start) = month
+      and mee_is_aborted = false
+      and pop_id = _pop_id;
+
+    if count is null then
+        count := 0;
+    end if;
 
     return count;
 
