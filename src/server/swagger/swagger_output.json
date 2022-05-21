@@ -1335,6 +1335,21 @@
           }
         ]
       }
+    },
+    "/statistics/political_party/year": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération du nombres d adhérents à un parti politique par an.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   },
   "definitions": {

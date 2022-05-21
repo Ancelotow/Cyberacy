@@ -18,4 +18,13 @@ routerStats.get("/statistics/political_party/month", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
+routerStats.get("/statistics/political_party/year", async (req, res) => {
+    // #swagger.tags = ['Statistiques']
+    // #swagger.description = 'Récupération du nombres d adhérents à un parti politique par an.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await statsCtrl.GetNbAdherentByYear(req.data.nir)
+    res.status(response.status).send(response.data)
+});
+
 export {routerStats}

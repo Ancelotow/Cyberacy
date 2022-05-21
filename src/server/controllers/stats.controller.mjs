@@ -1,7 +1,13 @@
 import partyMod from "../models/political-party.mjs"
 import groupBy from 'lodash/groupBy.js';
 
-
+/**
+ * Statistiques : récupère le nombre d'adhérent par mois
+ * @param nir Le NIR de l'utilisateur
+ * @param year L'année du filtre (l'année courante par défaut)
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
 const GetNbAdherentByMonth = (nir, year = new Date().getFullYear()) => {
     return new Promise(async (resolve, _) => {
         if (!nir) {
@@ -25,4 +31,39 @@ const GetNbAdherentByMonth = (nir, year = new Date().getFullYear()) => {
     });
 }
 
-export default {GetNbAdherentByMonth}
+/**
+ * Statistiques : récupère le nombre d'adhérent par an
+ * @param nir Le NIR de l'utilisateur
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetNbAdherentByYear = (nir) => {
+    return new Promise(async (resolve, _) => {
+        let year = new Date().getFullYear() - 10;
+        let result;
+        let total;
+        let statsYears = {};
+        let keys;
+        for(year; year <= new Date().getFullYear(); year++){
+            result = await GetNbAdherentByMonth(nir, year)
+            if(result.status !== 200){
+                resolve(result);
+                return;
+            }
+            keys = Object.keys(result.data);
+            total = 0;
+            for(let j = 0; j <  keys.length; j++) {
+                for(let i = 0; i < result.data[keys[j]].length; i++){
+                    total += result.data[keys[j]][i].nb_adherent;
+                }
+                if(statsYears[keys[j]] == null) {
+                    statsYears[keys[j]] = []
+                }
+                statsYears[keys[j]].push({year, nb_adherent: total});
+            }
+        }
+        resolve({status: 200, data: statsYears})
+    });
+}
+
+export default {GetNbAdherentByMonth, GetNbAdherentByYear}
