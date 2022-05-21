@@ -162,3 +162,27 @@ begin
 end;
 $body$
     language plpgsql;
+
+
+-- Récupère le nombre de meeting par mois sur un an
+create or replace function get_nb_meeting(month int, year int, _pop_id int)
+    returns int
+as
+$body$
+declare
+    count int;
+begin
+
+    select count(*)
+    into count
+    from meeting
+    where extract(month from mee_date_start) = month
+      and extract(year from mee_date_start) = year
+      and mee_is_aborted = false
+      and pop_id = _pop_id;
+
+    return count;
+
+end;
+$body$
+    language plpgsql;

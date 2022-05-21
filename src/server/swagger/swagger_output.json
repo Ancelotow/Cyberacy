@@ -1314,7 +1314,7 @@
         ]
       }
     },
-    "/statistics/political_party/month": {
+    "/statistics/political_party/adherent": {
       "get": {
         "tags": [
           "Statistiques"
@@ -1322,28 +1322,29 @@
         "description": "Récupération du nombres d adhérents à un parti politique par mois sur une année.",
         "parameters": [
           {
+            "name": "sort",
+            "in": "query",
+            "description": "Trier par ans (year) ou par mois (month)",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "year",
+                "month"
+              ]
+            }
+          },
+          {
             "name": "year",
             "in": "query",
             "description": "L année pour le tri",
             "type": "int"
           }
         ],
-        "responses": {},
-        "security": [
-          {
-            "Bearer": []
+        "responses": {
+          "400": {
+            "description": "Bad Request"
           }
-        ]
-      }
-    },
-    "/statistics/political_party/year": {
-      "get": {
-        "tags": [
-          "Statistiques"
-        ],
-        "description": "Récupération du nombres d adhérents à un parti politique par an.",
-        "parameters": [],
-        "responses": {},
+        },
         "security": [
           {
             "Bearer": []

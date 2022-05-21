@@ -1,11 +1,11 @@
 ###
 # @name Get nb adherents by month
-GET {{url}}/statistics/political_party/month
+GET {{url}}/statistics/political_party/adherent?sort=month
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get nb adherents by year
-GET {{url}}/statistics/political_party/year
+GET {{url}}/statistics/political_party/adherent?sort=year
 Accept: application/json
 Authorization: Bearer {{jwt_token}}

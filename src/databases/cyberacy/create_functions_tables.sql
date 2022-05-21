@@ -511,7 +511,38 @@ $filter$
     language plpgsql;
 
 
--- Statistiques pour les parties politiques
+-- Statistiques pour les parties politiques (nb meeting)
+create or replace function stats_adherent_from_party(_nir adherent.prs_nir%type,
+                                                     _year int default extract(year from now()))
+    returns table
+            (
+                id_political_party adherent.pop_id%type,
+                party_name         political_party.pop_name%type,
+                month              int,
+                year               int,
+                nb_adherent        int
+            )
+as
+$filter$
+begin
+    return query
+        select distinct adh.pop_id                   as id_political_party,
+                        pop.pop_name                 as party_name,
+                        extract(month from dte)::int as month,
+                        extract(year from dte)::int  as year,
+                        get_nb_adherent(extract(month from dte)::int, extract(year from dte)::int,
+                                        adh.pop_id)  as nb_adherent
+        from generate_series(make_date(_year, 01, 01), make_date(_year, 12, 01), '1 month') dte,
+             adherent adh
+                 join political_party pop on adh.pop_id = pop.pop_id
+        where adh.prs_nir = _nir
+          and adh.adh_is_left = false
+        order by year, month;
+end;
+$filter$
+    language plpgsql;
+
+-- Statistiques pour les parties politiques (nb adherents)
 create or replace function stats_adherent_from_party(_nir adherent.prs_nir%type,
                                                      _year int default extract(year from now()))
     returns table
