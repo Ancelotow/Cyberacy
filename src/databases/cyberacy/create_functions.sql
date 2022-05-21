@@ -125,3 +125,40 @@ begin
 end;
 $body$
     language plpgsql;
+
+
+-- Récupère le nombre d'adhérent par mois sur un an
+create or replace function get_nb_adherent(month int, year int, _pop_id int)
+    returns int
+as
+$body$
+declare
+    date_compare timestamp;
+    last_day     int;
+    count        int;
+begin
+
+    select extract(day from (date_trunc('MONTH', make_date(year, month, 01)) + interval '1 MONTH - 1 day')::date)
+    into last_day;
+
+    date_compare := make_date(year, month, last_day);
+
+    select count(*)
+    into count
+    from adherent
+    where (adh_date_join <= date_compare
+        or (extract(month from adh_date_join) = month
+            and extract(year from adh_date_join) = year))
+      and (adh_date_left > date_compare
+        or adh_date_left is null
+        or (extract(month from adh_date_left) = month
+            and extract(year from adh_date_left) = year))
+      and month <= extract(month from now())
+      and year <= extract(year from now())
+      and pop_id = _pop_id;
+
+    return count;
+
+end;
+$body$
+    language plpgsql;

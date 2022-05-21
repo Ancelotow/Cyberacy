@@ -1,0 +1,5 @@
+###
+# @name Get nb adherents by month
+GET {{url}}/statistics/political_party/month
+Accept: application/json
+Authorization: Bearer {{jwt_token}}

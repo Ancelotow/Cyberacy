@@ -30,6 +30,8 @@ begin
         where adh_id = new.adh_id
           and mem_is_left = false;
     end if;
+
+    return new;
 end
 $trigger$
     language plpgsql;
@@ -53,6 +55,8 @@ begin
     where pop_id = new.pop_id
       and thr_is_delete = false
       and thr_main = true;
+
+    return new;
 end
 $trigger$
     language plpgsql;

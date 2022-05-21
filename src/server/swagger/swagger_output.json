@@ -361,12 +361,7 @@
         ],
         "description": "Récupération des types d",
         "parameters": [],
-        "responses": {},
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        "responses": {}
       }
     },
     "/sex": {
@@ -376,12 +371,7 @@
         ],
         "description": "Récupération des civilités.",
         "parameters": [],
-        "responses": {},
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        "responses": {}
       }
     },
     "/type_vote": {
@@ -391,12 +381,7 @@
         ],
         "description": "Récupération des types de vote.",
         "parameters": [],
-        "responses": {},
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        "responses": {}
       }
     },
     "/political_edge": {
@@ -406,12 +391,7 @@
         ],
         "description": "Récupération des bords politiques.",
         "parameters": [],
-        "responses": {},
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        "responses": {}
       }
     },
     "/region": {
@@ -1324,6 +1304,28 @@
             "in": "path",
             "required": true,
             "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/statistics/political_party/month": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération du nombres d adhérents à un parti politique par mois sur une année.",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "description": "L année pour le tri",
+            "type": "int"
           }
         ],
         "responses": {},

@@ -24,6 +24,14 @@ class PoliticalParty {
     doc_chart
 }
 
+class StatsPoliticalParty {
+    id_political_party
+    party_name
+    month
+    year
+    nb_adherent
+}
+
 /**
  * Ajoute un nouveau parti politique
  * @param party
@@ -33,7 +41,7 @@ class PoliticalParty {
 const Add = (party) => {
     return new Promise(async (resolve, reject) => {
         const isExisted = await IfExistsBySiren(party.siren)
-        if(isExisted){
+        if (isExisted) {
             resolve(false)
         }
         const request = {
@@ -111,7 +119,7 @@ const Get = (nir = null, includeLeft = false, siren = null, idPoliticalParty = n
 const UpdateLogo = (idLogo, id) => {
     return new Promise(async (resolve, reject) => {
         const isExisted = await IfExists(id)
-        if(isExisted){
+        if (isExisted) {
             resolve(false)
         }
         const request = {
@@ -138,7 +146,7 @@ const UpdateLogo = (idLogo, id) => {
 const UpdateChart = (idChart, id) => {
     return new Promise(async (resolve, reject) => {
         const isExisted = await IfExists(id)
-        if(isExisted){
+        if (isExisted) {
             resolve(false)
         }
         const request = {
@@ -165,7 +173,7 @@ const UpdateChart = (idChart, id) => {
 const UpdateBankDetails = (idBankDetails, id) => {
     return new Promise(async (resolve, reject) => {
         const isExisted = await IfExists(id)
-        if(isExisted){
+        if (isExisted) {
             resolve(false)
         }
         const request = {
@@ -236,4 +244,40 @@ const IfExists = (id) => {
     });
 }
 
-export default {PoliticalParty, Add, GetAll, Get, UpdateLogo, UpdateChart, UpdateBankDetails, IfExistsBySiren, IfExists}
+/**
+ * Statistiques : Récupère le nombre d'adhérent sur un parti politique par an et par mois
+ * @param nir Le NIR de l'adhérent
+ * @param year L'année du tri
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetNbAdherent = (nir, year = new Date().getFullYear()) => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT * FROM stats_adherent_from_party($1, $2)',
+            values: [nir, year],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows : null
+                resolve(res)
+            }
+        });
+    });
+}
+
+export default {
+    PoliticalParty,
+    StatsPoliticalParty,
+    Add,
+    GetAll,
+    Get,
+    UpdateLogo,
+    UpdateChart,
+    UpdateBankDetails,
+    IfExistsBySiren,
+    IfExists,
+    GetNbAdherent
+}
