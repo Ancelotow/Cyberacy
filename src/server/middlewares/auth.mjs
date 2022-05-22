@@ -17,8 +17,11 @@ const WHITE_ROUTES = [
 ]
 
 const authToken = (req, res, next) => {
-    // Vérifie sila route est sans token ou pas
-    if (WHITE_ROUTES.some((r) => r === req.url)) {
+    // Vérifie si la route est sans token ou pas
+
+    let urlDecompose = req.url.split('/')
+    const url =  (urlDecompose <= 1) ? "/" : `/${urlDecompose[1]}`
+    if (WHITE_ROUTES.some((r) => r === url)) {
         next()
         return
     }

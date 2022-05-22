@@ -2,28 +2,23 @@
 # @name Get regions
 GET {{url}}/region
 Accept: application/json
-Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get departments
 GET {{url}}/department
 Accept: application/json
-Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get towns
 GET {{url}}/town
 Accept: application/json
-Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get towns by department
 GET {{url}}/department/94/town
 Accept: application/json
-Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get departments by region
 GET {{url}}/region/11/department
 Accept: application/json
-Authorization: Bearer {{jwt_token}}
