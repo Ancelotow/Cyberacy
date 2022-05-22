@@ -401,12 +401,7 @@
         ],
         "description": "Récupération des régions.",
         "parameters": [],
-        "responses": {},
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        "responses": {}
       }
     },
     "/region/{code_insee}/department": {
@@ -423,12 +418,7 @@
             "type": "string"
           }
         ],
-        "responses": {},
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        "responses": {}
       }
     },
     "/department": {
@@ -438,12 +428,7 @@
         ],
         "description": "Récupération des départements.",
         "parameters": [],
-        "responses": {},
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        "responses": {}
       }
     },
     "/department/{code}/town": {
@@ -460,12 +445,7 @@
             "type": "string"
           }
         ],
-        "responses": {},
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        "responses": {}
       }
     },
     "/town": {
@@ -475,12 +455,7 @@
         ],
         "description": "Récupération des communes.",
         "parameters": [],
-        "responses": {},
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        "responses": {}
       }
     },
     "/vote": {
