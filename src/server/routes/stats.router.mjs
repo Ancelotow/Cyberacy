@@ -92,7 +92,7 @@ routerStats.get("/statistics/political_party/messages", async (req, res) => {
            type: 'date'
     } */
 
-    const response = await statsCtrl.GetMessagesByDate(req.data.nir, req.query.date)
+    const response = await statsCtrl.GetMessagesByDate(req.data.nir, req.query.day)
     res.status(response.status).send(response.data)
 });
 
