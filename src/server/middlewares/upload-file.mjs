@@ -5,9 +5,9 @@ import {ToStringForFilename} from "./formatter.mjs";
 const createUpload = () => {
     const __dirname = path.resolve()
     const storage = multer.diskStorage({
-        destination: function (request, file, callback) {
+        /*destination: function (request, file, callback) {
             callback(null, './uploads/');
-        },
+        },*/
         filename: function (request, file, callback) {
             const today = new Date()
             const filename = `${ToStringForFilename(today)}${file.originalname}`
