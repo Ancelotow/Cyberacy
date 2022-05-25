@@ -1,9 +1,14 @@
 import partyCtrl from "../controllers/party.controller.mjs";
 import express from "express"
 import {createUpload} from "../middlewares/upload-file.mjs";
+import {config} from "dotenv";
+import aws from 'aws-sdk';
+
+config()
 
 const routerParty = express.Router()
 const upload = createUpload()
+const S3_BUCKET = process.env.S3_BUCKET;
 
 routerParty.post("/political_party", async (req, res) => {
     // #swagger.tags = ['Political party']
@@ -95,14 +100,36 @@ routerParty.get("/political_party/:id/annual_fee", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
-routerParty.post("/political_party/:id/upload_logo",  upload.single('logo'), async (req, res) => {
+routerParty.post("/political_party/:id/upload_logo",  async (req, res) => {
     // #swagger.tags = ['Political party']
     // #swagger.description = 'Upload le logo du parti politique.'
     // #swagger.security = [{ "Bearer": [] }]
 
-    console.log(req.file)
-    const response = await partyCtrl.UploadLogo(req.file, req.params.id)
-    res.status(response.status).send(response.data)
+    const s3 = new aws.S3();
+    const fileName = req.query['file-name'];
+    const fileType = req.query['file-type'];
+    const s3Params = {
+        Bucket: S3_BUCKET,
+        Key: fileName,
+        Expires: 60,
+        ContentType: fileType,
+        ACL: 'public-read'
+    };
+
+    s3.getSignedUrl('putObject', s3Params, (err, data) => {
+        if(err){
+            console.log(err);
+            return res.end();
+        }
+        const returnData = {
+            signedRequest: data,
+            url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
+        };
+        res.write(JSON.stringify(returnData));
+        res.end();
+    });
+    //const response = await partyCtrl.UploadLogo(req.file, req.params.id)
+    //res.status(response.status).send(response.data)
 });
 
 routerParty.post("/political_party/:id/upload_chart",  upload.single('chart'), async (req, res) => {

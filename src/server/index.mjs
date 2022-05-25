@@ -16,6 +16,7 @@ import cors from 'cors'
 import {config} from 'dotenv'
 import morgan from 'morgan'
 import file from 'fs'
+import aws from 'aws-sdk';
 
 const app = express()
 
@@ -40,7 +41,8 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swagger, {swaggerOptions: {
 // Token JWT
 app.use(authToken)
 
-
+// AWS S3 (Pour les uploads)
+aws.config.region = 'eu-west-1';
 
 // Routers
 app.use(routerAuth)
