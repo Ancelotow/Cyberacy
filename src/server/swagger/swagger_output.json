@@ -1379,6 +1379,45 @@
           }
         ]
       }
+    },
+    "/statistics/political_party/messages": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération du nombre de message.",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Trier par jour (day)",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "year",
+                "month"
+              ]
+            }
+          },
+          {
+            "name": "day",
+            "in": "query",
+            "description": "La date pour le tri",
+            "type": "date"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   },
   "definitions": {

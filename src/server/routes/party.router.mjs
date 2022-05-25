@@ -100,7 +100,7 @@ routerParty.get("/political_party/:id/annual_fee", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
-routerParty.put("/political_party/:id/upload_logo",  upload.single('logo'), async (req, res) => {
+routerParty.post("/political_party/:id/upload_logo",  upload.single('logo'), async (req, res) => {
     // #swagger.tags = ['Political party']
     // #swagger.description = 'Upload le logo du parti politique.'
     // #swagger.security = [{ "Bearer": [] }]

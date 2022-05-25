@@ -74,4 +74,26 @@ routerStats.get("/statistics/political_party/annual_fee", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
+routerStats.get("/statistics/political_party/messages", async (req, res) => {
+    // #swagger.tags = ['Statistiques']
+    // #swagger.description = 'Récupération du nombre de message.'
+    // #swagger.security = [{ "Bearer": [] }]
+    /* #swagger.parameters['sort'] = {
+           in: 'query',
+           description: 'Trier par jour (day)',
+           schema: {
+                '@enum': ['year', 'month']
+            }
+
+    } */
+    /*  #swagger.parameters['day'] = {
+           in: 'query',
+           description: 'La date pour le tri',
+           type: 'date'
+    } */
+
+    const response = await statsCtrl.GetMessagesByDate(req.data.nir, req.query.date)
+    res.status(response.status).send(response.data)
+});
+
 export {routerStats}

@@ -20,7 +20,7 @@ const GetNbAdherentByMonth = (nir, year = new Date().getFullYear()) => {
                 resolve({status: 204, data: "You haven't join any political party."})
                 return;
             }
-            const statsParty = groupBy(stats, function(n) {
+            const statsParty = groupBy(stats, function (n) {
                 return n.party_name;
             });
             resolve({status: 200, data: statsParty})
@@ -44,19 +44,19 @@ const GetNbAdherentByYear = (nir) => {
         let total;
         let statsYears = {};
         let keys;
-        for(year; year <= new Date().getFullYear(); year++){
+        for (year; year <= new Date().getFullYear(); year++) {
             result = await GetNbAdherentByMonth(nir, year)
-            if(result.status !== 200){
+            if (result.status !== 200) {
                 resolve(result);
                 return;
             }
             keys = Object.keys(result.data);
             total = 0;
-            for(let j = 0; j <  keys.length; j++) {
-                for(let i = 0; i < result.data[keys[j]].length; i++){
+            for (let j = 0; j < keys.length; j++) {
+                for (let i = 0; i < result.data[keys[j]].length; i++) {
                     total += result.data[keys[j]][i].nb_adherent;
                 }
-                if(statsYears[keys[j]] == null) {
+                if (statsYears[keys[j]] == null) {
                     statsYears[keys[j]] = []
                 }
                 statsYears[keys[j]].push({year, nb_adherent: total});
@@ -85,7 +85,7 @@ const GetNbMeetingByMonth = (nir, year = new Date().getFullYear()) => {
                 resolve({status: 204, data: "You haven't join any political party."})
                 return;
             }
-            const statsParty = groupBy(stats, function(n) {
+            const statsParty = groupBy(stats, function (n) {
                 return n.party_name;
             });
             resolve({status: 200, data: statsParty})
@@ -110,21 +110,21 @@ const GetNbMeetingByYear = (nir) => {
         let total_participant;
         let statsYears = {};
         let keys;
-        for(year; year <= new Date().getFullYear(); year++){
+        for (year; year <= new Date().getFullYear(); year++) {
             result = await GetNbMeetingByMonth(nir, year)
-            if(result.status !== 200){
+            if (result.status !== 200) {
                 resolve(result);
                 return;
             }
             keys = Object.keys(result.data);
             total_meeting = 0;
             total_participant = 0;
-            for(let j = 0; j <  keys.length; j++) {
-                for(let i = 0; i < result.data[keys[j]].length; i++){
+            for (let j = 0; j < keys.length; j++) {
+                for (let i = 0; i < result.data[keys[j]].length; i++) {
                     total_meeting += result.data[keys[j]][i].nb_meeting;
                     total_participant += result.data[keys[j]][i].nb_participant;
                 }
-                if(statsYears[keys[j]] == null) {
+                if (statsYears[keys[j]] == null) {
                     statsYears[keys[j]] = []
                 }
                 statsYears[keys[j]].push({year, nb_meeting: total_meeting, nb_participant: total_participant});
@@ -152,7 +152,7 @@ const GetAnnualFee = (nir) => {
                 resolve({status: 204, data: "You haven't join any political party."})
                 return;
             }
-            const statsParty = groupBy(stats, function(n) {
+            const statsParty = groupBy(stats, function (n) {
                 return n.party_name;
             });
             resolve({status: 200, data: statsParty})
@@ -163,4 +163,50 @@ const GetAnnualFee = (nir) => {
     });
 }
 
-export default {GetNbAdherentByMonth, GetNbAdherentByYear, GetNbMeetingByMonth, GetNbMeetingByYear, GetAnnualFee}
+/**
+ * Récupère le nombre de message pour chaque thread sur une date donnée
+ * @param nir Le NIR de l'utilisateur
+ * @param date La date
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetMessagesByDate = (nir, date) => {
+    return new Promise(async (resolve, _) => {
+        if (!nir || !date) {
+            resolve({status: 400, data: "Missing parameters."})
+            return;
+        }
+        try {
+            let stats = await partyMod.GetNbMessageByDay(nir, new Date(date));
+            if (stats == null) {
+                resolve({status: 204, data: "You haven't join any political party or thread."})
+                return;
+            }
+            const statsParty = groupBy(stats, function (n) {
+                return n.party_name;
+            });
+            const keys = Object.keys(statsParty);
+            let statsFilterThread = [];
+            let resultThread;
+            for (let i = 0; i < keys.length; i++) {
+                resultThread = groupBy(statsParty[keys[i]], function (n) {
+                    return n.thread_name;
+                });
+                statsFilterThread.push({name: keys[i], threads: resultThread})
+            }
+            resolve({status: 200, data: statsFilterThread})
+        } catch (e) {
+            console.error(e)
+            resolve({status: 500, data: e})
+        }
+    });
+}
+
+export default {
+    GetNbAdherentByMonth,
+    GetNbAdherentByYear,
+    GetNbMeetingByMonth,
+    GetNbMeetingByYear,
+    GetAnnualFee,
+    GetMessagesByDate
+}

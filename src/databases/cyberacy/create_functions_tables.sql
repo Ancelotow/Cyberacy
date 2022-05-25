@@ -602,3 +602,41 @@ begin
 end;
 $filter$
     language plpgsql;
+
+
+-- Statistiques pour les parties politiques (messages)
+create or replace function stats_messages_from_party_by_date(_nir adherent.prs_nir%type, _date date)
+    returns table
+            (
+                id_political_party adherent.pop_id%type,
+                party_name         political_party.pop_name%type,
+                thread_name        thread.thr_name%type,
+                id_thread          thread.thr_id%type,
+                nb_message         int,
+                hour               int
+            )
+as
+$filter$
+declare
+    date_start timestamp := make_timestamp(2000, 01, 01, 00, 00, 00);
+    date_end   timestamp := make_timestamp(2000, 01, 01, 23, 59, 00);
+begin
+    return query
+        select pop.pop_id                                                             as id_political_party,
+               pop_name                                                               as party_name,
+               thr_name                                                               as thread_name,
+               thr.thr_id                                                             as id_thread,
+               get_nb_message_by_hour(_date, extract(hour from dte)::int, thr.thr_id) as nb_message,
+               extract(hour from dte)::int                                            as hour
+        from generate_series(date_start, date_end, '1 hour') dte,
+             adherent adh
+                 join member mem on adh.adh_id = mem.adh_id and mem_is_left = false
+                 join thread thr on mem.thr_id = thr.thr_id
+                 join political_party pop on pop.pop_id = adh.pop_id
+        where adh.prs_nir = _nir
+          and adh_is_left = false
+        group by party_name, thread_name, hour, nb_message, id_political_party, id_thread
+        order by hour;
+end;
+$filter$
+    language plpgsql;
