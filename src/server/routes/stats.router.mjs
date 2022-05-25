@@ -82,7 +82,7 @@ routerStats.get("/statistics/political_party/messages", async (req, res) => {
            in: 'query',
            description: 'Trier par jour (day)',
            schema: {
-                '@enum': ['year', 'month']
+                '@enum': ['day']
             }
 
     } */
