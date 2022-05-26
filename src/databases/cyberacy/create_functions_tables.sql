@@ -679,3 +679,75 @@ begin
 end;
 $filter$
     language plpgsql;
+
+
+-- Statistiques pour les absentions par vote
+create or replace function vote_get_absention(_tvo_id type_vote.tvo_id%type default null)
+    returns table
+            (
+                nb_abstention   int,
+                perc_abstention decimal,
+                id_vote         vote.vte_id%type,
+                name_vote       vote.vte_name%type,
+                num_round       round.rnd_num%type,
+                name_round      round.rnd_name%type,
+                id_type_vote    vote.tvo_id%type,
+                name_type_vote  type_vote.tvo_name%type
+            )
+as
+$filter$
+begin
+    return query
+        select rnd_nb_voter - get_nb_voter(rnd.vte_id, rnd_num)                                   as nb_abstention,
+               ((rnd_nb_voter - get_nb_voter(rnd.vte_id, rnd_num))::decimal / rnd_nb_voter) * 100 as perc_abstention,
+               rnd.vte_id                                                                         as id_vote,
+               vte_name                                                                           as name_vote,
+               rnd_num                                                                            as num_round,
+               rnd_name                                                                           as name_round,
+               vte.tvo_id                                                                         as id_type_vote,
+               tvo_name                                                                           as name_type_vote
+        from round rnd
+                 left join vote vte on rnd.vte_id = vte.vte_id
+                 left join type_vote tvo on tvo.tvo_id = vte.tvo_id
+        where vte.tvo_id = _tvo_id
+           or _tvo_id is null
+        order by rnd_date_start;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Statistiques pour les participations par vote
+create or replace function vote_get_participation(_tvo_id type_vote.tvo_id%type default null)
+    returns table
+            (
+                nb_participation   int,
+                perc_participation decimal,
+                id_vote            vote.vte_id%type,
+                name_vote          vote.vte_name%type,
+                num_round          round.rnd_num%type,
+                name_round         round.rnd_name%type,
+                id_type_vote       vote.tvo_id%type,
+                name_type_vote     type_vote.tvo_name%type
+            )
+as
+$filter$
+begin
+    return query
+        select get_nb_voter(vte.vte_id, rnd_num)                                 as nb_participation,
+               (get_nb_voter(vte.vte_id, rnd_num)::decimal / rnd_nb_voter) * 100 as perc_participation,
+               rnd.vte_id                                                        as id_vote,
+               vte_name                                                          as name_vote,
+               rnd_num                                                           as num_round,
+               rnd_name                                                          as name_round,
+               vte.tvo_id                                                        as id_type_vote,
+               tvo_name                                                          as name_type_vote
+        from round rnd
+                 left join vote vte on rnd.vte_id = vte.vte_id
+                 left join type_vote tvo on tvo.tvo_id = vte.tvo_id
+        where vte.tvo_id = _tvo_id
+           or _tvo_id is null
+        order by rnd_date_start;
+end;
+$filter$
+    language plpgsql;

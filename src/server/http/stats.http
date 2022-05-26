@@ -39,3 +39,15 @@ Authorization: Bearer {{jwt_token}}
 GET {{url}}/statistics/political_party/messages?sort=week&year=2022
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get abstentions
+GET {{url}}/statistics/vote/abstention
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get participation
+GET {{url}}/statistics/vote/participation
+Accept: application/json
+Authorization: Bearer {{jwt_token}}

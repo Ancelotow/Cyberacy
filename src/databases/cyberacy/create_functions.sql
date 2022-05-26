@@ -259,6 +259,7 @@ end;
 $body$
     language plpgsql;
 
+
 -- Récupère le nombre de message par jour sur un thread et sur une semaine donné
 create or replace function get_nb_message_by_week(year int, week int, _thr_id message.thr_id%type)
     returns int
@@ -281,6 +282,30 @@ begin
 
     return count;
 
+end;
+$body$
+    language plpgsql;
+
+
+-- Récupère le nombre de votant pour un tour donné
+create or replace function get_nb_voter(_vte_id round.vte_id%type, _rnd_num round.rnd_num%type)
+    returns int
+as
+$body$
+declare
+    count int;
+begin
+    select count(*)
+    into count
+    from link_person_round
+    where vte_id = _vte_id
+      and rnd_num = _rnd_num;
+
+    if count is null then
+        count := 0;
+    end if;
+
+    return count;
 end;
 $body$
     language plpgsql;

@@ -10,6 +10,17 @@ class Vote {
     id_political_party
 }
 
+class StatsAbsention {
+    nb_abstention
+    perc_abstention
+    id_vote
+    name_vote
+    num_round
+    name_round
+    id_type_vote
+    name_type_vote
+}
+
 /**
  * Ajoute un nouveau vote
  * @param vote Le nouveau vote
@@ -58,4 +69,50 @@ const Get = (nir, includeFinish = false, includeFuture = true, idTypeVote = null
     });
 }
 
-export default {Vote, Add, Get}
+/**
+ * Récupère les absentions
+ * @param id_type_vote Tri par type de vote
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetStatsAbsentions = (id_type_vote = null) => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT * FROM vote_get_absention($1)',
+            values: [id_type_vote],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows : null
+                resolve(res)
+            }
+        });
+    });
+}
+
+/**
+ * Récupère les participations
+ * @param id_type_vote Tri par type de vote
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetStatsParticipations = (id_type_vote = null) => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT * FROM vote_get_participation($1)',
+            values: [id_type_vote],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows : null
+                resolve(res)
+            }
+        });
+    });
+}
+
+export default {Vote, Add, Get, GetStatsAbsentions, GetStatsParticipations}

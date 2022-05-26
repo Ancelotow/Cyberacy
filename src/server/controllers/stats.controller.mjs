@@ -1,5 +1,6 @@
 import partyMod from "../models/political-party.mjs"
-import groupBy from 'lodash/groupBy.js';
+import voteMod from "../models/vote.mjs"
+import groupBy from 'lodash/groupBy.js'
 
 /**
  * Statistiques : récupère le nombre d'adhérent par mois
@@ -217,8 +218,40 @@ const GetMessagesByWeeks = (nir, year = new Date().getFullYear()) => {
     });
 }
 
+const GetVoteAbstention = (id_type_vote = null) => {
+    return new Promise(async (resolve, _) => {
+        try {
+            let stats = await voteMod.GetStatsAbsentions(id_type_vote);
+            if (stats == null) {
+                resolve({status: 204, data: stats})
+                return;
+            }
+            resolve({status: 200, data: TransformResultVote(stats)})
+        } catch (e) {
+            console.error(e)
+            resolve({status: 500, data: e})
+        }
+    });
+}
+
+const GetVoteParticipation = (id_type_vote = null) => {
+    return new Promise(async (resolve, _) => {
+        try {
+            let stats = await voteMod.GetStatsParticipations(id_type_vote);
+            if (stats == null) {
+                resolve({status: 204, data: stats})
+                return;
+            }
+            resolve({status: 200, data: TransformResultVote(stats)})
+        } catch (e) {
+            console.error(e)
+            resolve({status: 500, data: e})
+        }
+    });
+}
+
 function TransformResultThread(result) {
-    if(!result){
+    if (!result) {
         return null;
     }
     const statsParty = groupBy(result, function (n) {
@@ -236,6 +269,37 @@ function TransformResultThread(result) {
     return statsFilterThread;
 }
 
+function TransformResultVote(result) {
+    if (!result) {
+        return null;
+    }
+    const listVote = []
+    console.log(result)
+
+    let vote;
+    let indexVote;
+    for (let i = 0; i < result.length; i++) {
+        vote = {
+            id: result[i].id_vote,
+            vote: result[i].name_vote,
+            type_vote: result[i].name_type_vote,
+            id_type_vote: result[i].id_type_vote
+        };
+        indexVote = listVote.findIndex(e => e.id === vote.id);
+        if (indexVote < 0) {
+            listVote.push(vote);
+            indexVote = listVote.findIndex(e => e.id === vote.id);
+        }
+        if(listVote[indexVote].rounds == null) listVote[indexVote].rounds = []
+        delete result[i].name_vote;
+        delete result[i].id_vote;
+        delete result[i].name_type_vote;
+        delete result[i].id_type_vote;
+        listVote[indexVote].rounds.push(result[i])
+    }
+    return listVote;
+}
+
 export default {
     GetNbAdherentByMonth,
     GetNbAdherentByYear,
@@ -243,5 +307,7 @@ export default {
     GetNbMeetingByYear,
     GetAnnualFee,
     GetMessagesByDate,
-    GetMessagesByWeeks
+    GetMessagesByWeeks,
+    GetVoteAbstention,
+    GetVoteParticipation
 }

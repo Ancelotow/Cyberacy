@@ -1,4 +1,5 @@
 import statsCtrl from "../controllers/stats.controller.mjs";
+import voteCtrl from "../controllers/vote.controller.mjs";
 import express from "express"
 
 const routerStats = express.Router()
@@ -97,6 +98,26 @@ routerStats.get("/statistics/political_party/messages", async (req, res) => {
     } else {
         response = {status: 400, data: "The parameters \"sort\" is required"}
     }
+    res.status(response.status).send(response.data)
+});
+
+routerStats.get("/statistics/vote/abstention", async (req, res) => {
+    // #swagger.tags = ['Statistiques']
+    // #swagger.description = 'Récupération des statistiques d\'abstention aux votes.'
+    // #swagger.security = [{ "Bearer": [] }]
+    // #swagger.parameters['typeVote'] = {in: 'query', description: 'Trié par type de vote (NULL pour tout inclure)', type: 'string' }
+
+    const response = await statsCtrl.GetVoteAbstention(req.query.typeVote)
+    res.status(response.status).send(response.data)
+});
+
+routerStats.get("/statistics/vote/participation", async (req, res) => {
+    // #swagger.tags = ['Statistiques']
+    // #swagger.description = 'Récupération des statistiques de récupération aux votes.'
+    // #swagger.security = [{ "Bearer": [] }]
+    // #swagger.parameters['typeVote'] = {in: 'query', description: 'Trié par type de vote (NULL pour tout inclure)', type: 'string' }
+
+    const response = await statsCtrl.GetVoteParticipation(req.query.typeVote)
     res.status(response.status).send(response.data)
 });
 

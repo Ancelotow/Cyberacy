@@ -1413,6 +1413,50 @@
           }
         ]
       }
+    },
+    "/statistics/vote/abstention": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération des statistiques d\\'abstention aux votes.",
+        "parameters": [
+          {
+            "name": "typeVote",
+            "in": "query",
+            "description": "Trié par type de vote (NULL pour tout inclure)",
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/statistics/vote/participation": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération des statistiques de récupération aux votes.",
+        "parameters": [
+          {
+            "name": "typeVote",
+            "in": "query",
+            "description": "Trié par type de vote (NULL pour tout inclure)",
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   },
   "definitions": {
