@@ -183,7 +183,7 @@ const GetChoice = (nir, numRound, idVote) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const AddChoice = (choice, numRound, idVote) => {
+const AddChoice = (choice, idVote, numRound) => {
     return new Promise((resolve, _) => {
         if (!choice) {
             resolve({status: 400, data: "Missing parameters."})
