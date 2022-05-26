@@ -1425,7 +1425,7 @@
             "name": "typeVote",
             "in": "query",
             "description": "Trié par type de vote (NULL pour tout inclure)",
-            "type": "string"
+            "type": "number"
           }
         ],
         "responses": {},
@@ -1441,13 +1441,41 @@
         "tags": [
           "Statistiques"
         ],
-        "description": "Récupération des statistiques de récupération aux votes.",
+        "description": "Récupération des statistiques de participation aux votes.",
         "parameters": [
           {
             "name": "typeVote",
             "in": "query",
             "description": "Trié par type de vote (NULL pour tout inclure)",
-            "type": "string"
+            "type": "number"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/statistics/vote/results": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération des résultats aux votes.",
+        "parameters": [
+          {
+            "name": "typeVote",
+            "in": "query",
+            "description": "Trié par type de vote (NULL pour tout inclure)",
+            "type": "number"
+          },
+          {
+            "name": "vote",
+            "in": "query",
+            "description": "Trié par vote (NULL pour tout inclure)",
+            "type": "number"
           }
         ],
         "responses": {},

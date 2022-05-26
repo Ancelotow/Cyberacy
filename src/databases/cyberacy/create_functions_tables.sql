@@ -711,7 +711,7 @@ begin
                  left join type_vote tvo on tvo.tvo_id = vte.tvo_id
         where vte.tvo_id = _tvo_id
            or _tvo_id is null
-        order by rnd_date_start;
+        order by rnd_date_start desc;
 end;
 $filter$
     language plpgsql;
@@ -747,7 +747,51 @@ begin
                  left join type_vote tvo on tvo.tvo_id = vte.tvo_id
         where vte.tvo_id = _tvo_id
            or _tvo_id is null
-        order by rnd_date_start;
+        order by rnd_date_start desc;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Résultats de vote
+create or replace function vote_get_results(_tvo_id type_vote.tvo_id%type default null,
+                                            _tve_id vote.vte_id%type default null)
+    returns table
+            (
+                id_choice               choice.cho_id%type,
+                libelle_choice          choice.cho_name%type,
+                nb_voice                choice.cho_nb_vote%type,
+                perc_with_abstention    decimal,
+                perc_without_abstention decimal,
+                id_vote                 vote.vte_id%type,
+                name_vote               vote.vte_name%type,
+                num_round               round.rnd_num%type,
+                name_round              round.rnd_name%type,
+                id_type_vote            vote.tvo_id%type,
+                name_type_vote          type_vote.tvo_name%type
+            )
+as
+$filter$
+begin
+    return query
+        select cho_id                                                               as id_choice,
+               cho_name                                                             as libelle_choice,
+               cho_nb_vote                                                          as nb_voice,
+               (cho_nb_vote::decimal / rnd_nb_voter) * 100                          as perc_with_abstention,
+               (cho_nb_vote::decimal / get_nb_voter(rnd.vte_id, rnd.rnd_num)) * 100 as perc_without_abstention,
+               rnd.vte_id                                                           as id_vote,
+               vte_name                                                             as name_vote,
+               rnd.rnd_num                                                          as num_round,
+               rnd_name                                                             as name_round,
+               vte.tvo_id                                                           as id_type_vote,
+               tvo_name                                                             as name_type_vote
+        from choice cho
+                 join round rnd on cho.rnd_num = rnd.rnd_num
+                 join vote vte on rnd.vte_id = vte.vte_id
+                 join type_vote tvo on tvo.tvo_id = vte.tvo_id
+        where (rnd.vte_id = _tve_id or _tve_id is null)
+          and (vte.tvo_id = _tvo_id or _tvo_id is null)
+        order by rnd_date_start desc, perc_without_abstention desc;
 end;
 $filter$
     language plpgsql;

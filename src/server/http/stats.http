@@ -41,13 +41,19 @@ Accept: application/json
 Authorization: Bearer {{jwt_token}}
 
 ###
-# @name Get abstentions
+# @name Get vote abstentions
 GET {{url}}/statistics/vote/abstention
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 
 ###
-# @name Get participation
+# @name Get vote participation
 GET {{url}}/statistics/vote/participation
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get vote results
+GET {{url}}/statistics/vote/results
 Accept: application/json
 Authorization: Bearer {{jwt_token}}

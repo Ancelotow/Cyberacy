@@ -105,7 +105,7 @@ routerStats.get("/statistics/vote/abstention", async (req, res) => {
     // #swagger.tags = ['Statistiques']
     // #swagger.description = 'Récupération des statistiques d\'abstention aux votes.'
     // #swagger.security = [{ "Bearer": [] }]
-    // #swagger.parameters['typeVote'] = {in: 'query', description: 'Trié par type de vote (NULL pour tout inclure)', type: 'string' }
+    // #swagger.parameters['typeVote'] = {in: 'query', description: 'Trié par type de vote (NULL pour tout inclure)', type: 'number' }
 
     const response = await statsCtrl.GetVoteAbstention(req.query.typeVote)
     res.status(response.status).send(response.data)
@@ -113,11 +113,22 @@ routerStats.get("/statistics/vote/abstention", async (req, res) => {
 
 routerStats.get("/statistics/vote/participation", async (req, res) => {
     // #swagger.tags = ['Statistiques']
-    // #swagger.description = 'Récupération des statistiques de récupération aux votes.'
+    // #swagger.description = 'Récupération des statistiques de participation aux votes.'
     // #swagger.security = [{ "Bearer": [] }]
-    // #swagger.parameters['typeVote'] = {in: 'query', description: 'Trié par type de vote (NULL pour tout inclure)', type: 'string' }
+    // #swagger.parameters['typeVote'] = {in: 'query', description: 'Trié par type de vote (NULL pour tout inclure)', type: 'number' }
 
     const response = await statsCtrl.GetVoteParticipation(req.query.typeVote)
+    res.status(response.status).send(response.data)
+});
+
+routerStats.get("/statistics/vote/results", async (req, res) => {
+    // #swagger.tags = ['Statistiques']
+    // #swagger.description = 'Récupération des résultats aux votes.'
+    // #swagger.security = [{ "Bearer": [] }]
+    // #swagger.parameters['typeVote'] = {in: 'query', description: 'Trié par type de vote (NULL pour tout inclure)', type: 'number' }
+    // #swagger.parameters['vote'] = {in: 'query', description: 'Trié par vote (NULL pour tout inclure)', type: 'number' }
+
+    const response = await statsCtrl.GetVoteResults(req.query.typeVote, req.query.vote)
     res.status(response.status).send(response.data)
 });
 

@@ -121,4 +121,32 @@ const GetStatsParticipations = (id_type_vote = null) => {
     });
 }
 
-export default {Vote, Add, Get, GetStatsAbsentions, GetStatsParticipations}
+/**
+ * Récupère les résultats des votes
+ * @param id_type_vote Filtrer par types de votes
+ * @param id_vote Filtre sur un vote
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetResults = (id_type_vote = null, id_vote = null) => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT * FROM vote_get_results($1, $2)',
+            values: [id_type_vote, id_vote],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows : null
+                for(let i = 0; i < res.length; i++){
+                    res[i].perc_without_abstention = parseFloat(res[i].perc_without_abstention)
+                    res[i].perc_with_abstention = parseFloat(res[i].perc_with_abstention)
+                }
+                resolve(res)
+            }
+        });
+    });
+}
+
+export default {Vote, Add, Get, GetStatsAbsentions, GetStatsParticipations, GetResults}
