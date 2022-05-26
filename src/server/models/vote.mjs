@@ -86,6 +86,9 @@ const GetStatsAbsentions = (id_type_vote = null) => {
                 reject(error)
             } else {
                 let res = (result.rows.length > 0) ? result.rows : null
+                for(let i = 0; i < res.length; i++){
+                    res[i].perc_abstention = parseFloat(res[i].perc_abstention)
+                }
                 resolve(res)
             }
         });
@@ -109,6 +112,9 @@ const GetStatsParticipations = (id_type_vote = null) => {
                 reject(error)
             } else {
                 let res = (result.rows.length > 0) ? result.rows : null
+                for(let i = 0; i < res.length; i++){
+                    res[i].perc_abstention = parseFloat(res[i].perc_abstention)
+                }
                 resolve(res)
             }
         });
