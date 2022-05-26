@@ -1,0 +1,51 @@
+###
+# @name Register
+POST {{url}}/register
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nir": "012457832032045",
+  "firstname": "Ronald",
+  "lastname": "TOLKIEN",
+  "email": "test@gmail.com",
+  "password": "azerty1234!",
+  "birthday": "2000-02-04",
+  "address_street": "39 rue des rosiers",
+  "town_code_insee": "11003",
+  "sex": 1,
+  "profile": 1
+}
+###
+# @name Login App
+POST {{url}}/login_app
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nir": "875543548",
+  "password": "test"
+}
+
+###
+# @name Login BO
+POST {{url}}/login_bo
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nir": "541397454",
+  "password": "test"
+}
+
+###
+# @name Login Stats
+POST {{url}}/login_stats
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nir": "541397454",
+  "password": "test"
+}
+
