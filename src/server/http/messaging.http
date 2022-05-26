@@ -1,0 +1,88 @@
+###
+# @name Get thread
+GET {{url}}/thread
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Add thread
+POST {{url}}/thread
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+{
+  "name": "Test",
+  "id_political_party": 3
+}
+
+###
+# @name Update thread
+PUT {{url}}/thread
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "THE_TEST",
+  "id_political_party": 3
+}
+
+###
+# @name Change main thread
+PATCH {{url}}/thread/2/main/3
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Delete thread
+DELETE {{url}}/thread/2
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Publish message
+POST {{url}}/thread/29/message
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: text/plain
+
+"Salut tout le monde !"
+
+
+###
+# @name Get messages
+GET {{url}}/thread/29/message
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Get members
+GET {{url}}/thread/29/member
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Join thread
+POST {{url}}/thread/29/join
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Left thread
+DELETE {{url}}/thread/29/left
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Mute/Unmute thread
+PATCH {{url}}/thread/29/mute/true
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json

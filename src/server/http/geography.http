@@ -1,0 +1,24 @@
+###
+# @name Get regions
+GET {{url}}/region
+Accept: application/json
+
+###
+# @name Get departments
+GET {{url}}/department
+Accept: application/json
+
+###
+# @name Get towns
+GET {{url}}/town
+Accept: application/json
+
+###
+# @name Get towns by department
+GET {{url}}/department/94/town
+Accept: application/json
+
+###
+# @name Get departments by region
+GET {{url}}/region/11/department
+Accept: application/json

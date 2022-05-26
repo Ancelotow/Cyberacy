@@ -1,0 +1,36 @@
+{
+  "name": "cyberacy",
+  "version": "1.0.0",
+  "description": "API for cyberacy",
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "dev": "nodemon --inspect .",
+    "swagger-autogen": "node swagger/swagger.mjs",
+    "start": "node ."
+  },
+  "author": "Cyberacy",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1143.0",
+    "axios": "^0.26.1",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "cron": "^1.8.2",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "formidable": "^2.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.4",
+    "pg": "^8.7.3",
+    "swagger-autogen": "^2.20.8",
+    "swagger-ui-express": "^4.3.0"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15"
+  }
+}

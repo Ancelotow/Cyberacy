@@ -1,0 +1,59 @@
+###
+# @name Get nb adherents by month
+GET {{url}}/statistics/political_party/adherent?sort=month
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get nb adherents by year
+GET {{url}}/statistics/political_party/adherent?sort=year
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get nb meeting by month
+GET {{url}}/statistics/political_party/meeting?sort=month
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get nb meeting by year
+GET {{url}}/statistics/political_party/meeting?sort=year
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get annual fee
+GET {{url}}/statistics/political_party/annual_fee
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get message by hour
+GET {{url}}/statistics/political_party/messages?sort=hour&date=2022-05-09
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get message by week
+GET {{url}}/statistics/political_party/messages?sort=week&year=2022
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get vote abstentions
+GET {{url}}/statistics/vote/abstention
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get vote participation
+GET {{url}}/statistics/vote/participation
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get vote results
+GET {{url}}/statistics/vote/results
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
