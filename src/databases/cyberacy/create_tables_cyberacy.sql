@@ -353,7 +353,7 @@ create table link_person_round
     vte_id        int                       not null,
     prs_nir       varchar(15)               not null,
     lpv_date_vote timestamp default (now()) not null,
-    constraint pk_linkpersonround primary key (vte_id, prs_nir),
+    constraint pk_linkpersonround primary key (vte_id, prs_nir, rnd_num),
     constraint fk_linkpersonround_round foreign key (vte_id, rnd_num) references round (vte_id, rnd_num),
     constraint fk_linkpersonround_person foreign key (prs_nir) references person (prs_nir)
 );
