@@ -113,7 +113,7 @@ const GetStatsParticipations = (id_type_vote = null) => {
             } else {
                 let res = (result.rows.length > 0) ? result.rows : null
                 for(let i = 0; i < res.length; i++){
-                    res[i].perc_abstention = parseFloat(res[i].perc_abstention)
+                    res[i].perc_participation = parseFloat(res[i].perc_participation)
                 }
                 resolve(res)
             }
