@@ -29,7 +29,13 @@ Accept: application/json
 Authorization: Bearer {{jwt_token}}
 
 ###
-# @name Get message
-GET {{url}}/statistics/political_party/messages?date=2022-05-09
+# @name Get message by hour
+GET {{url}}/statistics/political_party/messages?sort=hour&date=2022-05-09
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get message by week
+GET {{url}}/statistics/political_party/messages?sort=week&year=2022
 Accept: application/json
 Authorization: Bearer {{jwt_token}}

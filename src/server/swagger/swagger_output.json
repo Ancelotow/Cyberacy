@@ -1388,22 +1388,22 @@
         "description": "Récupération du nombre de message.",
         "parameters": [
           {
+            "name": "sort",
+            "in": "query",
+            "description": "Trier par heure (hour), par semaine (week)",
+            "type": "string"
+          },
+          {
             "name": "day",
             "in": "query",
             "description": "La date pour le tri",
             "type": "date"
           },
           {
-            "name": "sort",
+            "name": "year",
             "in": "query",
-            "description": "Trier par jour (day)",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "year",
-                "month"
-              ]
-            }
+            "description": "L'année pour le tri",
+            "type": "number"
           }
         ],
         "responses": {},

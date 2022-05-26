@@ -170,9 +170,9 @@ const GetAnnualFee = (nir) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetMessagesByDate = (nir, date) => {
+const GetMessagesByDate = (nir, date = new Date()) => {
     return new Promise(async (resolve, _) => {
-        if (!nir || !date) {
+        if (!nir) {
             resolve({status: 400, data: "Missing parameters."})
             return;
         }
@@ -182,24 +182,58 @@ const GetMessagesByDate = (nir, date) => {
                 resolve({status: 204, data: "You haven't join any political party or thread."})
                 return;
             }
-            const statsParty = groupBy(stats, function (n) {
-                return n.party_name;
-            });
-            const keys = Object.keys(statsParty);
-            let statsFilterThread = [];
-            let resultThread;
-            for (let i = 0; i < keys.length; i++) {
-                resultThread = groupBy(statsParty[keys[i]], function (n) {
-                    return n.thread_name;
-                });
-                statsFilterThread.push({name: keys[i], threads: resultThread})
-            }
-            resolve({status: 200, data: statsFilterThread})
+            resolve({status: 200, data: TransformResultThread(stats)})
         } catch (e) {
             console.error(e)
             resolve({status: 500, data: e})
         }
     });
+}
+
+/**
+ * Récupère le nombre de message pour chaque thread sur une date donnée
+ * @param nir Le NIR de l'utilisateur
+ * @param year L'année de la recherche'
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetMessagesByWeeks = (nir, year = new Date().getFullYear()) => {
+    return new Promise(async (resolve, _) => {
+        if (!nir) {
+            resolve({status: 400, data: "Missing parameters."})
+            return;
+        }
+        try {
+            let stats = await partyMod.GetNbMessageByWeeks(nir, year);
+            if (stats == null) {
+                resolve({status: 204, data: "You haven't join any political party or thread."})
+                return;
+            }
+            resolve({status: 200, data: TransformResultThread(stats)})
+        } catch (e) {
+            console.error(e)
+            resolve({status: 500, data: e})
+        }
+    });
+}
+
+function TransformResultThread(result) {
+    if(!result){
+        return null;
+    }
+    const statsParty = groupBy(result, function (n) {
+        return n.party_name;
+    });
+    const keys = Object.keys(statsParty);
+    let statsFilterThread = [];
+    let resultThread;
+    for (let i = 0; i < keys.length; i++) {
+        resultThread = groupBy(statsParty[keys[i]], function (n) {
+            return n.thread_name;
+        });
+        statsFilterThread.push({name: keys[i], threads: resultThread})
+    }
+    return statsFilterThread;
 }
 
 export default {
@@ -208,5 +242,6 @@ export default {
     GetNbMeetingByMonth,
     GetNbMeetingByYear,
     GetAnnualFee,
-    GetMessagesByDate
+    GetMessagesByDate,
+    GetMessagesByWeeks
 }

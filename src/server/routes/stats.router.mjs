@@ -22,10 +22,10 @@ routerStats.get("/statistics/political_party/adherent", async (req, res) => {
 
     } */
 
-    if(req.query.sort === "year"){
+    if (req.query.sort === "year") {
         const response = await statsCtrl.GetNbAdherentByYear(req.data.nir)
         res.status(response.status).send(response.data)
-    } else if (req.query.sort === "month"){
+    } else if (req.query.sort === "month") {
         const year = (req.query.year == null) ? new Date().getFullYear() : req.query.year
         const response = await statsCtrl.GetNbAdherentByMonth(req.data.nir, year)
         res.status(response.status).send(response.data)
@@ -53,10 +53,10 @@ routerStats.get("/statistics/political_party/meeting", async (req, res) => {
 
     } */
 
-    if(req.query.sort === "year"){
+    if (req.query.sort === "year") {
         const response = await statsCtrl.GetNbMeetingByYear(req.data.nir)
         res.status(response.status).send(response.data)
-    } else if (req.query.sort === "month"){
+    } else if (req.query.sort === "month") {
         const year = (req.query.year == null) ? new Date().getFullYear() : req.query.year
         const response = await statsCtrl.GetNbMeetingByMonth(req.data.nir, year)
         res.status(response.status).send(response.data)
@@ -75,24 +75,28 @@ routerStats.get("/statistics/political_party/annual_fee", async (req, res) => {
 });
 
 routerStats.get("/statistics/political_party/messages", async (req, res) => {
-    // #swagger.tags = ['Statistiques']
-    // #swagger.description = 'Récupération du nombre de message.'
-    // #swagger.security = [{ "Bearer": [] }]
-    /* #swagger.parameters['sort'] = {
-           in: 'query',
-           description: 'Trier par jour (day)',
-           schema: {
-                '@enum': ['day']
-            }
+    /*
+       #swagger.tags = ['Statistiques']
+       #swagger.description = 'Récupération du nombre de message.'
+       #swagger.security = [{ "Bearer": [] }]
+       #swagger.parameters['sort'] = {
+              in: 'query',
+              description: 'Trier par heure (hour), par semaine (week)'
+       }
+       #swagger.parameters['day'] = {in: 'query', description: 'La date pour le tri', type: 'date' }
+       #swagger.parameters['year'] = {in: 'query', description: 'L\'année pour le tri', type: 'number' }
+   */
 
-    } */
-    /*  #swagger.parameters['day'] = {
-           in: 'query',
-           description: 'La date pour le tri',
-           type: 'date'
-    } */
-
-    const response = await statsCtrl.GetMessagesByDate(req.data.nir, req.query.day)
+    let response;
+    if (req.query.sort === "hour") {
+        const day = (req.query.day == null) ? new Date() : req.query.day
+        response = await statsCtrl.GetMessagesByDate(req.data.nir, day)
+    } else if (req.query.sort === "week") {
+        const year = (req.query.year == null) ? new Date().getFullYear() : req.query.year
+        response = await statsCtrl.GetMessagesByWeeks(req.data.nir, year)
+    } else {
+        response = {status: 400, data: "The parameters \"sort\" is required"}
+    }
     res.status(response.status).send(response.data)
 });
 

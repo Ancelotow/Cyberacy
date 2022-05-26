@@ -233,7 +233,7 @@ $body$
     language plpgsql;
 
 
--- Récupère le nombre de message par jour sur un thread et une heure d'un jour donné
+-- Récupère le nombre de message par heure sur un thread et sur un jour donné
 create or replace function get_nb_message_by_hour(_date date, hour int, _thr_id message.thr_id%type)
     returns int
 as
@@ -248,6 +248,32 @@ begin
     where thr_id = _thr_id
       and msg_date_published::date = _date
       and extract(hour from msg_date_published) = hour;
+
+    if count is null then
+        count := 0;
+    end if;
+
+    return count;
+
+end;
+$body$
+    language plpgsql;
+
+-- Récupère le nombre de message par jour sur un thread et sur une semaine donné
+create or replace function get_nb_message_by_week(year int, week int, _thr_id message.thr_id%type)
+    returns int
+as
+$body$
+declare
+    count int;
+begin
+
+    select count(*)
+    into count
+    from message
+    where thr_id = _thr_id
+      and extract(week from '2022-05-09'::date) = week
+      and extract(year from '2022-05-09'::date) = year;
 
     if count is null then
         count := 0;

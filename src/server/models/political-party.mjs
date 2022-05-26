@@ -49,13 +49,22 @@ class StatsAnnualFee {
     annual_fee
 }
 
-class StatsMessage {
+class StatsMessageHour {
     id_political_party
     party_name
     thread_name
     id_thread
     nb_message
     hour
+}
+
+class StatsMessageWeek {
+    id_political_party
+    party_name
+    thread_name
+    id_thread
+    nb_message
+    week
 }
 
 /**
@@ -365,12 +374,37 @@ const GetNbMessageByDay = (nir, date) => {
     });
 }
 
+/**
+ * Récupère le nombre de message pour chaque thread sur une date donnée
+ * @param nir Le NIR de l'utilisateur
+ * @param year L'année de la recherche'
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetNbMessageByWeeks = (nir, year) => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT * FROM stats_messages_from_party_by_week($1, $2)',
+            values: [nir, year],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows : null
+                resolve(res)
+            }
+        });
+    });
+}
+
 export default {
     PoliticalParty,
     StatsAdherent,
     StatsMeeting,
     StatsAnnualFee,
-    StatsMessage,
+    StatsMessageHour,
+    StatsMessageWeek,
     Add,
     GetAll,
     Get,
@@ -382,5 +416,6 @@ export default {
     GetNbAdherent,
     GetNbMeeting,
     GetAnnualFee,
-    GetNbMessageByDay
+    GetNbMessageByDay,
+    GetNbMessageByWeeks
 }
