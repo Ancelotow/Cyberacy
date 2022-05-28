@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/position_input.dart';
+import '../models/enums/position_input.dart';
 
 class InputText extends StatefulWidget {
   final String placeholder;

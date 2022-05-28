@@ -1,8 +1,10 @@
-import 'package:bo_cyberacy/models/position_input.dart';
+import 'package:bo_cyberacy/models/enums/position_input.dart';
 import 'package:bo_cyberacy/widgets/button.dart';
 import 'package:bo_cyberacy/widgets/input_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+
+import '../models/session.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -58,7 +60,9 @@ class LoginPage extends StatelessWidget {
                 width: width,
                 pressedColor: Colors.lightBlue,
                 click: () {
-                  print("ok");
+                  if(passwordCtrl.text != null && loginController.text != null) {
+                    Session.openSession(loginController.text, passwordCtrl.text, context);
+                  }
                 },
               ),
             ],
@@ -67,4 +71,5 @@ class LoginPage extends StatelessWidget {
       ],
     );
   }
+
 }
