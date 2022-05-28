@@ -30,7 +30,6 @@ class Button extends StatefulWidget {
 }
 
 class _ButtonState extends State<Button> {
-
   double height = 45;
 
   @override
@@ -45,14 +44,16 @@ class _ButtonState extends State<Button> {
         onPointerUp: buttonPressedUp,
         child: GestureDetector(
           onTap: () {
-            if(widget.isEnable) {
+            if (widget.isEnable) {
               widget.click?.call();
             }
           },
           child: AnimatedContainer(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              color: (widget.isEnable) ? widget.currentColor : Theme.of(context).disabledColor,
+              color: (widget.isEnable)
+                  ? widget.currentColor
+                  : Theme.of(context).disabledColor,
             ),
             width: widget.currentWidth,
             height: height,
@@ -78,7 +79,7 @@ class _ButtonState extends State<Button> {
   }
 
   void buttonPressedDown(PointerDownEvent event) {
-    if(widget.isEnable) {
+    if (widget.isEnable) {
       setState(() {
         widget.currentWidth = widget.width - (widget.width * 0.10);
         widget.currentColor = widget.pressedColor;
@@ -88,7 +89,7 @@ class _ButtonState extends State<Button> {
   }
 
   void buttonPressedUp(PointerUpEvent event) {
-    if(widget.isEnable) {
+    if (widget.isEnable) {
       setState(() {
         widget.currentWidth = widget.width;
         widget.currentColor = widget.color;
@@ -96,5 +97,4 @@ class _ButtonState extends State<Button> {
       });
     }
   }
-
 }

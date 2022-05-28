@@ -13,34 +13,58 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = (kIsWeb) ? MediaQuery.of(context).size.width / 3 : 300;
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          InputText(
-            placeholder: "Numéro de sécurité social",
-            position: PositionInput.start,
-            controller: loginController,
-            width: width,
+    return Column(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Image.asset(
+                'assets/images/logo_white.png',
+                width: 300,
+              ),
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  "CYBERACY",
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+              )
+            ],
           ),
-          InputText(
-            placeholder: "Mot de passe",
-            position: PositionInput.end,
-            obscureText: true,
-            controller: passwordCtrl,
-            width: width,
+        ),
+        Expanded(
+          flex: 1,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              InputText(
+                placeholder: "Numéro de sécurité social",
+                position: PositionInput.start,
+                controller: loginController,
+                width: width,
+              ),
+              InputText(
+                placeholder: "Mot de passe",
+                position: PositionInput.end,
+                obscureText: true,
+                controller: passwordCtrl,
+                width: width,
+              ),
+              SizedBox(height: 20),
+              Button(
+                label: "Se connecter",
+                width: width,
+                pressedColor: Colors.lightBlue,
+                click: () {
+                  print("ok");
+                },
+              ),
+            ],
           ),
-          SizedBox(height: 20),
-          Button(
-            label: "Se connecter",
-            width: width,
-            pressedColor: Colors.lightBlue,
-            click: () {
-              print("ok");
-            },
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
