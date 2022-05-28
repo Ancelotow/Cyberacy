@@ -1,6 +1,5 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:bo_cyberacy/pages/login_page.dart';
+import 'package:bo_cyberacy/pages/navigation_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,12 +15,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Cyberacy',
       theme: ThemeData(
-        primaryColor: Color.fromARGB(255, 73, 150, 221),
-        backgroundColor: Color.fromARGB(255, 141, 142, 142),
-        disabledColor: Color.fromARGB(255, 210, 210, 210),
-        buttonColor: Color.fromARGB(255, 0, 0, 255),
-        hoverColor: Color.fromARGB(255, 112, 171, 225),
-        textTheme: TextTheme(
+
+        primaryColor: const Color.fromARGB(255, 73, 150, 221),
+        backgroundColor: const Color.fromARGB(255, 141, 142, 142),
+        disabledColor: const Color.fromARGB(255, 210, 210, 210),
+        buttonColor: const Color.fromARGB(255, 0, 0, 255),
+        hoverColor: const Color.fromARGB(255, 112, 171, 225),
+
+        textTheme: const TextTheme(
           headline1: TextStyle(
             color: Colors.white,
             fontFamily: "HK-Nova",
@@ -39,11 +40,16 @@ class MyApp extends StatelessWidget {
               fontSize: 14
           ),
         ),
-        inputDecorationTheme: InputDecorationTheme(
+        inputDecorationTheme: const InputDecorationTheme(
           filled: true,
           contentPadding: EdgeInsets.all(8.00)
         ),
       ),
+
+      routes: {
+          NavigationPage.routeName: (BuildContext context) => const NavigationPage(),
+       },
+
       home: const HomePage(),
     );
   }

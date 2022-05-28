@@ -50,7 +50,7 @@ class _ButtonState extends State<Button> {
           },
           child: AnimatedContainer(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
               color: (widget.isEnable)
                   ? widget.currentColor
                   : Theme.of(context).disabledColor,

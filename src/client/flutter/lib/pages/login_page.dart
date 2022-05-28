@@ -1,23 +1,26 @@
 import 'package:bo_cyberacy/models/enums/position_input.dart';
+import 'package:bo_cyberacy/pages/navigation_page.dart';
 import 'package:bo_cyberacy/widgets/button.dart';
 import 'package:bo_cyberacy/widgets/input_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-
 import '../models/errors/api_service_error.dart';
 import '../models/session.dart';
 
 class LoginPage extends StatelessWidget {
+  static const String routeName = "login";
+
   LoginPage({Key? key}) : super(key: key);
 
-  TextEditingController loginController = new TextEditingController();
-  TextEditingController passwordCtrl = new TextEditingController();
+  TextEditingController loginController = TextEditingController();
+  TextEditingController passwordCtrl = TextEditingController();
   BuildContext? currentContext;
 
   @override
   Widget build(BuildContext context) {
     currentContext = context;
-    double width = (kIsWeb) ? MediaQuery.of(context).size.width / 3 : 300;
+    double width = MediaQuery.of(context).size.width / 3;
+    if(width < 300) width = 300;
     return Column(
       children: [
         Column(
@@ -28,7 +31,7 @@ class LoginPage extends StatelessWidget {
               width: 300,
             ),
             Padding(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               child: Text(
                 "CYBERACY",
                 style: Theme.of(context).textTheme.headline1,
@@ -52,7 +55,7 @@ class LoginPage extends StatelessWidget {
               controller: passwordCtrl,
               width: width,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Button(
               label: "Se connecter",
               width: width,
@@ -69,6 +72,7 @@ class LoginPage extends StatelessWidget {
     if (passwordCtrl.text.isNotEmpty && loginController.text.isNotEmpty) {
       try {
         await Session.openSession(loginController.text, passwordCtrl.text);
+        Navigator.of(currentContext!).pushNamed(NavigationPage.routeName);
       } on ApiServiceError catch (e) {
         if (e.responseHttp.statusCode == 401 && currentContext != null) {
           _showAlertError(
@@ -78,6 +82,12 @@ class LoginPage extends StatelessWidget {
           );
         }
       }
+    } else {
+      _showAlertError(
+          title: "Formulaire incomplet",
+          message: "Veuillez renseignez votre identifiants et votre mot de passe.",
+          labelButton: "Réssayer"
+      );
     }
   }
 

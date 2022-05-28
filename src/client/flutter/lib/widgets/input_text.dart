@@ -11,7 +11,7 @@ class InputText extends StatefulWidget {
   final double? width;
   final TextEditingController? controller;
 
-  InputText({Key? key,
+  const InputText({Key? key,
     required this.placeholder,
     this.obscureText = false,
     this.isReadOnly = false,
@@ -72,7 +72,7 @@ class _InputTextState extends State<InputText> {
   BorderRadius getBorderRadius() {
     switch (widget.position) {
       case PositionInput.middle:
-        return BorderRadius.all(Radius.circular(0));
+        return const BorderRadius.all(Radius.circular(0));
 
       case PositionInput.start:
         return BorderRadius.only(
