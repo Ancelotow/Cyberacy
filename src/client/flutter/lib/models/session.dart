@@ -1,5 +1,5 @@
 import 'package:bo_cyberacy/models/services/auth_service.dart';
-import 'package:flutter/material.dart';
+import 'errors/api_service_error.dart';
 
 class Session {
 
@@ -8,13 +8,13 @@ class Session {
 
   Session._(this.jwtToken);
 
-  static void openSession(String nir, String pwd, BuildContext context) async {
+  static Future<void> openSession(String nir, String pwd) async {
     if(Session._instance == null) {
       try {
-        var token = await AuthService(context).login(nir, pwd);
+        var token = await AuthService().login(nir, pwd);
         Session._instance = Session._(token);
-      } catch(e) {
-        throw Future.error(e);
+      } on ApiServiceError {
+        rethrow;
       }
     }
   }

@@ -1,13 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../errors/api_service_error.dart';
 import '../session.dart';
 
 abstract class ApiService {
   final String apiUrl = "cyberacy.herokuapp.com";
-  BuildContext context;
-
-  ApiService(this.context);
 
   Map<String, String>? _getHeaders({bool auth = false}) {
     Map<String, String>? headers;
@@ -32,8 +29,7 @@ abstract class ApiService {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return response.body as T;
     } else {
-      _analyzeError(response);
-      throw Future.error(response);
+      throw ApiServiceError(response);
     }
   }
 
@@ -45,41 +41,8 @@ abstract class ApiService {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return response as T;
     } else {
-      _analyzeError(response);
-      throw Future.error(response);
+      throw ApiServiceError(response);
     }
   }
 
-  /// Analyse response error
-  void _analyzeError(http.Response response) {
-    if (response.statusCode == 401) {
-      _showAlertError("Non authorisé", response.body);
-    } else if (response.statusCode == 403) {
-      _showAlertError("Interdit", response.body);
-    } else if (response.statusCode == 400) {
-      _showAlertError("Erreur requêtes", response.body);
-    } else if (response.statusCode >= 500) {
-      _showAlertError("Erreur serveur", response.body);
-    }
-  }
-
-  /// Error alert dialogue
-  void _showAlertError(String title, String message) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          FlatButton(
-            child: Text("Ok"),
-            onPressed: () {
-              Navigator.pop(_);
-            },
-          )
-        ],
-        elevation: 30.00,
-      ),
-    );
-  }
 }
