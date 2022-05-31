@@ -3,7 +3,6 @@ import 'package:bo_cyberacy/pages/navigation_page.dart';
 import 'package:bo_cyberacy/widgets/button.dart';
 import 'package:bo_cyberacy/widgets/input_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import '../models/errors/api_service_error.dart';
 import '../models/session.dart';
 

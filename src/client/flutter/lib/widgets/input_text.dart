@@ -7,6 +7,7 @@ class InputText extends StatefulWidget {
   final String? value;
   final bool obscureText;
   final bool isReadOnly;
+  final TextInputType type;
   final double? height;
   final double? width;
   final TextEditingController? controller;
@@ -19,6 +20,7 @@ class InputText extends StatefulWidget {
     this.controller,
     this.width,
     this.height,
+    this.type = TextInputType.text,
     this.position = PositionInput.middle})
       : super(key: key);
 
@@ -39,6 +41,7 @@ class _InputTextState extends State<InputText> {
       child: FocusScope(
         onFocusChange: focusChanged,
         child: TextField(
+          keyboardType: widget.type,
           controller: widget.controller,
           readOnly: widget.isReadOnly,
           obscureText: widget.obscureText,

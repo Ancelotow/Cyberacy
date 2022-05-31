@@ -1,0 +1,3 @@
+enum OrientationNavBar {
+  horizontal, vertical
+}
