@@ -18,19 +18,28 @@ class NavigationPage extends StatelessWidget {
           NavBar(
             orientation: OrientationNavBar.horizontal,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             color: Theme.of(context).primaryColorDark,
             items: [
               NavBarItem(
-                icon: Icons.ac_unit_rounded,
-                label: "Snow",
-                onTap: () {
-                  print("object");
-                },
+                icon: Icons.group,
+                label: "Partis politiques",
               ),
               NavBarItem(
-                icon: Icons.access_alarm,
-                label: "Alarm",
+                icon: Icons.flag,
+                label: "Manifestations",
+              ),
+              NavBarItem(
+                icon: Icons.how_to_vote,
+                label: "Votes",
+              ),
+              NavBarItem(
+                icon: Icons.person,
+                label: "Utilisateurs",
+              ),
+              NavBarItem(
+                icon: Icons.account_circle,
+                label: "Mon compte",
               )
             ],
           )
