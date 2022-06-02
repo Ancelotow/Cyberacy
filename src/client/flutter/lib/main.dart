@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 
         primaryColor: const Color.fromARGB(255, 73, 150, 221),
-        backgroundColor: const Color.fromARGB(255, 141, 142, 142),
+        backgroundColor: const Color.fromARGB(255, 28, 36, 61),
         disabledColor: const Color.fromARGB(255, 210, 210, 210),
         buttonColor: const Color.fromARGB(255, 0, 0, 255),
         hoverColor: const Color.fromARGB(255, 112, 171, 225),
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
       ),
 
       routes: {
-          NavigationPage.routeName: (BuildContext context) => const NavigationPage(),
+          NavigationPage.routeName: (BuildContext context) => NavigationPage(),
        },
 
       home: const HomePage(),

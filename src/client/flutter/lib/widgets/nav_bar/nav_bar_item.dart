@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class NavBarItem {
   final IconData icon;
   final String label;
-  Function()? onTap;
+  Function(int)? onTap;
 
   NavBarItem({
     Key? key,
