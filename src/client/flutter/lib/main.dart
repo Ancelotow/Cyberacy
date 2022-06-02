@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
         disabledColor: const Color.fromARGB(255, 210, 210, 210),
         buttonColor: const Color.fromARGB(255, 0, 0, 255),
         hoverColor: const Color.fromARGB(255, 112, 171, 225),
+        accentColor: const Color.fromARGB(255, 32, 255, 0),
 
         textTheme: const TextTheme(
           headline1: TextStyle(

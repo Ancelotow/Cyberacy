@@ -32,7 +32,7 @@ class _NavigationPageState extends State<NavigationPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             color: Theme.of(context).buttonColor,
             colorUnselected: Colors.white,
-            colorSelected: Colors.blue,
+            colorSelected: Theme.of(context).accentColor,
             indexSelected: currentIndex,
             items: [
               NavBarItem(
