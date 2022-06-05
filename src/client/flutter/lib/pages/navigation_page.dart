@@ -25,7 +25,9 @@ class _NavigationPageState extends State<NavigationPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          currentPage,
           NavBar(
             orientation: OrientationNavBar.horizontal,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -62,7 +64,6 @@ class _NavigationPageState extends State<NavigationPage> {
               )
             ],
           ),
-          currentPage,
         ],
       ),
     );

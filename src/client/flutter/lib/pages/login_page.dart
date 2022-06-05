@@ -1,6 +1,6 @@
 import 'package:bo_cyberacy/models/enums/position_input.dart';
 import 'package:bo_cyberacy/pages/navigation_page.dart';
-import 'package:bo_cyberacy/widgets/button.dart';
+import 'package:bo_cyberacy/widgets/buttons/button.dart';
 import 'package:bo_cyberacy/widgets/input_text.dart';
 import 'package:flutter/material.dart';
 import '../models/errors/api_service_error.dart';

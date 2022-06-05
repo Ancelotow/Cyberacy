@@ -30,16 +30,28 @@ class MyApp extends StatelessWidget {
             fontSize: 35,
             fontWeight: FontWeight.bold,
           ),
+          headline2: TextStyle(
+              color: Colors.black,
+              fontFamily: "HK-Nova",
+              fontSize: 28
+          ),
+          headline3: TextStyle(
+              color: Color.fromARGB(171, 0, 0, 0),
+              fontFamily: "HK-Nova",
+              fontSize: 20,
+          ),
           bodyText1: TextStyle(
             color: Colors.black,
             fontFamily: "HK-Nova",
             fontSize: 14
           ),
+
           button: TextStyle(
               color: Colors.white,
               fontFamily: "HK-Nova",
               fontSize: 14
           ),
+
         ),
         inputDecorationTheme: const InputDecorationTheme(
           filled: true,
