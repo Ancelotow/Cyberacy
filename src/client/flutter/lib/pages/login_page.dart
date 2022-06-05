@@ -70,7 +70,7 @@ class LoginPage extends StatelessWidget {
   void _getConnection() async {
     if (passwordCtrl.text.isNotEmpty && loginController.text.isNotEmpty) {
       try {
-        await Session.openSession(loginController.text, passwordCtrl.text);
+        await Session.initToken(loginController.text, passwordCtrl.text);
         Navigator.of(currentContext!).pushNamed(NavigationPage.routeName);
       } on ApiServiceError catch (e) {
         if (e.responseHttp.statusCode == 401 && currentContext != null) {

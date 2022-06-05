@@ -3,10 +3,11 @@ import '../session.dart';
 abstract class ApiService {
   final String apiUrl = "cyberacy.herokuapp.com";
 
-  Map<String, String>? getHeaders({bool auth = false}) {
+  Future<Map<String, String>?> getHeaders({bool auth = false}) async {
     Map<String, String>? headers;
-    if (auth && Session.getInstance() != null) {
-      headers = {"Authorization": 'Bearer ${Session.getInstance()!.jwtToken}'};
+    String? token = await Session.getToken();
+    if (auth && token != null) {
+      headers = {"Authorization": 'Bearer ${token}'};
     }
     return headers;
   }

@@ -1,26 +1,21 @@
 import 'package:bo_cyberacy/models/services/auth_service.dart';
-import 'errors/api_service_error.dart';
+import 'package:hive/hive.dart';
 
 class Session {
 
-  static Session? _instance;
-  String jwtToken;
+  static const String _idHiveToken = "JWTToken";
 
-  Session._(this.jwtToken);
-
-  static Future<void> openSession(String nir, String pwd) async {
-    if(Session._instance == null) {
-      try {
-        var token = await AuthService().login(nir, pwd);
-        Session._instance = Session._(token);
-      } on ApiServiceError {
-        rethrow;
-      }
+  static Future<void> initToken(String nir, String pwd) async {
+    Box<String> box = await Hive.openBox("loginBox");
+    if(box.isEmpty || box.get(_idHiveToken) == null) {
+      var token = await AuthService().login(nir, pwd);
+      box.put(_idHiveToken, token);
     }
   }
 
-  static Session? getInstance() {
-    return Session._instance;
+  static Future<String?> getToken() async {
+    Box<String> box = await Hive.openBox("loginBox");
+    return box.get(_idHiveToken);
   }
 
 }

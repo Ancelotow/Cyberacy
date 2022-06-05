@@ -7,7 +7,7 @@ class AuthService extends ApiService {
 
   Future<String> login(String login, String pwd) async {
     var response = await http.post(getUrl("login_bo", null),
-        headers: getHeaders(auth: false),
+        headers: await getHeaders(auth: false),
         body: {"nir": login, "password": pwd});
     if (response.statusCode == 200) {
       return response.body;
