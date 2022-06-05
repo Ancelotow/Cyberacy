@@ -1,5 +1,6 @@
 import 'package:bo_cyberacy/pages/login_page.dart';
 import 'package:bo_cyberacy/pages/navigation_page.dart';
+import 'package:bo_cyberacy/pages/party/info_party_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -53,14 +54,15 @@ class MyApp extends StatelessWidget {
           ),
 
         ),
-        inputDecorationTheme: const InputDecorationTheme(
+        inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          contentPadding: EdgeInsets.all(8.00)
+          contentPadding: EdgeInsets.all(8.00),
         ),
       ),
 
       routes: {
           NavigationPage.routeName: (BuildContext context) => NavigationPage(),
+          InfoPartyPage.routeName: (BuildContext context) => InfoPartyPage(),
        },
 
       home: const HomePage(),

@@ -2,6 +2,7 @@
 
 import 'package:bo_cyberacy/models/entities/political_party.dart';
 import 'package:bo_cyberacy/models/services/party_service.dart';
+import 'package:bo_cyberacy/pages/party/info_party_page.dart';
 import 'package:bo_cyberacy/widgets/buttons/button_card.dart';
 import 'package:bo_cyberacy/widgets/card_party.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,7 @@ class PartyPage extends StatelessWidget {
       icon: Icons.add_circle_outline,
       label: "Ajouter",
       color: Colors.greenAccent,
+      onTap: () => Navigator.of(context).pushNamed(InfoPartyPage.routeName),
     ));
     if (parties != null) {
       cards.addAll(parties.map((e) => CardParty(party: e)).toList());

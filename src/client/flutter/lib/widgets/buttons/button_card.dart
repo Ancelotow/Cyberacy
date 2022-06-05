@@ -24,8 +24,6 @@ class ButtonCard extends StatefulWidget {
 }
 
 class _ButtonCardState extends State<ButtonCard> {
-
-
   @override
   Widget build(BuildContext context) {
     widget.color ??= Theme.of(context).primaryColor;
@@ -41,14 +39,15 @@ class _ButtonCardState extends State<ButtonCard> {
           width: 500,
           height: 100,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              color: widget.colorCard,
-              border: Border(
-                top: BorderSide(width: 1.0, color: widget.color!),
-                left: BorderSide(width: 1.0, color: widget.color!),
-                right: BorderSide(width: 1.0, color: widget.color!),
-                bottom: BorderSide(width: 1.0, color: widget.color!),
-              )),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            color: widget.colorCard,
+            border: Border(
+              top: BorderSide(width: 1.0, color: widget.color!),
+              left: BorderSide(width: 1.0, color: widget.color!),
+              right: BorderSide(width: 1.0, color: widget.color!),
+              bottom: BorderSide(width: 1.0, color: widget.color!),
+            ),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -88,5 +87,4 @@ class _ButtonCardState extends State<ButtonCard> {
       widget.colorText = widget.color;
     });
   }
-
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/enums/position_input.dart';
+import '../../models/enums/position_input.dart';
 
 class InputText extends StatefulWidget {
   final String placeholder;
@@ -38,34 +38,32 @@ class _InputTextState extends State<InputText> {
     return Container(
       height: widget.height,
       width: widget.width,
-      child: FocusScope(
-        onFocusChange: focusChanged,
-        child: TextField(
-          keyboardType: widget.type,
-          controller: widget.controller,
-          readOnly: widget.isReadOnly,
-          obscureText: widget.obscureText,
-          style: Theme
+      child: TextField(
+        keyboardType: widget.type,
+        controller: widget.controller,
+        readOnly: widget.isReadOnly,
+        obscureText: widget.obscureText,
+        style: Theme
+            .of(context)
+            .textTheme
+            .bodyText1,
+        decoration: InputDecoration(
+          fillColor: (widget.isReadOnly)
+              ? Theme
               .of(context)
-              .textTheme
-              .bodyText1,
-          decoration: InputDecoration(
-            fillColor: (widget.isReadOnly)
-                ? Theme
+              .disabledColor
+              : Colors.white,
+          floatingLabelBehavior: labelBehavior,
+          labelText: widget.placeholder,
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Theme
                 .of(context)
-                .disabledColor
-                : Colors.white,
-            floatingLabelBehavior: labelBehavior,
-            labelText: widget.placeholder,
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Theme
-                  .of(context)
-                  .primaryColor),
+                .primaryColor),
+            borderRadius: getBorderRadius(),
+          ),
+          enabledBorder: UnderlineInputBorder(
               borderRadius: getBorderRadius(),
-            ),
-            enabledBorder: UnderlineInputBorder(
-              borderRadius: getBorderRadius(),
-            ),
+              borderSide: BorderSide(width: 0.5, color: Colors.grey)
           ),
         ),
       ),
@@ -89,15 +87,5 @@ class _InputTextState extends State<InputText> {
     }
   }
 
-  void focusChanged(isFocus) {
-    setState(() {
-      if (widget.isReadOnly) {
-        FocusScope.of(context).unfocus();
-      } else {
-        labelBehavior = (isFocus)
-            ? FloatingLabelBehavior.never
-            : FloatingLabelBehavior.auto;
-      }
-    });
-  }
+
 }
