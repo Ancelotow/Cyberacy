@@ -34,13 +34,13 @@ class NavBar extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: getBody(
           context: context,
-          children: getItems(),
+          children: getItems(context),
         ),
       ),
     );
   }
 
-  List<Widget> getItems() {
+  List<Widget> getItems(BuildContext context) {
     List<Widget> listItems = [];
     Color color;
     itemSelected = items[indexSelected];
@@ -54,23 +54,26 @@ class NavBar extends StatelessWidget {
   }
 
   Widget buildItem(NavBarItem item, Color color) {
-    return GestureDetector(
-      onTap: () {
-        if (itemSelected != item) {
-          item.onTap?.call(items.indexOf(item));
-        }
-      },
-      child: Column(
-        children: [
-          Icon(
-            item.icon,
-            color: color,
-          ),
-          Text(
-            item.label,
-            style: TextStyle(color: color),
-          )
-        ],
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          if (itemSelected != item) {
+            item.onTap?.call(items.indexOf(item));
+          }
+        },
+        child: Column(
+          children: [
+            Icon(
+              item.icon,
+              color: color,
+            ),
+            Text(
+              item.label,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: color),
+            )
+          ],
+        ),
       ),
     );
   }
