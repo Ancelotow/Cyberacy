@@ -78,14 +78,14 @@ Content-Type: application/json
 
 ###
 # @name Get steps from manifestation
-GET {{url}}/manifestation/step/3
+GET {{url}}/manifestation/9/step
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 ###
 # @name Delete step of manifestation
-DELETE {{url}}/manifestation/step/2
+DELETE {{url}}/manifestation/9/step
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 Content-Type: application/json

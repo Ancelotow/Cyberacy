@@ -67,8 +67,16 @@ const AbortedManifestation = (id, reason) => {
  */
 const GetAllManifestations = (includeAborted = false, nir = null) => {
     return new Promise((resolve, _) => {
-        manifestation.Get(includeAborted, nir).then((res) => {
+        manifestation.Get(includeAborted, nir).then(async (res) => {
             const code = (res) ? 200 : 204;
+            if (code === 200) {
+                for (let i = 0; i < res.length; i++) {
+                    let resStep = await GetSteps(res[i].id);
+                    res[i].steps = (resStep.status === 200) ? resStep.data : [];
+                    let resOpt = await GetOptions(res[i].id);
+                    res[i].options = (resOpt.status === 200) ? resOpt.data : [];
+                }
+            }
             resolve({status: code, data: res})
         }).catch((e) => {
             if(e.code === '23503') resolve({status: 400, data: e.message})
@@ -115,12 +123,6 @@ const GetOptions = (id_manifestation) => {
         } else {
             option.GetAll(id_manifestation).then((res) => {
                 const code = (res) ? 200 : 204;
-                if(code === 200) {
-                    for(let i = 0; i < res.length; i++){
-                        res[i].steps = GetSteps(res[i]);
-                        res[i].options = GetOptions(res[i]);
-                    }
-                }
                 resolve({status: code, data: res})
             }).catch((e) => {
                 if(e.code === '23503') resolve({status: 400, data: e.message})
