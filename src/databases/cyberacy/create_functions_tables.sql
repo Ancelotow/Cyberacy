@@ -542,6 +542,7 @@ end;
 $filter$
     language plpgsql;
 
+
 -- Statistiques pour les parties politiques (nb meeting)
 create or replace function stats_meeting_from_party(_nir adherent.prs_nir%type,
                                                     _year int default extract(year from now()))
@@ -574,6 +575,7 @@ begin
 end;
 $filter$
     language plpgsql;
+
 
 -- Statistiques pour les parties politiques (cotisation annuelles)
 create or replace function stats_fee_from_party(_nir adherent.prs_nir%type)
@@ -792,6 +794,44 @@ begin
         where (rnd.vte_id = _tve_id or _tve_id is null)
           and (vte.tvo_id = _tvo_id or _tvo_id is null)
         order by rnd_date_start desc, perc_without_abstention desc;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table step
+create or replace function filter_step(_man_id step.man_id%type default null)
+    returns table
+            (
+                id               step.stp_id%type,
+                address_street   step.stp_address_street%type,
+                town_code_insee  step.twn_code_insee%type,
+                town_name        town.twn_name%type,
+                id_manifestation step.man_id%type,
+                longitude        step.stp_longitude%type,
+                latitude         step.stp_latitude%type,
+                id_step_type     step.tst_id%type,
+                date_arrived     step.stp_date_arrived%type
+            )
+as
+$filter$
+begin
+    return query
+        select stp.stp_id             as id,
+               stp.stp_address_street as address_street,
+               stp.twn_code_insee     as town_code_insee,
+               twn.twn_name           as town_name,
+               stp.man_id             as id_manifestation,
+               stp.stp_longitude      as longitude,
+               stp.stp_latitude       as latitude,
+               stp.tst_id             as id_step_type,
+               stp.stp_date_arrived   as date_arrived
+        from step stp
+                 left join town twn on stp.twn_code_insee = twn.twn_code_insee
+        where man_id = _man_id
+           or _man_id is null
+        and stp.stp_is_delete = false
+        order by date_arrived;
 end;
 $filter$
     language plpgsql;

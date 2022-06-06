@@ -1610,7 +1610,7 @@
       "properties": {
         "address_street": {
           "type": "string",
-          "example": "23 avenue du Générale De Gaulle"
+          "example": "6 parvis de Notre-Dame - Pl. Jean-Paul II"
         },
         "date_arrived": {
           "type": "string",
@@ -1626,7 +1626,15 @@
         },
         "town_code_insee": {
           "type": "string",
-          "example": "11003"
+          "example": "75104"
+        },
+        "latitude": {
+          "type": "number",
+          "example": 48.8535738
+        },
+        "longitude": {
+          "type": "number",
+          "example": 2.3514893
         }
       }
     },

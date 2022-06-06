@@ -154,6 +154,8 @@ create table step
     stp_address_street varchar(250)            not null,
     stp_date_arrived   timestamp               not null,
     stp_is_delete      boolean default (false) not null,
+    stp_latitude       decimal,
+    stp_longitude      decimal,
     twn_code_insee     varchar(15)             not null,
     tst_id             int                     not null,
     man_id             int                     not null,

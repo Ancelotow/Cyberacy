@@ -39,11 +39,13 @@ export default  {
     },
 
     AddStepManifestation: {
-        address_street : "23 avenue du Générale De Gaulle",
+        address_street : "6 parvis de Notre-Dame - Pl. Jean-Paul II",
         date_arrived: "2019-10-02 08:10",
         id_manifestation: 1,
         id_step_type: 1,
-        town_code_insee: "11003"
+        town_code_insee: "75104",
+        latitude: 48.8535738,
+        longitude: 2.3514893
     },
 
     AddVote: {
