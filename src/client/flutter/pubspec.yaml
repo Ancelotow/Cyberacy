@@ -14,7 +14,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.4
   hive: ^2.2.1
-  google_maps_flutter: ^2.1.7
+  flutter_map: ^0.14.0
+  latlong2: ^0.8.1
 
 
 

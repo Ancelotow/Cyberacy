@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
-import '../models/entities/political_party.dart';
+import '../../models/entities/political_party.dart';
 
 class CardParty extends StatelessWidget {
-  PoliticalParty party;
+  final PoliticalParty party;
+  final double width;
+  final double height;
 
-  CardParty({Key? key, required this.party}) : super(key: key);
+  CardParty({
+    Key? key,
+    required this.party,
+    required this.width,
+    required this.height,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     String name = (party.name == null) ? "- NONE -" : party.name!;
     return Container(
-      width: 500,
-      height: 100,
+      width: width,
+      height: height,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
         color: Colors.greenAccent,
@@ -25,7 +32,7 @@ class CardParty extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: 450,
+                  width: width - (width * 0.10),
                   child: Text(
                     name,
                     maxLines: 2,

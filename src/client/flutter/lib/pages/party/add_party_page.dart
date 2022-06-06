@@ -11,7 +11,7 @@ import '../../models/errors/api_service_error.dart';
 import '../../widgets/buttons/button.dart';
 import '../../widgets/input_field/input_text.dart';
 
-class InfoPartyPage extends StatelessWidget {
+class AddPartyPage extends StatelessWidget {
   static const String routeName = "infoPartyPage";
 
   final TextEditingController ctrlName = TextEditingController();
@@ -26,7 +26,7 @@ class InfoPartyPage extends StatelessWidget {
   Town? currentTown;
   PoliticalEdge? currentEdge;
 
-  InfoPartyPage({Key? key}) : super(key: key);
+  AddPartyPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +44,7 @@ class InfoPartyPage extends StatelessWidget {
                 "Nouveau parti politique",
                 style: Theme.of(context).textTheme.headline1,
               ),
-              SizedBox(
-                height: 50,
-              ),
+              SizedBox(height: 50),
               InputText(
                 placeholder: "SIREN",
                 position: PositionInput.start,
@@ -84,18 +82,14 @@ class InfoPartyPage extends StatelessWidget {
                 controller: ctrlUrlLogo,
               ),
               _getSelectEdge(context, width),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               Button(
                 label: "Sauvegarder",
                 width: width,
                 pressedColor: Colors.lightBlue,
                 click: () => _saveParty(context),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               Button(
                   label: "Annuler",
                   width: width,
@@ -167,15 +161,15 @@ class InfoPartyPage extends StatelessWidget {
   }
 
   void _formIsValid() {
-    if(ctrlObject.text.isEmpty) {
+    if (ctrlObject.text.isEmpty) {
       throw InvalidFormError("Le champ \"Objet\" est obligatoire");
-    } else if(ctrlSiren.text.isEmpty) {
+    } else if (ctrlSiren.text.isEmpty) {
       throw InvalidFormError("Le champ \"SIREN\" est obligatoire");
-    } else if(ctrlNir.text.isEmpty) {
+    } else if (ctrlNir.text.isEmpty) {
       throw InvalidFormError("Le champ \"NIR du fondateur\" est obligatoire");
-    } else if(ctrlUrlLogo.text.isEmpty) {
+    } else if (ctrlUrlLogo.text.isEmpty) {
       throw InvalidFormError("Le champ \"URL Logo\" est obligatoire");
-    } else if(currentEdge == null) {
+    } else if (currentEdge == null) {
       throw InvalidFormError("Le champ \"Bord politique\" est obligatoire");
     }
   }

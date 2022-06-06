@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:bo_cyberacy/models/entities/department.dart';
 import 'package:bo_cyberacy/models/entities/town.dart';
 import 'package:bo_cyberacy/models/services/api_service.dart';

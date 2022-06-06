@@ -2,12 +2,15 @@
 
 import 'package:bo_cyberacy/models/entities/political_party.dart';
 import 'package:bo_cyberacy/models/services/party_service.dart';
-import 'package:bo_cyberacy/pages/party/info_party_page.dart';
+import 'package:bo_cyberacy/pages/party/add_party_page.dart';
 import 'package:bo_cyberacy/widgets/buttons/button_card.dart';
-import 'package:bo_cyberacy/widgets/card_party.dart';
+import 'package:bo_cyberacy/widgets/cards/card_party.dart';
 import 'package:flutter/material.dart';
 
 class PartyPage extends StatelessWidget {
+  final double _widthCard = 500;
+  final double _heightCard = 120;
+
   const PartyPage({Key? key}) : super(key: key);
 
   @override
@@ -19,28 +22,35 @@ class PartyPage extends StatelessWidget {
         builder: (BuildContext context,
             AsyncSnapshot<List<PoliticalParty>> snapshot) {
           if (snapshot.hasData) {
-            return getListParty(snapshot.data, context);
+            return _getListParty(snapshot.data, context);
           } else if (snapshot.hasError) {
-            return getPartyError();
+            return _getPartyError();
           } else {
-            return getPartyLoader(context);
+            return _getPartyLoader(context);
           }
         },
       ),
     );
   }
 
-  Widget getListParty(List<PoliticalParty>? parties, BuildContext context) {
+  Widget _getListParty(List<PoliticalParty>? parties, BuildContext context) {
     List<Widget> cards = [];
     cards.add(ButtonCard(
       icon: Icons.add_circle_outline,
       label: "Ajouter",
-      width: 500,
+      width: _widthCard,
+      height: _heightCard,
       color: Colors.greenAccent,
-      onTap: () => Navigator.of(context).pushNamed(InfoPartyPage.routeName),
+      onTap: () => Navigator.of(context).pushNamed(AddPartyPage.routeName),
     ));
     if (parties != null) {
-      cards.addAll(parties.map((e) => CardParty(party: e)).toList());
+      cards.addAll(parties
+          .map((e) => CardParty(
+                party: e,
+                width: _widthCard,
+                height: _heightCard,
+              ))
+          .toList());
     }
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -54,7 +64,7 @@ class PartyPage extends StatelessWidget {
     );
   }
 
-  Widget getPartyLoader(BuildContext context) {
+  Widget _getPartyLoader(BuildContext context) {
     return SizedBox(
       width: 60,
       height: 60,
@@ -64,7 +74,7 @@ class PartyPage extends StatelessWidget {
     );
   }
 
-  Widget getPartyError() {
+  Widget _getPartyError() {
     return Icon(
       Icons.error_outline,
       color: Colors.red,

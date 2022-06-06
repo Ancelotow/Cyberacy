@@ -30,6 +30,7 @@ class NavBar extends StatelessWidget {
     color ??= Theme.of(context).primaryColor;
     return Container(
       color: color,
+      height: 76,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: getBody(
@@ -62,6 +63,8 @@ class NavBar extends StatelessWidget {
           }
         },
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               item.icon,
@@ -69,6 +72,7 @@ class NavBar extends StatelessWidget {
             ),
             Text(
               item.label,
+              maxLines: 2,
               textAlign: TextAlign.center,
               style: TextStyle(color: color),
             )

@@ -25,45 +25,47 @@ class _NavigationPageState extends State<NavigationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Stack(
         children: [
           currentPage,
-          NavBar(
-            orientation: OrientationNavBar.horizontal,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            color: Theme.of(context).buttonColor,
-            colorUnselected: Colors.white,
-            colorSelected: Theme.of(context).accentColor,
-            indexSelected: currentIndex,
-            items: [
-              NavBarItem(
-                icon: Icons.group,
-                label: "Partis politiques",
-                onTap: click,
-              ),
-              NavBarItem(
-                icon: Icons.flag,
-                label: "Manifestations",
-                onTap: click,
-              ),
-              NavBarItem(
-                icon: Icons.how_to_vote,
-                label: "Votes",
-                onTap: click,
-              ),
-              NavBarItem(
-                icon: Icons.person,
-                label: "Utilisateurs",
-                onTap: click,
-              ),
-              NavBarItem(
-                icon: Icons.account_circle,
-                label: "Mon compte",
-                onTap: click,
-              )
-            ],
+          Align(
+            alignment: FractionalOffset.bottomCenter,
+            child: NavBar(
+              orientation: OrientationNavBar.horizontal,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              color: Theme.of(context).buttonColor,
+              colorUnselected: Colors.white,
+              colorSelected: Theme.of(context).accentColor,
+              indexSelected: currentIndex,
+              items: [
+                NavBarItem(
+                  icon: Icons.group,
+                  label: "Partis politiques",
+                  onTap: click,
+                ),
+                NavBarItem(
+                  icon: Icons.flag,
+                  label: "Manifestations",
+                  onTap: click,
+                ),
+                NavBarItem(
+                  icon: Icons.how_to_vote,
+                  label: "Votes",
+                  onTap: click,
+                ),
+                NavBarItem(
+                  icon: Icons.person,
+                  label: "Utilisateurs",
+                  onTap: click,
+                ),
+                NavBarItem(
+                  icon: Icons.account_circle,
+                  label: "Mon compte",
+                  onTap: click,
+                )
+              ],
+            ),
           ),
         ],
       ),
