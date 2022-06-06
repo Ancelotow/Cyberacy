@@ -35,6 +35,7 @@ class PartyPage extends StatelessWidget {
     cards.add(ButtonCard(
       icon: Icons.add_circle_outline,
       label: "Ajouter",
+      width: 500,
       color: Colors.greenAccent,
       onTap: () => Navigator.of(context).pushNamed(InfoPartyPage.routeName),
     ));

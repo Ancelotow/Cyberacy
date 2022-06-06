@@ -1,4 +1,5 @@
 import 'package:bo_cyberacy/models/enums/orientation_nav_bar.dart';
+import 'package:bo_cyberacy/pages/manifestion_page.dart';
 import 'package:bo_cyberacy/pages/party_page.dart';
 import 'package:bo_cyberacy/pages/vote_page.dart';
 import 'package:bo_cyberacy/widgets/nav_bar/nav_bar.dart';
@@ -74,6 +75,10 @@ class _NavigationPageState extends State<NavigationPage> {
     switch(index) {
       case 0:
         newPage = PartyPage();
+        break;
+
+      case 1:
+        newPage = ManifestationPage();
         break;
 
       case 2:

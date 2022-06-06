@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:bo_cyberacy/models/entities/political_party.dart';
 import 'package:http/http.dart' as http;
 import '../errors/api_service_error.dart';
-import '../session.dart';
 import 'api_service.dart';
 
 class PartyService extends ApiService {

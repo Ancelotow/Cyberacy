@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 
 class ButtonCard extends StatefulWidget {
   Color? color;
-  String label;
-  IconData icon;
-  Function()? onTap;
+  final String label;
+  final IconData icon;
+  final Function()? onTap;
+  final double height;
+  final double width;
 
   Color? colorText;
   Color? colorCard;
@@ -15,6 +17,8 @@ class ButtonCard extends StatefulWidget {
     Key? key,
     this.color,
     this.onTap,
+    this.height = 100,
+    this.width = 100,
     required this.icon,
     required this.label,
   }) : super(key: key);
@@ -36,8 +40,8 @@ class _ButtonCardState extends State<ButtonCard> {
         onPointerUp: buttonPressedUp,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 100),
-          width: 500,
-          height: 100,
+          width: widget.width,
+          height: widget.height,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
             color: widget.colorCard,

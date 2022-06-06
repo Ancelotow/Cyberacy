@@ -1,27 +1,27 @@
 class PoliticalParty {
-  int id;
-  String name;
-  DateTime dateCreate;
+  int? id;
+  String? name;
+  DateTime? dateCreate;
   String? description;
-  String object;
-  String addressStreet;
-  String siren;
-  String codeInseeTown;
-  String nirFondator;
-  int idPoliticalEdge;
+  String? object;
+  String? addressStreet;
+  String? siren;
+  String? codeInseeTown;
+  String? nirFondator;
+  int? idPoliticalEdge;
   String? iban;
   String? urlLogo;
 
   PoliticalParty(
-      {required this.id,
-      required this.name,
-      required this.dateCreate,
-      required this.object,
-      required this.addressStreet,
-      required this.siren,
-      required this.codeInseeTown,
-      required this.idPoliticalEdge,
-      required this.nirFondator,
+      {this.id,
+      this.name,
+      this.dateCreate,
+      this.object,
+      this.addressStreet,
+      this.siren,
+      this.codeInseeTown,
+      this.idPoliticalEdge,
+      this.nirFondator,
       this.urlLogo,
       this.iban,
       this.description});
@@ -42,7 +42,7 @@ class PoliticalParty {
   Object toJson() {
     return {
       "name": name,
-      "date_create": dateCreate.toString(),
+      "date_create": dateCreate?.toString(),
       "object": object,
       "address_street": addressStreet,
       "siren": siren,
@@ -50,7 +50,7 @@ class PoliticalParty {
       "url_logo": urlLogo,
       "iban": iban,
       "nir": nirFondator,
-      "id_political_edge": idPoliticalEdge.toString()
+      "id_political_edge": idPoliticalEdge?.toString()
     };
   }
 }

@@ -8,6 +8,7 @@ class CardParty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String name = (party.name == null) ? "- NONE -" : party.name!;
     return Container(
       width: 500,
       height: 100,
@@ -26,7 +27,7 @@ class CardParty extends StatelessWidget {
                 SizedBox(
                   width: 450,
                   child: Text(
-                    party.name,
+                    name,
                     maxLines: 2,
                     overflow: TextOverflow.clip,
                     style: Theme.of(context).textTheme.headline2,

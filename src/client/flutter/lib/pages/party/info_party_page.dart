@@ -1,7 +1,6 @@
-import 'package:bo_cyberacy/models/entities/department.dart';
 import 'package:bo_cyberacy/models/entities/political_edge.dart';
 import 'package:bo_cyberacy/models/entities/political_party.dart';
-import 'package:bo_cyberacy/models/services/geo_service.dart';
+import 'package:bo_cyberacy/models/errors/invalid_form_error.dart';
 import 'package:bo_cyberacy/models/services/party_service.dart';
 import 'package:bo_cyberacy/models/services/ref_service.dart';
 import 'package:bo_cyberacy/widgets/input_field/input_selected.dart';
@@ -36,120 +35,81 @@ class InfoPartyPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
-        child: Column(
-          children: [
-            InputText(
-              placeholder: "SIREN",
-              position: PositionInput.start,
-              width: width,
-              controller: ctrlSiren,
-            ),
-            InputText(
-              placeholder: "Objet",
-              position: PositionInput.middle,
-              width: width,
-              controller: ctrlObject,
-            ),
-            InputText(
-              placeholder: "Description",
-              position: PositionInput.middle,
-              width: width,
-              controller: ctrlDescription,
-            ),
-            InputText(
-              placeholder: "IBAN",
-              position: PositionInput.middle,
-              width: width,
-              controller: ctrlIban,
-            ),
-            InputText(
-              placeholder: "NIR du fondateur",
-              position: PositionInput.middle,
-              width: width,
-              controller: ctrlNir,
-            ),
-            InputText(
-              placeholder: "URL Logo",
-              position: PositionInput.middle,
-              width: width,
-              controller: ctrlUrlLogo,
-            ),
-            getSelectEdge(context, width),
-            SizedBox(
-              height: 10,
-            ),
-            Button(
-              label: "Sauvegarder",
-              width: width,
-              pressedColor: Colors.lightBlue,
-              click: () => saveParty(context),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Button(
-                label: "Annuler",
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Nouveau parti politique",
+                style: Theme.of(context).textTheme.headline1,
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              InputText(
+                placeholder: "SIREN",
+                position: PositionInput.start,
                 width: width,
-                color: Colors.red,
-                pressedColor: Colors.redAccent,
-                click: () => Navigator.of(context).pop()),
-          ],
+                controller: ctrlSiren,
+              ),
+              InputText(
+                placeholder: "Objet",
+                position: PositionInput.middle,
+                width: width,
+                controller: ctrlObject,
+              ),
+              InputText(
+                placeholder: "Description",
+                position: PositionInput.middle,
+                width: width,
+                controller: ctrlDescription,
+              ),
+              InputText(
+                placeholder: "IBAN",
+                position: PositionInput.middle,
+                width: width,
+                controller: ctrlIban,
+              ),
+              InputText(
+                placeholder: "NIR du fondateur",
+                position: PositionInput.middle,
+                width: width,
+                controller: ctrlNir,
+              ),
+              InputText(
+                placeholder: "URL Logo",
+                position: PositionInput.middle,
+                width: width,
+                controller: ctrlUrlLogo,
+              ),
+              _getSelectEdge(context, width),
+              SizedBox(
+                height: 10,
+              ),
+              Button(
+                label: "Sauvegarder",
+                width: width,
+                pressedColor: Colors.lightBlue,
+                click: () => _saveParty(context),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Button(
+                  label: "Annuler",
+                  width: width,
+                  color: Colors.red,
+                  pressedColor: Colors.redAccent,
+                  click: () => Navigator.of(context).pop()),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget getSelectTown(BuildContext context, double width) {
-    return FutureBuilder(
-      future: GeoService().getTownsFromDept("94"),
-      builder: (BuildContext context, AsyncSnapshot<List<Town>> snapshot) {
-        if (snapshot.hasData) {
-          return InputSelected<Town>(
-            items: snapshot.data!,
-            placeholder: "Ville",
-            position: PositionInput.middle,
-            width: width,
-            onChanged: (value) {
-              currentTown = value;
-            },
-          );
-        } else {
-          return InputText(
-            placeholder: "Ville",
-            isReadOnly: true,
-            position: PositionInput.middle,
-            width: width,
-          );
-        }
-      },
-    );
-  }
-
-  Widget getSelectDept(BuildContext context, double width) {
-    return FutureBuilder(
-      future: GeoService().getDepartments(),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<Department>> snapshot) {
-        if (snapshot.hasData) {
-          return InputSelected(
-            items: snapshot.data!,
-            placeholder: "Département",
-            position: PositionInput.middle,
-            width: width,
-          );
-        } else {
-          return InputText(
-            placeholder: "Département",
-            isReadOnly: true,
-            position: PositionInput.middle,
-            width: width,
-          );
-        }
-      },
-    );
-  }
-
-  Widget getSelectEdge(BuildContext context, double width) {
+  Widget _getSelectEdge(BuildContext context, double width) {
     return FutureBuilder(
       future: RefService().getAllPoliticalEdge(),
       builder:
@@ -176,16 +136,12 @@ class InfoPartyPage extends StatelessWidget {
     );
   }
 
-  Future<void> saveParty(BuildContext context) async {
+  Future<void> _saveParty(BuildContext context) async {
     try {
+      _formIsValid();
       PoliticalParty party = PoliticalParty(
-        id: -1,
-        name: "",
-        dateCreate: DateTime.now(),
         object: ctrlObject.text,
-        addressStreet: "",
         siren: ctrlSiren.text,
-        codeInseeTown: "",
         nirFondator: ctrlNir.text,
         iban: ctrlIban.text,
         urlLogo: ctrlUrlLogo.text,
@@ -193,20 +149,34 @@ class InfoPartyPage extends StatelessWidget {
       );
       await PartyService().addParty(party);
       Navigator.of(context).pop();
-    } on NullThrownError {
+    } on InvalidFormError catch (e) {
       _showAlertError(
         context,
         title: "Formulaire incomplet",
-        message: "Tout les champs sont obligatoire",
+        message: e.message,
         labelButton: "Continuer",
       );
     } on ApiServiceError catch (e) {
       _showAlertError(
         context,
-        title: "Erreur sauvegarde",
+        title: "Erreur ajout",
         message: e.responseHttp.body,
         labelButton: "Continuer",
       );
+    }
+  }
+
+  void _formIsValid() {
+    if(ctrlObject.text.isEmpty) {
+      throw InvalidFormError("Le champ \"Objet\" est obligatoire");
+    } else if(ctrlSiren.text.isEmpty) {
+      throw InvalidFormError("Le champ \"SIREN\" est obligatoire");
+    } else if(ctrlNir.text.isEmpty) {
+      throw InvalidFormError("Le champ \"NIR du fondateur\" est obligatoire");
+    } else if(ctrlUrlLogo.text.isEmpty) {
+      throw InvalidFormError("Le champ \"URL Logo\" est obligatoire");
+    } else if(currentEdge == null) {
+      throw InvalidFormError("Le champ \"Bord politique\" est obligatoire");
     }
   }
 
