@@ -36,7 +36,7 @@ class CardManif extends StatelessWidget {
               child: FlutterMap(
                 mapController: MapController(),
                 options: MapOptions(
-                  zoom: 15.0,
+                  zoom: 0,
                   center: LatLng(48.8538762, 2.3775986),
                 ),
                 layers: [
