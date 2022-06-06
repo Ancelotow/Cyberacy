@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:bo_cyberacy/models/entities/step.dart';
+
 class Manifestation {
   int? id;
   String? name;
@@ -6,6 +10,7 @@ class Manifestation {
   String? object;
   String? securityDescription;
   int? nbPersonEstimate;
+  List<StepManif>? steps;
 
   Manifestation({
     this.id,
@@ -15,6 +20,7 @@ class Manifestation {
     this.object,
     this.securityDescription,
     this.nbPersonEstimate,
+    this.steps
   });
 
   Manifestation.fromJson(Map<String, dynamic> json)
@@ -24,7 +30,15 @@ class Manifestation {
         dateEnd = DateTime.parse(json["date_end"]),
         object = json["object"],
         securityDescription = json["security_description"],
-        nbPersonEstimate = json["nb_person_estimate"];
+        nbPersonEstimate = json["nb_person_estimate"] {
+    try {
+      List<dynamic> listStepsJson = json["steps"];
+      steps = listStepsJson.map((jsonStep) => StepManif.fromJson(jsonStep)).toList();
+    } catch(e) {
+      print(e);
+    }
+
+  }
 
   Object toJson() {
     return {

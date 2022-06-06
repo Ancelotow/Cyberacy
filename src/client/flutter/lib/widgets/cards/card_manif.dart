@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:bo_cyberacy/models/entities/step.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import '../../models/entities/manifestation.dart';
 import 'package:latlong2/latlong.dart';
+
+import '../map_manifestation.dart';
 
 class CardManif extends StatelessWidget {
   final Manifestation manifestation;
@@ -20,6 +23,7 @@ class CardManif extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String name = (manifestation.name == null) ? "- NONE -" : manifestation.name!;
+    List<StepManif> steps = (manifestation.steps == null) ? [] : manifestation.steps!;
     return ClipRRect(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(10),
@@ -35,29 +39,7 @@ class CardManif extends StatelessWidget {
           children: [
             Expanded(
               flex: 2,
-              child: FlutterMap(
-                mapController: MapController(),
-                options: MapOptions(
-                  zoom: 0,
-                  center: LatLng(48.8538762, 2.3775986),
-                ),
-                layers: [
-                  TileLayerOptions(
-                      urlTemplate:
-                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                      subdomains: ['a', 'b', 'c']),
-                  MarkerLayerOptions(
-                    markers: [
-                      Marker(
-                        width: 80.0,
-                        height: 80.0,
-                        point: LatLng(48.8538763, 2.3775986),
-                        builder: (ctx) => Container(),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              child: MapManifestation(steps: steps),
             ),
             Expanded(
               child: Center(
