@@ -7,10 +7,8 @@ class Session {
 
   static Future<void> initToken(String nir, String pwd) async {
     Box<String> box = await Hive.openBox("loginBox");
-    if(box.isEmpty || box.get(_idHiveToken) == null) {
-      var token = await AuthService().login(nir, pwd);
-      box.put(_idHiveToken, token);
-    }
+    var token = await AuthService().login(nir, pwd);
+    box.put(_idHiveToken, token);
   }
 
   static Future<String?> getToken() async {

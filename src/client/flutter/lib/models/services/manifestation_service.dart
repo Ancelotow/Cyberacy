@@ -21,4 +21,19 @@ class ManifService extends ApiService {
       rethrow;
     }
   }
+
+  Future<String> addManifestation(Manifestation manif) async {
+    var response = await http.post(
+      getUrl("manifestation", null),
+      headers: await getHeaders(auth: true),
+      body: manif.toJson(),
+    );
+    print(response.body);
+    if (response.statusCode == 201) {
+      return response.body;
+    } else {
+      throw ApiServiceError(response);
+    }
+  }
+
 }

@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:bo_cyberacy/pages/login_page.dart';
+import 'package:bo_cyberacy/pages/manifestation/add_manifestation.dart';
 import 'package:bo_cyberacy/pages/navigation_page.dart';
 import 'package:bo_cyberacy/pages/party/add_party_page.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
         buttonColor: const Color.fromARGB(255, 40, 40, 155),
         hoverColor: const Color.fromARGB(255, 112, 171, 225),
         accentColor: const Color.fromARGB(255, 32, 255, 0),
-        textTheme: const TextTheme(
+        textTheme: TextTheme(
           headline1: TextStyle(
             color: Colors.white,
             fontFamily: "HK-Nova",
@@ -48,6 +51,7 @@ class MyApp extends StatelessWidget {
       routes: {
         NavigationPage.routeName: (BuildContext context) => NavigationPage(),
         AddPartyPage.routeName: (BuildContext context) => AddPartyPage(),
+        AddManifestationPage.routeName: (BuildContext context) => AddManifestationPage(),
       },
       home: const HomePage(),
     );

@@ -2,6 +2,7 @@
 
 import 'package:bo_cyberacy/models/entities/manifestation.dart';
 import 'package:bo_cyberacy/models/services/manifestation_service.dart';
+import 'package:bo_cyberacy/pages/manifestation/add_manifestation.dart';
 import 'package:bo_cyberacy/widgets/cards/card_manif.dart';
 import 'package:flutter/material.dart';
 
@@ -41,6 +42,7 @@ class ManifestationPage extends StatelessWidget {
       width: _widthCard,
       height: _heightCard,
       color: Colors.cyanAccent,
+      onTap: () => Navigator.of(context).pushNamed(AddManifestationPage.routeName),
     ));
     if (manifs != null) {
       cards.addAll(manifs
