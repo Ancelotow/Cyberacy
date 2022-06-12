@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Cyberacy</string>
+
+    <!-- Boutons -->
+    <string name="btn_login">Connexion</string>
+    <string name="btn_register">Vous n\'avez pas de comptes ?</string>
+    <string name="btn_forgot_pwd">Mot de passe oublié</string>
+    <string name="btn_submit">Créer</string>
+
+    <!-- Hint -->
+    <string name="hint_phone_number">Numéro de téléphone</string>
+    <string name="hint_email">Adresse mail</string>
+    <string name="hint_pwd">Mot de passe</string>
+
+    <!-- Text -->
+    <string name="txt_register">Inscription</string>
+    <string name="txt_last_vote">Mes derniers votes</string>
+    <string name="txt_ue_vote">Vote Européen</string>
+    <string name="txt_lg_vote">Vote législative</string>
+    <string name="txt_prd_vote">Vote présidentiel</string>
+    <string name="txt_vote_for">Voter pour…</string>
+</resources>
