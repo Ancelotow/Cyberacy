@@ -1,0 +1,62 @@
+###
+# @name Add new political party
+POST {{url}}/political_party
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+{
+  "siren": "819004045",
+  "url_logo": "test",
+  "object": "test",
+  "id_political_edge": 2,
+  "nir": "875543548"
+}
+
+###
+# @name Get all political party
+GET {{url}}/political_party?mine=true&includeLeft=false
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Join a political party
+POST {{url}}/political_party/join/3
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Left political party
+DELETE {{url}}/political_party/left
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Add new annual fee
+POST {{url}}/political_party/annual_fee
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+{
+  "year": 2019,
+  "id_political_party": 3,
+  "fee": 3.99
+}
+
+###
+# @name Get all  annual fee for a political party
+GET {{url}}/political_party/annual_fee/3
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Upload logo
+GET {{url}}/political_party/upload_logo
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json

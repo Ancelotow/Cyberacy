@@ -1,0 +1,23 @@
+###
+# @name Get types step
+GET {{url}}/step_type
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get sex
+GET {{url}}/sex
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get type vote
+GET {{url}}/type_vote
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get political edge
+GET {{url}}/political_edge
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
