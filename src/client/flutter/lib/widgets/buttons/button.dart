@@ -36,7 +36,7 @@ class _ButtonState extends State<Button> {
   Widget build(BuildContext context) {
     initValues();
     return Container(
-      width: double.infinity,
+      width: widget.width,
       height: 45,
       alignment: Alignment.center,
       child: Listener(

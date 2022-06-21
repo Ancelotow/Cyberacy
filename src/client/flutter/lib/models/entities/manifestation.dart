@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bo_cyberacy/models/entities/option.dart';
 import 'package:bo_cyberacy/models/entities/step.dart';
 
 class Manifestation {
@@ -11,6 +12,7 @@ class Manifestation {
   String? securityDescription;
   int? nbPersonEstimate;
   List<StepManif>? steps;
+  List<Option>? options;
 
   Manifestation({
     this.id,
@@ -20,7 +22,8 @@ class Manifestation {
     this.object,
     this.securityDescription,
     this.nbPersonEstimate,
-    this.steps
+    this.steps,
+    this.options
   });
 
   Manifestation.fromJson(Map<String, dynamic> json)
@@ -33,7 +36,9 @@ class Manifestation {
         nbPersonEstimate = json["nb_person_estimate"] {
     try {
       List<dynamic> listStepsJson = json["steps"];
+      List<dynamic> listOptionsJson = json["options"];
       steps = listStepsJson.map((jsonStep) => StepManif.fromJson(jsonStep)).toList();
+      options = listOptionsJson.map((jsonOpt) => Option.fromJson(jsonOpt)).toList();
     } catch(e) {
       print(e);
     }
