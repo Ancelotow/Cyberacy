@@ -3,7 +3,6 @@ import 'package:bo_cyberacy/models/entities/step.dart';
 import 'package:bo_cyberacy/widgets/cards/card_option_manif.dart';
 import 'package:bo_cyberacy/widgets/cards/card_step.dart';
 import 'package:flutter/material.dart';
-
 import '../../models/entities/option.dart';
 import '../../models/enums/position_input.dart';
 import '../../widgets/buttons/button.dart';
