@@ -1,8 +1,10 @@
+import 'package:bo_cyberacy/widgets/cards/card_shimmer.dart';
 import 'package:flutter/material.dart';
 
 class Button extends StatefulWidget {
   final String label;
   final bool isEnable;
+  final bool isLoad;
   final double width;
   Color? color;
   Color? pressedColor;
@@ -17,6 +19,7 @@ class Button extends StatefulWidget {
     required this.label,
     required this.width,
     this.isEnable = true,
+    this.isLoad = false,
     this.color,
     this.pressedColor,
     this.textStyle,
@@ -35,6 +38,14 @@ class _ButtonState extends State<Button> {
   @override
   Widget build(BuildContext context) {
     initValues();
+    if (!widget.isLoad) {
+      return getButton();
+    } else {
+      return getButtonLoading();
+    }
+  }
+
+  Widget getButton() {
     return Container(
       width: widget.width,
       height: 45,
@@ -44,7 +55,7 @@ class _ButtonState extends State<Button> {
         onPointerUp: buttonPressedUp,
         child: GestureDetector(
           onTap: () {
-            if (widget.isEnable) {
+            if (widget.isEnable && !widget.isLoad) {
               widget.click?.call();
             }
           },
@@ -70,6 +81,13 @@ class _ButtonState extends State<Button> {
     );
   }
 
+  Widget getButtonLoading() {
+    return CardShimmer(
+      width: widget.width,
+      height: height,
+    );
+  }
+
   void initValues() {
     widget.color ??= Theme.of(context).buttonColor;
     widget.pressedColor ??= widget.color;
@@ -79,7 +97,7 @@ class _ButtonState extends State<Button> {
   }
 
   void buttonPressedDown(PointerDownEvent event) {
-    if (widget.isEnable) {
+    if (widget.isEnable && !widget.isLoad) {
       setState(() {
         widget.currentWidth = widget.width - (widget.width * 0.10);
         widget.currentColor = widget.pressedColor;
@@ -89,7 +107,7 @@ class _ButtonState extends State<Button> {
   }
 
   void buttonPressedUp(PointerUpEvent event) {
-    if (widget.isEnable) {
+    if (widget.isEnable && !widget.isLoad) {
       setState(() {
         widget.currentWidth = widget.width;
         widget.currentColor = widget.color;

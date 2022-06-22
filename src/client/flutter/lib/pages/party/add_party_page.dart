@@ -11,22 +11,40 @@ import '../../models/errors/api_service_error.dart';
 import '../../widgets/buttons/button.dart';
 import '../../widgets/input_field/input_text.dart';
 
-class AddPartyPage extends StatelessWidget {
+class AddPartyPage extends StatefulWidget {
   static const String routeName = "infoPartyPage";
 
-  final TextEditingController ctrlName = TextEditingController();
-  final TextEditingController ctrlSiren = TextEditingController();
-  final TextEditingController ctrlDate = TextEditingController();
-  final TextEditingController ctrlObject = TextEditingController();
-  final TextEditingController ctrlDescription = TextEditingController();
-  final TextEditingController ctrlUrlLogo = TextEditingController();
-  final TextEditingController ctrlIban = TextEditingController();
-  final TextEditingController ctrlAddress = TextEditingController();
-  final TextEditingController ctrlNir = TextEditingController();
-  Town? currentTown;
-  PoliticalEdge? currentEdge;
 
   AddPartyPage({Key? key}) : super(key: key);
+
+  @override
+  State<AddPartyPage> createState() => _AddPartyPageState();
+}
+
+class _AddPartyPageState extends State<AddPartyPage> {
+  final TextEditingController ctrlName = TextEditingController();
+
+  final TextEditingController ctrlSiren = TextEditingController();
+
+  final TextEditingController ctrlDate = TextEditingController();
+
+  final TextEditingController ctrlObject = TextEditingController();
+
+  final TextEditingController ctrlDescription = TextEditingController();
+
+  final TextEditingController ctrlUrlLogo = TextEditingController();
+
+  final TextEditingController ctrlIban = TextEditingController();
+
+  final TextEditingController ctrlAddress = TextEditingController();
+
+  final TextEditingController ctrlNir = TextEditingController();
+
+  Town? currentTown;
+
+  PoliticalEdge? currentEdge;
+
+  bool isSaving = false;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +104,7 @@ class AddPartyPage extends StatelessWidget {
               Button(
                 label: "Sauvegarder",
                 width: width,
+                isLoad: isSaving,
                 pressedColor: Colors.lightBlue,
                 click: () => _saveParty(context),
               ),
@@ -111,6 +130,7 @@ class AddPartyPage extends StatelessWidget {
         if (snapshot.hasData) {
           return InputSelected(
             items: snapshot.data!,
+            value: currentEdge,
             placeholder: "Bord politique",
             position: PositionInput.end,
             width: width,
@@ -131,6 +151,7 @@ class AddPartyPage extends StatelessWidget {
   }
 
   Future<void> _saveParty(BuildContext context) async {
+    setState(() => isSaving = true);
     try {
       _formIsValid();
       PoliticalParty party = PoliticalParty(
@@ -157,6 +178,8 @@ class AddPartyPage extends StatelessWidget {
         message: e.responseHttp.body,
         labelButton: "Continuer",
       );
+    } finally {
+      setState(() => isSaving = false);
     }
   }
 

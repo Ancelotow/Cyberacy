@@ -12,7 +12,8 @@ class InputText extends StatefulWidget {
   final double? width;
   final TextEditingController? controller;
 
-  const InputText({Key? key,
+  const InputText({
+    Key? key,
     required this.placeholder,
     this.obscureText = false,
     this.isReadOnly = false,
@@ -21,8 +22,8 @@ class InputText extends StatefulWidget {
     this.width,
     this.height,
     this.type = TextInputType.text,
-    this.position = PositionInput.middle})
-      : super(key: key);
+    this.position = PositionInput.middle,
+  }) : super(key: key);
 
   @override
   State<InputText> createState() => _InputTextState();
@@ -43,28 +44,21 @@ class _InputTextState extends State<InputText> {
         controller: widget.controller,
         readOnly: widget.isReadOnly,
         obscureText: widget.obscureText,
-        style: Theme
-            .of(context)
-            .textTheme
-            .bodyText1,
+        style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
+          hoverColor: Colors.transparent,
           fillColor: (widget.isReadOnly)
-              ? Theme
-              .of(context)
-              .disabledColor
+              ? Theme.of(context).disabledColor
               : Colors.white,
           floatingLabelBehavior: labelBehavior,
           labelText: widget.placeholder,
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Theme
-                .of(context)
-                .primaryColor),
+            borderSide: BorderSide(color: Theme.of(context).primaryColor),
             borderRadius: getBorderRadius(),
           ),
           enabledBorder: UnderlineInputBorder(
               borderRadius: getBorderRadius(),
-              borderSide: BorderSide(width: 0.5, color: Colors.grey)
-          ),
+              borderSide: BorderSide(width: 0.5, color: Colors.grey)),
         ),
       ),
     );
@@ -86,6 +80,4 @@ class _InputTextState extends State<InputText> {
             bottomRight: Radius.circular(radius));
     }
   }
-
-
 }

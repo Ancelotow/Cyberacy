@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:bo_cyberacy/models/entities/manifestation.dart';
 import 'package:bo_cyberacy/pages/login_page.dart';
 import 'package:bo_cyberacy/pages/manifestation/add_manifestation.dart';
@@ -20,6 +20,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Cyberacy',
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate
+      ],
+      supportedLocales: const [Locale('fr')],
       theme: ThemeData(
         primaryColor: const Color.fromARGB(255, 73, 150, 221),
         backgroundColor: const Color.fromARGB(255, 76, 89, 150),

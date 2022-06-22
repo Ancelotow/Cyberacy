@@ -7,6 +7,7 @@ import '../../models/enums/position_input.dart';
 import '../../models/errors/api_service_error.dart';
 import '../../models/errors/invalid_form_error.dart';
 import '../../widgets/buttons/button.dart';
+import '../../widgets/input_field/input_date.dart';
 import '../../widgets/input_field/input_text.dart';
 
 class AddManifestationPage extends StatelessWidget {
@@ -48,18 +49,18 @@ class AddManifestationPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  InputText(
-                      placeholder: "Date de début",
-                      position: PositionInput.middle,
-                      width: width / 2,
-                      controller: ctrlDtStart,
-                      type: TextInputType.datetime),
-                  InputText(
-                      placeholder: "Date de fin",
-                      position: PositionInput.middle,
-                      width: width / 2,
-                      controller: ctrlDtEnd,
-                      type: TextInputType.datetime),
+                  InputDate(
+                    placeholder: "Date de début",
+                    position: PositionInput.middle,
+                    width: width / 2,
+                    controller: ctrlDtStart,
+                  ),
+                  InputDate(
+                    placeholder: "Date de fin",
+                    position: PositionInput.middle,
+                    width: width / 2,
+                    controller: ctrlDtEnd,
+                  ),
                 ],
               ),
               InputText(
@@ -109,7 +110,7 @@ class AddManifestationPage extends StatelessWidget {
       Manifestation manif = Manifestation(
         name: ctrlName.text,
         dateStart: DateTime.parse(ctrlDtStart.text),
-        dateEnd:  DateTime.parse(ctrlDtEnd.text),
+        dateEnd: DateTime.parse(ctrlDtEnd.text),
         object: ctrlObject.text,
         securityDescription: ctrlSecurityDesc.text,
         nbPersonEstimate: int.parse(ctrlNbPerson.text),
@@ -143,16 +144,18 @@ class AddManifestationPage extends StatelessWidget {
     } else if (ctrlObject.text.isEmpty) {
       throw InvalidFormError("Le champ \"Objet\" est obligatoire");
     } else if (ctrlSecurityDesc.text.isEmpty) {
-      throw InvalidFormError("Le champ \"Description de la sécurité\" est obligatoire");
+      throw InvalidFormError(
+          "Le champ \"Description de la sécurité\" est obligatoire");
     } else if (ctrlNbPerson.text.isEmpty) {
-      throw InvalidFormError("Le champ \"Estimation du nombre de participant\" est obligatoire");
+      throw InvalidFormError(
+          "Le champ \"Estimation du nombre de participant\" est obligatoire");
     }
   }
 
   void _showAlertError(BuildContext context,
       {required String title,
-        required String message,
-        required String labelButton}) {
+      required String message,
+      required String labelButton}) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -171,5 +174,4 @@ class AddManifestationPage extends StatelessWidget {
       ),
     );
   }
-
 }

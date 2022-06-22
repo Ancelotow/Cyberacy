@@ -41,16 +41,13 @@ class PoliticalParty {
 
   Object toJson() {
     return {
-      "name": name,
-      "date_create": dateCreate?.toString(),
       "object": object,
-      "address_street": addressStreet,
       "siren": siren,
-      "town_code_insee": codeInseeTown,
       "url_logo": urlLogo,
       "iban": iban,
       "nir": nirFondator,
       "id_political_edge": idPoliticalEdge?.toString()
     };
   }
+
 }

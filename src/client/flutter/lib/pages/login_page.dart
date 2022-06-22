@@ -65,7 +65,13 @@ class _LoginPageState extends State<LoginPage> {
                   width: width,
                 ),
                 const SizedBox(height: 20),
-                getButton(width),
+                Button(
+                  label: "Se connecter",
+                  isLoad: isConnecting,
+                  width: width,
+                  pressedColor: Colors.lightBlue,
+                  click: _getConnection,
+                ),
               ],
             ),
           ],
@@ -96,22 +102,6 @@ class _LoginPageState extends State<LoginPage> {
           labelButton: "Réssayer");
     }
     setState(() => isConnecting = false);
-  }
-
-  Widget getButton(double width) {
-    if (!isConnecting) {
-      return Button(
-        label: "Se connecter",
-        width: width,
-        pressedColor: Colors.lightBlue,
-        click: _getConnection,
-      );
-    } else {
-      return CardShimmer(
-        width: width,
-        height: 45,
-      );
-    }
   }
 
   void _showAlertError(

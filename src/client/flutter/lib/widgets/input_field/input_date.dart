@@ -1,51 +1,53 @@
 import 'package:flutter/material.dart';
 import '../../models/enums/position_input.dart';
+import 'package:intl/intl.dart';
 
-class InputSelected<T> extends StatefulWidget {
+class InputDate extends StatefulWidget {
   final String placeholder;
   final PositionInput position;
-  final T? value;
+  DateTime? value;
   final bool isReadOnly;
   final double? height;
   final double? width;
-  List<T> items;
-  Function(dynamic)? onChanged;
+  final TextEditingController? controller;
 
-  InputSelected({
+  InputDate({
     Key? key,
     required this.placeholder,
     this.isReadOnly = false,
     this.value,
+    this.controller,
     this.width,
     this.height,
-    this.onChanged,
     this.position = PositionInput.middle,
-    required this.items,
   }) : super(key: key);
 
   @override
-  State<InputSelected> createState() => _InputSelectedState<T>();
+  State<InputDate> createState() => _InputDateState();
 }
 
-class _InputSelectedState<T> extends State<InputSelected> {
+class _InputDateState extends State<InputDate> {
   final double radius = 10;
 
-  //[DropdownMenuItem<String>(child: Text("test"))]
+  FloatingLabelBehavior labelBehavior = FloatingLabelBehavior.auto;
+
+  get selectedDate => null;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: widget.height,
       width: widget.width,
-      child: DropdownButtonFormField<T>(
-        items: getItems(),
-        value: getValue(),
-        onChanged: widget.onChanged,
+      child: TextField(
+        onTap: () => openCalendar(context),
+        controller: widget.controller,
+        readOnly: true,
         style: Theme.of(context).textTheme.bodyText1,
         decoration: InputDecoration(
           fillColor: (widget.isReadOnly)
               ? Theme.of(context).disabledColor
               : Colors.white,
+          floatingLabelBehavior: labelBehavior,
           labelText: widget.placeholder,
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Theme.of(context).primaryColor),
@@ -76,24 +78,17 @@ class _InputSelectedState<T> extends State<InputSelected> {
     }
   }
 
-  List<DropdownMenuItem<T>> getItems() {
-    List<DropdownMenuItem<T>> list = [];
-    for (T value in widget.items) {
-      list.add(DropdownMenuItem<T>(
-        value: value,
-        child: Text(value.toString()),
-      ));
+  Future<void> openCalendar(BuildContext context) async {
+    DateTime initialDate = (widget.value == null) ? DateTime.now() : widget.value!;
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(2021, 1, 1),
+      lastDate: DateTime(2029, 1, 1),
+    );
+    if(picked != null) {
+      widget.value = picked;
+      widget.controller?.text = DateFormat("dd/MM/yyyy HH:mm").format(widget.value!);
     }
-    return list;
-  }
-
-  T? getValue() {
-    List<DropdownMenuItem<T>> list = [];
-    for (T value in widget.items) {
-      if(value == widget.value) {
-        return value;
-      }
-    }
-    return null;
   }
 }
