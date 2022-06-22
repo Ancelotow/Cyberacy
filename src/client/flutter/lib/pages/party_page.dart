@@ -8,6 +8,8 @@ import 'package:bo_cyberacy/widgets/cards/card_party.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../widgets/cards/card_shimmer.dart';
+
 class PartyPage extends StatelessWidget {
   final double _widthCard = 500;
   final double _heightCard = 120;
@@ -70,19 +72,9 @@ class PartyPage extends StatelessWidget {
   Widget _getPartyLoader(BuildContext context) {
     final List<Widget> cardLoad = List.filled(
       10,
-      Shimmer.fromColors(
-        highlightColor: Color.fromARGB(255, 76, 89, 150),
-        baseColor: Color.fromARGB(121, 210, 209, 209),
-        child: Container(
-          width: _widthCard,
-          height: _heightCard,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            color: Colors.greenAccent,
-          ),
-        ),
-      ),
+      CardShimmer(width: _widthCard, height: _heightCard),
     );
+
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Wrap(

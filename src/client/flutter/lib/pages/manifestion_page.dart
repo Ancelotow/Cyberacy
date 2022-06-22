@@ -7,6 +7,7 @@ import 'package:bo_cyberacy/widgets/cards/card_manif.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/buttons/button_card.dart';
+import '../widgets/cards/card_shimmer.dart';
 
 class ManifestationPage extends StatelessWidget {
   final double _widthCard = 500;
@@ -70,11 +71,19 @@ class ManifestationPage extends StatelessWidget {
   }
 
   Widget _getManifLoader(BuildContext context) {
-    return SizedBox(
-      width: 60,
-      height: 60,
-      child: CircularProgressIndicator(
-        color: Theme.of(context).primaryColor,
+    final List<Widget> cardLoad = List.filled(
+      10,
+      CardShimmer(width: _widthCard, height: _heightCard),
+    );
+
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Wrap(
+        spacing: 8.0,
+        runSpacing: 4.0,
+        alignment: WrapAlignment.start,
+        crossAxisAlignment: WrapCrossAlignment.start,
+        children: cardLoad,
       ),
     );
   }
