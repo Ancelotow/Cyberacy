@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:bo_cyberacy/models/entities/manifestation.dart';
 import 'package:bo_cyberacy/models/entities/step.dart';
 import 'package:bo_cyberacy/widgets/cards/card_option_manif.dart';
@@ -175,7 +177,7 @@ class ManifestationDetail extends StatelessWidget {
             color: Colors.white,
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   height: 200,
                   child: MapManifestation(steps: steps),
                 ),
@@ -190,6 +192,31 @@ class ManifestationDetail extends StatelessWidget {
                               index: (steps.indexOf(e) + 1),
                             ))
                         .toList(),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black,
+                        blurRadius: 8,
+                        offset: Offset(0, -5), // Shadow position
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Button(
+                        label: "Ajouter",
+                        width: 100,
+                        pressedColor: Colors.lightBlue,
+                        color: Colors.green,
+                        textStyle: TextStyle(color: Colors.black),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -215,13 +242,16 @@ class ManifestationDetail extends StatelessWidget {
             width: width,
             height: 300,
             color: Color.fromARGB(255, 16, 58, 101),
-            child: SingleChildScrollView(
-              child: Wrap(
-                direction: Axis.horizontal,
-                spacing: 5.00,
-                runSpacing: 2.00,
-                children:
-                    options.map((e) => CardOptionManif(option: e)).toList(),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                child: Wrap(
+                  direction: Axis.horizontal,
+                  spacing: 5.00,
+                  runSpacing: 2.00,
+                  children:
+                      options.map((e) => CardOptionManif(option: e)).toList(),
+                ),
               ),
             ),
           ),

@@ -5,21 +5,28 @@ import 'package:bo_cyberacy/widgets/input_field/input_text.dart';
 import 'package:flutter/material.dart';
 import '../models/errors/api_service_error.dart';
 import '../models/session.dart';
+import '../widgets/cards/card_shimmer.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   static const String routeName = "login";
 
   LoginPage({Key? key}) : super(key: key);
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   TextEditingController loginController = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
   BuildContext? currentContext;
+  bool isConnecting = false;
 
   @override
   Widget build(BuildContext context) {
     currentContext = context;
     double width = MediaQuery.of(context).size.width / 3;
-    if(width < 300) width = 300;
+    if (width < 300) width = 300;
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
@@ -58,12 +65,7 @@ class LoginPage extends StatelessWidget {
                   width: width,
                 ),
                 const SizedBox(height: 20),
-                Button(
-                  label: "Se connecter",
-                  width: width,
-                  pressedColor: Colors.lightBlue,
-                  click: _getConnection,
-                ),
+                getButton(width),
               ],
             ),
           ],
@@ -75,22 +77,39 @@ class LoginPage extends StatelessWidget {
   void _getConnection() async {
     if (passwordCtrl.text.isNotEmpty && loginController.text.isNotEmpty) {
       try {
+        setState(() => isConnecting = true);
         await Session.initToken(loginController.text, passwordCtrl.text);
         Navigator.of(currentContext!).pushNamed(NavigationPage.routeName);
       } on ApiServiceError catch (e) {
         if (e.responseHttp.statusCode == 401 && currentContext != null) {
           _showAlertError(
-            title: "Echec de la connexion",
-            message: "Vérifiez votre identifiant et votre mot de passe.",
-            labelButton: "Réssayer"
-          );
+              title: "Echec de la connexion",
+              message: "Vérifiez votre identifiant et votre mot de passe.",
+              labelButton: "Réssayer");
         }
       }
     } else {
       _showAlertError(
           title: "Formulaire incomplet",
-          message: "Veuillez renseignez votre identifiants et votre mot de passe.",
-          labelButton: "Réssayer"
+          message:
+              "Veuillez renseignez votre identifiants et votre mot de passe.",
+          labelButton: "Réssayer");
+    }
+    setState(() => isConnecting = false);
+  }
+
+  Widget getButton(double width) {
+    if (!isConnecting) {
+      return Button(
+        label: "Se connecter",
+        width: width,
+        pressedColor: Colors.lightBlue,
+        click: _getConnection,
+      );
+    } else {
+      return CardShimmer(
+        width: width,
+        height: 45,
       );
     }
   }
