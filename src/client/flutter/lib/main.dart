@@ -113,9 +113,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: LoginPage(),
-      backgroundColor: Theme.of(context).backgroundColor,
-    );
+    return LoginPage();
   }
 }

@@ -20,50 +20,55 @@ class LoginPage extends StatelessWidget {
     currentContext = context;
     double width = MediaQuery.of(context).size.width / 3;
     if(width < 300) width = 300;
-    return Column(
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+    return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: Center(
+        child: Column(
           children: [
-            Image.asset(
-              'assets/images/logo_white.png',
-              width: 300,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Image.asset(
+                  'assets/images/logo_white.png',
+                  width: 300,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    "CYBERACY",
+                    style: Theme.of(context).textTheme.headline1,
+                  ),
+                )
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                "CYBERACY",
-                style: Theme.of(context).textTheme.headline1,
-              ),
-            )
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                InputText(
+                  placeholder: "Numéro de sécurité social",
+                  position: PositionInput.start,
+                  controller: loginController,
+                  width: width,
+                ),
+                InputText(
+                  placeholder: "Mot de passe",
+                  position: PositionInput.end,
+                  obscureText: true,
+                  controller: passwordCtrl,
+                  width: width,
+                ),
+                const SizedBox(height: 20),
+                Button(
+                  label: "Se connecter",
+                  width: width,
+                  pressedColor: Colors.lightBlue,
+                  click: _getConnection,
+                ),
+              ],
+            ),
           ],
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            InputText(
-              placeholder: "Numéro de sécurité social",
-              position: PositionInput.start,
-              controller: loginController,
-              width: width,
-            ),
-            InputText(
-              placeholder: "Mot de passe",
-              position: PositionInput.end,
-              obscureText: true,
-              controller: passwordCtrl,
-              width: width,
-            ),
-            const SizedBox(height: 20),
-            Button(
-              label: "Se connecter",
-              width: width,
-              pressedColor: Colors.lightBlue,
-              click: _getConnection,
-            ),
-          ],
-        ),
-      ],
+      ),
     );
   }
 
