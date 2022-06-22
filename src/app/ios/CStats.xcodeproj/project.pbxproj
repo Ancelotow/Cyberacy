@@ -7,6 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		82BADF098DA6246AEBC52B53 /* Pods_CStats.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DDBA369C660544AD4963C1E /* Pods_CStats.framework */; };
+		C03E4F062855C6280041E380 /* MeetingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F042855C6280041E380 /* MeetingViewController.swift */; };
+		C03E4F072855C6280041E380 /* MeetingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03E4F052855C6280041E380 /* MeetingViewController.xib */; };
+		C03E4F0A286256150041E380 /* GraphMeetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F08286256150041E380 /* GraphMeetViewController.swift */; };
+		C03E4F0B286256150041E380 /* GraphMeetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03E4F09286256150041E380 /* GraphMeetViewController.xib */; };
+		C03E4F0D2862600A0041E380 /* Meet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F0C2862600A0041E380 /* Meet.swift */; };
+		C03E4F1028626ACD0041E380 /* PartyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F0F28626ACD0041E380 /* PartyFactory.swift */; };
+		C03E4F13286273CE0041E380 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F11286273CE0041E380 /* MessageViewController.swift */; };
+		C03E4F14286273CE0041E380 /* MessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03E4F12286273CE0041E380 /* MessageViewController.xib */; };
+		C03E4F18286274930041E380 /* GraphMessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F16286274930041E380 /* GraphMessViewController.swift */; };
+		C03E4F19286274930041E380 /* GraphMessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03E4F17286274930041E380 /* GraphMessViewController.xib */; };
+		C03E4F1C286275D00041E380 /* SondageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F1A286275D00041E380 /* SondageViewController.swift */; };
+		C03E4F1D286275D10041E380 /* SondageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03E4F1B286275D00041E380 /* SondageViewController.xib */; };
+		C03E4F20286276B40041E380 /* GraphSondageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F1E286276B40041E380 /* GraphSondageViewController.swift */; };
+		C03E4F21286276B40041E380 /* GraphSondageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03E4F1F286276B40041E380 /* GraphSondageViewController.xib */; };
+		C03E4F24286277400041E380 /* CotisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F22286277400041E380 /* CotisationViewController.swift */; };
+		C03E4F25286277400041E380 /* CotisationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03E4F23286277400041E380 /* CotisationViewController.xib */; };
+		C03E4F282862780A0041E380 /* GraphCotisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F262862780A0041E380 /* GraphCotisationViewController.swift */; };
+		C03E4F292862780A0041E380 /* GraphCotisationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03E4F272862780A0041E380 /* GraphCotisationViewController.xib */; };
+		C03E4F2B286291AE0041E380 /* ItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F2A286291AE0041E380 /* ItemList.swift */; };
 		C0E51417282C629000C8AF23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E51416282C629000C8AF23 /* AppDelegate.swift */; };
 		C0E51420282C629100C8AF23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0E5141F282C629100C8AF23 /* Assets.xcassets */; };
 		C0E51423282C629100C8AF23 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0E51421282C629100C8AF23 /* LaunchScreen.storyboard */; };
@@ -31,9 +51,32 @@
 		C0E5145B2835605C00C8AF23 /* StatesVoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0E514592835605C00C8AF23 /* StatesVoteViewController.xib */; };
 		C0E514602835622800C8AF23 /* StatesManifestationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E5145E2835622800C8AF23 /* StatesManifestationViewController.swift */; };
 		C0E514612835622800C8AF23 /* StatesManifestationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0E5145F2835622800C8AF23 /* StatesManifestationViewController.xib */; };
+		C0FCBFAE28452DC000FF3E3F /* SuppAdherentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FCBFAC28452DC000FF3E3F /* SuppAdherentViewController.swift */; };
+		C0FCBFAF28452DC000FF3E3F /* SuppAdherentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0FCBFAD28452DC000FF3E3F /* SuppAdherentViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3DDBA369C660544AD4963C1E /* Pods_CStats.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CStats.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		82D4FD57DF2283BCCB598C5A /* Pods-CStats.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CStats.release.xcconfig"; path = "Target Support Files/Pods-CStats/Pods-CStats.release.xcconfig"; sourceTree = "<group>"; };
+		C03E4F042855C6280041E380 /* MeetingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingViewController.swift; sourceTree = "<group>"; };
+		C03E4F052855C6280041E380 /* MeetingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MeetingViewController.xib; sourceTree = "<group>"; };
+		C03E4F08286256150041E380 /* GraphMeetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMeetViewController.swift; sourceTree = "<group>"; };
+		C03E4F09286256150041E380 /* GraphMeetViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GraphMeetViewController.xib; sourceTree = "<group>"; };
+		C03E4F0C2862600A0041E380 /* Meet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meet.swift; sourceTree = "<group>"; };
+		C03E4F0F28626ACD0041E380 /* PartyFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyFactory.swift; sourceTree = "<group>"; };
+		C03E4F11286273CE0041E380 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
+		C03E4F12286273CE0041E380 /* MessageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageViewController.xib; sourceTree = "<group>"; };
+		C03E4F16286274930041E380 /* GraphMessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMessViewController.swift; sourceTree = "<group>"; };
+		C03E4F17286274930041E380 /* GraphMessViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GraphMessViewController.xib; sourceTree = "<group>"; };
+		C03E4F1A286275D00041E380 /* SondageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SondageViewController.swift; sourceTree = "<group>"; };
+		C03E4F1B286275D00041E380 /* SondageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SondageViewController.xib; sourceTree = "<group>"; };
+		C03E4F1E286276B40041E380 /* GraphSondageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphSondageViewController.swift; sourceTree = "<group>"; };
+		C03E4F1F286276B40041E380 /* GraphSondageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GraphSondageViewController.xib; sourceTree = "<group>"; };
+		C03E4F22286277400041E380 /* CotisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CotisationViewController.swift; sourceTree = "<group>"; };
+		C03E4F23286277400041E380 /* CotisationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CotisationViewController.xib; sourceTree = "<group>"; };
+		C03E4F262862780A0041E380 /* GraphCotisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCotisationViewController.swift; sourceTree = "<group>"; };
+		C03E4F272862780A0041E380 /* GraphCotisationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GraphCotisationViewController.xib; sourceTree = "<group>"; };
+		C03E4F2A286291AE0041E380 /* ItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemList.swift; sourceTree = "<group>"; };
 		C0E51413282C629000C8AF23 /* CStats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CStats.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0E51416282C629000C8AF23 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0E5141F282C629100C8AF23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -60,6 +103,9 @@
 		C0E514592835605C00C8AF23 /* StatesVoteViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatesVoteViewController.xib; sourceTree = "<group>"; };
 		C0E5145E2835622800C8AF23 /* StatesManifestationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatesManifestationViewController.swift; sourceTree = "<group>"; };
 		C0E5145F2835622800C8AF23 /* StatesManifestationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatesManifestationViewController.xib; sourceTree = "<group>"; };
+		C0FCBFAC28452DC000FF3E3F /* SuppAdherentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuppAdherentViewController.swift; sourceTree = "<group>"; };
+		C0FCBFAD28452DC000FF3E3F /* SuppAdherentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SuppAdherentViewController.xib; sourceTree = "<group>"; };
+		CA0FD8B635A48E83EF6A2201 /* Pods-CStats.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CStats.debug.xcconfig"; path = "Target Support Files/Pods-CStats/Pods-CStats.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,17 +113,53 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82BADF098DA6246AEBC52B53 /* Pods_CStats.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		16AB026977395FB17E44B4B1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3DDBA369C660544AD4963C1E /* Pods_CStats.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C03E4F0E286260140041E380 /* Object */ = {
+			isa = PBXGroup;
+			children = (
+				C03E4F0C2862600A0041E380 /* Meet.swift */,
+				C03E4F2A286291AE0041E380 /* ItemList.swift */,
+				C03E4F0F28626ACD0041E380 /* PartyFactory.swift */,
+			);
+			path = Object;
+			sourceTree = "<group>";
+		};
+		C03E4F15286273DD0041E380 /* Graph */ = {
+			isa = PBXGroup;
+			children = (
+				C03E4F08286256150041E380 /* GraphMeetViewController.swift */,
+				C03E4F09286256150041E380 /* GraphMeetViewController.xib */,
+				C03E4F16286274930041E380 /* GraphMessViewController.swift */,
+				C03E4F17286274930041E380 /* GraphMessViewController.xib */,
+				C03E4F1E286276B40041E380 /* GraphSondageViewController.swift */,
+				C03E4F1F286276B40041E380 /* GraphSondageViewController.xib */,
+				C03E4F262862780A0041E380 /* GraphCotisationViewController.swift */,
+				C03E4F272862780A0041E380 /* GraphCotisationViewController.xib */,
+			);
+			path = Graph;
+			sourceTree = "<group>";
+		};
 		C0E5140A282C629000C8AF23 = {
 			isa = PBXGroup;
 			children = (
 				C0E51415282C629000C8AF23 /* CStats */,
 				C0E51414282C629000C8AF23 /* Products */,
+				E39DF9120B79E0BAC313ED76 /* Pods */,
+				16AB026977395FB17E44B4B1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -93,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				C0E51442282E9CD100C8AF23 /* CstatesWebServices.swift */,
+				C03E4F0E286260140041E380 /* Object */,
 				C0E51444282E9CDD00C8AF23 /* Connexion */,
 				C0E5143A282DB05C00C8AF23 /* HomePageViewController.swift */,
 				C0E5143B282DB05C00C8AF23 /* HomePageViewController.xib */,
@@ -123,10 +206,21 @@
 		C0E51449283531FB00C8AF23 /* PoliticParty */ = {
 			isa = PBXGroup;
 			children = (
+				C03E4F15286273DD0041E380 /* Graph */,
 				C0E51445283531F400C8AF23 /* PoliticPartyViewController.swift */,
 				C0E51446283531F400C8AF23 /* PoliticPartyViewController.xib */,
 				C0E514542835572300C8AF23 /* StatesPoliticPartyViewController.swift */,
 				C0E514552835572300C8AF23 /* StatesPoliticPartyViewController.xib */,
+				C0FCBFAC28452DC000FF3E3F /* SuppAdherentViewController.swift */,
+				C0FCBFAD28452DC000FF3E3F /* SuppAdherentViewController.xib */,
+				C03E4F042855C6280041E380 /* MeetingViewController.swift */,
+				C03E4F052855C6280041E380 /* MeetingViewController.xib */,
+				C03E4F11286273CE0041E380 /* MessageViewController.swift */,
+				C03E4F12286273CE0041E380 /* MessageViewController.xib */,
+				C03E4F1A286275D00041E380 /* SondageViewController.swift */,
+				C03E4F1B286275D00041E380 /* SondageViewController.xib */,
+				C03E4F22286277400041E380 /* CotisationViewController.swift */,
+				C03E4F23286277400041E380 /* CotisationViewController.xib */,
 			);
 			path = PoliticParty;
 			sourceTree = "<group>";
@@ -153,6 +247,15 @@
 			path = Vote;
 			sourceTree = "<group>";
 		};
+		E39DF9120B79E0BAC313ED76 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CA0FD8B635A48E83EF6A2201 /* Pods-CStats.debug.xcconfig */,
+				82D4FD57DF2283BCCB598C5A /* Pods-CStats.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -160,9 +263,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C0E51427282C629100C8AF23 /* Build configuration list for PBXNativeTarget "CStats" */;
 			buildPhases = (
+				CFC4158A2EA2302D07C987D0 /* [CP] Check Pods Manifest.lock */,
 				C0E5140F282C629000C8AF23 /* Sources */,
 				C0E51410282C629000C8AF23 /* Frameworks */,
 				C0E51411282C629000C8AF23 /* Resources */,
+				AB2724C63CC3725E85DA7C0B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -212,38 +317,101 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0E514572835572300C8AF23 /* StatesPoliticPartyViewController.xib in Resources */,
+				C03E4F21286276B40041E380 /* GraphSondageViewController.xib in Resources */,
 				C0E51423282C629100C8AF23 /* LaunchScreen.storyboard in Resources */,
 				C0E514522835341800C8AF23 /* VoteViewController.xib in Resources */,
+				C03E4F292862780A0041E380 /* GraphCotisationViewController.xib in Resources */,
 				C0E514612835622800C8AF23 /* StatesManifestationViewController.xib in Resources */,
 				C0E5144D283533AC00C8AF23 /* ManifestationViewController.xib in Resources */,
 				C0E5145B2835605C00C8AF23 /* StatesVoteViewController.xib in Resources */,
 				C0E51448283531F400C8AF23 /* PoliticPartyViewController.xib in Resources */,
+				C03E4F0B286256150041E380 /* GraphMeetViewController.xib in Resources */,
 				C0E5143D282DB05C00C8AF23 /* HomePageViewController.xib in Resources */,
 				C0E51435282DAAFB00C8AF23 /* InscriptionViewController.xib in Resources */,
+				C03E4F1D286275D10041E380 /* SondageViewController.xib in Resources */,
 				C0E51420282C629100C8AF23 /* Assets.xcassets in Resources */,
+				C03E4F072855C6280041E380 /* MeetingViewController.xib in Resources */,
+				C0FCBFAF28452DC000FF3E3F /* SuppAdherentViewController.xib in Resources */,
 				C0E51441282DB39300C8AF23 /* ConnexionViewController.xib in Resources */,
+				C03E4F19286274930041E380 /* GraphMessViewController.xib in Resources */,
+				C03E4F25286277400041E380 /* CotisationViewController.xib in Resources */,
+				C03E4F14286273CE0041E380 /* MessageViewController.xib in Resources */,
 				C0E51439282DADA700C8AF23 /* InscriptionMessViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		AB2724C63CC3725E85DA7C0B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CStats/Pods-CStats-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CStats/Pods-CStats-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CStats/Pods-CStats-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CFC4158A2EA2302D07C987D0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CStats-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C0E5140F282C629000C8AF23 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C03E4F282862780A0041E380 /* GraphCotisationViewController.swift in Sources */,
+				C03E4F0D2862600A0041E380 /* Meet.swift in Sources */,
 				C0E514562835572300C8AF23 /* StatesPoliticPartyViewController.swift in Sources */,
+				C03E4F1C286275D00041E380 /* SondageViewController.swift in Sources */,
+				C03E4F2B286291AE0041E380 /* ItemList.swift in Sources */,
 				C0E51440282DB39300C8AF23 /* ConnexionViewController.swift in Sources */,
+				C03E4F1028626ACD0041E380 /* PartyFactory.swift in Sources */,
+				C03E4F062855C6280041E380 /* MeetingViewController.swift in Sources */,
 				C0E51447283531F400C8AF23 /* PoliticPartyViewController.swift in Sources */,
 				C0E514602835622800C8AF23 /* StatesManifestationViewController.swift in Sources */,
 				C0E51417282C629000C8AF23 /* AppDelegate.swift in Sources */,
 				C0E51434282DAAFB00C8AF23 /* InscriptionViewController.swift in Sources */,
 				C0E5145A2835605C00C8AF23 /* StatesVoteViewController.swift in Sources */,
+				C03E4F13286273CE0041E380 /* MessageViewController.swift in Sources */,
 				C0E5143C282DB05C00C8AF23 /* HomePageViewController.swift in Sources */,
+				C03E4F24286277400041E380 /* CotisationViewController.swift in Sources */,
+				C03E4F0A286256150041E380 /* GraphMeetViewController.swift in Sources */,
 				C0E51443282E9CD100C8AF23 /* CstatesWebServices.swift in Sources */,
+				C03E4F18286274930041E380 /* GraphMessViewController.swift in Sources */,
 				C0E514512835341800C8AF23 /* VoteViewController.swift in Sources */,
+				C0FCBFAE28452DC000FF3E3F /* SuppAdherentViewController.swift in Sources */,
 				C0E51438282DADA700C8AF23 /* InscriptionMessViewController.swift in Sources */,
+				C03E4F20286276B40041E380 /* GraphSondageViewController.swift in Sources */,
 				C0E5144C283533AC00C8AF23 /* ManifestationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -380,6 +548,7 @@
 		};
 		C0E51428282C629100C8AF23 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA0FD8B635A48E83EF6A2201 /* Pods-CStats.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -406,6 +575,7 @@
 		};
 		C0E51429282C629100C8AF23 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 82D4FD57DF2283BCCB598C5A /* Pods-CStats.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
