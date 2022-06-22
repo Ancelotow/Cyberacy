@@ -15,7 +15,9 @@ class CardShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      highlightColor: Color.fromARGB(255, 76, 89, 150),
+      period: Duration(milliseconds: 900),
+      direction: ShimmerDirection.ltr,
+      highlightColor: Color.fromARGB(255, 225, 225, 225),
       baseColor: baseColor,
       child: Container(
         width: width,

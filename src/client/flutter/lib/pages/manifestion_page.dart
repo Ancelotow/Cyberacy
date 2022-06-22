@@ -72,7 +72,7 @@ class ManifestationPage extends StatelessWidget {
 
   Widget _getManifLoader(BuildContext context) {
     final List<Widget> cardLoad = List.filled(
-      10,
+      12,
       CardShimmer(width: _widthCard, height: _heightCard),
     );
 

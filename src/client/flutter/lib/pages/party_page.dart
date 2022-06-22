@@ -71,10 +71,9 @@ class PartyPage extends StatelessWidget {
 
   Widget _getPartyLoader(BuildContext context) {
     final List<Widget> cardLoad = List.filled(
-      10,
+      12,
       CardShimmer(width: _widthCard, height: _heightCard),
     );
-
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Wrap(
