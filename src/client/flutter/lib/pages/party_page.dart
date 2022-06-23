@@ -5,6 +5,7 @@ import 'package:bo_cyberacy/models/services/party_service.dart';
 import 'package:bo_cyberacy/pages/party/add_party_page.dart';
 import 'package:bo_cyberacy/widgets/buttons/button_card.dart';
 import 'package:bo_cyberacy/widgets/cards/card_party.dart';
+import 'package:bo_cyberacy/widgets/draggable_target.dart';
 import 'package:flutter/material.dart';
 import '../widgets/cards/card_shimmer.dart';
 
@@ -53,8 +54,8 @@ class _PartyPageState extends State<PartyPage> {
   Widget _getListBuilder(BuildContext context) {
     return FutureBuilder(
       future: PartyService().getAllParty(),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<PoliticalParty>> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<List<PoliticalParty>> snapshot) {
         if (snapshot.hasData) {
           parties = snapshot.data!;
           return _getListParty(context);
@@ -133,34 +134,15 @@ class _PartyPageState extends State<PartyPage> {
     if (!isDragging) {
       return null;
     }
-    return DragTarget<PoliticalParty>(
-      onAccept: (value) => widget.callbackAddWorkspace?.call(value),
-      builder: (context, candidates, rejects) {
-        return Container(
-          width: 300,
-          height: 300,
-          decoration: BoxDecoration(
-              color: Color.fromARGB(255, 194, 194, 194),
-              shape: BoxShape.circle),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "Espace de travaille",
-                maxLines: 2,
-                overflow: TextOverflow.clip,
-                style: Theme.of(context).textTheme.headline2,
-              ),
-              Icon(
-                Icons.add_circle_outline,
-                color: Colors.black,
-                size: 30,
-              )
-            ],
-          ),
-        );
-      },
+    return DraggableTarget(
+      label: "Espace de travaille",
+      callback: widget.callbackAddWorkspace,
+      color: Colors.greenAccent,
+      colorEnter: Colors.green,
+      icon: Icon(
+        Icons.add_circle_outline,
+        size: 30,
+      ),
     );
   }
 }

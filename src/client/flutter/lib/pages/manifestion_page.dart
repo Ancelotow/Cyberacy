@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../widgets/buttons/button_card.dart';
 import '../widgets/cards/card_shimmer.dart';
+import '../widgets/draggable_target.dart';
 
 class ManifestationPage extends StatefulWidget {
   final Function(Manifestation)? callbackAddWorkspace;
@@ -127,34 +128,15 @@ class _ManifestationPageState extends State<ManifestationPage> {
     if (!isDragging) {
       return null;
     }
-    return DragTarget<Manifestation>(
-      onAccept: (value) => widget.callbackAddWorkspace?.call(value),
-      builder: (context, candidates, rejects) {
-        return Container(
-          width: 300,
-          height: 300,
-          decoration: BoxDecoration(
-              color: Color.fromARGB(190, 194, 194, 194),
-              shape: BoxShape.circle),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "Espace de travaille",
-                maxLines: 2,
-                overflow: TextOverflow.clip,
-                style: Theme.of(context).textTheme.headline2,
-              ),
-              Icon(
-                Icons.add_circle_outline,
-                color: Colors.black,
-                size: 30,
-              )
-            ],
-          ),
-        );
-      },
+    return DraggableTarget(
+      label: "Espace de travaille",
+      callback: widget.callbackAddWorkspace,
+      color: Colors.greenAccent,
+      colorEnter: Colors.green,
+      icon: Icon(
+        Icons.add_circle_outline,
+        size: 30,
+      ),
     );
   }
 
