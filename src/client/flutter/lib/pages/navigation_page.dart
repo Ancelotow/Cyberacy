@@ -2,11 +2,13 @@ import 'package:bo_cyberacy/models/entities/political_party.dart';
 import 'package:bo_cyberacy/models/enums/orientation_nav_bar.dart';
 import 'package:bo_cyberacy/pages/manifestion_page.dart';
 import 'package:bo_cyberacy/pages/party_page.dart';
+import 'package:bo_cyberacy/pages/screen_404.dart';
 import 'package:bo_cyberacy/pages/vote_page.dart';
 import 'package:bo_cyberacy/pages/workspace_page.dart';
 import 'package:bo_cyberacy/widgets/nav_bar/nav_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../models/entities/manifestation.dart';
 import '../widgets/nav_bar/nav_bar_item.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -20,6 +22,7 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   List<PoliticalParty> parties = [];
+  List<Manifestation> manifs = [];
   Widget currentPage = PartyPage();
   int currentIndex = 0;
 
@@ -66,7 +69,7 @@ class _NavigationPageState extends State<NavigationPage> {
 
   void click(int index) {
     Widget newPage;
-    switch(index) {
+    switch (index) {
       case 0:
         newPage = PartyPage(callbackAddWorkspace: (value) {
           addPartyInWorkspace(value, context);
@@ -74,15 +77,20 @@ class _NavigationPageState extends State<NavigationPage> {
         break;
 
       case 1:
-        newPage = ManifestationPage();
+        newPage = ManifestationPage(callbackAddWorkspace: (value) {
+          addManifInWorkspace(value, context);
+        });
         break;
 
       case 2:
-        newPage = VotePage();
+        newPage = WorkspacePage(
+          parties: parties,
+          manifs: manifs,
+        );
         break;
 
-     default:
-        newPage = WorkspacePage(parties: parties);
+      default:
+        newPage = Screen404();
         break;
     }
     setState(() {
@@ -93,7 +101,7 @@ class _NavigationPageState extends State<NavigationPage> {
 
   void addPartyInWorkspace(PoliticalParty value, BuildContext context) {
     bool isExists = parties.where((p) => p.id == value.id).isNotEmpty;
-    if(!isExists) {
+    if (!isExists) {
       parties.add(value);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -102,4 +110,14 @@ class _NavigationPageState extends State<NavigationPage> {
     }
   }
 
+  void addManifInWorkspace(Manifestation value, BuildContext context) {
+    bool isExists = manifs.where((p) => p.id == value.id).isNotEmpty;
+    if (!isExists) {
+      manifs.add(value);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Cette manifestation est déjà dans l'espace de travail"),
+      ));
+    }
+  }
 }

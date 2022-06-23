@@ -9,53 +9,84 @@ import 'package:flutter/material.dart';
 import '../widgets/buttons/button_card.dart';
 import '../widgets/cards/card_shimmer.dart';
 
-class ManifestationPage extends StatelessWidget {
+class ManifestationPage extends StatefulWidget {
+  final Function(Manifestation)? callbackAddWorkspace;
+
+  ManifestationPage({
+    Key? key,
+    this.callbackAddWorkspace,
+  }) : super(key: key);
+
+  @override
+  State<ManifestationPage> createState() => _ManifestationPageState();
+}
+
+class _ManifestationPageState extends State<ManifestationPage> {
+  List<Manifestation> manifs = [];
+  bool apiIsCalled = false;
+  bool isDragging = false;
   double _widthCard = 500;
   final double _heightCard = 200;
-  
-  ManifestationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
-    if(widthScreen <= 500) {
+    if (widthScreen <= 500) {
       _widthCard = widthScreen - 16;
     }
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: FutureBuilder(
+      child: Stack(
+        children: [
+          _getListBuilder(context),
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 80,
+            width: widthScreen,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: _getTargetDraggable(context),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _getListBuilder(BuildContext context) {
+    if (!apiIsCalled) {
+      return FutureBuilder(
         future: ManifService().getAllManifestations(),
         builder: (BuildContext context,
             AsyncSnapshot<List<Manifestation>> snapshot) {
           if (snapshot.hasData) {
-            return _getListManifs(snapshot.data, context);
+            apiIsCalled = true;
+            manifs = snapshot.data!;
+            return _getListManifs(context);
           } else if (snapshot.hasError) {
+            apiIsCalled = true;
             return _getManifError();
           } else {
             return _getManifLoader(context);
           }
         },
-      ),
-    );
+      );
+    } else {
+      return _getListManifs(context);
+    }
   }
 
-  Widget _getListManifs(List<Manifestation>? manifs, BuildContext context) {
+  Widget _getListManifs(BuildContext context) {
     List<Widget> cards = [];
-    cards.add(ButtonCard(
-      icon: Icons.add_circle_outline,
-      label: "Ajouter",
-      width: _widthCard,
-      height: _heightCard,
-      color: Colors.cyanAccent,
-      onTap: () => Navigator.of(context).pushNamed(AddManifestationPage.routeName),
-    ));
+    cards.add(_getButtonAdd(context));
     if (manifs != null) {
       cards.addAll(manifs
           .map((e) => CardManif(
-        manifestation: e,
-        width: _widthCard,
-        height: _heightCard,
-      ))
+                manifestation: e,
+                dragStart: () => setState(() => isDragging = true),
+                dragFinish: () => setState(() => isDragging = false),
+                width: _widthCard,
+                height: _heightCard,
+              ))
           .toList());
     }
     return Container(
@@ -64,8 +95,8 @@ class ManifestationPage extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Wrap(
-          spacing: 8.0,
-          runSpacing: 4.0,
+          spacing: 10.0,
+          runSpacing: 10.0,
           alignment: WrapAlignment.start,
           crossAxisAlignment: WrapCrossAlignment.start,
           children: cards,
@@ -79,7 +110,6 @@ class ManifestationPage extends StatelessWidget {
       12,
       CardShimmer(width: _widthCard, height: _heightCard),
     );
-
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Wrap(
@@ -99,5 +129,51 @@ class ManifestationPage extends StatelessWidget {
       size: 60,
     );
   }
-  
+
+  Widget? _getTargetDraggable(BuildContext context) {
+    if (!isDragging) {
+      return null;
+    }
+    return DragTarget<Manifestation>(
+      onAccept: (value) => widget.callbackAddWorkspace?.call(value),
+      builder: (context, candidates, rejects) {
+        return Container(
+          width: 300,
+          height: 300,
+          decoration: BoxDecoration(
+              color: Color.fromARGB(190, 194, 194, 194),
+              shape: BoxShape.circle),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Espace de travaille",
+                maxLines: 2,
+                overflow: TextOverflow.clip,
+                style: Theme.of(context).textTheme.headline2,
+              ),
+              Icon(
+                Icons.add_circle_outline,
+                color: Colors.black,
+                size: 30,
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _getButtonAdd(BuildContext context) {
+    return ButtonCard(
+      icon: Icons.add_circle_outline,
+      label: "Ajouter",
+      width: _widthCard,
+      height: _heightCard,
+      color: Colors.cyanAccent,
+      onTap: () =>
+          Navigator.of(context).pushNamed(AddManifestationPage.routeName),
+    );
+  }
 }

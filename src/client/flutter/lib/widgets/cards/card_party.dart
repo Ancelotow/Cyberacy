@@ -24,6 +24,7 @@ class CardParty extends StatelessWidget {
       onDragStarted: () => dragStart?.call(),
       onDraggableCanceled: (velocity, offset) => dragFinish?.call(),
       onDragEnd: (details) => dragFinish?.call(),
+      onDragCompleted: () => dragStart?.call(),
       feedback: Container(
         width: width / 2,
         height: height / 2,

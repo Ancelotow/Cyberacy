@@ -91,8 +91,8 @@ class _PartyPageState extends State<PartyPage> {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Wrap(
-        spacing: 8.0,
-        runSpacing: 4.0,
+        spacing: 10.0,
+        runSpacing: 10.0,
         alignment: WrapAlignment.start,
         crossAxisAlignment: WrapCrossAlignment.start,
         children: cards,
