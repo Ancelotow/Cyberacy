@@ -86,6 +86,8 @@ class _NavigationPageState extends State<NavigationPage> {
         newPage = WorkspacePage(
           parties: parties,
           manifs: manifs,
+          callbackRemoveManif: manifs.remove,
+          callbackRemoveParty: parties.remove,
         );
         break;
 
@@ -120,4 +122,5 @@ class _NavigationPageState extends State<NavigationPage> {
       ));
     }
   }
+
 }
