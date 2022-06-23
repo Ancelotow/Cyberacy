@@ -29,8 +29,17 @@ class NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     color ??= Theme.of(context).primaryColor;
     return Container(
-      color: color,
       height: 65,
+      decoration: BoxDecoration(
+        color: color,
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black,
+            blurRadius: 5,
+            offset: Offset(0, -2), // Shadow position
+          ),
+        ],
+      ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: getBody(

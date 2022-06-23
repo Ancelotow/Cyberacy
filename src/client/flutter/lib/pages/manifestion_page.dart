@@ -55,8 +55,8 @@ class _ManifestationPageState extends State<ManifestationPage> {
   Widget _getListBuilder(BuildContext context) {
     return FutureBuilder(
       future: ManifService().getAllManifestations(),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<Manifestation>> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<List<Manifestation>> snapshot) {
         if (snapshot.hasData) {
           manifs = snapshot.data!;
           return _getListManifs(context);
@@ -131,11 +131,12 @@ class _ManifestationPageState extends State<ManifestationPage> {
     return DraggableTarget(
       label: "Espace de travaille",
       callback: widget.callbackAddWorkspace,
-      color: Colors.greenAccent,
-      colorEnter: Colors.green,
+      color: Theme.of(context).highlightColor,
+      colorEnter: Theme.of(context).focusColor,
       icon: Icon(
         Icons.add_circle_outline,
         size: 30,
+        color: Colors.white,
       ),
     );
   }
@@ -146,7 +147,7 @@ class _ManifestationPageState extends State<ManifestationPage> {
       label: "Ajouter",
       width: _widthCard,
       height: _heightCard,
-      color: Colors.cyanAccent,
+      color: Theme.of(context).accentColor,
       onTap: () =>
           Navigator.of(context).pushNamed(AddManifestationPage.routeName),
     );

@@ -26,13 +26,16 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: const [Locale('fr')],
       theme: ThemeData(
-        primaryColor: const Color.fromARGB(255, 73, 150, 221),
-        backgroundColor: const Color.fromARGB(255, 76, 89, 150),
-        disabledColor: const Color.fromARGB(255, 210, 210, 210),
-        cardColor: const Color.fromARGB(255, 33, 11, 77),
-        buttonColor: const Color.fromARGB(255, 43, 43, 82),
-        hoverColor: const Color.fromARGB(255, 112, 171, 225),
-        accentColor: const Color.fromARGB(255, 32, 255, 0),
+        primaryColor: const Color.fromARGB(255, 54, 54, 54),
+        backgroundColor: const Color.fromARGB(255, 40, 40, 40),
+        disabledColor: const Color.fromARGB(255, 122, 122, 122),
+        cardColor: const Color.fromARGB(255, 54, 54, 54),
+        buttonColor: const Color.fromARGB(255, 13, 41, 134),
+        hoverColor: const Color.fromARGB(255, 21, 71, 110),
+        accentColor: const Color.fromARGB(255, 52, 95, 255),
+        highlightColor: const Color.fromARGB(255, 140, 35, 241),
+        focusColor: const Color.fromARGB(255, 150, 93, 197),
+        unselectedWidgetColor: const Color.fromARGB(255, 133, 133, 133),
         textTheme: TextTheme(
           headline1: TextStyle(
             color: Colors.white,
@@ -41,14 +44,15 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           headline2: TextStyle(
-            color: Colors.black,
+            color: Theme.of(context).accentColor,
             fontFamily: "HK-Nova",
             fontSize: 28,
           ),
           headline3: TextStyle(
-            color: Color.fromARGB(171, 0, 0, 0),
+            color: Colors.white,
             fontFamily: "HK-Nova",
             fontSize: 20,
+            fontWeight: FontWeight.w100
           ),
           headline4: TextStyle(
             color: Colors.white,

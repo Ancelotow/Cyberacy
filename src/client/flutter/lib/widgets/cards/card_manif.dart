@@ -37,17 +37,17 @@ class CardManif extends StatelessWidget {
       childWhenDragging: Container(
         width: width,
         height: height,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: Color.fromARGB(205, 102, 161, 158),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+          color: Theme.of(context).unselectedWidgetColor,
         ),
       ),
       feedback: Container(
           width: width / 2,
           height: height / 2,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            color: Color.fromARGB(239, 83, 136, 131),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+            color: Theme.of(context).accentColor.withOpacity(0.5),
           ),
           child: Center(
             child: Text(
@@ -73,7 +73,7 @@ class CardManif extends StatelessWidget {
             child: Container(
               width: width,
               height: height,
-              color: Colors.cyanAccent,
+              color: Theme.of(context).cardColor,
               child: Column(
                 children: [
                   Expanded(

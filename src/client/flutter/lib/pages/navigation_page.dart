@@ -39,8 +39,8 @@ class _NavigationPageState extends State<NavigationPage> {
               orientation: OrientationNavBar.horizontal,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
-              color: Theme.of(context).buttonColor,
-              colorUnselected: Colors.blueGrey,
+              color: Theme.of(context).cardColor,
+              colorUnselected: Theme.of(context).unselectedWidgetColor,
               colorSelected: Theme.of(context).accentColor,
               indexSelected: currentIndex,
               items: [

@@ -66,10 +66,9 @@ class _WorkspacePageState extends State<WorkspacePage> {
             Text(
               "Votre espace de travail est vide.",
               style: TextStyle(
-                color: Theme.of(context).cardColor,
-                fontSize: 30,
-                fontWeight: FontWeight.bold
-              ),
+                  color: Theme.of(context).cardColor,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold),
             )
           ],
         ),
@@ -161,17 +160,25 @@ class _WorkspacePageState extends State<WorkspacePage> {
       return DraggableTarget<PoliticalParty>(
         label: "Retirer partie",
         callback: widget.callbackRemoveParty,
-        color: Colors.redAccent,
-        colorEnter: Colors.red,
-        icon: const Icon(Icons.delete_forever, size: 30),
+        color: Colors.red,
+        colorEnter: Colors.redAccent,
+        icon: const Icon(
+          Icons.delete_forever,
+          size: 30,
+          color: Colors.black,
+        ),
       );
     } else if (isDraggingManif) {
       return DraggableTarget<Manifestation>(
         label: "Retirer manifestation",
         callback: widget.callbackRemoveManif,
-        color: Colors.redAccent,
-        colorEnter: Colors.red,
-        icon: const Icon(Icons.delete_forever, size: 30),
+        color: Colors.red,
+        colorEnter: Colors.redAccent,
+        icon: const Icon(
+          Icons.delete_forever,
+          size: 30,
+          color: Colors.black,
+        ),
       );
     } else {
       return null;

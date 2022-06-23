@@ -125,7 +125,7 @@ class _PartyPageState extends State<PartyPage> {
       label: "Ajouter",
       width: _widthCard,
       height: _heightCard,
-      color: Colors.greenAccent,
+      color: Theme.of(context).accentColor,
       onTap: () => Navigator.of(context).pushNamed(AddPartyPage.routeName),
     );
   }
@@ -137,11 +137,12 @@ class _PartyPageState extends State<PartyPage> {
     return DraggableTarget(
       label: "Espace de travaille",
       callback: widget.callbackAddWorkspace,
-      color: Colors.greenAccent,
-      colorEnter: Colors.green,
+      color: Theme.of(context).highlightColor,
+      colorEnter: Theme.of(context).focusColor,
       icon: Icon(
         Icons.add_circle_outline,
         size: 30,
+        color: Colors.white,
       ),
     );
   }

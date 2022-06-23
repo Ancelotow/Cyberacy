@@ -28,9 +28,9 @@ class CardParty extends StatelessWidget {
       feedback: Container(
         width: width / 2,
         height: height / 2,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: Color.fromARGB(239, 65, 112, 66),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+          color: Theme.of(context).accentColor.withOpacity(0.5),
         ),
         child: Center(
           child: Text(
@@ -44,19 +44,19 @@ class CardParty extends StatelessWidget {
       childWhenDragging: Container(
         width: width,
         height: height,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: Color.fromARGB(205, 83, 148, 60),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+          color: Theme.of(context).unselectedWidgetColor,
         ),
       ),
       data: party,
       child: Container(
         width: width,
         height: height,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: Colors.greenAccent,
-          boxShadow: [
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+          color: Theme.of(context).cardColor,
+          boxShadow: const [
             BoxShadow(
               color: Colors.black,
               blurRadius: 10,

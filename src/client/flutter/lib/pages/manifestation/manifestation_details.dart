@@ -57,27 +57,29 @@ class ManifestationDetail extends StatelessWidget {
     if (width < 300) width = 300;
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: SingleChildScrollView(
-            child: Wrap(
-              direction: Axis.horizontal,
-              spacing: 150.00,
-              runSpacing: 10.00,
-              children: [
-                Container(
-                  width: width,
-                  child: Column(
-                    children: [
-                      getForm(context, width),
-                      SizedBox(height: 50,),
-                      getOptions(context, width)
-                    ],
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: SingleChildScrollView(
+              child: Wrap(
+                direction: Axis.horizontal,
+                spacing: 150.00,
+                runSpacing: 10.00,
+                children: [
+                  Container(
+                    width: width,
+                    child: Column(
+                      children: [
+                        getForm(context, width),
+                        SizedBox(height: 50,),
+                        //getOptions(context, width)
+                      ],
+                    ),
                   ),
-                ),
-                getSteps(context, width)
-              ],
+                  getSteps(context, width)
+                ],
+              ),
             ),
           ),
         ),
@@ -213,9 +215,9 @@ class ManifestationDetail extends StatelessWidget {
                       Button(
                         label: "Ajouter",
                         width: 100,
-                        pressedColor: Colors.lightBlue,
-                        color: Colors.green,
-                        textStyle: TextStyle(color: Colors.black),
+                        pressedColor: Theme.of(context).focusColor,
+                        color: Theme.of(context).highlightColor,
+                        textStyle: TextStyle(color: Colors.white),
                       ),
                     ],
                   ),

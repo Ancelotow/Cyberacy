@@ -64,7 +64,7 @@ class _DraggableTargetState<T> extends State<DraggableTarget<T>> {
       maxLines: 2,
       textAlign: TextAlign.center,
       overflow: TextOverflow.clip,
-      style: Theme.of(context).textTheme.headline2,
+      style: Theme.of(context).textTheme.headline3,
     );
   }
 
