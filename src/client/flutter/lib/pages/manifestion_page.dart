@@ -91,8 +91,8 @@ class _ManifestationPageState extends State<ManifestationPage> {
         child: Wrap(
           spacing: 10.0,
           runSpacing: 10.0,
-          alignment: WrapAlignment.start,
-          crossAxisAlignment: WrapCrossAlignment.start,
+          alignment: WrapAlignment.center,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: cards,
         ),
       ),
@@ -107,10 +107,10 @@ class _ManifestationPageState extends State<ManifestationPage> {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Wrap(
-        spacing: 8.0,
-        runSpacing: 4.0,
-        alignment: WrapAlignment.start,
-        crossAxisAlignment: WrapCrossAlignment.start,
+        spacing: 10.0,
+        runSpacing: 10.0,
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: cardLoad,
       ),
     );

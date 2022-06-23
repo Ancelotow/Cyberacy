@@ -5,6 +5,7 @@ import 'package:bo_cyberacy/models/services/party_service.dart';
 import 'package:bo_cyberacy/models/services/ref_service.dart';
 import 'package:bo_cyberacy/widgets/input_field/input_selected.dart';
 import 'package:flutter/material.dart';
+import '../../models/dialog/alert_normal.dart';
 import '../../models/entities/town.dart';
 import '../../models/enums/position_input.dart';
 import '../../models/errors/api_service_error.dart';
@@ -13,7 +14,6 @@ import '../../widgets/input_field/input_text.dart';
 
 class AddPartyPage extends StatefulWidget {
   static const String routeName = "infoPartyPage";
-
 
   AddPartyPage({Key? key}) : super(key: key);
 
@@ -166,19 +166,19 @@ class _AddPartyPageState extends State<AddPartyPage> {
       await PartyService().addParty(party);
       Navigator.of(context).pop();
     } on InvalidFormError catch (e) {
-      _showAlertError(
-        context,
+      AlertNormal(
+        context: context,
         title: "Formulaire incomplet",
         message: e.message,
         labelButton: "Continuer",
-      );
+      ).show();
     } on ApiServiceError catch (e) {
-      _showAlertError(
-        context,
+      AlertNormal(
+        context: context,
         title: "Erreur ajout",
         message: e.responseHttp.body,
         labelButton: "Continuer",
-      );
+      ).show();
     } finally {
       setState(() => isSaving = false);
     }
@@ -196,28 +196,5 @@ class _AddPartyPageState extends State<AddPartyPage> {
     } else if (currentEdge == null) {
       throw InvalidFormError("Le champ \"Bord politique\" est obligatoire");
     }
-  }
-
-  void _showAlertError(BuildContext context,
-      {required String title,
-      required String message,
-      required String labelButton}) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          Button(
-            width: 100,
-            label: labelButton,
-            click: () {
-              Navigator.pop(_);
-            },
-          )
-        ],
-        elevation: 30.00,
-      ),
-    );
   }
 }

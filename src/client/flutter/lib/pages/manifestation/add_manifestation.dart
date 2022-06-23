@@ -3,6 +3,7 @@
 import 'package:bo_cyberacy/models/entities/manifestation.dart';
 import 'package:bo_cyberacy/models/services/manifestation_service.dart';
 import 'package:flutter/material.dart';
+import '../../models/dialog/alert_normal.dart';
 import '../../models/enums/position_input.dart';
 import '../../models/errors/api_service_error.dart';
 import '../../models/errors/invalid_form_error.dart';
@@ -119,19 +120,19 @@ class AddManifestationPage extends StatelessWidget {
       await ManifService().addManifestation(manif);
       Navigator.of(context).pop();
     } on InvalidFormError catch (e) {
-      _showAlertError(
-        context,
+      AlertNormal(
+        context: context,
         title: "Formulaire incomplet",
         message: e.message,
         labelButton: "Continuer",
-      );
+      ).show();
     } on ApiServiceError catch (e) {
-      _showAlertError(
-        context,
+      AlertNormal(
         title: "Erreur ajout",
         message: e.responseHttp.body,
         labelButton: "Continuer",
-      );
+        context: context,
+      ).show();
     }
   }
 
@@ -153,26 +154,4 @@ class AddManifestationPage extends StatelessWidget {
     }
   }
 
-  void _showAlertError(BuildContext context,
-      {required String title,
-      required String message,
-      required String labelButton}) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          Button(
-            width: 100,
-            label: labelButton,
-            click: () {
-              Navigator.pop(_);
-            },
-          )
-        ],
-        elevation: 30.00,
-      ),
-    );
-  }
 }

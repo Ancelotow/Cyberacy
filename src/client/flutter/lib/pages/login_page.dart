@@ -3,6 +3,7 @@ import 'package:bo_cyberacy/pages/navigation_page.dart';
 import 'package:bo_cyberacy/widgets/buttons/button.dart';
 import 'package:bo_cyberacy/widgets/input_field/input_text.dart';
 import 'package:flutter/material.dart';
+import '../models/dialog/alert_normal.dart';
 import '../models/errors/api_service_error.dart';
 import '../models/session.dart';
 import '../widgets/cards/card_shimmer.dart';
@@ -90,42 +91,23 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.of(currentContext!).pushNamed(NavigationPage.routeName);
       } on ApiServiceError catch (e) {
         if (e.responseHttp.statusCode == 401 && currentContext != null) {
-          _showAlertError(
-              title: "Echec de la connexion",
-              message: "Vérifiez votre identifiant et votre mot de passe.",
-              labelButton: "Réssayer");
+          AlertNormal(
+            title: "Echec de la connexion",
+            message: "Vérifiez votre identifiant et votre mot de passe.",
+            labelButton: "Réssayer",
+            context: currentContext!,
+          ).show();
         }
       }
     } else {
-      _showAlertError(
-          title: "Formulaire incomplet",
-          message:
-              "Veuillez renseignez votre identifiants et votre mot de passe.",
-          labelButton: "Réssayer");
+      AlertNormal(
+        title: "Formulaire incomplet",
+        message:
+            "Veuillez renseignez votre identifiant et votre mot de passe.",
+        labelButton: "Réssayer",
+        context: currentContext!,
+      ).show();
     }
     setState(() => isConnecting = false);
-  }
-
-  void _showAlertError(
-      {required String title,
-      required String message,
-      required String labelButton}) {
-    showDialog(
-      context: currentContext!,
-      builder: (_) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          Button(
-            width: 100,
-            label: labelButton,
-            click: () {
-              Navigator.pop(_);
-            },
-          )
-        ],
-        elevation: 30.00,
-      ),
-    );
   }
 }
