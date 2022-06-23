@@ -16,6 +16,7 @@ class CardParty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String name = (party.name == null) ? "- NONE -" : party.name!;
+    print(width);
     return Container(
       width: width,
       height: height,
@@ -32,7 +33,7 @@ class CardParty extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: width - (width * 0.10),
+                  width: width - 16,
                   child: Text(
                     name,
                     maxLines: 2,
