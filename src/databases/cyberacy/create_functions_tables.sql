@@ -830,8 +830,58 @@ begin
                  left join town twn on stp.twn_code_insee = twn.twn_code_insee
         where man_id = _man_id
            or _man_id is null
-        and stp.stp_is_delete = false
+            and stp.stp_is_delete = false
         order by date_arrived;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table profile
+create or replace function filter_profile(_nir person.prs_nir%type default null)
+    returns table
+            (
+                id          profile.prf_id%type,
+                name        profile.prf_name%type,
+                description profile.prf_description%type,
+                date_create profile.prf_date_create%type
+            )
+as
+$filter$
+begin
+    return query
+        select prf_id          as id,
+               prf_name        as name,
+               prf_description as description,
+               prf_date_create as date_create
+        from profile
+        where prf_is_delete = false;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table role
+create or replace function filter_role(_nir person.prs_nir%type default null, _prf_id profile.prf_id%type default null)
+    returns table
+            (
+                id          role.rle_id%type,
+                title       role.rle_title%type,
+                description role.rle_description%type,
+                code        role.rle_code%type
+            )
+as
+$filter$
+begin
+    return query
+        select rle.rle_id          as id,
+               rle_title       as title,
+               rle_description as description,
+               rle_code        as code
+        from role rle
+        left join link_role_profile lrp on rle.rle_id = lrp.rle_id
+        where _prf_id is null
+        or lrp.prf_id = _prf_id;
 end;
 $filter$
     language plpgsql;
