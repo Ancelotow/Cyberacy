@@ -37,16 +37,7 @@ class _WorkspacePageState extends State<WorkspacePage> {
     return SafeArea(
       child: Stack(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _getTitle("Parties politiques", context),
-              _getPoliticalParties(context),
-              SizedBox(height: 50),
-              _getTitle("Manifestations", context),
-              _getManifestations(context),
-            ],
-          ),
+          _getBody(context),
           SizedBox(
             height: MediaQuery.of(context).size.height - 100,
             width: widthScreen,
@@ -60,43 +51,97 @@ class _WorkspacePageState extends State<WorkspacePage> {
     );
   }
 
+  Widget _getBody(BuildContext context) {
+    if (widget.parties.isEmpty && widget.manifs.isEmpty) {
+      return Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.laptop_chromebook_rounded,
+              color: Theme.of(context).cardColor,
+              size: 400,
+            ),
+            Text(
+              "Votre espace de travail est vide.",
+              style: TextStyle(
+                color: Theme.of(context).cardColor,
+                fontSize: 30,
+                fontWeight: FontWeight.bold
+              ),
+            )
+          ],
+        ),
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _getPoliticalParties(context),
+        SizedBox(height: 50),
+        _getManifestations(context),
+      ],
+    );
+  }
+
   Widget _getPoliticalParties(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: widget.parties
-            .map((e) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CardParty(
-                    party: e,
-                    dragStart: () => setState(() => isDraggingParty = true),
-                    dragFinish: () => setState(() => isDraggingParty = false),
-                    width: _widthCard,
-                    height: _heightCardParty,
-                  ),
-                ))
-            .toList(),
-      ),
+    if (widget.parties.isEmpty) {
+      return Container();
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _getTitle("Parties politiques", context),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: widget.parties
+                .map((e) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CardParty(
+                        party: e,
+                        dragStart: () => setState(() => isDraggingParty = true),
+                        dragFinish: () =>
+                            setState(() => isDraggingParty = false),
+                        width: _widthCard,
+                        height: _heightCardParty,
+                      ),
+                    ))
+                .toList(),
+          ),
+        ),
+      ],
     );
   }
 
   Widget _getManifestations(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: widget.manifs
-            .map((e) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CardManif(
-                    manifestation: e,
-                    dragStart: () => setState(() => isDraggingManif = true),
-                    dragFinish: () => setState(() => isDraggingManif = false),
-                    width: _widthCard,
-                    height: _heightCardManif,
-                  ),
-                ))
-            .toList(),
-      ),
+    if (widget.manifs.isEmpty) {
+      return Container();
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _getTitle("Manifestations", context),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: widget.manifs
+                .map((e) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CardManif(
+                        manifestation: e,
+                        dragStart: () => setState(() => isDraggingManif = true),
+                        dragFinish: () =>
+                            setState(() => isDraggingManif = false),
+                        width: _widthCard,
+                        height: _heightCardManif,
+                      ),
+                    ))
+                .toList(),
+          ),
+        ),
+      ],
     );
   }
 
