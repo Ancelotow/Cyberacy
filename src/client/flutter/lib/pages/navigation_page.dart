@@ -1,7 +1,9 @@
+import 'package:bo_cyberacy/models/entities/political_party.dart';
 import 'package:bo_cyberacy/models/enums/orientation_nav_bar.dart';
 import 'package:bo_cyberacy/pages/manifestion_page.dart';
 import 'package:bo_cyberacy/pages/party_page.dart';
 import 'package:bo_cyberacy/pages/vote_page.dart';
+import 'package:bo_cyberacy/pages/workspace_page.dart';
 import 'package:bo_cyberacy/widgets/nav_bar/nav_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +19,8 @@ class NavigationPage extends StatefulWidget {
 }
 
 class _NavigationPageState extends State<NavigationPage> {
+  List<PoliticalParty> parties = [];
   Widget currentPage = PartyPage();
-
   int currentIndex = 0;
 
   @override
@@ -54,21 +56,6 @@ class _NavigationPageState extends State<NavigationPage> {
                   label: "Espace travaille",
                   onTap: click,
                 ),
-                /*NavBarItem(
-                  icon: Icons.how_to_vote,
-                  label: "Votes",
-                  onTap: click,
-                ),
-                NavBarItem(
-                  icon: Icons.person,
-                  label: "Utilisateurs",
-                  onTap: click,
-                ),
-                NavBarItem(
-                  icon: Icons.account_circle,
-                  label: "Mon compte",
-                  onTap: click,
-                )*/
               ],
             ),
           ),
@@ -81,7 +68,9 @@ class _NavigationPageState extends State<NavigationPage> {
     Widget newPage;
     switch(index) {
       case 0:
-        newPage = PartyPage();
+        newPage = PartyPage(callbackAddWorkspace: (value) {
+          addPartyInWorkspace(value, context);
+        });
         break;
 
       case 1:
@@ -93,7 +82,7 @@ class _NavigationPageState extends State<NavigationPage> {
         break;
 
      default:
-        newPage = PartyPage();
+        newPage = WorkspacePage(parties: parties);
         break;
     }
     setState(() {
@@ -102,5 +91,15 @@ class _NavigationPageState extends State<NavigationPage> {
     });
   }
 
+  void addPartyInWorkspace(PoliticalParty value, BuildContext context) {
+    bool isExists = parties.where((p) => p.id == value.id).isNotEmpty;
+    if(!isExists) {
+      parties.add(value);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Ce parti politique est déjà dans l'espace de travail"),
+      ));
+    }
+  }
 
 }
