@@ -23,7 +23,6 @@ class ManifestationPage extends StatefulWidget {
 
 class _ManifestationPageState extends State<ManifestationPage> {
   List<Manifestation> manifs = [];
-  bool apiIsCalled = false;
   bool isDragging = false;
   double _widthCard = 500;
   final double _heightCard = 200;
@@ -53,26 +52,20 @@ class _ManifestationPageState extends State<ManifestationPage> {
   }
 
   Widget _getListBuilder(BuildContext context) {
-    if (!apiIsCalled) {
-      return FutureBuilder(
-        future: ManifService().getAllManifestations(),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<Manifestation>> snapshot) {
-          if (snapshot.hasData) {
-            apiIsCalled = true;
-            manifs = snapshot.data!;
-            return _getListManifs(context);
-          } else if (snapshot.hasError) {
-            apiIsCalled = true;
-            return _getManifError();
-          } else {
-            return _getManifLoader(context);
-          }
-        },
-      );
-    } else {
-      return _getListManifs(context);
-    }
+    return FutureBuilder(
+      future: ManifService().getAllManifestations(),
+      builder: (BuildContext context,
+          AsyncSnapshot<List<Manifestation>> snapshot) {
+        if (snapshot.hasData) {
+          manifs = snapshot.data!;
+          return _getListManifs(context);
+        } else if (snapshot.hasError) {
+          return _getManifError();
+        } else {
+          return _getManifLoader(context);
+        }
+      },
+    );
   }
 
   Widget _getListManifs(BuildContext context) {

@@ -22,7 +22,6 @@ class PartyPage extends StatefulWidget {
 
 class _PartyPageState extends State<PartyPage> {
   List<PoliticalParty> parties = [];
-  bool apiIsCalled = false;
   bool isDragging = false;
   double _widthCard = 500;
   final double _heightCard = 120;
@@ -52,26 +51,20 @@ class _PartyPageState extends State<PartyPage> {
   }
 
   Widget _getListBuilder(BuildContext context) {
-    if (!apiIsCalled) {
-      return FutureBuilder(
-        future: PartyService().getAllParty(),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<PoliticalParty>> snapshot) {
-          if (snapshot.hasData) {
-            apiIsCalled = true;
-            parties = snapshot.data!;
-            return _getListParty(context);
-          } else if (snapshot.hasError) {
-            apiIsCalled = true;
-            return _getPartyError();
-          } else {
-            return _getPartyLoader(context);
-          }
-        },
-      );
-    } else {
-      return _getListParty(context);
-    }
+    return FutureBuilder(
+      future: PartyService().getAllParty(),
+      builder: (BuildContext context,
+          AsyncSnapshot<List<PoliticalParty>> snapshot) {
+        if (snapshot.hasData) {
+          parties = snapshot.data!;
+          return _getListParty(context);
+        } else if (snapshot.hasError) {
+          return _getPartyError();
+        } else {
+          return _getPartyLoader(context);
+        }
+      },
+    );
   }
 
   Widget _getListParty(BuildContext context) {

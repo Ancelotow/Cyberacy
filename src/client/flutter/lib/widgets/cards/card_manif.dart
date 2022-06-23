@@ -33,7 +33,7 @@ class CardManif extends StatelessWidget {
       onDragStarted: () => dragStart?.call(),
       onDraggableCanceled: (velocity, offset) => dragFinish?.call(),
       onDragEnd: (details) => dragFinish?.call(),
-      onDragCompleted: () => dragStart?.call(),
+      onDragCompleted: () => dragFinish?.call(),
       childWhenDragging: Container(
         width: width,
         height: height,
