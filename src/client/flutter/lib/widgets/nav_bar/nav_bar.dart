@@ -15,14 +15,14 @@ class NavBar extends StatelessWidget {
 
   NavBar(
       {Key? key,
-        required this.items,
-        this.color,
-        this.orientation = OrientationNavBar.horizontal,
-        this.colorSelected = Colors.white,
-        this.colorUnselected = Colors.black,
-        this.indexSelected = 0,
-        this.mainAxisAlignment = MainAxisAlignment.spaceAround,
-        this.crossAxisAlignment = CrossAxisAlignment.center})
+      required this.items,
+      this.color,
+      this.orientation = OrientationNavBar.horizontal,
+      this.colorSelected = Colors.white,
+      this.colorUnselected = Colors.black,
+      this.indexSelected = 0,
+      this.mainAxisAlignment = MainAxisAlignment.spaceAround,
+      this.crossAxisAlignment = CrossAxisAlignment.center})
       : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class NavBar extends StatelessWidget {
     color ??= Theme.of(context).primaryColor;
     return Container(
       color: color,
-      height: 76,
+      height: 65,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: getBody(
@@ -46,9 +46,7 @@ class NavBar extends StatelessWidget {
     Color color;
     itemSelected = items[indexSelected];
     for (NavBarItem item in items) {
-      color = (item == itemSelected)
-          ? colorSelected
-          : colorUnselected;
+      color = (item == itemSelected) ? colorSelected : colorUnselected;
       listItems.add(buildItem(item, color));
     }
     return listItems;
@@ -72,9 +70,12 @@ class NavBar extends StatelessWidget {
             ),
             Text(
               item.label,
-              maxLines: 2,
+              maxLines: 1,
               textAlign: TextAlign.center,
-              style: TextStyle(color: color),
+              style: TextStyle(
+                color: color,
+                fontSize: 11,
+              ),
             )
           ],
         ),

@@ -11,13 +11,17 @@ import 'package:shimmer/shimmer.dart';
 import '../widgets/cards/card_shimmer.dart';
 
 class PartyPage extends StatelessWidget {
-  final double _widthCard = 500;
+  double _widthCard = 500;
   final double _heightCard = 120;
 
-  const PartyPage({Key? key}) : super(key: key);
+  PartyPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    double widthScreen = MediaQuery.of(context).size.width;
+    if(widthScreen <= 500) {
+      _widthCard = widthScreen - 16;
+    }
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: FutureBuilder(

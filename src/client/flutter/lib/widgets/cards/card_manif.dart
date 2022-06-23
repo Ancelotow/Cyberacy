@@ -47,6 +47,7 @@ class CardManif extends StatelessWidget {
                     name,
                     maxLines: 2,
                     overflow: TextOverflow.clip,
+                    textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline2,
                   ),
                 ),

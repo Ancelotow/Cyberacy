@@ -59,7 +59,7 @@ class ManifestationDetail extends StatelessWidget {
       backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(2.0),
           child: SingleChildScrollView(
             child: Wrap(
               direction: Axis.horizontal,
@@ -92,6 +92,7 @@ class ManifestationDetail extends StatelessWidget {
       children: [
         Text(
           "Manifestation n°${manifestation.id}",
+          textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline1,
         ),
         SizedBox(height: 50),
