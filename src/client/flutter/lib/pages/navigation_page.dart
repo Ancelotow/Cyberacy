@@ -50,6 +50,11 @@ class _NavigationPageState extends State<NavigationPage> {
                   onTap: click,
                 ),
                 NavBarItem(
+                  icon: Icons.laptop_chromebook_outlined,
+                  label: "Espace travaille",
+                  onTap: click,
+                ),
+                /*NavBarItem(
                   icon: Icons.how_to_vote,
                   label: "Votes",
                   onTap: click,
@@ -63,7 +68,7 @@ class _NavigationPageState extends State<NavigationPage> {
                   icon: Icons.account_circle,
                   label: "Mon compte",
                   onTap: click,
-                )
+                )*/
               ],
             ),
           ),
