@@ -8,6 +8,7 @@ export class Step {
     id_manifestation
     id_step_type
     town_code_insee
+    town_zip_code
     latitude
     longitude
 }
@@ -17,7 +18,7 @@ export class Step {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Step.prototype.Add = () => {
+Step.prototype.Add = function() {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'INSERT INTO step (stp_address_street, stp_date_arrived, tst_id, twn_code_insee, man_id, stp_latitude, stp_longitude) VALUES ($1, $2, $3, $4, $5, $6, $7)',
@@ -39,7 +40,7 @@ Step.prototype.Add = () => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Step.prototype.GetById = () => {
+Step.prototype.GetById = function() {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'select * from filter_step() where id = $1',
@@ -62,7 +63,7 @@ Step.prototype.GetById = () => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Step.prototype.Delete = () => {
+Step.prototype.Delete = function() {
     return new Promise((resolve, reject) => {
         this.GetById().then((result) => {
             if (result) {
@@ -92,7 +93,7 @@ Step.prototype.Delete = () => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Step.prototype.GetAll = (id_manifestation = null) => {
+Step.prototype.GetAll = function(id_manifestation = null) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'select * from filter_step($1)',

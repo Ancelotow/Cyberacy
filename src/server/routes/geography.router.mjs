@@ -43,4 +43,23 @@ routerGeo.get("/town", async (req, res) => {
     res.status(response.status).send(response.data)
 });
 
+routerGeo.get("/coordinates", async (req, res) => {
+    // #swagger.tags = ['Geography']
+    // #swagger.description = 'Récupération des coordonnées géographique d\'une adresse.'
+    // #swagger.security = [{ "Bearer": [] }]
+    /* #swagger.parameters['zip_code'] = {
+	       in: 'query',
+           description: 'Le code postale',
+           type: 'string'
+    } */
+    /* #swagger.parameters['address_street'] = {
+          in: 'query',
+          description: 'L\'adresse (rue).',
+          type: 'boolean'
+   } */
+
+    const response = await geographyCtrl.GetCoordinates(req.query.address_street, req.query.zip_code)
+    res.status(response.status).send(response.data)
+});
+
 export {routerGeo}

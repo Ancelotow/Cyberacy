@@ -1,7 +1,63 @@
 import region from "../models/region.mjs";
 import department from "../models/department.mjs";
 import town from "../models/town.mjs";
+import axios from "axios";
+import {config} from "dotenv";
 
+class Coordinates {
+
+    latitude = 0.00
+    longitude = 0.00
+
+    constructor(longitude, latitude) {
+        this.latitude = latitude
+        this.longitude = longitude
+    }
+
+}
+
+/**
+ * Récupère la lattitude et longitude en fonction de l'addresse
+ * @param address L'adresse
+ * @param zip_code  Le code postale
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+function GetLocationFromAddress(address, zip_code) {
+    return new Promise((resolve, reject) => {
+        if (address === null) {
+            reject("Address is required")
+            return
+        }
+        config()
+        axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address},${zip_code}&key=${process.env.GOOGLE_MAPS_TOKEN}`).then(async (res) => {
+            if (res.data) {
+                if (res.data.status === "OK" && res.data.results !== null) {
+                    if (res.data.results.length >= 0) {
+                        let geo = res.data.results[0].geometry
+                        if (geo !== null) {
+                            let loc = geo.location
+                            if (loc !== null) {
+                                let coordinates = new Coordinates()
+                                coordinates.latitude = loc.lat
+                                coordinates.longitude = loc.lng
+                                resolve(coordinates)
+                                return
+                            }
+                        }
+                    }
+                }
+            }
+            resolve(null)
+        }).catch((error) => {
+            if (error.response.status === 404) {
+                reject("Google API not found.")
+            } else {
+                reject(error.response.status)
+            }
+        });
+    });
+}
 /**
  * Récupère la liste des régions
  * @returns {Promise<unknown>}
@@ -92,5 +148,27 @@ const GetDepartmentByRegion = (code_insee) => {
     });
 }
 
+/**
+ * Rétourne les coordonées géographiques d'un lieu
+ * @param address_street L'adresse du lieu
+ * @param zip_code La code postal du lieu
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetCoordinates = (address_street, zip_code) => {
+    return new Promise((resolve, _) => {
+        if(address_street == null || zip_code == null) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            GetLocationFromAddress(address_street, zip_code).then((res) => {
+                const code = (res) ? 200 : 204;
+                resolve({status: code, data: res})
+            }).catch((e) => {
+                resolve({status: 500, data: e})
+            })
+        }
+    });
+}
 
-export default {GetRegions, GetDepartments, GetTowns, GetTownsByDepartment, GetDepartmentByRegion}
+
+export default {GetRegions, GetDepartments, GetTowns, GetTownsByDepartment, GetDepartmentByRegion, GetCoordinates, GetLocationFromAddress}

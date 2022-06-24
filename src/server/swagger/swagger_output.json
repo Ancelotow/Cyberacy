@@ -458,6 +458,34 @@
         "responses": {}
       }
     },
+    "/coordinates": {
+      "get": {
+        "tags": [
+          "Geography"
+        ],
+        "description": "Récupération des coordonnées géographique d\\'une adresse.",
+        "parameters": [
+          {
+            "name": "address_street",
+            "in": "query",
+            "description": "L'adresse (rue).",
+            "type": "boolean"
+          },
+          {
+            "name": "zip_code",
+            "in": "query",
+            "description": "Le code postale",
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/vote": {
       "post": {
         "tags": [

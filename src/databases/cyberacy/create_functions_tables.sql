@@ -806,6 +806,7 @@ create or replace function filter_step(_man_id step.man_id%type default null)
                 id               step.stp_id%type,
                 address_street   step.stp_address_street%type,
                 town_code_insee  step.twn_code_insee%type,
+                town_zip_code    town.twn_zip_code%type,
                 town_name        town.twn_name%type,
                 id_manifestation step.man_id%type,
                 longitude        step.stp_longitude%type,
@@ -820,6 +821,7 @@ begin
         select stp.stp_id             as id,
                stp.stp_address_street as address_street,
                stp.twn_code_insee     as town_code_insee,
+               twn.twn_zip_code       as town_zip_code,
                twn.twn_name           as town_name,
                stp.man_id             as id_manifestation,
                stp.stp_longitude      as longitude,
@@ -874,14 +876,14 @@ as
 $filter$
 begin
     return query
-        select rle.rle_id          as id,
+        select rle.rle_id      as id,
                rle_title       as title,
                rle_description as description,
                rle_code        as code
         from role rle
-        left join link_role_profile lrp on rle.rle_id = lrp.rle_id
+                 left join link_role_profile lrp on rle.rle_id = lrp.rle_id
         where _prf_id is null
-        or lrp.prf_id = _prf_id;
+           or lrp.prf_id = _prf_id;
 end;
 $filter$
     language plpgsql;

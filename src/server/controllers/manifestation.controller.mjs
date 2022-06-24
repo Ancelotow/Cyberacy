@@ -1,6 +1,7 @@
 import manifestation from "../models/manifestation.mjs";
 import manifestant from "../models/manifestant.mjs";
 import option from "../models/option-manifestation.mjs"
+import geoCtrl from "./geography.controller.mjs"
 import {Step} from "../models/step.mjs"
 
 /**
@@ -189,8 +190,8 @@ const DeleteOption = (id) => {
  * @constructor
  */
 const AddStep = (stp) => {
-    return new Promise((resolve, _) => {
-        if(stp === null) {
+    return new Promise(async (resolve, _) => {
+        if (stp === null) {
             resolve({status: 400, data: "Missing parameter."})
         }
         let step = Object.assign(new Step(), stp);
@@ -199,6 +200,15 @@ const AddStep = (stp) => {
         } else if (!step.town_code_insee || !step.id_step_type || !step.id_manifestation) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
+            try {
+                let coordinates = await geoCtrl.GetLocationFromAddress(step.address_street, step.town_code_insee)
+                if(coordinates !== null) {
+                    step.latitude = coordinates.latitude
+                    step.longitude = coordinates.longitude
+                }
+            } catch (e) {
+
+            }
             step.Add(stp).then((res) => {
                 if (res) {
                     resolve({status: 201, data: "Step has been created."})
@@ -206,7 +216,8 @@ const AddStep = (stp) => {
                     resolve({status: 400, data: "This step already existed."})
                 }
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
+                console.error(e)
+                if (e.code === '23503') resolve({status: 400, data: e.message})
                 resolve({status: 500, data: e})
             })
         }
