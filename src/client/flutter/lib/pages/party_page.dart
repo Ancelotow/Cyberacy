@@ -35,36 +35,20 @@ class _PartyPageState extends State<PartyPage> {
     }
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Stack(
-        children: [
-          _getListBuilder(context),
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 80,
-            width: widthScreen,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: _getTargetDraggable(context),
-            ),
-          ),
-        ],
+      child: FutureBuilder(
+        future: PartyService().getAllParty(),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<PoliticalParty>> snapshot) {
+          if (snapshot.hasData) {
+            parties = snapshot.data!;
+            return _getListParty(context);
+          } else if (snapshot.hasError) {
+            return _getPartyError();
+          } else {
+            return _getPartyLoader(context);
+          }
+        },
       ),
-    );
-  }
-
-  Widget _getListBuilder(BuildContext context) {
-    return FutureBuilder(
-      future: PartyService().getAllParty(),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<PoliticalParty>> snapshot) {
-        if (snapshot.hasData) {
-          parties = snapshot.data!;
-          return _getListParty(context);
-        } else if (snapshot.hasError) {
-          return _getPartyError();
-        } else {
-          return _getPartyLoader(context);
-        }
-      },
     );
   }
 
@@ -125,25 +109,9 @@ class _PartyPageState extends State<PartyPage> {
       label: "Ajouter",
       width: _widthCard,
       height: _heightCard,
-      color: Theme.of(context).accentColor,
+      color: Theme.of(context).highlightColor,
       onTap: () => Navigator.of(context).pushNamed(AddPartyPage.routeName),
     );
   }
 
-  Widget? _getTargetDraggable(BuildContext context) {
-    if (!isDragging) {
-      return null;
-    }
-    return DraggableTarget(
-      label: "Espace de travaille",
-      callback: widget.callbackAddWorkspace,
-      color: Theme.of(context).highlightColor,
-      colorEnter: Theme.of(context).focusColor,
-      icon: Icon(
-        Icons.add_circle_outline,
-        size: 30,
-        color: Colors.white,
-      ),
-    );
-  }
 }

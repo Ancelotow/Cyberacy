@@ -36,36 +36,20 @@ class _ManifestationPageState extends State<ManifestationPage> {
     }
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Stack(
-        children: [
-          _getListBuilder(context),
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 80,
-            width: widthScreen,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: _getTargetDraggable(context),
-            ),
-          ),
-        ],
+      child: FutureBuilder(
+        future: ManifService().getAllManifestations(),
+        builder: (BuildContext context,
+            AsyncSnapshot<List<Manifestation>> snapshot) {
+          if (snapshot.hasData) {
+            manifs = snapshot.data!;
+            return _getListManifs(context);
+          } else if (snapshot.hasError) {
+            return _getManifError();
+          } else {
+            return _getManifLoader(context);
+          }
+        },
       ),
-    );
-  }
-
-  Widget _getListBuilder(BuildContext context) {
-    return FutureBuilder(
-      future: ManifService().getAllManifestations(),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<Manifestation>> snapshot) {
-        if (snapshot.hasData) {
-          manifs = snapshot.data!;
-          return _getListManifs(context);
-        } else if (snapshot.hasError) {
-          return _getManifError();
-        } else {
-          return _getManifLoader(context);
-        }
-      },
     );
   }
 
@@ -76,8 +60,6 @@ class _ManifestationPageState extends State<ManifestationPage> {
       cards.addAll(manifs
           .map((e) => CardManif(
                 manifestation: e,
-                dragStart: () => setState(() => isDragging = true),
-                dragFinish: () => setState(() => isDragging = false),
                 width: _widthCard,
                 height: _heightCard,
               ))
@@ -124,30 +106,13 @@ class _ManifestationPageState extends State<ManifestationPage> {
     );
   }
 
-  Widget? _getTargetDraggable(BuildContext context) {
-    if (!isDragging) {
-      return null;
-    }
-    return DraggableTarget(
-      label: "Espace de travaille",
-      callback: widget.callbackAddWorkspace,
-      color: Theme.of(context).highlightColor,
-      colorEnter: Theme.of(context).focusColor,
-      icon: Icon(
-        Icons.add_circle_outline,
-        size: 30,
-        color: Colors.white,
-      ),
-    );
-  }
-
   Widget _getButtonAdd(BuildContext context) {
     return ButtonCard(
       icon: Icons.add_circle_outline,
       label: "Ajouter",
       width: _widthCard,
       height: _heightCard,
-      color: Theme.of(context).accentColor,
+      color: Theme.of(context).highlightColor,
       onTap: () =>
           Navigator.of(context).pushNamed(AddManifestationPage.routeName),
     );

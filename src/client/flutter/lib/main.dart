@@ -25,61 +25,43 @@ class MyApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate
       ],
       supportedLocales: const [Locale('fr')],
+      themeMode: ThemeMode.dark,
+      darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          primaryColor: const Color.fromARGB(255, 54, 54, 54),
+          backgroundColor: const Color.fromARGB(255, 40, 40, 40),
+          disabledColor: const Color.fromARGB(255, 122, 122, 122),
+          cardColor: const Color.fromARGB(255, 54, 54, 54),
+          buttonColor: const Color.fromARGB(255, 13, 41, 134),
+          hoverColor: const Color.fromARGB(255, 21, 71, 110),
+          accentColor: const Color.fromARGB(255, 52, 95, 255),
+          highlightColor: const Color.fromARGB(255, 140, 35, 241),
+          focusColor: const Color.fromARGB(255, 150, 93, 197),
+          unselectedWidgetColor: const Color.fromARGB(255, 133, 133, 133),
+          shadowColor: const Color.fromARGB(121, 152, 151, 151),
+          bottomAppBarColor: const Color.fromARGB(255, 54, 54, 54),
+          hintColor: Colors.black,
+          textTheme: _getTextTheme(context, Colors.white),
+          inputDecorationTheme: InputDecorationTheme(
+            filled: true,
+            contentPadding: EdgeInsets.all(8.00),
+          )),
       theme: ThemeData(
-        primaryColor: const Color.fromARGB(255, 54, 54, 54),
-        backgroundColor: const Color.fromARGB(255, 40, 40, 40),
-        disabledColor: const Color.fromARGB(255, 122, 122, 122),
-        cardColor: const Color.fromARGB(255, 54, 54, 54),
-        buttonColor: const Color.fromARGB(255, 13, 41, 134),
+        brightness: Brightness.light,
+        primaryColor: const Color.fromARGB(255, 58, 114, 211),
+        backgroundColor: const Color.fromARGB(255, 232, 232, 232),
+        disabledColor: const Color.fromARGB(255, 210, 210, 210),
+        cardColor: const Color.fromARGB(255, 218, 217, 217),
+        buttonColor: const Color.fromARGB(255, 36, 75, 215),
         hoverColor: const Color.fromARGB(255, 21, 71, 110),
-        accentColor: const Color.fromARGB(255, 52, 95, 255),
-        highlightColor: const Color.fromARGB(255, 140, 35, 241),
-        focusColor: const Color.fromARGB(255, 150, 93, 197),
-        unselectedWidgetColor: const Color.fromARGB(255, 133, 133, 133),
-        textTheme: TextTheme(
-          headline1: TextStyle(
-            color: Colors.white,
-            fontFamily: "HK-Nova",
-            fontSize: 35,
-            fontWeight: FontWeight.bold,
-          ),
-          headline2: TextStyle(
-            color: Theme.of(context).accentColor,
-            fontFamily: "HK-Nova",
-            fontSize: 28,
-          ),
-          headline3: TextStyle(
-            color: Colors.white,
-            fontFamily: "HK-Nova",
-            fontSize: 20,
-            fontWeight: FontWeight.w100
-          ),
-          headline4: TextStyle(
-            color: Colors.white,
-            fontFamily: "HK-Nova",
-            fontSize: 20,
-          ),
-          bodyText1: TextStyle(
-            color: Colors.black,
-            fontFamily: "HK-Nova",
-            fontSize: 14,
-          ),
-          bodyText2: TextStyle(
-            color: Colors.white,
-            fontFamily: "HK-Nova",
-            fontSize: 14,
-          ),
-          caption: TextStyle(
-            color: Colors.grey,
-            fontFamily: "HK-Nova",
-            fontSize: 12,
-          ),
-          button: TextStyle(
-            color: Colors.white,
-            fontFamily: "HK-Nova",
-            fontSize: 14,
-          ),
-        ),
+        accentColor: const Color.fromARGB(255, 252, 252, 252),
+        highlightColor: const Color.fromARGB(255, 0, 69, 246),
+        focusColor: const Color.fromARGB(255, 68, 94, 197),
+        unselectedWidgetColor: const Color.fromARGB(255, 182, 181, 181),
+        shadowColor: const Color.fromARGB(121, 89, 89, 89),
+        bottomAppBarColor: const Color.fromARGB(255, 58, 114, 211),
+        hintColor: Colors.black,
+        textTheme: _getTextTheme(context, Colors.black),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           contentPadding: EdgeInsets.all(8.00),
@@ -113,6 +95,52 @@ class MyApp extends StatelessWidget {
         }
       },
       home: const HomePage(),
+    );
+  }
+
+  TextTheme _getTextTheme(BuildContext context, Color color) {
+    return TextTheme(
+      headline1: TextStyle(
+        color: color,
+        fontFamily: "HK-Nova",
+        fontSize: 35,
+        fontWeight: FontWeight.bold,
+      ),
+      headline2: TextStyle(
+        color: Theme.of(context).accentColor,
+        fontFamily: "HK-Nova",
+        fontSize: 28,
+      ),
+      headline3: TextStyle(
+          color: color,
+          fontFamily: "HK-Nova",
+          fontSize: 20,
+          fontWeight: FontWeight.w100),
+      headline4: TextStyle(
+        color: color,
+        fontFamily: "HK-Nova",
+        fontSize: 20,
+      ),
+      bodyText1: TextStyle(
+        color: Colors.black,
+        fontFamily: "HK-Nova",
+        fontSize: 14,
+      ),
+      bodyText2: TextStyle(
+        color: color,
+        fontFamily: "HK-Nova",
+        fontSize: 14,
+      ),
+      caption: TextStyle(
+        color: Colors.grey,
+        fontFamily: "HK-Nova",
+        fontSize: 12,
+      ),
+      button: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 14,
+      ),
     );
   }
 }

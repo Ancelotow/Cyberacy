@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class CardShimmer extends StatelessWidget {
   final double width;
   final double height;
-  final Color baseColor = Color.fromARGB(121, 210, 209, 209);
+  Color? baseColor;
 
   CardShimmer({
     Key? key,
@@ -14,17 +14,18 @@ class CardShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    baseColor ??= Theme.of(context).shadowColor;
     return Shimmer.fromColors(
       period: Duration(milliseconds: 900),
       direction: ShimmerDirection.ltr,
       highlightColor: Color.fromARGB(255, 225, 225, 225),
-      baseColor: baseColor,
+      baseColor: baseColor!,
       child: Container(
         width: width,
         height: height,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: this.baseColor,
+          color: baseColor,
         ),
       ),
     );

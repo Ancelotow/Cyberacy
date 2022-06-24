@@ -3,8 +3,6 @@ import 'package:bo_cyberacy/models/enums/orientation_nav_bar.dart';
 import 'package:bo_cyberacy/pages/manifestion_page.dart';
 import 'package:bo_cyberacy/pages/party_page.dart';
 import 'package:bo_cyberacy/pages/screen_404.dart';
-import 'package:bo_cyberacy/pages/vote_page.dart';
-import 'package:bo_cyberacy/pages/workspace_page.dart';
 import 'package:bo_cyberacy/widgets/nav_bar/nav_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +37,7 @@ class _NavigationPageState extends State<NavigationPage> {
               orientation: OrientationNavBar.horizontal,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
-              color: Theme.of(context).cardColor,
+              color: Theme.of(context).bottomAppBarColor,
               colorUnselected: Theme.of(context).unselectedWidgetColor,
               colorSelected: Theme.of(context).accentColor,
               indexSelected: currentIndex,
@@ -55,8 +53,13 @@ class _NavigationPageState extends State<NavigationPage> {
                   onTap: click,
                 ),
                 NavBarItem(
-                  icon: Icons.laptop_chromebook_outlined,
-                  label: "Espace travaille",
+                  icon: Icons.how_to_vote,
+                  label: "Vote",
+                  onTap: click,
+                ),
+                NavBarItem(
+                  icon: Icons.person,
+                  label: "Utilisateurs",
                   onTap: click,
                 ),
               ],
@@ -80,15 +83,6 @@ class _NavigationPageState extends State<NavigationPage> {
         newPage = ManifestationPage(callbackAddWorkspace: (value) {
           addManifInWorkspace(value, context);
         });
-        break;
-
-      case 2:
-        newPage = WorkspacePage(
-          parties: parties,
-          manifs: manifs,
-          callbackRemoveManif: manifs.remove,
-          callbackRemoveParty: parties.remove,
-        );
         break;
 
       default:
