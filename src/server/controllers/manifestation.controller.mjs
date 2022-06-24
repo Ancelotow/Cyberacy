@@ -1,7 +1,7 @@
 import manifestation from "../models/manifestation.mjs";
 import manifestant from "../models/manifestant.mjs";
 import option from "../models/option-manifestation.mjs"
-import step from "../models/step.mjs"
+import {Step} from "../models/step.mjs"
 
 /**
  * Ajoute une nouvelle manifestation
@@ -190,9 +190,13 @@ const DeleteOption = (id) => {
  */
 const AddStep = (stp) => {
     return new Promise((resolve, _) => {
-        if (!stp || !stp.address_street || !stp.date_arrived) {
+        if(stp === null) {
+            resolve({status: 400, data: "Missing parameter."})
+        }
+        let step = Object.assign(new Step(), stp);
+        if (!step || !step.address_street || !step.date_arrived) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!stp.town_code_insee || !stp.id_step_type || !stp.id_manifestation) {
+        } else if (!step.town_code_insee || !step.id_step_type || !step.id_manifestation) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
             step.Add(stp).then((res) => {
@@ -220,7 +224,9 @@ const DeleteStep = (id) => {
         if (!id) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            step.Delete(id).then((res) => {
+            let step = new Step()
+            step.id = id
+            step.Delete().then((res) => {
                 if (res) {
                     resolve({status: 200, data: "The step has been deleted."})
                 } else {
@@ -245,7 +251,7 @@ const GetSteps = (id_manifestation) => {
         if (!id_manifestation) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            step.GetAll(id_manifestation).then((res) => {
+            new Step().GetAll(id_manifestation).then((res) => {
                 const code = (res) ? 200 : 204;
                 resolve({status: code, data: res})
             }).catch((e) => {
