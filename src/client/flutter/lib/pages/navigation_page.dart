@@ -3,6 +3,7 @@ import 'package:bo_cyberacy/models/enums/orientation_nav_bar.dart';
 import 'package:bo_cyberacy/pages/manifestion_page.dart';
 import 'package:bo_cyberacy/pages/party_page.dart';
 import 'package:bo_cyberacy/pages/screen_404.dart';
+import 'package:bo_cyberacy/pages/vote_page.dart';
 import 'package:bo_cyberacy/widgets/nav_bar/nav_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -23,11 +24,11 @@ class _NavigationPageState extends State<NavigationPage> {
   List<PoliticalParty> parties = [];
   List<Manifestation> manifs = [];
   late Widget currentPage;
-  int currentIndex = 0;
+  int currentIndex = 2;
 
   @override
   void initState() {
-    click(0);
+    click(currentIndex);
   }
 
   @override
@@ -86,8 +87,12 @@ class _NavigationPageState extends State<NavigationPage> {
         newPage = ManifestationPage();
         break;
 
+      case 2:
+        newPage = VotePage();
+        break;
+
       default:
-        newPage = Screen404();
+        newPage = const Screen404();
         break;
     }
     currentIndex = index;
