@@ -249,13 +249,18 @@ class ManifestationDetail extends StatelessWidget {
                           click: () => showDialog(
                             builder: (_) {
                               return AlertDialog(
-                                title: Text("Ajout d'une étape", style: Theme.of(context).textTheme.headline1,),
+                                title: Text(
+                                  "Ajout d'une étape",
+                                  style: Theme.of(context).textTheme.headline1,
+                                ),
                                 backgroundColor:
                                     Theme.of(context).backgroundColor,
                                 content: SizedBox(
                                   width: 700,
                                   height: 600,
-                                  child: FormAddStep(),
+                                  child: FormAddStep(
+                                    idManifesation: manifestation.id!,
+                                  ),
                                 ),
                               );
                             },

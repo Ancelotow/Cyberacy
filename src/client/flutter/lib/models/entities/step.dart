@@ -37,14 +37,11 @@ class StepManif {
 
   Object toJson() {
     return {
-      "id": id,
       "address_street": addressStreet,
       "town_code_insee": townCodeInsee,
       "date_arrived": dateArrived.toString(),
       "id_manifestation": idManifestation.toString(),
-      "id_step_type": idTypeStep.toString(),
-      "latitude": latitude.toString(),
-      "longitude": longitude.toString(),
+      "id_step_type": idTypeStep.toString()
     };
   }
 

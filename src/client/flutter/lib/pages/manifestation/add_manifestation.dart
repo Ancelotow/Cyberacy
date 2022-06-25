@@ -10,6 +10,7 @@ import '../../models/errors/invalid_form_error.dart';
 import '../../widgets/buttons/button.dart';
 import '../../widgets/input_field/input_date.dart';
 import '../../widgets/input_field/input_text.dart';
+import 'package:intl/intl.dart';
 
 class AddManifestationPage extends StatelessWidget {
   static const String routeName = "addManifPage";
@@ -123,8 +124,8 @@ class AddManifestationPage extends StatelessWidget {
       _formIsValid();
       Manifestation manif = Manifestation(
         name: ctrlName.text,
-        dateStart: DateTime.parse(ctrlDtStart.text),
-        dateEnd: DateTime.parse(ctrlDtEnd.text),
+        dateStart: DateFormat("dd/MM/yyyy HH:mm").parse(ctrlDtStart.text),
+        dateEnd: DateFormat("dd/MM/yyyy HH:mm").parse(ctrlDtEnd.text),
         object: ctrlObject.text,
         securityDescription: ctrlSecurityDesc.text,
         nbPersonEstimate: int.parse(ctrlNbPerson.text),

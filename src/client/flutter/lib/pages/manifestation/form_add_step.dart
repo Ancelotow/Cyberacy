@@ -1,21 +1,32 @@
 import 'dart:async';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import '../../models/dialog/alert_normal.dart';
 import '../../models/entities/coordinates.dart';
 import '../../models/entities/department.dart';
+import '../../models/entities/step.dart';
 import '../../models/entities/town.dart';
-import '../../models/enums/position_input.dart';
+import '../../models/entities/type_step.dart';
 import '../../models/errors/api_service_error.dart';
+import '../../models/errors/invalid_form_error.dart';
+import '../../models/notifications/save_notification.dart';
 import '../../models/services/geo_service.dart';
+import '../../models/services/manifestation_service.dart';
+import '../../models/services/ref_service.dart';
 import '../../widgets/buttons/button.dart';
 import '../../widgets/input_field/input_date.dart';
 import '../../widgets/input_field/input_selected.dart';
 import '../../widgets/input_field/input_text.dart';
 
 class FormAddStep extends StatefulWidget {
-  const FormAddStep({Key? key}) : super(key: key);
+  final int idManifesation;
+
+  const FormAddStep({
+    Key? key,
+    required this.idManifesation,
+  }) : super(key: key);
 
   @override
   State<FormAddStep> createState() => _FormAddStepState();
@@ -27,12 +38,14 @@ class _FormAddStepState extends State<FormAddStep> {
   final MapController mapController = MapController();
   Town? currentTown;
   Department? currentDepartment;
+  TypeStep? currentType;
   Timer? timer;
 
   @override
   void initState() {
     super.initState();
-    timer = Timer.periodic(const Duration(seconds: 5), (Timer t) => refreshMap());
+    timer =
+        Timer.periodic(const Duration(seconds: 5), (Timer t) => refreshMap());
   }
 
   @override
@@ -90,21 +103,23 @@ class _FormAddStepState extends State<FormAddStep> {
                 ],
               ),
             ),
+            _getDropdownTypeStep(context, width),
             const SizedBox(height: 10),
             Button(
               label: "Sauvegarder",
               width: width,
               isLoad: false,
               pressedColor: Colors.lightBlue,
-              click: () => {},
+              click: () => _addStep(context),
             ),
             const SizedBox(height: 10),
             Button(
-                label: "Annuler",
-                width: width,
-                color: Colors.red,
-                pressedColor: Colors.redAccent,
-                click: () => Navigator.of(context).pop()),
+              label: "Annuler",
+              width: width,
+              color: Colors.red,
+              pressedColor: Colors.redAccent,
+              click: () => Navigator.of(context).pop(),
+            ),
           ],
         ),
       ),
@@ -173,11 +188,42 @@ class _FormAddStepState extends State<FormAddStep> {
     }
   }
 
+  Widget _getDropdownTypeStep(BuildContext context, double width) {
+    String placeholder = "Type d'étape";
+    IconData icon = Icons.where_to_vote;
+    return FutureBuilder(
+      future: RefService().getAllTypeStep(),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<TypeStep>> snapshot) {
+        if (snapshot.hasData) {
+          return InputSelected(
+            items: snapshot.data!,
+            value: currentType,
+            placeholder: placeholder,
+            icon: icon,
+            width: width,
+            onChanged: (value) {
+              currentType = value;
+            },
+          );
+        } else {
+          return InputText(
+            placeholder: placeholder,
+            icon: icon,
+            width: width,
+            isReadOnly: true,
+          );
+        }
+      },
+    );
+  }
+
   Future<void> refreshMap() async {
-    if(currentTown != null) {
-      try{
-        MyCoordinates? coordinates = await GeoService().getCoordinates(ctrlAddress.text, currentTown!.zipCode);
-        if(coordinates != null) {
+    if (currentTown != null) {
+      try {
+        MyCoordinates? coordinates = await GeoService()
+            .getCoordinates(ctrlAddress.text, currentTown!.zipCode);
+        if (coordinates != null) {
           mapController.move(coordinates.getLatLng(), 17);
         }
       } on ApiServiceError catch (e) {
@@ -186,4 +232,46 @@ class _FormAddStepState extends State<FormAddStep> {
     }
   }
 
+  Future<void> _addStep(BuildContext context) async {
+    try {
+      _formIsValid();
+      StepManif step = StepManif(
+        idManifestation: widget.idManifesation,
+        addressStreet: ctrlAddress.text,
+        dateArrived: DateFormat("dd/MM/yyyy HH:mm").parse(ctrlDateArrived.text),
+        townCodeInsee: currentTown!.codeInsee,
+        idTypeStep: currentType!.id,
+      );
+      await ManifService().addStep(step);
+      SaveNotification(step).dispatch(context);
+      timer?.cancel();
+      Navigator.of(context).pop();
+    } on InvalidFormError catch (e) {
+      AlertNormal(
+        context: context,
+        title: "Formulaire incomplet",
+        message: e.message,
+        labelButton: "Continuer",
+      ).show();
+    } on ApiServiceError catch (e) {
+      AlertNormal(
+        title: "Erreur ajout",
+        message: e.responseHttp.body,
+        labelButton: "Continuer",
+        context: context,
+      ).show();
+    }
+  }
+
+  void _formIsValid() {
+    if (ctrlAddress.text.isEmpty) {
+      throw InvalidFormError("Le champ \"Adresse\" est obligatoire");
+    } else if (ctrlDateArrived.text.isEmpty) {
+      throw InvalidFormError("Le champ \"Date d'arrivée'\" est obligatoire");
+    } else if (currentTown == null) {
+      throw InvalidFormError("Le champ \"Ville\" est obligatoire");
+    } else if (currentType == null) {
+      throw InvalidFormError("Le champ \"Type d'étapes\" est obligatoire");
+    }
+  }
 }
