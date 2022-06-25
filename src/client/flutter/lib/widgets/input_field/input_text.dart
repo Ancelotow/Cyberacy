@@ -11,6 +11,7 @@ class InputText extends StatefulWidget {
   final double? height;
   final double? width;
   final TextEditingController? controller;
+  final IconData? icon;
 
   const InputText({
     Key? key,
@@ -23,6 +24,7 @@ class InputText extends StatefulWidget {
     this.height,
     this.type = TextInputType.text,
     this.position = PositionInput.middle,
+    this.icon,
   }) : super(key: key);
 
   @override
@@ -33,51 +35,44 @@ class _InputTextState extends State<InputText> {
   final double radius = 10;
 
   FloatingLabelBehavior labelBehavior = FloatingLabelBehavior.auto;
+  bool isFocus = false;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: widget.height,
-      width: widget.width,
-      child: TextField(
-        keyboardType: widget.type,
-        controller: widget.controller,
-        readOnly: widget.isReadOnly,
-        obscureText: widget.obscureText,
-        style: Theme.of(context).textTheme.bodyText1,
-        decoration: InputDecoration(
-          hoverColor: Colors.transparent,
-          fillColor: (widget.isReadOnly)
-              ? Theme.of(context).disabledColor
-              : Colors.white,
-          floatingLabelBehavior: labelBehavior,
-          labelText: widget.placeholder,
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).primaryColor),
-            borderRadius: getBorderRadius(),
+    return Focus(
+      onFocusChange: (hasFocus) => setState(() => isFocus = hasFocus),
+      child: SizedBox(
+        height: widget.height,
+        width: widget.width,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: TextField(
+            keyboardType: widget.type,
+            controller: widget.controller,
+            readOnly: widget.isReadOnly,
+            obscureText: widget.obscureText,
+            style: Theme.of(context).textTheme.bodyText1,
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                widget.icon,
+                color: _getColor(context),
+              ),
+              labelText: widget.placeholder,
+              labelStyle: TextStyle(
+                color: _getColor(context),
+              ),
+            ),
           ),
-          enabledBorder: UnderlineInputBorder(
-              borderRadius: getBorderRadius(),
-              borderSide: BorderSide(width: 0.5, color: Colors.grey)),
         ),
       ),
     );
   }
 
-  BorderRadius getBorderRadius() {
-    switch (widget.position) {
-      case PositionInput.middle:
-        return const BorderRadius.all(Radius.circular(0));
-
-      case PositionInput.start:
-        return BorderRadius.only(
-            topLeft: Radius.circular(radius),
-            topRight: Radius.circular(radius));
-
-      case PositionInput.end:
-        return BorderRadius.only(
-            bottomLeft: Radius.circular(radius),
-            bottomRight: Radius.circular(radius));
+  Color _getColor(BuildContext context) {
+    if(isFocus) {
+      return Theme.of(context).cursorColor;
     }
+    return Theme.of(context).hintColor;
   }
+
 }

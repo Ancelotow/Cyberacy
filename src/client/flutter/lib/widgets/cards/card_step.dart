@@ -76,7 +76,7 @@ class CardStep extends StatelessWidget with ChangeNotifier {
                         child: Icon(Icons.calendar_month, color: Colors.white,),
                       ),
                       Text(
-                        DateFormat("dd-MM-yyyy\nHH:mm").format(step.dateArrived!),
+                        DateFormat("dd/MM/yyyy\nHH:mm").format(step.dateArrived!),
                         style: Theme.of(context).textTheme.caption,
                       ),
                     ],

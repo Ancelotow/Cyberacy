@@ -57,11 +57,13 @@ class _LoginPageState extends State<LoginPage> {
                     placeholder: "Numéro de sécurité social",
                     position: PositionInput.start,
                     controller: loginController,
+                    icon: Icons.person,
                     width: width,
                   ),
                   InputText(
                     placeholder: "Mot de passe",
                     position: PositionInput.end,
+                    icon: Icons.key,
                     obscureText: true,
                     controller: passwordCtrl,
                     width: width,

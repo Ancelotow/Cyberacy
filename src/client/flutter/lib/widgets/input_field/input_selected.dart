@@ -10,6 +10,7 @@ class InputSelected<T> extends StatefulWidget {
   final double? width;
   List<T> items;
   Function(dynamic)? onChanged;
+  final IconData? icon;
 
   InputSelected({
     Key? key,
@@ -21,6 +22,7 @@ class InputSelected<T> extends StatefulWidget {
     this.onChanged,
     this.position = PositionInput.middle,
     required this.items,
+    this.icon,
   }) : super(key: key);
 
   @override
@@ -29,51 +31,46 @@ class InputSelected<T> extends StatefulWidget {
 
 class _InputSelectedState<T> extends State<InputSelected> {
   final double radius = 10;
+  bool isFocus = false;
 
   //[DropdownMenuItem<String>(child: Text("test"))]
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: widget.height,
-      width: widget.width,
-      child: DropdownButtonFormField<T>(
-        items: getItems(),
-        value: getValue(),
-        onChanged: widget.onChanged,
-        style: Theme.of(context).textTheme.bodyText1,
-        decoration: InputDecoration(
-          fillColor: (widget.isReadOnly)
-              ? Theme.of(context).disabledColor
-              : Colors.white,
-          labelText: widget.placeholder,
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).primaryColor),
-            borderRadius: getBorderRadius(),
+    return Focus(
+      onFocusChange: (hasFocus) => setState(() => isFocus = hasFocus),
+      child: SizedBox(
+        height: widget.height,
+        width: widget.width,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: DropdownButtonFormField<T>(
+            items: getItems(),
+            value: getValue(),
+            onChanged: widget.onChanged,
+            isExpanded: true,
+            style: Theme.of(context).textTheme.bodyText1,
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                widget.icon,
+                color: _getColor(context),
+              ),
+              labelText: widget.placeholder,
+              labelStyle: TextStyle(
+                color: _getColor(context),
+              ),
+            ),
           ),
-          enabledBorder: UnderlineInputBorder(
-              borderRadius: getBorderRadius(),
-              borderSide: BorderSide(width: 0.5, color: Colors.grey)),
         ),
       ),
     );
   }
 
-  BorderRadius getBorderRadius() {
-    switch (widget.position) {
-      case PositionInput.middle:
-        return const BorderRadius.all(Radius.circular(0));
-
-      case PositionInput.start:
-        return BorderRadius.only(
-            topLeft: Radius.circular(radius),
-            topRight: Radius.circular(radius));
-
-      case PositionInput.end:
-        return BorderRadius.only(
-            bottomLeft: Radius.circular(radius),
-            bottomRight: Radius.circular(radius));
+  Color _getColor(BuildContext context) {
+    if (isFocus) {
+      return Theme.of(context).cursorColor;
     }
+    return Theme.of(context).hintColor;
   }
 
   List<DropdownMenuItem<T>> getItems() {
@@ -81,7 +78,11 @@ class _InputSelectedState<T> extends State<InputSelected> {
     for (T value in widget.items) {
       list.add(DropdownMenuItem<T>(
         value: value,
-        child: Text(value.toString()),
+        child: Text(
+          value.toString(),
+          maxLines: 1,
+          overflow: TextOverflow.visible,
+        ),
       ));
     }
     return list;
@@ -90,7 +91,7 @@ class _InputSelectedState<T> extends State<InputSelected> {
   T? getValue() {
     List<DropdownMenuItem<T>> list = [];
     for (T value in widget.items) {
-      if(value == widget.value) {
+      if (value == widget.value) {
         return value;
       }
     }

@@ -1,3 +1,3 @@
 enum PositionInput {
-  start, middle, end
+  start, middle, end, endRight, endLeft
 }

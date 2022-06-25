@@ -13,6 +13,7 @@ import '../../models/notifications/step_notification.dart';
 import '../../widgets/buttons/button.dart';
 import '../../widgets/input_field/input_text.dart';
 import '../../widgets/map_manifestation.dart';
+import 'form_add_step.dart';
 
 class ManifestationDetail extends StatelessWidget {
   static const String routeName = "detailsManifPage";
@@ -245,6 +246,21 @@ class ManifestationDetail extends StatelessWidget {
                           pressedColor: Theme.of(context).focusColor,
                           color: Theme.of(context).highlightColor,
                           textStyle: TextStyle(color: Colors.white),
+                          click: () => showDialog(
+                            builder: (_) {
+                              return AlertDialog(
+                                title: Text("Ajout d'une étape", style: Theme.of(context).textTheme.headline1,),
+                                backgroundColor:
+                                    Theme.of(context).backgroundColor,
+                                content: SizedBox(
+                                  width: 700,
+                                  height: 800,
+                                  child: FormAddStep(),
+                                ),
+                              );
+                            },
+                            context: context,
+                          ),
                         ),
                       ],
                     ),

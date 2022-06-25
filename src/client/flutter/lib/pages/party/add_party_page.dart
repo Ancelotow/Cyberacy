@@ -53,8 +53,7 @@ class _AddPartyPageState extends State<AddPartyPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
-        child: SingleChildScrollView(
-          child: Column(
+        child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -63,40 +62,46 @@ class _AddPartyPageState extends State<AddPartyPage> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline1,
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               InputText(
                 placeholder: "SIREN",
                 position: PositionInput.start,
+                icon: Icons.person,
                 width: width,
                 controller: ctrlSiren,
               ),
               InputText(
                 placeholder: "Objet",
                 position: PositionInput.middle,
+                icon: Icons.abc,
                 width: width,
                 controller: ctrlObject,
               ),
               InputText(
                 placeholder: "Description",
                 position: PositionInput.middle,
+                icon: Icons.abc,
                 width: width,
                 controller: ctrlDescription,
               ),
               InputText(
                 placeholder: "IBAN",
                 position: PositionInput.middle,
+                icon: Icons.credit_card,
                 width: width,
                 controller: ctrlIban,
               ),
               InputText(
                 placeholder: "NIR du fondateur",
                 position: PositionInput.middle,
+                icon: Icons.person,
                 width: width,
                 controller: ctrlNir,
               ),
               InputText(
                 placeholder: "URL Logo",
                 position: PositionInput.middle,
+                icon: Icons.image,
                 width: width,
                 controller: ctrlUrlLogo,
               ),
@@ -119,11 +124,12 @@ class _AddPartyPageState extends State<AddPartyPage> {
             ],
           ),
         ),
-      ),
     );
   }
 
   Widget _getSelectEdge(BuildContext context, double width) {
+    String placeholder = "Bord politique";
+    IconData icon = Icons.event_seat;
     return FutureBuilder(
       future: RefService().getAllPoliticalEdge(),
       builder:
@@ -132,7 +138,8 @@ class _AddPartyPageState extends State<AddPartyPage> {
           return InputSelected(
             items: snapshot.data!,
             value: currentEdge,
-            placeholder: "Bord politique",
+            placeholder: placeholder,
+            icon: icon,
             position: PositionInput.end,
             width: width,
             onChanged: (value) {
@@ -141,7 +148,8 @@ class _AddPartyPageState extends State<AddPartyPage> {
           );
         } else {
           return InputText(
-            placeholder: "Bord politique",
+            placeholder: placeholder,
+            icon: icon,
             isReadOnly: true,
             position: PositionInput.end,
             width: width,

@@ -44,41 +44,53 @@ class AddManifestationPage extends StatelessWidget {
               InputText(
                 placeholder: "Nom",
                 position: PositionInput.start,
+                icon: Icons.abc,
                 width: width,
                 controller: ctrlName,
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InputDate(
-                    placeholder: "Date de début",
-                    position: PositionInput.middle,
-                    width: width / 2,
-                    controller: ctrlDtStart,
-                  ),
-                  InputDate(
-                    placeholder: "Date de fin",
-                    position: PositionInput.middle,
-                    width: width / 2,
-                    controller: ctrlDtEnd,
-                  ),
-                ],
+              SizedBox(
+                width: width,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: InputDate(
+                        placeholder: "Date de début",
+                        position: PositionInput.middle,
+                        icon: Icons.calendar_today,
+                        controller: ctrlDtStart,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: InputDate(
+                        placeholder: "Date de fin",
+                        position: PositionInput.middle,
+                        icon: Icons.calendar_today,
+                        controller: ctrlDtEnd,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               InputText(
                 placeholder: "Objet",
+                icon: Icons.abc,
                 position: PositionInput.middle,
                 width: width,
                 controller: ctrlObject,
               ),
               InputText(
                 placeholder: "Description de la sécurité",
+                icon: Icons.shield,
                 position: PositionInput.middle,
                 width: width,
                 controller: ctrlSecurityDesc,
               ),
               InputText(
                 type: TextInputType.number,
+                icon: Icons.group,
                 placeholder: "Estimation du nombre de participant",
                 position: PositionInput.end,
                 width: width,
