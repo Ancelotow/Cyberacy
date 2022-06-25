@@ -118,7 +118,6 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
         InputText(
           placeholder: "Nom",
           isReadOnly: true,
-          position: PositionInput.start,
           width: width,
           controller: ctrlName,
         ),
@@ -128,7 +127,6 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
           children: [
             InputText(
               placeholder: "Date de début",
-              position: PositionInput.middle,
               isReadOnly: true,
               width: width / 2,
               controller: ctrlDtStart,
@@ -136,7 +134,6 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
             ),
             InputText(
               placeholder: "Date de fin",
-              position: PositionInput.middle,
               isReadOnly: true,
               width: width / 2,
               controller: ctrlDtEnd,
@@ -147,13 +144,11 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
         InputText(
           placeholder: "Objet",
           isReadOnly: true,
-          position: PositionInput.middle,
           width: width,
           controller: ctrlObject,
         ),
         InputText(
           placeholder: "Description de la sécurité",
-          position: PositionInput.middle,
           isReadOnly: true,
           width: width,
           controller: ctrlSecurityDesc,
@@ -161,7 +156,6 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
         InputText(
           type: TextInputType.number,
           placeholder: "Estimation du nombre de participant",
-          position: PositionInput.end,
           isReadOnly: true,
           width: width,
           controller: ctrlNbPerson,

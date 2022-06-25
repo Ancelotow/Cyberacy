@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 
 class InputDate extends StatefulWidget {
   final String placeholder;
-  final PositionInput position;
   DateTime? value;
   final bool isReadOnly;
   final double? height;
@@ -20,7 +19,6 @@ class InputDate extends StatefulWidget {
     this.controller,
     this.width,
     this.height,
-    this.position = PositionInput.middle,
     this.icon,
   }) : super(key: key);
 

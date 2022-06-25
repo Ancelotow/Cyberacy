@@ -3,7 +3,6 @@ import '../../models/enums/position_input.dart';
 
 class InputText extends StatefulWidget {
   final String placeholder;
-  final PositionInput position;
   final String? value;
   final bool obscureText;
   final bool isReadOnly;
@@ -23,7 +22,6 @@ class InputText extends StatefulWidget {
     this.width,
     this.height,
     this.type = TextInputType.text,
-    this.position = PositionInput.middle,
     this.icon,
   }) : super(key: key);
 

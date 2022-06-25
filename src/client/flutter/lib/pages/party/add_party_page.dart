@@ -23,27 +23,16 @@ class AddPartyPage extends StatefulWidget {
 
 class _AddPartyPageState extends State<AddPartyPage> {
   final TextEditingController ctrlName = TextEditingController();
-
   final TextEditingController ctrlSiren = TextEditingController();
-
   final TextEditingController ctrlDate = TextEditingController();
-
   final TextEditingController ctrlObject = TextEditingController();
-
   final TextEditingController ctrlDescription = TextEditingController();
-
   final TextEditingController ctrlUrlLogo = TextEditingController();
-
   final TextEditingController ctrlIban = TextEditingController();
-
   final TextEditingController ctrlAddress = TextEditingController();
-
   final TextEditingController ctrlNir = TextEditingController();
-
   Town? currentTown;
-
   PoliticalEdge? currentEdge;
-
   bool isSaving = false;
 
   @override
@@ -54,108 +43,80 @@ class _AddPartyPageState extends State<AddPartyPage> {
       backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Nouveau parti politique",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline1,
-              ),
-              const SizedBox(height: 50),
-              InputText(
-                placeholder: "SIREN",
-                position: PositionInput.start,
-                icon: Icons.person,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Nouveau parti politique",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline1,
+            ),
+            const SizedBox(height: 50),
+            InputText(
+              placeholder: "SIREN",
+              icon: Icons.person,
+              width: width,
+              controller: ctrlSiren,
+            ),
+            InputText(
+              placeholder: "Objet",
+              icon: Icons.abc,
+              width: width,
+              controller: ctrlObject,
+            ),
+            InputText(
+              placeholder: "Description",
+              icon: Icons.abc,
+              width: width,
+              controller: ctrlDescription,
+            ),
+            InputText(
+              placeholder: "IBAN",
+              icon: Icons.credit_card,
+              width: width,
+              controller: ctrlIban,
+            ),
+            InputText(
+              placeholder: "NIR du fondateur",
+              icon: Icons.person,
+              width: width,
+              controller: ctrlNir,
+            ),
+            InputText(
+              placeholder: "URL Logo",
+              icon: Icons.image,
+              width: width,
+              controller: ctrlUrlLogo,
+            ),
+            InputSelected<PoliticalEdge>(
+              future: RefService().getAllPoliticalEdge(),
+              items: [],
+              value: currentEdge,
+              placeholder: "Bord politique",
+              icon: Icons.event_seat,
+              width: width,
+              onChanged: (value) {
+                currentEdge = value;
+              },
+            ),
+            SizedBox(height: 10),
+            Button(
+              label: "Sauvegarder",
+              width: width,
+              isLoad: isSaving,
+              pressedColor: Colors.lightBlue,
+              click: () => _saveParty(context),
+            ),
+            SizedBox(height: 10),
+            Button(
+                label: "Annuler",
                 width: width,
-                controller: ctrlSiren,
-              ),
-              InputText(
-                placeholder: "Objet",
-                position: PositionInput.middle,
-                icon: Icons.abc,
-                width: width,
-                controller: ctrlObject,
-              ),
-              InputText(
-                placeholder: "Description",
-                position: PositionInput.middle,
-                icon: Icons.abc,
-                width: width,
-                controller: ctrlDescription,
-              ),
-              InputText(
-                placeholder: "IBAN",
-                position: PositionInput.middle,
-                icon: Icons.credit_card,
-                width: width,
-                controller: ctrlIban,
-              ),
-              InputText(
-                placeholder: "NIR du fondateur",
-                position: PositionInput.middle,
-                icon: Icons.person,
-                width: width,
-                controller: ctrlNir,
-              ),
-              InputText(
-                placeholder: "URL Logo",
-                position: PositionInput.middle,
-                icon: Icons.image,
-                width: width,
-                controller: ctrlUrlLogo,
-              ),
-              _getSelectEdge(context, width),
-              SizedBox(height: 10),
-              Button(
-                label: "Sauvegarder",
-                width: width,
-                isLoad: isSaving,
-                pressedColor: Colors.lightBlue,
-                click: () => _saveParty(context),
-              ),
-              SizedBox(height: 10),
-              Button(
-                  label: "Annuler",
-                  width: width,
-                  color: Colors.red,
-                  pressedColor: Colors.redAccent,
-                  click: () => Navigator.of(context).pop()),
-            ],
-          ),
+                color: Colors.red,
+                pressedColor: Colors.redAccent,
+                click: () => Navigator.of(context).pop()),
+          ],
         ),
-    );
-  }
-
-  Widget _getSelectEdge(BuildContext context, double width) {
-    String placeholder = "Bord politique";
-    IconData icon = Icons.event_seat;
-    return FutureBuilder(
-      future: RefService().getAllPoliticalEdge(),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<PoliticalEdge>> snapshot) {
-        if (snapshot.hasData) {
-          return InputSelected(
-            items: snapshot.data!,
-            value: currentEdge,
-            placeholder: placeholder,
-            icon: icon,
-            position: PositionInput.end,
-            width: width,
-            onChanged: (value) {
-              currentEdge = value;
-            },
-          );
-        } else {
-          return InputText(
-            placeholder: placeholder,
-            icon: icon,
-            isReadOnly: true,
-            position: PositionInput.end,
-            width: width,
-          );
-        }
-      },
+      ),
     );
   }
 

@@ -44,7 +44,6 @@ class AddManifestationPage extends StatelessWidget {
               SizedBox(height: 50),
               InputText(
                 placeholder: "Nom",
-                position: PositionInput.start,
                 icon: Icons.abc,
                 width: width,
                 controller: ctrlName,
@@ -58,7 +57,6 @@ class AddManifestationPage extends StatelessWidget {
                     Expanded(
                       child: InputDate(
                         placeholder: "Date de début",
-                        position: PositionInput.middle,
                         icon: Icons.calendar_today,
                         controller: ctrlDtStart,
                       ),
@@ -67,7 +65,6 @@ class AddManifestationPage extends StatelessWidget {
                     Expanded(
                       child: InputDate(
                         placeholder: "Date de fin",
-                        position: PositionInput.middle,
                         icon: Icons.calendar_today,
                         controller: ctrlDtEnd,
                       ),
@@ -78,14 +75,12 @@ class AddManifestationPage extends StatelessWidget {
               InputText(
                 placeholder: "Objet",
                 icon: Icons.abc,
-                position: PositionInput.middle,
                 width: width,
                 controller: ctrlObject,
               ),
               InputText(
                 placeholder: "Description de la sécurité",
                 icon: Icons.shield,
-                position: PositionInput.middle,
                 width: width,
                 controller: ctrlSecurityDesc,
               ),
@@ -93,7 +88,6 @@ class AddManifestationPage extends StatelessWidget {
                 type: TextInputType.number,
                 icon: Icons.group,
                 placeholder: "Estimation du nombre de participant",
-                position: PositionInput.end,
                 width: width,
                 controller: ctrlNbPerson,
               ),

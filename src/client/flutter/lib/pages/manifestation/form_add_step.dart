@@ -97,13 +97,31 @@ class _FormAddStepState extends State<FormAddStep> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: _getDropdownDepartment(context)),
+                  Expanded(
+                    child: InputSelected<Department>(
+                      future: GeoService().getDepartments(),
+                      items: [],
+                      value: currentDepartment,
+                      placeholder: "Département",
+                      icon: Icons.landscape,
+                      onChanged: (value) =>
+                          setState(() => currentDepartment = value),
+                    ),
+                  ),
                   SizedBox(width: 10),
                   Expanded(child: _getDropdownTown(context)),
                 ],
               ),
             ),
-            _getDropdownTypeStep(context, width),
+            InputSelected<TypeStep>(
+              future: RefService().getAllTypeStep(),
+              items: [],
+              value: currentType,
+              placeholder: "Type d'étape",
+              icon: Icons.where_to_vote,
+              width: width,
+              onChanged: (value) => currentType = value,
+            ),
             const SizedBox(height: 10),
             Button(
               label: "Sauvegarder",
@@ -126,58 +144,17 @@ class _FormAddStepState extends State<FormAddStep> {
     );
   }
 
-  Widget _getDropdownDepartment(BuildContext context) {
-    String placeholder = "Département";
-    IconData icon = Icons.landscape;
-    print(currentDepartment?.code);
-    return FutureBuilder(
-      future: GeoService().getDepartments(),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<Department>> snapshot) {
-        if (snapshot.hasData) {
-          return InputSelected(
-            items: snapshot.data!,
-            value: currentDepartment,
-            placeholder: placeholder,
-            icon: icon,
-            onChanged: (value) => setState(() => currentDepartment = value),
-          );
-        } else {
-          return InputText(
-            placeholder: placeholder,
-            icon: icon,
-            isReadOnly: true,
-          );
-        }
-      },
-    );
-  }
-
   Widget _getDropdownTown(BuildContext context) {
     String placeholder = "Ville";
     IconData icon = Icons.location_city;
     if (currentDepartment != null) {
-      return FutureBuilder(
+      return InputSelected<Town>(
         future: GeoService().getTownsFromDept(currentDepartment!.code),
-        builder: (BuildContext context, AsyncSnapshot<List<Town>> snapshot) {
-          if (snapshot.hasData) {
-            return InputSelected(
-              items: snapshot.data!,
-              value: currentTown,
-              placeholder: placeholder,
-              icon: icon,
-              onChanged: (value) {
-                currentTown = value;
-              },
-            );
-          } else {
-            return InputText(
-              placeholder: placeholder,
-              icon: icon,
-              isReadOnly: true,
-            );
-          }
-        },
+        items: [],
+        value: currentTown,
+        placeholder: "Ville",
+        icon: Icons.location_city,
+        onChanged: (value) => currentTown = value,
       );
     } else {
       return InputText(
@@ -186,36 +163,6 @@ class _FormAddStepState extends State<FormAddStep> {
         isReadOnly: true,
       );
     }
-  }
-
-  Widget _getDropdownTypeStep(BuildContext context, double width) {
-    String placeholder = "Type d'étape";
-    IconData icon = Icons.where_to_vote;
-    return FutureBuilder(
-      future: RefService().getAllTypeStep(),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<TypeStep>> snapshot) {
-        if (snapshot.hasData) {
-          return InputSelected(
-            items: snapshot.data!,
-            value: currentType,
-            placeholder: placeholder,
-            icon: icon,
-            width: width,
-            onChanged: (value) {
-              currentType = value;
-            },
-          );
-        } else {
-          return InputText(
-            placeholder: placeholder,
-            icon: icon,
-            width: width,
-            isReadOnly: true,
-          );
-        }
-      },
-    );
   }
 
   Future<void> refreshMap() async {
