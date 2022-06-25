@@ -9,8 +9,10 @@ import '../../models/dialog/alert_normal.dart';
 import '../../models/entities/town.dart';
 import '../../models/enums/position_input.dart';
 import '../../models/errors/api_service_error.dart';
+import '../../models/notifications/navigation_notification.dart';
 import '../../widgets/buttons/button.dart';
 import '../../widgets/input_field/input_text.dart';
+import '../party_page.dart';
 
 class AddPartyPage extends StatefulWidget {
   static const String routeName = "infoPartyPage";
@@ -113,7 +115,8 @@ class _AddPartyPageState extends State<AddPartyPage> {
                 width: width,
                 color: Colors.red,
                 pressedColor: Colors.redAccent,
-                click: () => Navigator.of(context).pop()),
+                click: () => NavigationNotification(PartyPage()).dispatch(context),
+            ),
           ],
         ),
       ),

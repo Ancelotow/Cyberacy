@@ -21,15 +21,14 @@ class NavBar extends StatelessWidget {
       this.colorSelected = Colors.white,
       this.colorUnselected = Colors.black,
       this.indexSelected = 0,
-      this.mainAxisAlignment = MainAxisAlignment.spaceAround,
-      this.crossAxisAlignment = CrossAxisAlignment.center})
+      this.mainAxisAlignment = MainAxisAlignment.start,
+      this.crossAxisAlignment = CrossAxisAlignment.start})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     color ??= Theme.of(context).primaryColor;
     return Container(
-      height: 65,
       decoration: BoxDecoration(
         color: color,
         boxShadow: const [
@@ -42,8 +41,9 @@ class NavBar extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: getBody(
-          context: context,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: getItems(context),
         ),
       ),
@@ -62,28 +62,28 @@ class NavBar extends StatelessWidget {
   }
 
   Widget buildItem(NavBarItem item, Color color) {
-    return Expanded(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: () {
-          if (itemSelected != item) {
-            item.onTap?.call(items.indexOf(item));
-          }
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+        onTap: () => item.onTap?.call(items.indexOf(item)),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Icon(
               item.icon,
               color: color,
             ),
-            Text(
-              item.label,
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: color,
-                fontSize: 11,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                item.label,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: color,
+                  fontSize: 14,
+                ),
               ),
             )
           ],
@@ -92,20 +92,4 @@ class NavBar extends StatelessWidget {
     );
   }
 
-  Flex getBody(
-      {required BuildContext context, required List<Widget> children}) {
-    if (orientation == OrientationNavBar.horizontal) {
-      return Row(
-        mainAxisAlignment: mainAxisAlignment,
-        crossAxisAlignment: crossAxisAlignment,
-        children: children,
-      );
-    } else {
-      return Column(
-        mainAxisAlignment: mainAxisAlignment,
-        crossAxisAlignment: crossAxisAlignment,
-        children: children,
-      );
-    }
-  }
 }

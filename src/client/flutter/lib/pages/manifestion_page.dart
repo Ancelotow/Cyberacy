@@ -24,16 +24,11 @@ class ManifestationPage extends StatefulWidget {
 
 class _ManifestationPageState extends State<ManifestationPage> {
   List<Manifestation> manifs = [];
-  bool isDragging = false;
-  double _widthCard = 500;
+  final double _widthCard = 500;
   final double _heightCard = 200;
 
   @override
   Widget build(BuildContext context) {
-    double widthScreen = MediaQuery.of(context).size.width;
-    if (widthScreen <= 500) {
-      _widthCard = widthScreen - 16;
-    }
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: FutureBuilder(

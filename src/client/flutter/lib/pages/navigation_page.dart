@@ -7,6 +7,7 @@ import 'package:bo_cyberacy/widgets/nav_bar/nav_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../models/entities/manifestation.dart';
+import '../models/notifications/navigation_notification.dart';
 import '../widgets/nav_bar/nav_bar_item.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -21,22 +22,23 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   List<PoliticalParty> parties = [];
   List<Manifestation> manifs = [];
-  Widget currentPage = PartyPage();
+  late Widget currentPage;
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    click(0);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Stack(
+      body: Row(
         children: [
-          currentPage,
-          Align(
-            alignment: FractionalOffset.bottomCenter,
+          SizedBox(
+            width: 250,
             child: NavBar(
-              orientation: OrientationNavBar.horizontal,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
               color: Theme.of(context).bottomAppBarColor,
               colorUnselected: Theme.of(context).unselectedWidgetColor,
               colorSelected: Theme.of(context).accentColor,
@@ -65,6 +67,9 @@ class _NavigationPageState extends State<NavigationPage> {
               ],
             ),
           ),
+          Expanded(
+            child: currentPage,
+          ),
         ],
       ),
     );
@@ -74,47 +79,31 @@ class _NavigationPageState extends State<NavigationPage> {
     Widget newPage;
     switch (index) {
       case 0:
-        newPage = PartyPage(callbackAddWorkspace: (value) {
-          addPartyInWorkspace(value, context);
-        });
+        newPage = PartyPage();
         break;
 
       case 1:
-        newPage = ManifestationPage(callbackAddWorkspace: (value) {
-          addManifInWorkspace(value, context);
-        });
+        newPage = ManifestationPage();
         break;
 
       default:
         newPage = Screen404();
         break;
     }
+    currentIndex = index;
+    changePage(newPage);
+  }
+
+  void changePage(Widget page) {
     setState(() {
-      currentIndex = index;
-      currentPage = newPage;
+      currentPage = NotificationListener<NavigationNotification>(
+        onNotification: (notification) {
+          setState(() => { changePage(notification.page) });
+          return true;
+        },
+        child: page,
+      );
     });
-  }
-
-  void addPartyInWorkspace(PoliticalParty value, BuildContext context) {
-    bool isExists = parties.where((p) => p.id == value.id).isNotEmpty;
-    if (!isExists) {
-      parties.add(value);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Ce parti politique est déjà dans l'espace de travail"),
-      ));
-    }
-  }
-
-  void addManifInWorkspace(Manifestation value, BuildContext context) {
-    bool isExists = manifs.where((p) => p.id == value.id).isNotEmpty;
-    if (!isExists) {
-      manifs.add(value);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Cette manifestation est déjà dans l'espace de travail"),
-      ));
-    }
   }
 
 }
