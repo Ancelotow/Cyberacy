@@ -49,4 +49,20 @@ class ManifService extends ApiService {
     }
   }
 
+  Future<List<StepManif>> getSteps(int idManifestation) async {
+    try {
+      List<StepManif> steps = [];
+      var response = await http.get(getUrl("manifestation/$idManifestation/step", null),
+          headers: await getHeaders(auth: true));
+      if (response.statusCode == 200) {
+        List<dynamic> list = jsonDecode(response.body);
+        steps = list.map((json) => StepManif.fromJson(json)).toList();
+        print(list);
+      }
+      return steps;
+    } on ApiServiceError catch (e) {
+      rethrow;
+    }
+  }
+
 }

@@ -9,19 +9,33 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../../models/entities/option.dart';
 import '../../models/enums/position_input.dart';
+import '../../models/notifications/save_notification.dart';
 import '../../models/notifications/step_notification.dart';
+import '../../models/services/manifestation_service.dart';
 import '../../widgets/buttons/button.dart';
+import '../../widgets/cards/card_shimmer.dart';
 import '../../widgets/input_field/input_text.dart';
 import '../../widgets/map_manifestation.dart';
 import 'form_add_step.dart';
 
-class ManifestationDetail extends StatelessWidget {
+class ManifestationDetail extends StatefulWidget {
   static const String routeName = "detailsManifPage";
 
   final Manifestation manifestation;
-  late final List<StepManif> steps;
+  late List<StepManif> steps;
   late final List<Option> options;
 
+  ManifestationDetail({
+    Key? key,
+    required this.manifestation,
+  }) : super(key: key);
+
+  @override
+  State<ManifestationDetail> createState() => _ManifestationDetailState();
+}
+
+class _ManifestationDetailState extends State<ManifestationDetail> {
+  bool getStepsFromApi = false;
   final TextEditingController ctrlName = TextEditingController();
   final TextEditingController ctrlDtStart = TextEditingController();
   final TextEditingController ctrlDtEnd = TextEditingController();
@@ -30,29 +44,31 @@ class ManifestationDetail extends StatelessWidget {
   final TextEditingController ctrlNbPerson = TextEditingController();
   final MapController mapController = MapController();
 
-  ManifestationDetail({
-    Key? key,
-    required this.manifestation,
-  }) : super(key: key) {
-    if (manifestation.name != null) ctrlName.text = manifestation.name!;
-    if (manifestation.dateStart != null) {
-      ctrlDtStart.text = manifestation.dateStart!.toString();
+  @override
+  void initState() {
+    if (widget.manifestation.name != null) {
+      ctrlName.text = widget.manifestation.name!;
     }
-    if (manifestation.dateEnd != null) {
-      ctrlDtEnd.text = manifestation.dateEnd!.toString();
+    if (widget.manifestation.dateStart != null) {
+      ctrlDtStart.text = widget.manifestation.dateStart!.toString();
     }
-    if (manifestation.object != null) ctrlObject.text = manifestation.object!;
-    if (manifestation.securityDescription != null) {
-      ctrlSecurityDesc.text = manifestation.securityDescription!;
+    if (widget.manifestation.dateEnd != null) {
+      ctrlDtEnd.text = widget.manifestation.dateEnd!.toString();
     }
-    if (manifestation.nbPersonEstimate != null) {
-      ctrlNbPerson.text = manifestation.nbPersonEstimate!.toString();
+    if (widget.manifestation.object != null) {
+      ctrlObject.text = widget.manifestation.object!;
     }
-    if (manifestation.steps != null) {
-      steps = manifestation.steps!;
+    if (widget.manifestation.securityDescription != null) {
+      ctrlSecurityDesc.text = widget.manifestation.securityDescription!;
     }
-    if (manifestation.options != null) {
-      options = manifestation.options!;
+    if (widget.manifestation.nbPersonEstimate != null) {
+      ctrlNbPerson.text = widget.manifestation.nbPersonEstimate!.toString();
+    }
+    if (widget.manifestation.steps != null) {
+      widget.steps = widget.manifestation.steps!;
+    }
+    if (widget.manifestation.options != null) {
+      widget.options = widget.manifestation.options!;
     }
   }
 
@@ -92,7 +108,7 @@ class ManifestationDetail extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Manifestation n°${manifestation.id}",
+          "Manifestation n°${widget.manifestation.id}",
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline1,
         ),
@@ -184,7 +200,7 @@ class ManifestationDetail extends StatelessWidget {
                     flex: 2,
                     child: SizedBox(
                       child: MapManifestation(
-                        steps: steps,
+                        steps: widget.steps,
                         controller: mapController,
                       ),
                     ),
@@ -192,37 +208,7 @@ class ManifestationDetail extends StatelessWidget {
                   Expanded(
                     flex: 5,
                     child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: steps
-                            .map((e) => Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: NotificationListener<StepNotification>(
-                                    onNotification: (value) {
-                                      double latStart =
-                                          (value.step.latitude != null)
-                                              ? value.step.latitude!
-                                              : 0.00;
-                                      double lngStart =
-                                          (value.step.longitude != null)
-                                              ? value.step.longitude!
-                                              : 0.00;
-                                      double zoom =
-                                          (latStart == 0.0 || lngStart == 0.0)
-                                              ? 0
-                                              : 17;
-                                      mapController.move(
-                                          LatLng(latStart, lngStart), zoom);
-                                      return true;
-                                    },
-                                    child: CardStep(
-                                      step: e,
-                                      index: (steps.indexOf(e) + 1),
-                                    ),
-                                  ),
-                                ))
-                            .toList(),
-                      ),
+                      child: _getListSteps(context, getStepsFromApi),
                     ),
                   ),
                   Container(
@@ -248,18 +234,26 @@ class ManifestationDetail extends StatelessWidget {
                           textStyle: TextStyle(color: Colors.white),
                           click: () => showDialog(
                             builder: (_) {
-                              return AlertDialog(
-                                title: Text(
-                                  "Ajout d'une étape",
-                                  style: Theme.of(context).textTheme.headline1,
-                                ),
-                                backgroundColor:
-                                    Theme.of(context).backgroundColor,
-                                content: SizedBox(
-                                  width: 700,
-                                  height: 600,
-                                  child: FormAddStep(
-                                    idManifesation: manifestation.id!,
+                              return NotificationListener<
+                                  SaveNotification<StepManif>>(
+                                onNotification: (value) {
+                                  setState(() => getStepsFromApi = true);
+                                  return true;
+                                },
+                                child: AlertDialog(
+                                  title: Text(
+                                    "Ajout d'une étape",
+                                    style:
+                                        Theme.of(context).textTheme.headline1,
+                                  ),
+                                  backgroundColor:
+                                      Theme.of(context).backgroundColor,
+                                  content: SizedBox(
+                                    width: 700,
+                                    height: 600,
+                                    child: FormAddStep(
+                                      idManifesation: widget.manifestation.id!,
+                                    ),
                                   ),
                                 ),
                               );
@@ -301,14 +295,75 @@ class ManifestationDetail extends StatelessWidget {
                   direction: Axis.horizontal,
                   spacing: 5.00,
                   runSpacing: 2.00,
-                  children:
-                      options.map((e) => CardOptionManif(option: e)).toList(),
+                  children: widget.options
+                      .map((e) => CardOptionManif(option: e))
+                      .toList(),
                 ),
               ),
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _getListSteps(BuildContext context, bool getFromApi) {
+    if (getFromApi) {
+      return FutureBuilder(
+        future: ManifService().getSteps(widget.manifestation.id!),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<StepManif>> snapshot) {
+          if (snapshot.hasData) {
+            widget.steps = snapshot.data!;
+            return _getCardSteps(context);
+          } else {
+            return _getStepsLoader(context);
+          }
+        },
+      );
+    } else {
+      return _getCardSteps(context);
+    }
+  }
+
+  Widget _getStepsLoader(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: List.filled(
+        30,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CardShimmer(height: 60),
+        ),
+      ),
+    );
+  }
+
+  Widget _getCardSteps(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: widget.steps
+          .map((e) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: NotificationListener<StepNotification>(
+                  onNotification: (value) {
+                    double latStart = (value.step.latitude != null)
+                        ? value.step.latitude!
+                        : 0.00;
+                    double lngStart = (value.step.longitude != null)
+                        ? value.step.longitude!
+                        : 0.00;
+                    double zoom = (latStart == 0.0 || lngStart == 0.0) ? 0 : 17;
+                    mapController.move(LatLng(latStart, lngStart), zoom);
+                    return true;
+                  },
+                  child: CardStep(
+                    step: e,
+                    index: (widget.steps.indexOf(e) + 1),
+                  ),
+                ),
+              ))
+          .toList(),
     );
   }
 }

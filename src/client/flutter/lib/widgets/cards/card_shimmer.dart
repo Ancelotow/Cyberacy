@@ -2,13 +2,13 @@ import 'package:shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
 
 class CardShimmer extends StatelessWidget {
-  final double width;
+  final double? width;
   final double height;
   Color? baseColor;
 
   CardShimmer({
     Key? key,
-    required this.width,
+    this.width,
     required this.height,
   }) : super(key: key);
 
