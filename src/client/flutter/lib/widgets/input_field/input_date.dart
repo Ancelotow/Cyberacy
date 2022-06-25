@@ -51,6 +51,7 @@ class _InputDateState extends State<InputDate> {
             readOnly: true,
             style: Theme.of(context).textTheme.bodyText1,
             decoration: InputDecoration(
+              fillColor: (widget.isReadOnly) ? Theme.of(context).disabledColor : null,
               prefixIcon: Icon(
                 widget.icon,
                 color: _getColor(context),
@@ -67,7 +68,7 @@ class _InputDateState extends State<InputDate> {
   }
 
   Color _getColor(BuildContext context) {
-    if(isFocus) {
+    if(isFocus && !widget.isReadOnly) {
       return Theme.of(context).cursorColor;
     }
     return Theme.of(context).hintColor;

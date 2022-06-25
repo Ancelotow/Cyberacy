@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         highlightColor: const Color.fromARGB(255, 140, 35, 241),
         focusColor: const Color.fromARGB(255, 150, 93, 197),
         unselectedWidgetColor: const Color.fromARGB(255, 133, 133, 133),
-        shadowColor: const Color.fromARGB(121, 152, 151, 151),
+        shadowColor: const Color.fromARGB(121, 121, 121, 121),
         bottomAppBarColor: const Color.fromARGB(255, 54, 54, 54),
         hintColor: const Color.fromARGB(255, 169, 165, 176),
         cursorColor: Colors.white,

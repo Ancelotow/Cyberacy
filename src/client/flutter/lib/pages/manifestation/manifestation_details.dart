@@ -7,6 +7,7 @@ import 'package:bo_cyberacy/widgets/cards/card_step.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import '../../models/dialog/alert_yes_no.dart';
 import '../../models/entities/option.dart';
 import '../../models/enums/position_input.dart';
 import '../../models/notifications/save_notification.dart';
@@ -16,6 +17,7 @@ import '../../widgets/buttons/button.dart';
 import '../../widgets/cards/card_shimmer.dart';
 import '../../widgets/input_field/input_text.dart';
 import '../../widgets/map_manifestation.dart';
+import 'form_aborted_manifestation.dart';
 import 'form_add_step.dart';
 
 class ManifestationDetail extends StatefulWidget {
@@ -115,6 +117,7 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
         SizedBox(height: 50),
         InputText(
           placeholder: "Nom",
+          isReadOnly: true,
           position: PositionInput.start,
           width: width,
           controller: ctrlName,
@@ -143,6 +146,7 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
         ),
         InputText(
           placeholder: "Objet",
+          isReadOnly: true,
           position: PositionInput.middle,
           width: width,
           controller: ctrlObject,
@@ -150,6 +154,7 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
         InputText(
           placeholder: "Description de la sécurité",
           position: PositionInput.middle,
+          isReadOnly: true,
           width: width,
           controller: ctrlSecurityDesc,
         ),
@@ -157,23 +162,17 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
           type: TextInputType.number,
           placeholder: "Estimation du nombre de participant",
           position: PositionInput.end,
+          isReadOnly: true,
           width: width,
           controller: ctrlNbPerson,
         ),
         SizedBox(height: 10),
         Button(
-          label: "Sauvegarder",
-          width: width,
-          pressedColor: Colors.lightBlue,
-          click: () => {},
-        ),
-        SizedBox(height: 10),
-        Button(
-          label: "Annuler",
+          label: "Annuler la manifestation",
           width: width,
           color: Colors.red,
           pressedColor: Colors.redAccent,
-          click: () => Navigator.of(context).pop(),
+          click: () => _abortedManifestation(context),
         ),
       ],
     );
@@ -366,4 +365,35 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
           .toList(),
     );
   }
+
+  void _abortedManifestation(BuildContext context) {
+    showDialog(
+      builder: (_) {
+        return NotificationListener<SaveNotification<String>>(
+          onNotification: (value) {
+            Navigator.of(context).pop();
+            return true;
+          },
+          child: AlertDialog(
+            title: Text(
+              "Annuler la manifestation",
+              style:
+              Theme.of(context).textTheme.headline1,
+            ),
+            backgroundColor:
+            Theme.of(context).backgroundColor,
+            content: SizedBox(
+              width: 700,
+              height: 250,
+              child: FormAbortedManifestation(
+                idManifestation: widget.manifestation.id!,
+              ),
+            ),
+          ),
+        );
+      },
+      context: context,
+    );
+  }
+
 }

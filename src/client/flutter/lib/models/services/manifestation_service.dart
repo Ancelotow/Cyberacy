@@ -36,6 +36,19 @@ class ManifService extends ApiService {
     }
   }
 
+  Future<String> abortedManifestation(int idManifestation, String reason) async {
+    var response = await http.patch(
+      getUrl("manifestation/aborted", null),
+      headers: await getHeaders(auth: true),
+      body: {"id": idManifestation.toString(), "reason": reason},
+    );
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw ApiServiceError(response);
+    }
+  }
+
   Future<String> addStep(StepManif step) async {
     var response = await http.post(
       getUrl("manifestation/step", null),
@@ -52,7 +65,8 @@ class ManifService extends ApiService {
   Future<List<StepManif>> getSteps(int idManifestation) async {
     try {
       List<StepManif> steps = [];
-      var response = await http.get(getUrl("manifestation/$idManifestation/step", null),
+      var response = await http.get(
+          getUrl("manifestation/$idManifestation/step", null),
           headers: await getHeaders(auth: true));
       if (response.statusCode == 200) {
         List<dynamic> list = jsonDecode(response.body);
@@ -64,5 +78,4 @@ class ManifService extends ApiService {
       rethrow;
     }
   }
-
 }
