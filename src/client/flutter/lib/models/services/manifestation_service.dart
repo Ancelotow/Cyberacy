@@ -78,4 +78,17 @@ class ManifService extends ApiService {
       rethrow;
     }
   }
+
+  Future<String> deleteStep(int idStep) async {
+    var response = await http.delete(
+      getUrl("manifestation/step/$idStep", null),
+      headers: await getHeaders(auth: true),
+    );
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw ApiServiceError(response);
+    }
+  }
+
 }

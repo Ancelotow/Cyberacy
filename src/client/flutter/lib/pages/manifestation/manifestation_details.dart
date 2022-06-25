@@ -81,13 +81,12 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Column(
                 children: [
                   getForm(context, width),
                   SizedBox(
@@ -96,9 +95,9 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
                   //getOptions(context, width)
                 ],
               ),
-              getSteps(context, width)
-            ],
-          ),
+            ),
+            getSteps(context, width)
+          ],
         ),
       ),
     );
@@ -109,12 +108,14 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          "Manifestation n°${widget.manifestation.id}",
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline1,
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Text(
+            "Manifestation n°${widget.manifestation.id}",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline1,
+          ),
         ),
-        SizedBox(height: 50),
         InputText(
           placeholder: "Nom",
           isReadOnly: true,
@@ -173,17 +174,21 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
   }
 
   Widget getSteps(BuildContext context, double width) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          "Etapes",
-          style: Theme.of(context).textTheme.headline4,
-        ),
-        Expanded(
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+    return Container(
+      color: Theme.of(context).cardColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Etapes",
+              textAlign: TextAlign.start,
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ),
+          Expanded(
             child: Container(
               width: 500,
               color: Theme.of(context).cardColor,
@@ -208,13 +213,6 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
                     height: 60,
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black,
-                          blurRadius: 8,
-                          offset: Offset(0, -5), // Shadow position
-                        ),
-                      ],
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -261,8 +259,8 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -336,10 +334,12 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: widget.steps
-          .map((e) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: NotificationListener<StepNotification>(
-                  onNotification: (value) {
+          .map(
+            (e) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: NotificationListener<Notification>(
+                onNotification: (value) {
+                  if (value is StepNotification) {
                     double latStart = (value.step.latitude != null)
                         ? value.step.latitude!
                         : 0.00;
@@ -348,15 +348,18 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
                         : 0.00;
                     double zoom = (latStart == 0.0 || lngStart == 0.0) ? 0 : 17;
                     mapController.move(LatLng(latStart, lngStart), zoom);
-                    return true;
-                  },
-                  child: CardStep(
-                    step: e,
-                    index: (widget.steps.indexOf(e) + 1),
-                  ),
+                  } else if (value is SaveNotification) {
+                    setState(() => getStepsFromApi = true);
+                  }
+                  return true;
+                },
+                child: CardStep(
+                  step: e,
+                  index: (widget.steps.indexOf(e) + 1),
                 ),
-              ))
-          .toList(),
+              ),
+            ),
+          ).toList(),
     );
   }
 
@@ -371,11 +374,9 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
           child: AlertDialog(
             title: Text(
               "Annuler la manifestation",
-              style:
-              Theme.of(context).textTheme.headline1,
+              style: Theme.of(context).textTheme.headline1,
             ),
-            backgroundColor:
-            Theme.of(context).backgroundColor,
+            backgroundColor: Theme.of(context).backgroundColor,
             content: SizedBox(
               width: 700,
               height: 250,
@@ -389,5 +390,4 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
       context: context,
     );
   }
-
 }

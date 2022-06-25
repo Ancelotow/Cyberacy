@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         primaryColor: const Color.fromARGB(255, 54, 54, 54),
         backgroundColor: const Color.fromARGB(255, 40, 40, 40),
-        disabledColor: const Color.fromARGB(255, 122, 122, 122),
+        disabledColor: const Color.fromARGB(255, 84, 83, 83),
         cardColor: const Color.fromARGB(255, 54, 54, 54),
         buttonColor: const Color.fromARGB(255, 13, 41, 134),
         hoverColor: const Color.fromARGB(255, 81, 37, 154),
@@ -43,25 +43,7 @@ class MyApp extends StatelessWidget {
         hintColor: const Color.fromARGB(255, 169, 165, 176),
         cursorColor: Colors.white,
         textTheme: _getTextThemeDark(context),
-        inputDecorationTheme: InputDecorationTheme(
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: const Color.fromARGB(255, 169, 165, 176),
-              width: 1.0,
-            ),
-            borderRadius: BorderRadius.circular(8.00),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: const Color.fromARGB(255, 132, 0, 255),
-              width: 2.0,
-            ),
-            borderRadius: BorderRadius.circular(8.00),
-          ),
-          filled: true,
-          contentPadding: EdgeInsets.all(8.00),
-          hoverColor: Colors.transparent,
-        ),
+        inputDecorationTheme: _getInputDecorationThemeDark(context),
       ),
       theme: ThemeData(
         brightness: Brightness.light,
@@ -80,14 +62,7 @@ class MyApp extends StatelessWidget {
         hintColor: Colors.black,
         cursorColor: const Color.fromARGB(255, 0, 69, 246),
         textTheme: _getTextThemeLight(context),
-        inputDecorationTheme: InputDecorationTheme(
-          labelStyle: const TextStyle(
-            color: Colors.black,
-            fontFamily: "HK-Nova",
-          ),
-          filled: true,
-          contentPadding: EdgeInsets.all(8.00),
-        ),
+        inputDecorationTheme: _getInputDecorationThemeLight(context),
       ),
       routes: {
         NavigationPage.routeName: (BuildContext context) => NavigationPage(),
@@ -217,6 +192,51 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
+  InputDecorationTheme _getInputDecorationThemeLight(BuildContext context) {
+    return InputDecorationTheme(
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: const Color.fromARGB(255, 0, 0, 0),
+          width: 1.0,
+        ),
+        borderRadius: BorderRadius.circular(8.00),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: const Color.fromARGB(255, 0, 42, 255),
+          width: 2.0,
+        ),
+        borderRadius: BorderRadius.circular(8.00),
+      ),
+      filled: true,
+      contentPadding: EdgeInsets.all(8.00),
+      hoverColor: Colors.transparent,
+    );
+  }
+
+  InputDecorationTheme _getInputDecorationThemeDark(BuildContext context) {
+    return InputDecorationTheme(
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: const Color.fromARGB(255, 169, 165, 176),
+          width: 1.0,
+        ),
+        borderRadius: BorderRadius.circular(8.00),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: const Color.fromARGB(255, 132, 0, 255),
+          width: 2.0,
+        ),
+        borderRadius: BorderRadius.circular(8.00),
+      ),
+      filled: true,
+      contentPadding: EdgeInsets.all(8.00),
+      hoverColor: Colors.transparent,
+    );
+  }
+
 }
 
 class HomePage extends StatelessWidget {
