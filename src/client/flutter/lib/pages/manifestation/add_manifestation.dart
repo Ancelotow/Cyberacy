@@ -7,10 +7,13 @@ import '../../models/dialog/alert_normal.dart';
 import '../../models/enums/position_input.dart';
 import '../../models/errors/api_service_error.dart';
 import '../../models/errors/invalid_form_error.dart';
+import '../../models/notifications/navigation_notification.dart';
 import '../../widgets/buttons/button.dart';
 import '../../widgets/input_field/input_date.dart';
 import '../../widgets/input_field/input_text.dart';
 import 'package:intl/intl.dart';
+
+import '../manifestion_page.dart';
 
 class AddManifestationPage extends StatelessWidget {
   static const String routeName = "addManifPage";
@@ -104,7 +107,7 @@ class AddManifestationPage extends StatelessWidget {
                 width: width,
                 color: Colors.red,
                 pressedColor: Colors.redAccent,
-                click: () => Navigator.of(context).pop(),
+                click: () => NavigationNotification(ManifestationPage()).dispatch(context),
               ),
             ],
           ),

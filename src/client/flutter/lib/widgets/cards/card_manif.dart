@@ -4,6 +4,7 @@ import 'package:bo_cyberacy/models/entities/step.dart';
 import 'package:bo_cyberacy/pages/manifestation/manifestation_details.dart';
 import 'package:flutter/material.dart';
 import '../../models/entities/manifestation.dart';
+import '../../models/notifications/navigation_notification.dart';
 import '../map_manifestation.dart';
 
 class CardManif extends StatelessWidget {
@@ -42,10 +43,11 @@ class CardManif extends StatelessWidget {
           child: Material(
             color: Theme.of(context).cardColor,
             child: InkWell(
-              onTap: () => Navigator.of(context).pushNamed(
-                ManifestationDetail.routeName,
-                arguments: manifestation,
-              ),
+              onTap: () => NavigationNotification(
+                ManifestationDetail(
+                  manifestation: manifestation,
+                ),
+              ).dispatch(context),
               highlightColor: Theme.of(context).highlightColor.withOpacity(0.4),
               child: Column(
                 children: [
