@@ -254,7 +254,7 @@ class ManifestationDetail extends StatelessWidget {
                                     Theme.of(context).backgroundColor,
                                 content: SizedBox(
                                   width: 700,
-                                  height: 800,
+                                  height: 600,
                                   child: FormAddStep(),
                                 ),
                               );

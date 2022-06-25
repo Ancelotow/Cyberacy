@@ -79,8 +79,9 @@ class _InputDateState extends State<InputDate> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: initialDate,
-      firstDate: DateTime(2021, 1, 1),
-      lastDate: DateTime(2029, 1, 1),
+      initialEntryMode: DatePickerEntryMode.calendar,
+      firstDate: DateTime(1900, 1, 1, 0, 0),
+      lastDate: DateTime(2050, 1, 1, 0, 0),
     );
     if (picked != null) {
       widget.value = picked;
