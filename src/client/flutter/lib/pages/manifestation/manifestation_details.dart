@@ -120,37 +120,48 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
           placeholder: "Nom",
           isReadOnly: true,
           width: width,
+          icon: Icons.abc,
           controller: ctrlName,
         ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            InputText(
-              placeholder: "Date de début",
-              isReadOnly: true,
-              width: width / 2,
-              controller: ctrlDtStart,
-              type: TextInputType.datetime,
-            ),
-            InputText(
-              placeholder: "Date de fin",
-              isReadOnly: true,
-              width: width / 2,
-              controller: ctrlDtEnd,
-              type: TextInputType.datetime,
-            ),
-          ],
+        SizedBox(
+          width: width,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: InputText(
+                  placeholder: "Date de début",
+                  isReadOnly: true,
+                  icon: Icons.calendar_today,
+                  controller: ctrlDtStart,
+                  type: TextInputType.datetime,
+                ),
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: InputText(
+                  placeholder: "Date de fin",
+                  isReadOnly: true,
+                  icon: Icons.calendar_today,
+                  controller: ctrlDtEnd,
+                  type: TextInputType.datetime,
+                ),
+              ),
+            ],
+          ),
         ),
         InputText(
           placeholder: "Objet",
           isReadOnly: true,
+          icon: Icons.abc,
           width: width,
           controller: ctrlObject,
         ),
         InputText(
           placeholder: "Description de la sécurité",
           isReadOnly: true,
+          icon: Icons.shield,
           width: width,
           controller: ctrlSecurityDesc,
         ),
@@ -159,6 +170,7 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
           placeholder: "Estimation du nombre de participant",
           isReadOnly: true,
           width: width,
+          icon: Icons.group,
           controller: ctrlNbPerson,
         ),
         SizedBox(height: 10),

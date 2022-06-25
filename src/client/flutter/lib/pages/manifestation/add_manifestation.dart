@@ -4,7 +4,6 @@ import 'package:bo_cyberacy/models/entities/manifestation.dart';
 import 'package:bo_cyberacy/models/services/manifestation_service.dart';
 import 'package:flutter/material.dart';
 import '../../models/dialog/alert_normal.dart';
-import '../../models/enums/position_input.dart';
 import '../../models/errors/api_service_error.dart';
 import '../../models/errors/invalid_form_error.dart';
 import '../../models/notifications/navigation_notification.dart';

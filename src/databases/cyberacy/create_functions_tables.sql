@@ -830,9 +830,8 @@ begin
                stp.stp_date_arrived   as date_arrived
         from step stp
                  left join town twn on stp.twn_code_insee = twn.twn_code_insee
-        where man_id = _man_id
-           or _man_id is null
-            and stp.stp_is_delete = false
+        where (man_id = _man_id or _man_id is null)
+          and stp.stp_is_delete = false
         order by date_arrived;
 end;
 $filter$
