@@ -5,8 +5,11 @@ import 'package:bo_cyberacy/models/entities/step.dart';
 import 'package:bo_cyberacy/widgets/cards/card_option_manif.dart';
 import 'package:bo_cyberacy/widgets/cards/card_step.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import '../../models/entities/option.dart';
 import '../../models/enums/position_input.dart';
+import '../../models/notifications/step_notification.dart';
 import '../../widgets/buttons/button.dart';
 import '../../widgets/input_field/input_text.dart';
 import '../../widgets/map_manifestation.dart';
@@ -24,6 +27,7 @@ class ManifestationDetail extends StatelessWidget {
   final TextEditingController ctrlObject = TextEditingController();
   final TextEditingController ctrlSecurityDesc = TextEditingController();
   final TextEditingController ctrlNbPerson = TextEditingController();
+  final MapController mapController = MapController();
 
   ManifestationDetail({
     Key? key,
@@ -57,30 +61,24 @@ class ManifestationDetail extends StatelessWidget {
     if (width < 300) width = 300;
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: SingleChildScrollView(
-              child: Wrap(
-                direction: Axis.horizontal,
-                spacing: 150.00,
-                runSpacing: 10.00,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
                 children: [
-                  Container(
-                    width: width,
-                    child: Column(
-                      children: [
-                        getForm(context, width),
-                        SizedBox(height: 50,),
-                        //getOptions(context, width)
-                      ],
-                    ),
+                  getForm(context, width),
+                  SizedBox(
+                    height: 50,
                   ),
-                  getSteps(context, width)
+                  //getOptions(context, width)
                 ],
               ),
-            ),
+              getSteps(context, width)
+            ],
           ),
         ),
       ),
@@ -173,56 +171,86 @@ class ManifestationDetail extends StatelessWidget {
           "Etapes",
           style: Theme.of(context).textTheme.headline4,
         ),
-        ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          child: Container(
-            width: width,
-            color: Colors.white,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 200,
-                  child: MapManifestation(steps: steps),
-                ),
-                SingleChildScrollView(
-                  child: Wrap(
-                    direction: Axis.vertical,
-                    spacing: 1.00,
-                    children: steps
-                        .map((e) => CardStep(
-                              step: e,
-                              width: width,
-                              index: (steps.indexOf(e) + 1),
-                            ))
-                        .toList(),
-                  ),
-                ),
-                Container(
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black,
-                        blurRadius: 8,
-                        offset: Offset(0, -5), // Shadow position
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            child: Container(
+              width: 500,
+              color: Theme.of(context).cardColor,
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: SizedBox(
+                      child: MapManifestation(
+                        steps: steps,
+                        controller: mapController,
                       ),
-                    ],
+                    ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Button(
-                        label: "Ajouter",
-                        width: 100,
-                        pressedColor: Theme.of(context).focusColor,
-                        color: Theme.of(context).highlightColor,
-                        textStyle: TextStyle(color: Colors.white),
+                  Expanded(
+                    flex: 5,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: steps
+                            .map((e) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: NotificationListener<StepNotification>(
+                                    onNotification: (value) {
+                                      double latStart =
+                                          (value.step.latitude != null)
+                                              ? value.step.latitude!
+                                              : 0.00;
+                                      double lngStart =
+                                          (value.step.longitude != null)
+                                              ? value.step.longitude!
+                                              : 0.00;
+                                      double zoom =
+                                          (latStart == 0.0 || lngStart == 0.0)
+                                              ? 0
+                                              : 17;
+                                      mapController.move(
+                                          LatLng(latStart, lngStart), zoom);
+                                      return true;
+                                    },
+                                    child: CardStep(
+                                      step: e,
+                                      index: (steps.indexOf(e) + 1),
+                                    ),
+                                  ),
+                                ))
+                            .toList(),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
+                  Container(
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 8,
+                          offset: Offset(0, -5), // Shadow position
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Button(
+                          label: "Ajouter",
+                          width: 100,
+                          pressedColor: Theme.of(context).focusColor,
+                          color: Theme.of(context).highlightColor,
+                          textStyle: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

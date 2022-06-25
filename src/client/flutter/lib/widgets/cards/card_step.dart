@@ -1,75 +1,102 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/entities/step.dart';
+import '../../models/notifications/step_notification.dart';
 
-class CardStep extends StatelessWidget {
+class CardStep extends StatelessWidget with ChangeNotifier {
   final StepManif step;
-  final double width;
   final int index;
 
-  const CardStep({Key? key, required this.step, required this.width, this.index = 0})
+  CardStep({Key? key, required this.step, this.index = 0})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      color: Theme.of(context).cardColor,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Row(
-          children: [
-            Text(
-              "$index",
-              style: Theme.of(context).textTheme.headline1,
-            ),
-            SizedBox(width: 20),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return Material(
+      color: Theme.of(context).highlightColor.withOpacity(0.50),
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () => StepNotification(step).dispatch(context),
+        child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "id : ${step.id}",
-                  style: Theme.of(context).textTheme.caption,
-                ),
-                SizedBox(height: 20),
-                SizedBox(
-                  width: width - (width * 0.50),
-                  child: Text(
-                    "${step.addressStreet}",
-                    overflow: TextOverflow.clip,
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                ),
-                SizedBox(height: 5),
-                SizedBox(
-                  width: width - (width * 0.50),
-                  child: Text(
-                    "${step.townCodeInsee}, ${step.town}",
-                    overflow: TextOverflow.clip,
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                ),
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Icon(Icons.calendar_month, color: Colors.white,),
-                    Text(
-                      " : ${DateFormat("dd-MM-yyyy HH:mm").format(step.dateArrived!)}",
-                      style: Theme.of(context).textTheme.caption,
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: _getColorCard(step.idTypeStep),
+                      borderRadius: const BorderRadius.all(Radius.circular(5.00))
                     ),
-                  ],
+                    child: Text(
+                      "$index",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontFamily: "HK-Nova",
+                        fontSize: 20,
+                        fontWeight: FontWeight.w100,
+                      ),
+                    ),
+                  ),
                 ),
-                SizedBox(height: 20),
-                Text(
-                  "lat: ${step.latitude}, lng: ${step.longitude}",
-                  style: Theme.of(context).textTheme.caption,
+                Expanded(
+                  flex: 6,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${step.addressStreet}",
+                          overflow: TextOverflow.clip,
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                        const SizedBox(height: 5),
+                        SizedBox(
+                          child: Text(
+                            "${step.townZipCode}, ${step.town}",
+                            overflow: TextOverflow.clip,
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
+                Expanded(
+                  flex: 3,
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(2.0),
+                        child: Icon(Icons.calendar_month, color: Colors.white,),
+                      ),
+                      Text(
+                        DateFormat("dd-MM-yyyy\nHH:mm").format(step.dateArrived!),
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
-          ],
-        ),
+          ),
       ),
     );
   }
+
+  Color _getColorCard(int? typeStep) {
+    if (typeStep == 1) {
+      return Colors.yellow;
+    } else if (typeStep == 3) {
+      return Colors.red;
+    } else {
+      return Colors.orangeAccent;
+    }
+  }
+
 }

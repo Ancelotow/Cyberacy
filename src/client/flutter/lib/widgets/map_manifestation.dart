@@ -7,20 +7,21 @@ import '../models/entities/step.dart';
 
 class MapManifestation extends StatelessWidget {
   final List<StepManif> steps;
+  final StepManif? stepFocus;
+  MapController? controller;
   double latStart = 0.0;
   double lngStart = 0.0;
   double zoom = 0.0;
 
-  MapManifestation({
-    Key? key,
-    required this.steps,
-  }) : super(key: key);
+  MapManifestation({Key? key, required this.steps, this.stepFocus, this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     _initValues();
     return FlutterMap(
-      mapController: MapController(),
+      key: ValueKey(MediaQuery.of(context).orientation),
+      mapController: controller,
       options: MapOptions(
         zoom: zoom,
         center: LatLng(latStart, lngStart),
@@ -40,7 +41,11 @@ class MapManifestation extends StatelessWidget {
   void _initValues() {
     List<StepManif> stepStart =
         steps.where((stp) => stp.idTypeStep == 1).toList();
-    if (stepStart.isNotEmpty) {
+    if (stepFocus != null) {
+      latStart = (stepFocus!.latitude != null) ? stepFocus!.latitude! : 0.00;
+      lngStart = (stepFocus!.longitude != null) ? stepFocus!.longitude! : 0.00;
+      zoom = (latStart == 0.0 || lngStart == 0.0) ? 0 : 18.25;
+    } else if (stepStart.isNotEmpty) {
       latStart =
           (stepStart[0].latitude != null) ? stepStart[0].latitude! : 0.00;
       lngStart =
@@ -72,7 +77,7 @@ class MapManifestation extends StatelessWidget {
       child: Center(
         child: Text(
           (index + 1).toString(),
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontFamily: "HK-Nova",
             fontSize: 15,

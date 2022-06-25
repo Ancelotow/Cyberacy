@@ -4,6 +4,7 @@ class StepManif {
   String? addressStreet;
   String? town;
   String? townCodeInsee;
+  String? townZipCode;
   DateTime? dateArrived;
   int? idManifestation;
   int? idTypeStep;
@@ -27,6 +28,7 @@ class StepManif {
         addressStreet = json["address_street"],
         town = json["town_name"],
         townCodeInsee = json["town_code_insee"],
+        townZipCode = json["town_zip_code"],
         dateArrived = DateTime.parse(json["date_arrived"]),
         idManifestation = json["id_manifestation"],
         idTypeStep = json["id_step_type"],
