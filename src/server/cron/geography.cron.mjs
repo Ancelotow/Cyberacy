@@ -2,7 +2,7 @@ import {CronJob} from 'cron'
 import axios from 'axios'
 import region from "../models/region.mjs";
 import town from "../models/town.mjs";
-import department from "../models/department.mjs";
+import {Department} from "../models/department.mjs";
 
 const uri_api_gouv = 'https://geo.api.gouv.fr/'
 
@@ -50,7 +50,7 @@ const jobDepartment = new CronJob('* 0 3 * * 1', function () {
  * Insère les communes (Tout les Lundi à 03:00)
  */
 const jobTown = new CronJob('* 0 3 * * 1', function () {
-    department.GetAll().then((listDept) => {
+    new Department().GetAll().then((listDept) => {
         for (const dept of listDept) {
             axios.get(uri_api_gouv + 'departements/' + dept.code + '/communes').then(async (res) => {
                 if (res.data) {
