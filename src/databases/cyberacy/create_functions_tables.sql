@@ -935,7 +935,7 @@ begin
                dpt_code        as department_code
         from town
         where (_code_insee is null or twn_code_insee = _code_insee)
-           or (_code is null or dpt_code = _code)
+           and (_code is null or dpt_code = _code)
         order by twn_name;
 end;
 $filter$

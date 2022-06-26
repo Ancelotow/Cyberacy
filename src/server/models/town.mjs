@@ -13,7 +13,7 @@ class Town {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Town.prototype.GetAll = () => {
+Town.prototype.GetAll = function () {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * from filter_town()',
@@ -36,7 +36,7 @@ Town.prototype.GetAll = () => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Town.prototype.GetById = (code_insee) => {
+Town.prototype.GetById = function (code_insee)  {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * from filter_town($1, null)',
@@ -59,7 +59,7 @@ Town.prototype.GetById = (code_insee) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Town.prototype.Add = () => {
+Town.prototype.Add = function () {
     return new Promise((resolve, reject) => {
         this.GetById(this.code_insee).then((result) => {
             if (!result) {
@@ -78,6 +78,7 @@ Town.prototype.Add = () => {
                 resolve(false)
             }
         }).catch((e) => {
+            console.error(e)
             reject(e)
         });
     });
@@ -89,7 +90,7 @@ Town.prototype.Add = () => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Town.prototype.GetByDepartment = (code) => {
+Town.prototype.GetByDepartment = function (code) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * from filter_town(null, $1)',

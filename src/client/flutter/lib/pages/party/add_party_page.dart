@@ -136,7 +136,7 @@ class _AddPartyPageState extends State<AddPartyPage> {
         idPoliticalEdge: currentEdge!.id,
       );
       await PartyService().addParty(party);
-      Navigator.of(context).pop();
+      NavigationNotification(PartyPage()).dispatch(context);
     } on InvalidFormError catch (e) {
       AlertNormal(
         context: context,

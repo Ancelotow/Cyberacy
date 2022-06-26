@@ -11,7 +11,7 @@ class Department {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Department.prototype.GetAll = () => {
+Department.prototype.GetAll = function() {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * from filter_department()',
@@ -30,13 +30,12 @@ Department.prototype.GetAll = () => {
 
 /**
  * Ajoute un nouveau département
- * @param department Le nouveau département
  * @returns {Promise<unknown>}
  * @constructor
  */
-Department.prototype.Add = (department) => {
+Department.prototype.Add = function() {
     return new Promise((resolve, reject) => {
-        this.GetById(department.code).then((result) => {
+        this.GetById(this.code).then((result) => {
             if (!result) {
                 const request = {
                     text: 'INSERT INTO department (dpt_code, dpt_name, reg_code_insee) VALUES ($1, $2, $3)',
@@ -64,7 +63,7 @@ Department.prototype.Add = (department) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Department.prototype.GetById = (code) => {
+Department.prototype.GetById = function(code) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * from filter_department($1, null)',
@@ -87,7 +86,7 @@ Department.prototype.GetById = (code) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Department.prototype.GetByRegion = (code_insee) => {
+Department.prototype.GetByRegion = function(code_insee) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * from filter_department(null, $1)',

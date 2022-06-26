@@ -1,6 +1,8 @@
 import {CronJob} from 'cron'
 import axios from 'axios'
 import region from "../models/region.mjs";
+import {Department} from "../models/department.mjs";
+import {Town} from "../models/town.mjs";
 
 const uri_api_gouv = 'https://geo.api.gouv.fr/'
 
@@ -25,7 +27,9 @@ const jobRegion = new CronJob('* 0 3 * * 1', function () {
 }, null, true, 'Europe/Paris');
 
 
+
 const startJob = () => {
+    //jobRegion.start()
 }
 
 export default {startJob}
