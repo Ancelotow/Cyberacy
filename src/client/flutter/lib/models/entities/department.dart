@@ -23,6 +23,6 @@ class Department {
 
   @override
   String toString() {
-    return "$name ($code)";
+    return "$code - $name";
   }
 }

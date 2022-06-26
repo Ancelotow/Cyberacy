@@ -887,6 +887,7 @@ end;
 $filter$
     language plpgsql;
 
+
 -- Filtre pour la table département
 create or replace function filter_department(_code_insee department.reg_code_insee%type default null,
                                              _code department.dpt_code%type default null)
@@ -907,6 +908,35 @@ begin
         where (_code_insee is null or reg_code_insee = _code_insee)
           and (_code is null or dpt_code = _code)
         order by dpt_code;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table town
+create or replace function filter_town(_code_insee town.twn_code_insee%type default null,
+                                        _code town.dpt_code%type default null)
+    returns table
+            (
+                code_insee      town.twn_code_insee%type,
+                name            town.twn_name%type,
+                zip_code        town.twn_zip_code%type,
+                nb_resident     town.twn_nb_resident%type,
+                department_code town.dpt_code%type
+            )
+as
+$filter$
+begin
+    return query
+        select twn_code_insee  as code_insee,
+               twn_name        as name,
+               twn_zip_code    as zip_code,
+               twn_nb_resident as nb_resident,
+               dpt_code        as department_code
+        from town
+        where (_code_insee is null or twn_code_insee = _code_insee)
+           or (_code is null or dpt_code = _code)
+        order by twn_name;
 end;
 $filter$
     language plpgsql;

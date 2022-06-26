@@ -36,7 +36,7 @@ Department.prototype.GetAll = () => {
  */
 Department.prototype.Add = (department) => {
     return new Promise((resolve, reject) => {
-        GetById(department.code).then((result) => {
+        this.GetById(department.code).then((result) => {
             if (!result) {
                 const request = {
                     text: 'INSERT INTO department (dpt_code, dpt_name, reg_code_insee) VALUES ($1, $2, $3)',

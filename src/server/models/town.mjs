@@ -13,14 +13,12 @@ class Town {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetAll = () => {
+Town.prototype.GetAll = () => {
     return new Promise((resolve, reject) => {
-        let request = `SELECT twn_code_insee  as code_insee,
-                              twn_name        as name,
-                              twn_zip_code    as zip_code,
-                              twn_nb_resident as nb_resident,
-                              dpt_code        as department_code
-                       FROM town`
+        const request = {
+            text: 'SELECT * from filter_town()',
+            values: [],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -38,15 +36,12 @@ const GetAll = () => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetById = (code_insee) => {
+Town.prototype.GetById = (code_insee) => {
     return new Promise((resolve, reject) => {
-        const request = `SELECT twn_code_insee  as code_insee,
-                                twn_name        as name,
-                                twn_zip_code    as zip_code,
-                                twn_nb_resident as nb_resident,
-                                dpt_code        as department_code
-                         FROM town
-                         WHERE twn_code_insee = '${code_insee}'`
+        const request = {
+            text: 'SELECT * from filter_town($1, null)',
+            values: [code_insee],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -64,13 +59,14 @@ const GetById = (code_insee) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Add = (town) => {
+Town.prototype.Add = () => {
     return new Promise((resolve, reject) => {
-        GetById(town.code_insee).then((result) => {
+        this.GetById(this.code_insee).then((result) => {
             if (!result) {
-                const request = `INSERT INTO town (twn_code_insee, twn_name, twn_zip_code, twn_nb_resident, dpt_code)
-                                 VALUES ('${town.code_insee}', '${town.name}', '${town.zip_code}', ${town.nb_resident},
-                                         '${town.department_code}');`
+                const request = {
+                    text: 'INSERT INTO town (twn_code_insee, twn_name, twn_zip_code, twn_nb_resident, dpt_code) VALUES ($1, $2, $3, $4, $5)',
+                    values: [this.code_insee, this.name, this.zip_code, this.nb_resident, this.department_code],
+                }
                 pool.query(request, (error, _) => {
                     if (error) {
                         reject(error)
@@ -93,15 +89,12 @@ const Add = (town) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetByDepartment = (code) => {
+Town.prototype.GetByDepartment = (code) => {
     return new Promise((resolve, reject) => {
-        let request = `SELECT twn_code_insee  as code_insee,
-                              twn_name        as name,
-                              twn_zip_code    as zip_code,
-                              twn_nb_resident as nb_resident,
-                              dpt_code        as department_code
-                       FROM town
-                       WHERE dpt_code = '${code}'`
+        const request = {
+            text: 'SELECT * from filter_town(null, $1)',
+            values: [code],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -113,4 +106,4 @@ const GetByDepartment = (code) => {
     });
 }
 
-export default {Town, GetAll, Add, GetByDepartment}
+export {Town}
