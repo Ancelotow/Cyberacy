@@ -1,5 +1,5 @@
 import partyMod from "../models/political-party.mjs"
-import voteMod from "../models/vote.mjs"
+import {GetStatsAbsentions, GetStatsParticipations, GetResults} from "../models/vote.mjs"
 import groupBy from 'lodash/groupBy.js'
 
 /**
@@ -227,7 +227,7 @@ const GetMessagesByWeeks = (nir, year = new Date().getFullYear()) => {
 const GetVoteAbstention = (id_type_vote = null) => {
     return new Promise(async (resolve, _) => {
         try {
-            let stats = await voteMod.GetStatsAbsentions(id_type_vote);
+            let stats = await GetStatsAbsentions(id_type_vote);
             if (stats == null) {
                 resolve({status: 204, data: stats})
                 return;
@@ -249,7 +249,7 @@ const GetVoteAbstention = (id_type_vote = null) => {
 const GetVoteParticipation = (id_type_vote = null) => {
     return new Promise(async (resolve, _) => {
         try {
-            let stats = await voteMod.GetStatsParticipations(id_type_vote);
+            let stats = await GetStatsParticipations(id_type_vote);
             if (stats == null) {
                 resolve({status: 204, data: stats})
                 return;
@@ -272,7 +272,7 @@ const GetVoteParticipation = (id_type_vote = null) => {
 const GetVoteResults = (id_type_vote = null, id_vote = null) => {
     return new Promise(async (resolve, _) => {
         try {
-            let stats = await voteMod.GetResults(id_type_vote, id_vote);
+            let stats = await GetResults(id_type_vote, id_vote);
             if (stats == null) {
                 resolve({status: 204, data: stats})
                 return;

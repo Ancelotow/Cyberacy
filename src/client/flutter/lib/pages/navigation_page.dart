@@ -1,5 +1,4 @@
 import 'package:bo_cyberacy/models/entities/political_party.dart';
-import 'package:bo_cyberacy/models/enums/orientation_nav_bar.dart';
 import 'package:bo_cyberacy/pages/manifestion_page.dart';
 import 'package:bo_cyberacy/pages/party_page.dart';
 import 'package:bo_cyberacy/pages/screen_404.dart';
@@ -24,7 +23,7 @@ class _NavigationPageState extends State<NavigationPage> {
   List<PoliticalParty> parties = [];
   List<Manifestation> manifs = [];
   late Widget currentPage;
-  int currentIndex = 2;
+  int currentIndex = 0;
 
   @override
   void initState() {

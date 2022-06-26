@@ -434,8 +434,8 @@ begin
         where (is_granted = true or is_granted_all = true)
           and (_tvo_id is null or vte.tvo_id = _tvo_id)
           and ((vte.tvo_id = 7 and (is_granted_all = true or adh.adh_id is not null)) or vte.tvo_id <> 7)
-          and ((_include_finish = true and rnd.rnd_date_end >= today) or _include_finish = false)
-          and ((_include_future = true and rnd.rnd_date_start <= today) or _include_future = false)
+          and ((_include_finish = false and rnd.rnd_date_end >= today) or _include_finish = true)
+          and ((_include_future = false and rnd.rnd_date_start <= today) or _include_future = true)
         order by rnd_date_start;
 end;
 $filter$
@@ -907,7 +907,7 @@ begin
         from department
         where (_code_insee is null or reg_code_insee = _code_insee)
           and (_code is null or dpt_code = _code)
-        order by dpt_code;
+        order by code;
 end;
 $filter$
     language plpgsql;
@@ -915,7 +915,7 @@ $filter$
 
 -- Filtre pour la table town
 create or replace function filter_town(_code_insee town.twn_code_insee%type default null,
-                                        _code town.dpt_code%type default null)
+                                       _code town.dpt_code%type default null)
     returns table
             (
                 code_insee      town.twn_code_insee%type,
@@ -935,8 +935,30 @@ begin
                dpt_code        as department_code
         from town
         where (_code_insee is null or twn_code_insee = _code_insee)
-           and (_code is null or dpt_code = _code)
-        order by twn_name;
+          and (_code is null or dpt_code = _code)
+        order by name;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table région
+create or replace function filter_region(_code_insee region.reg_code_insee%type default null)
+    returns table
+            (
+                code_insee region.reg_code_insee%type,
+                name       region.reg_name%type
+            )
+as
+$filter$
+begin
+    return query
+        select reg_code_insee as code_insee,
+               reg_name       as name
+        from region
+        where reg_code_insee = _code_insee
+           or _code_insee is null
+        order by name;
 end;
 $filter$
     language plpgsql;

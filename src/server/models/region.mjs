@@ -1,5 +1,4 @@
 import {pool} from "../middlewares/postgres.mjs";
-
 class Region {
     code_insee
     name
@@ -10,11 +9,12 @@ class Region {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetAll = () => {
+Region.prototype.GetAll = function () {
     return new Promise((resolve, reject) => {
-        let request = `SELECT reg_code_insee as id,
-                              reg_name       as name
-                       FROM region`
+        const request = {
+            text: 'SELECT * from filter_region()',
+            values: [],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -32,12 +32,12 @@ const GetAll = () => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetById = (code_insee) => {
+Region.prototype.GetById = function (code_insee) {
     return new Promise((resolve, reject) => {
-        const request = `SELECT reg_code_insee as code_insee,
-                                reg_name       as name
-                         FROM region
-                         WHERE reg_code_insee = '${code_insee}'`
+        const request = {
+            text: 'SELECT * from filter_region($1)',
+            values: [code_insee],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -55,12 +55,14 @@ const GetById = (code_insee) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Add = (region) => {
+Region.prototype.Add = function () {
     return new Promise((resolve, reject) => {
-        GetById(region.code_insee).then((result) => {
+        this.GetById(this.code_insee).then((result) => {
             if (!result) {
-                const request = `INSERT INTO region (reg_code_insee, reg_name)
-                                 VALUES ('${region.code_insee}', '${region.name}');`
+                const request = {
+                    text: 'INSERT INTO region (reg_code_insee, reg_name) VALUES ($1, $2)',
+                    values: [this.code_insee, this.name],
+                }
                 pool.query(request, (error, _) => {
                     if (error) {
                         reject(error)
@@ -77,4 +79,4 @@ const Add = (region) => {
     });
 }
 
-export default {Region, GetAll, Add}
+export {Region}

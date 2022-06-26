@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/entities/vote.dart';
 import '../models/services/vote_service.dart';
+import '../widgets/buttons/button_card.dart';
 import '../widgets/cards/card_shimmer.dart';
 
 class VotePage extends StatefulWidget {
@@ -18,23 +19,23 @@ class _VotePageState extends State<VotePage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: FutureBuilder(
-          future: VoteService().getAllVote(),
-          builder: (BuildContext context, AsyncSnapshot<List<Vote>> snapshot) {
-            if (snapshot.hasData) {
-              if(votes.isEmpty) {
-                votes = snapshot.data!;
-              }
-              return _getTable(context);
-            } else if (snapshot.hasError) {
-              return _getTable(context);
-            } else {
-              return _getTableLoader(context);
+      padding: const EdgeInsets.all(20.0),
+      child: FutureBuilder(
+        future: VoteService().getAllVote(),
+        builder: (BuildContext context, AsyncSnapshot<List<Vote>> snapshot) {
+          if (snapshot.hasData) {
+            if (votes.isEmpty) {
+              votes = snapshot.data!;
             }
-          },
-        ),
-      );
+            return _getTable(context);
+          } else if (snapshot.hasError) {
+            return _getTable(context);
+          } else {
+            return _getTableLoader(context);
+          }
+        },
+      ),
+    );
   }
 
   Widget _getTableLoader(BuildContext context) {
@@ -45,7 +46,6 @@ class _VotePageState extends State<VotePage> {
       ),
     );
     return Container(
-      width: MediaQuery.of(context).size.width,
       child: Wrap(
         spacing: 10.0,
         runSpacing: 10.0,
@@ -57,16 +57,42 @@ class _VotePageState extends State<VotePage> {
   }
 
   Widget _getTable(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Container(
-        color: Theme.of(context).cardColor,
-        child: DataTable(
-          columnSpacing: 100.0,
-          columns: _getColumns(context),
-          rows: _getRows(context),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: _getButtonAdd(context),
         ),
-      ),
+        Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black,
+                  blurRadius: 6,
+                  offset: Offset(1, 1), // Shadow position
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              child: DataTable(
+                headingRowColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+                  if (states.contains(MaterialState.hovered))
+                    return Theme.of(context).accentColor.withOpacity(0.08);
+                  return Theme.of(context).highlightColor.withOpacity(0.5);  // Use the default value.
+                }),
+                columnSpacing: 100.0,
+                columns: _getColumns(context),
+                rows: _getRows(context),
+              ),
+            ),
+          ),
+      ],
     );
   }
 
@@ -79,8 +105,7 @@ class _VotePageState extends State<VotePage> {
               DataCell(Text(e.name!.toString())),
               DataCell(Text("test type")),
               DataCell(Text("test localité")),
-              DataCell(Text("test date début")),
-              DataCell(Text("test date fin")),
+              DataCell(Text("test date début"))
             ],
           ),
         )
@@ -106,8 +131,18 @@ class _VotePageState extends State<VotePage> {
       const DataColumn(label: Text("nom")),
       const DataColumn(label: Text("type")),
       const DataColumn(label: Text("localité")),
-      const DataColumn(label: Text("date debut")),
-      const DataColumn(label: Text("date fin")),
+      const DataColumn(label: Text("date debut"))
     ];
+  }
+
+  Widget _getButtonAdd(BuildContext context) {
+    return ButtonCard(
+      icon: Icons.add_circle_outline,
+      label: "Ajouter un vote",
+      width: 300,
+      height: 100,
+      color: Theme.of(context).highlightColor,
+      onTap: () => {},
+    );
   }
 }

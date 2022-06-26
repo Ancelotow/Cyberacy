@@ -1,4 +1,4 @@
-import region from "../models/region.mjs";
+import {Region} from "../models/region.mjs";
 import {Department} from "../models/department.mjs";
 import {Town} from "../models/town.mjs";
 import axios from "axios";
@@ -65,7 +65,7 @@ function GetLocationFromAddress(address, zip_code) {
  */
 const GetRegions = () => {
     return new Promise((resolve, _) => {
-        region.GetAll().then((res) => {
+        new Region().GetAll().then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {

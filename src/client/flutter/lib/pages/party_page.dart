@@ -61,12 +61,12 @@ class _PartyPageState extends State<PartyPage> {
           .toList());
     }
     return Container(
-      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
       child: Wrap(
         spacing: 10.0,
         runSpacing: 10.0,
         alignment: WrapAlignment.center,
-        crossAxisAlignment: WrapCrossAlignment.start,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: cards,
       ),
     );
@@ -81,7 +81,6 @@ class _PartyPageState extends State<PartyPage> {
       ),
     );
     return Container(
-      width: MediaQuery.of(context).size.width,
       child: Wrap(
         spacing: 10.0,
         runSpacing: 10.0,
@@ -103,7 +102,7 @@ class _PartyPageState extends State<PartyPage> {
   Widget _getButtonAdd(BuildContext context) {
     return ButtonCard(
       icon: Icons.add_circle_outline,
-      label: "Ajouter",
+      label: "Ajouter un parti",
       height: _heightCard,
       width: _widthCard,
       color: Theme.of(context).highlightColor,

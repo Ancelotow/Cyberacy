@@ -62,7 +62,6 @@ class _ManifestationPageState extends State<ManifestationPage> {
           .toList());
     }
     return Container(
-      width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -105,7 +104,7 @@ class _ManifestationPageState extends State<ManifestationPage> {
   Widget _getButtonAdd(BuildContext context) {
     return ButtonCard(
       icon: Icons.add_circle_outline,
-      label: "Ajouter",
+      label: "Ajouter une manifestation",
       width: _widthCard,
       height: _heightCard,
       color: Theme.of(context).highlightColor,

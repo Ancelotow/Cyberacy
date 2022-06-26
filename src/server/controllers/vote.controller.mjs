@@ -1,7 +1,11 @@
-import voteMod from "../models/vote.mjs";
-import roundMod from "../models/round.mjs";
+import {Vote} from "../models/vote.mjs";
+import {Round} from "../models/round.mjs";
 import linkMod from "../models/link-person-round.mjs";
-import choiceMod from "../models/choice.mjs";
+import {Choice} from "../models/choice.mjs";
+import {Town} from "../models/town.mjs";
+import {Region} from "../models/region.mjs";
+import {Department} from "../models/department.mjs";
+import {TypeVote} from "../models/type-vote.mjs";
 
 const EnumTypeVote = Object.freeze({
     Presidential: 1,
@@ -47,23 +51,25 @@ function CheckTypeVote(vote) {
 
 /**
  * Ajoute un nouveau vote
- * @param vote Le nouveau vote
  * @returns {Promise<unknown>}
  * @constructor
+ * @param voteJson
  */
-const AddVote = (vote) => {
+const AddVote = (voteJson) => {
     return new Promise((resolve, _) => {
-        if (!vote) {
+        if (!voteJson) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!vote.name || !vote.id_type_vote) {
+        } else if (!voteJson.name || !voteJson.id_type_vote) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            if(!CheckTypeVote(vote)) {
+            if(!CheckTypeVote(voteJson)) {
                 resolve({status: 400, data: "Missing parameters about the type of vote selected."})
             } else {
+                let vote = new Vote()
+                Object.assign(vote, voteJson)
                 vote.date_start = new Date(vote.date_start)
                 vote.date_end = new Date(vote.date_end)
-                voteMod.Add(vote).then((res) => {
+                vote.Add().then((res) => {
                     if (res) {
                         resolve({status: 201, data: "Vote has been created."})
                     } else {
@@ -90,8 +96,22 @@ const AddVote = (vote) => {
  */
 const GetVote = (nir, includeFinish = false, includeFuture = true, idTypeVote = null) => {
     return new Promise((resolve, _) => {
-        voteMod.Get(nir, includeFinish, includeFuture, idTypeVote).then((res) => {
-            const code = (res) ? 200 : 204;
+        new Vote().Get(nir, includeFinish, includeFuture, idTypeVote).then(async (res) => {
+            const code = (res.length > 0) ? 200 : 204;
+            for (let i = 0; i < res.length; i++) {
+                if (res[i].town_code_insee) {
+                    res[i].town = await new Town().GetById(res[i].town_code_insee)
+                }
+                if (res[i].reg_code_insee) {
+                    res[i].region = await new Region().GetById(res[i].reg_code_insee)
+                }
+                if (res[i].department_code) {
+                    res[i].department = await new Department().GetById(res[i].department_code)
+                }
+                let listTypes = await new TypeVote().Get()
+                res[i].type_vote = listTypes.filter(e => e.id === res[i].id_type_vote)[0]
+                res[i].rounds = await new Round().Get(nir, true, true, null, res[i].id)
+            }
             resolve({status: code, data: res})
         }).catch((e) => {
             if(e.code === '23503') resolve({status: 400, data: e.message})
@@ -112,7 +132,7 @@ const GetVote = (nir, includeFinish = false, includeFuture = true, idTypeVote = 
  */
 const GetRound = (nir, includeFinish = false, includeFuture = true, idTypeVote = null, idVote = null) => {
     return new Promise((resolve, _) => {
-        roundMod.Get(nir, includeFinish, includeFuture, idTypeVote, idVote).then((res) => {
+        new Round().Get(nir, includeFinish, includeFuture, idTypeVote, idVote).then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {
@@ -124,24 +144,26 @@ const GetRound = (nir, includeFinish = false, includeFuture = true, idTypeVote =
 
 /**
  * Ajoute un nouveau tour de vote
- * @param round Le nouveau tour de vote
+ * @param roundJson
  * @param idVote L'id du vote
  * @returns {Promise<unknown>}
  * @constructor
  */
-const AddRound = (round, idVote) => {
+const AddRound = (roundJson, idVote) => {
     return new Promise((resolve, _) => {
-        if (!round) {
+        if (!roundJson) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!round.num || !idVote || !round.name) {
+        } else if (!roundJson.num || !idVote || !roundJson.name) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!round.nb_voter || !round.date_start || !round.date_end) {
+        } else if (!roundJson.nb_voter || !roundJson.date_start || !roundJson.date_end) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
+            let round = new Round()
+            Object.assign(round, roundJson)
             round.id_vote = idVote
             round.date_start = new Date(round.date_start)
             round.date_end = new Date(round.date_end)
-            roundMod.Add(round).then((res) => {
+            round.Add().then((res) => {
                 if (res) {
                     resolve({status: 201, data: "Round has been created."})
                 } else {
@@ -165,7 +187,7 @@ const AddRound = (round, idVote) => {
  */
 const GetChoice = (nir, numRound, idVote) => {
     return new Promise((resolve, _) => {
-        choiceMod.Get(nir, numRound, idVote).then((res) => {
+        new Choice().Get(nir, numRound, idVote).then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {
@@ -177,24 +199,26 @@ const GetChoice = (nir, numRound, idVote) => {
 
 /**
  * Ajoute un nouveau choix sur un tour de vote
- * @param choice Le nouveau choix
+ * @param choiceJson
  * @param numRound Le numéro du tour de vote
  * @param idVote L'id du vote
  * @returns {Promise<unknown>}
  * @constructor
  */
-const AddChoice = (choice, idVote, numRound) => {
+const AddChoice = (choiceJson, idVote, numRound) => {
     return new Promise((resolve, _) => {
-        if (!choice) {
+        if (!choiceJson) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!choice.name || !choice.choice_order) {
+        } else if (!choiceJson.name || !choiceJson.choice_order) {
             resolve({status: 400, data: "Missing parameters."})
         } else if (!numRound || !idVote) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
+            let choice = new Choice()
+            Object.assign(choice, choiceJson)
             choice.id_vote = idVote
             choice.num_round = numRound
-            choiceMod.Add(choice).then((res) => {
+            choice.Add().then((res) => {
                 if (res) {
                     resolve({status: 201, data: "Choice has been created."})
                 } else {
@@ -226,7 +250,11 @@ const ToVote = (nir, numRound, idVote, idChoice) => {
             if(isExisted){
                 return resolve({status: 400, data: "You have already voted for this round."})
             }
-            choiceMod.AddVoter(nir, numRound, idVote, idChoice).then((res) => {
+            let choice = new Choice()
+            choice.id_vote = idVote
+            choice.num_round = numRound
+            choice.id = idChoice
+            choice.AddVoter(nir).then((res) => {
                 resolve({status: 201, data: "Your vote has been take into account."})
             }).catch((e) => {
                 if(e.code === '23503') resolve({status: 400, data: e.message})

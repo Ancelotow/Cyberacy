@@ -1,4 +1,8 @@
 import {pool} from "../middlewares/postgres.mjs";
+import {Town} from "./town.mjs";
+import {Department} from "./department.mjs";
+import {Region} from "./region.mjs";
+import {TypeVote} from "./type-vote.mjs";
 
 class Vote {
     id
@@ -8,6 +12,11 @@ class Vote {
     department_code
     reg_code_insee
     id_political_party
+    region = new Region()
+    department = new Department()
+    town = new Town()
+    type_vote = new TypeVote()
+    rounds = []
 }
 
 class StatsAbsention {
@@ -27,11 +36,11 @@ class StatsAbsention {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Add = (vote) => {
+Vote.prototype.Add = function() {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'INSERT INTO vote (vte_name, tvo_id, twn_code_insee, dpt_code, reg_code_insee, pop_id) VALUES ($1, $2, $3, $4, $5, $6)',
-            values: [vote.name, vote.id_type_vote, vote.town_code_insee, vote.department_code, vote.reg_code_insee, vote.id_political_party],
+            values: [this.name, this.id_type_vote, this.town_code_insee, this.department_code, this.reg_code_insee, this.id_political_party],
         }
         pool.query(request, (error, _) => {
             if (error) {
@@ -52,7 +61,7 @@ const Add = (vote) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Get = (nir, includeFinish = false, includeFuture = true, idTypeVote = null) => {
+Vote.prototype.Get = function(nir, includeFinish = false, includeFuture = true, idTypeVote = null) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * FROM filter_vote($1, $2, $3, $4)',
@@ -62,8 +71,9 @@ const Get = (nir, includeFinish = false, includeFuture = true, idTypeVote = null
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows : null
-                resolve(res)
+                let listVote = []
+                result.rows.forEach(e => listVote.push(Object.assign(new Vote(), e)));
+                resolve(listVote)
             }
         });
     });
@@ -149,4 +159,4 @@ const GetResults = (id_type_vote = null, id_vote = null) => {
     });
 }
 
-export default {Vote, Add, Get, GetStatsAbsentions, GetStatsParticipations, GetResults}
+export {Vote, GetStatsAbsentions, GetStatsParticipations, GetResults}
