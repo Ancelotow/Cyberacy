@@ -105,7 +105,7 @@ class _VotePageState extends State<VotePage> {
               DataCell(Text(e.name!.toString())),
               DataCell(Text(e.getTypeName())),
               DataCell(Text(e.getLocalite())),
-              DataCell(Text("test date début"))
+              DataCell(Text(e.getDateStartStr()))
             ],
           ),
         )

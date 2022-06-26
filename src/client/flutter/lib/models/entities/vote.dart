@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'package:bo_cyberacy/models/entities/region.dart';
+import 'package:bo_cyberacy/models/entities/round.dart';
 import 'package:bo_cyberacy/models/entities/town.dart';
 import 'package:bo_cyberacy/models/entities/type_vote.dart';
 
@@ -16,6 +19,7 @@ class Vote {
   Town? town;
   Region? region;
   Department? department;
+  List<Round> rounds = [];
 
   Vote({
     this.id,
@@ -46,6 +50,9 @@ class Vote {
     }
     if (json["region"] != null) {
       region = Region.fromJson(json["region"]);
+    }
+    if(json["rounds"] != null) {
+      rounds = (json["rounds"] as List).map((dynamic json) => Round.fromJson(json)).toList();
     }
   }
 
@@ -88,4 +95,13 @@ class Vote {
         return "-- inconnue --";
     }
   }
+
+  String getDateStartStr() {
+    if(rounds.isEmpty) {
+      return "-- inconnue --";
+    }
+    rounds.sort((a, b) => a.dateStart!.compareTo(b.dateStart!));
+    return DateFormat("dd/MM/yyyy HH:mm").format(rounds[0].dateStart!);
+  }
+
 }
