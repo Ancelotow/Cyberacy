@@ -12,10 +12,10 @@ class Vote {
     department_code
     reg_code_insee
     id_political_party
-    region = new Region()
-    department = new Department()
-    town = new Town()
-    type_vote = new TypeVote()
+    region = null
+    department = null
+    town = null
+    type_vote = null
     rounds = []
 }
 
