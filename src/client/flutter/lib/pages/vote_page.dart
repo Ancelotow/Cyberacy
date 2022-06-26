@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_maps/maps.dart';
 
 import '../models/entities/vote.dart';
 import '../models/services/vote_service.dart';
@@ -15,6 +16,12 @@ class VotePage extends StatefulWidget {
 class _VotePageState extends State<VotePage> {
   List<Vote> votes = [];
   bool _sortAsc_colId = true;
+  late MapShapeSource _mapSource;
+
+  @override
+  void initState() {
+    _mapSource = const MapShapeSource.asset('assets/australia.json');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,32 +73,36 @@ class _VotePageState extends State<VotePage> {
           child: _getButtonAdd(context),
         ),
         Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black,
-                  blurRadius: 6,
-                  offset: Offset(1, 1), // Shadow position
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              child: DataTable(
-                headingRowColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-                  if (states.contains(MaterialState.hovered))
-                    return Theme.of(context).accentColor.withOpacity(0.08);
-                  return Theme.of(context).highlightColor.withOpacity(0.5);  // Use the default value.
-                }),
-                columnSpacing: 100.0,
-                columns: _getColumns(context),
-                rows: _getRows(context),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black,
+                blurRadius: 6,
+                offset: Offset(1, 1), // Shadow position
               ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            child: DataTable(
+              headingRowColor: MaterialStateProperty.resolveWith<Color?>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.hovered))
+                  return Theme.of(context).accentColor.withOpacity(0.08);
+                return Theme.of(context)
+                    .highlightColor
+                    .withOpacity(0.5); // Use the default value.
+              }),
+              columnSpacing: 100.0,
+              columns: _getColumns(context),
+              rows: _getRows(context),
             ),
           ),
+        ),
+        //_getMap(context),
       ],
     );
   }
@@ -143,6 +154,38 @@ class _VotePageState extends State<VotePage> {
       height: 100,
       color: Theme.of(context).highlightColor,
       onTap: () => {},
+    );
+  }
+
+  Widget _getMap(BuildContext context) {
+    return SfMaps(
+      layers: <MapShapeLayer>[
+        MapShapeLayer(
+          source: _mapSource,
+          showDataLabels: true,
+          legend: const MapLegend(MapElement.shape),
+          tooltipSettings: MapTooltipSettings(
+              color: Colors.grey[700],
+              strokeColor: Colors.white,
+              strokeWidth: 2),
+          strokeColor: Colors.white,
+          strokeWidth: 0.5,
+          shapeTooltipBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "test",
+                style: const TextStyle(color: Colors.white),
+              ),
+            );
+          },
+          dataLabelSettings: MapDataLabelSettings(
+              textStyle: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Theme.of(context).textTheme.caption!.fontSize)),
+        ),
+      ],
     );
   }
 }
