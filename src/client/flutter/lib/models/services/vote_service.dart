@@ -11,12 +11,17 @@ class VoteService extends ApiService {
     try {
       List<Vote> votes = [];
       var response = await http.get(
-        getUrl("vote", {"includeFinish": "false", "includeFuture": "false"}),
+        getUrl("vote", {"includeFinish": "true", "includeFuture": "true"}),
         headers: await getHeaders(auth: true),
       );
       if (response.statusCode == 200) {
         List<dynamic> list = jsonDecode(response.body);
-        votes = list.map((json) => Vote.fromJson(json)).toList();
+        try{
+          votes = list.map((json) => Vote.fromJson(json)).toList();
+
+        } catch(e) {
+          print(e);
+        }
       }
       return votes;
     } on ApiServiceError catch(e) {

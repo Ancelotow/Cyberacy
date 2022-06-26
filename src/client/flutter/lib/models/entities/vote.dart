@@ -1,5 +1,10 @@
-class Vote {
+import 'package:bo_cyberacy/models/entities/region.dart';
+import 'package:bo_cyberacy/models/entities/town.dart';
+import 'package:bo_cyberacy/models/entities/type_vote.dart';
 
+import 'department.dart';
+
+class Vote {
   int? id;
   String? name;
   int? idTypeVote;
@@ -7,6 +12,10 @@ class Vote {
   String? deptCode;
   String? regCode;
   String? idPoliticalParty;
+  TypeVote? type;
+  Town? town;
+  Region? region;
+  Department? department;
 
   Vote({
     this.id,
@@ -25,6 +34,58 @@ class Vote {
         townCodeInsee = json["town_code_insee"],
         deptCode = json["department_code"],
         regCode = json["reg_code_insee"],
-        idPoliticalParty = json["id_political_party"];
+        idPoliticalParty = json["id_political_party"] {
+    if (json["town"] != null) {
+      town = Town.fromJson(json["town"]);
+    }
+    if (json["type_vote"] != null) {
+      type = TypeVote.fromJson(json["type_vote"]);
+    }
+    if (json["department"] != null) {
+      department = Department.fromJson(json["department"]);
+    }
+    if (json["region"] != null) {
+      region = Region.fromJson(json["region"]);
+    }
+  }
 
+  String getTypeName() {
+    if (type != null) {
+      return type!.name;
+    }
+    return "";
+  }
+
+  String getLocalite() {
+    if (type == null) {
+      return "-- inconnue --";
+    }
+    switch (type!.id) {
+      case 1:
+      case 6:
+        return "Internationale";
+
+      case 2:
+        if (region != null) return region!.toString();
+        return "-- région inconnue --";
+
+      case 3:
+        if (department != null) return department!.toString();
+        return "-- département inconnu --";
+
+      case 4:
+        if (town != null) return town!.toString();
+        return "-- ville inconnu --";
+
+      case 5:
+        return "Internationale";
+
+      case 8:
+      case 7:
+        return "Internationale";
+
+      default:
+        return "-- inconnue --";
+    }
+  }
 }
