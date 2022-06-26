@@ -17,10 +17,38 @@ class _VotePageState extends State<VotePage> {
   List<Vote> votes = [];
   bool _sortAsc_colId = true;
   late MapShapeSource _mapSource;
+  late List<Model> _data;
 
   @override
   void initState() {
-    _mapSource = const MapShapeSource.asset('assets/australia.json');
+    _data = const <Model>[
+      Model('Auvergne-Rhône-Alpes', Color.fromRGBO(255, 215, 0, 1.0),
+          'Auvergne-Rhône-Alpes'),
+      Model('Bourgogne-Franche-Comté', Color.fromRGBO(72, 209, 204, 1.0), 'Bourgogne-Franche-Comté'),
+      Model('Bretagne', Color.fromRGBO(255, 78, 66, 1.0),
+          'Bretagne'),
+      Model('Centre-Val de Loire', Color.fromRGBO(171, 56, 224, 0.75), 'Centre-Val de Loire'),
+      Model('Corse', Color.fromRGBO(126, 247, 74, 0.75),
+          'Corse'),
+      Model('Grand Est', Color.fromRGBO(79, 60, 201, 0.7),
+          'Grand Est'),
+      Model('Hauts-de-France', Color.fromRGBO(99, 164, 230, 1), 'Hauts-de-France'),
+      Model('Île-de-France', Colors.teal, 'Île-de-France'),
+      Model('Normandie', Color.fromRGBO(125, 32, 185, 1.0), 'Normandie'),
+      Model('Nouvelle-Aquitaine', Color.fromRGBO(99, 230, 140, 1.0), 'Nouvelle-Aquitaine'),
+      Model('Occitanie', Color.fromRGBO(133, 16, 86, 1.0), 'Occitanie'),
+      Model('Pays de la Loire', Color.fromRGBO(121, 5, 18, 1.0), 'Pays de la Loire'),
+      Model('Provence-Alpes-Côte d\'Azur', Color.fromRGBO(175, 63, 16, 1.0), 'Provence-Alpes-Côte d\'Azur'),
+    ];
+
+    _mapSource = MapShapeSource.asset(
+      'maps/france_reg.json',
+      shapeDataField: 'nom',
+      dataCount: _data.length,
+      primaryValueMapper: (int index) => _data[index].state,
+      dataLabelMapper: (int index) => _data[index].stateCode,
+      shapeColorValueMapper: (int index) => _data[index].color,
+    );
   }
 
   @override
@@ -64,46 +92,67 @@ class _VotePageState extends State<VotePage> {
   }
 
   Widget _getTable(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: _getButtonAdd(context),
-        ),
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black,
-                blurRadius: 6,
-                offset: Offset(1, 1), // Shadow position
-              ),
-            ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: _getButtonAdd(context),
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            child: DataTable(
-              headingRowColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                if (states.contains(MaterialState.hovered))
-                  return Theme.of(context).accentColor.withOpacity(0.08);
-                return Theme.of(context)
-                    .highlightColor
-                    .withOpacity(0.5); // Use the default value.
-              }),
-              columnSpacing: 100.0,
-              columns: _getColumns(context),
-              rows: _getRows(context),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black,
+                  blurRadius: 6,
+                  offset: Offset(1, 1), // Shadow position
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              child: DataTable(
+                headingRowColor: MaterialStateProperty.resolveWith<Color?>(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.hovered))
+                    return Theme.of(context).accentColor.withOpacity(0.08);
+                  return Theme.of(context)
+                      .highlightColor
+                      .withOpacity(0.5); // Use the default value.
+                }),
+                columnSpacing: 100.0,
+                columns: _getColumns(context),
+                rows: _getRows(context),
+              ),
             ),
           ),
-        ),
-        //_getMap(context),
-      ],
+          const SizedBox(height: 20),
+          Container(
+            width: 500,
+            height: 500,
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black,
+                  blurRadius: 6,
+                  offset: Offset(1, 1), // Shadow position
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _getMap(context),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -174,7 +223,7 @@ class _VotePageState extends State<VotePage> {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "test",
+                _data[index].stateCode,
                 style: const TextStyle(color: Colors.white),
               ),
             );
@@ -188,4 +237,19 @@ class _VotePageState extends State<VotePage> {
       ],
     );
   }
+}
+
+/// Collection of Australia state code data.
+class Model {
+  /// Initialize the instance of the [Model] class.
+  const Model(this.state, this.color, this.stateCode);
+
+  /// Represents the Australia state name.
+  final String state;
+
+  /// Represents the Australia state color.
+  final Color color;
+
+  /// Represents the Australia state code.
+  final String stateCode;
 }

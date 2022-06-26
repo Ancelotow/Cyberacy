@@ -43,3 +43,6 @@ flutter:
   assets:
     - assets/images/logo_normal.png
     - assets/images/logo_white.png
+    - assets/maps/france_dept.json
+    - assets/maps/france_towns.json
+    - assets/maps/france_reg.json
