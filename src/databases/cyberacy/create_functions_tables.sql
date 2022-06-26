@@ -886,3 +886,27 @@ begin
 end;
 $filter$
     language plpgsql;
+
+-- Filtre pour la table département
+create or replace function filter_department(_code_insee department.reg_code_insee%type default null,
+                                             _code department.dpt_code%type default null)
+    returns table
+            (
+                code              department.dpt_code%type,
+                name              department.dpt_name%type,
+                region_code_insee department.reg_code_insee%type
+            )
+as
+$filter$
+begin
+    return query
+        select dpt_code       as code,
+               dpt_name       as name,
+               reg_code_insee as region_code_insee
+        from department
+        where (_code_insee is null or reg_code_insee = _code_insee)
+          and (_code is null or dpt_code = _code)
+        order by dpt_code;
+end;
+$filter$
+    language plpgsql;

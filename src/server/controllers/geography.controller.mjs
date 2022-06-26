@@ -1,5 +1,5 @@
 import region from "../models/region.mjs";
-import department from "../models/department.mjs";
+import {Department} from "../models/department.mjs";
 import town from "../models/town.mjs";
 import axios from "axios";
 import {config} from "dotenv";
@@ -81,7 +81,7 @@ const GetRegions = () => {
  */
 const GetDepartments = () => {
     return new Promise((resolve, _) => {
-        department.GetAll().then((res) => {
+        new Department().GetAll().then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {
@@ -138,7 +138,7 @@ const GetDepartmentByRegion = (code_insee) => {
         if(!code_insee) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            department.GetByRegion(code_insee).then((res) => {
+            new Department().GetByRegion(code_insee).then((res) => {
                 const code = (res) ? 200 : 204;
                 resolve({status: code, data: res})
             }).catch((e) => {

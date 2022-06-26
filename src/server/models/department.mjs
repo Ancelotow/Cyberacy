@@ -11,12 +11,12 @@ class Department {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetAll = () => {
+Department.prototype.GetAll = () => {
     return new Promise((resolve, reject) => {
-        let request = `SELECT dpt_code       as code,
-                              dpt_name       as name,
-                              reg_code_insee as region_code_insee
-                       FROM department`
+        const request = {
+            text: 'SELECT * from filter_department()',
+            values: [],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -34,12 +34,14 @@ const GetAll = () => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Add = (department) => {
+Department.prototype.Add = (department) => {
     return new Promise((resolve, reject) => {
         GetById(department.code).then((result) => {
             if (!result) {
-                const request = `INSERT INTO department (dpt_code, dpt_name, reg_code_insee)
-                                 VALUES ('${department.code}', '${department.name}', '${department.region_code_insee}');`
+                const request = {
+                    text: 'INSERT INTO department (dpt_code, dpt_name, reg_code_insee) VALUES ($1, $2, $3)',
+                    values: [this.code, this.name, this.region_code_insee],
+                }
                 pool.query(request, (error, _) => {
                     if (error) {
                         reject(error)
@@ -62,13 +64,12 @@ const Add = (department) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetById = (code) => {
+Department.prototype.GetById = (code) => {
     return new Promise((resolve, reject) => {
-        const request = `SELECT dpt_code       as code,
-                                dpt_name       as name,
-                                reg_code_insee as region_code_insee
-                         FROM department
-                         WHERE dpt_code = '${code}'`
+        const request = {
+            text: 'SELECT * from filter_department($1, null)',
+            values: [code],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -86,13 +87,12 @@ const GetById = (code) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetByRegion = (code_insee) => {
+Department.prototype.GetByRegion = (code_insee) => {
     return new Promise((resolve, reject) => {
-        let request = `SELECT dpt_code       as code,
-                              dpt_name       as name,
-                              reg_code_insee as region_code_insee
-                       FROM department
-                       WHERE reg_code_insee = '${code_insee}'`
+        const request = {
+            text: 'SELECT * from filter_department(null, $1)',
+            values: [code_insee],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -104,4 +104,4 @@ const GetByRegion = (code_insee) => {
     });
 }
 
-export default {Department, GetAll, Add, GetByRegion}
+export {Department}
