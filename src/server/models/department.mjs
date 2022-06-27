@@ -4,6 +4,8 @@ class Department {
     code
     name
     region_code_insee
+    id_color
+    color = null
 }
 
 /**
@@ -21,8 +23,9 @@ Department.prototype.GetAll = function() {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows : null
-                resolve(res)
+                let listDepts = []
+                result.rows.forEach(e => listDepts.push(Object.assign(new Department(), e)));
+                resolve(listDepts)
             }
         });
     });
@@ -73,7 +76,7 @@ Department.prototype.GetById = function(code) {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows[0] : null
+                let res = (result.rows.length > 0) ? Object.assign(new Department(), result.rows[0]) : null
                 resolve(res)
             }
         });
@@ -96,8 +99,9 @@ Department.prototype.GetByRegion = function(code_insee) {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows : null
-                resolve(res)
+                let listDepts = []
+                result.rows.forEach(e => listDepts.push(Object.assign(new Department(), e)));
+                resolve(listDepts)
             }
         });
     });

@@ -895,7 +895,8 @@ create or replace function filter_department(_code_insee department.reg_code_ins
             (
                 code              department.dpt_code%type,
                 name              department.dpt_name%type,
-                region_code_insee department.reg_code_insee%type
+                region_code_insee department.reg_code_insee%type,
+                id_color          department.clr_id%type
             )
 as
 $filter$
@@ -903,7 +904,8 @@ begin
     return query
         select dpt_code       as code,
                dpt_name       as name,
-               reg_code_insee as region_code_insee
+               reg_code_insee as region_code_insee,
+               clr_id         as id_color
         from department
         where (_code_insee is null or reg_code_insee = _code_insee)
           and (_code is null or dpt_code = _code)
@@ -947,18 +949,50 @@ create or replace function filter_region(_code_insee region.reg_code_insee%type 
     returns table
             (
                 code_insee region.reg_code_insee%type,
-                name       region.reg_name%type
+                name       region.reg_name%type,
+                id_color   region.clr_id%type
             )
 as
 $filter$
 begin
     return query
         select reg_code_insee as code_insee,
-               reg_name       as name
+               reg_name       as name,
+               clr_id         as id_color
         from region
         where reg_code_insee = _code_insee
            or _code_insee is null
         order by name;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table color
+create or replace function filter_color(_id color.clr_id%type default null)
+    returns table
+            (
+                id      color.clr_id%type,
+                name    color.clr_name%type,
+                red     color.clr_red%type,
+                green   color.clr_green%type,
+                blue    color.clr_blue%type,
+                opacity color.clr_opacity%type
+            )
+as
+$filter$
+begin
+    return query
+        select clr_id      as id,
+               clr_name    as name,
+               clr_red     as red,
+               clr_green   as green,
+               clr_blue    as blue,
+               clr_opacity as opacity
+        from color
+        where clr_id = _id
+           or _id is null
+        order by clr_name;
 end;
 $filter$
     language plpgsql;

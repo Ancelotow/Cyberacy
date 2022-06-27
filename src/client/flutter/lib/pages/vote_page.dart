@@ -42,7 +42,7 @@ class _VotePageState extends State<VotePage> {
     ];
 
     _mapSource = MapShapeSource.asset(
-      'maps/france_reg.json',
+      'assets/maps/france_reg.json',
       shapeDataField: 'nom',
       dataCount: _data.length,
       primaryValueMapper: (int index) => _data[index].state,

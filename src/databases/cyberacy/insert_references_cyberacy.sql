@@ -126,6 +126,3 @@ $role$
         end if;
     end;
 $role$;
-
-
-

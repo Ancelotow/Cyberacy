@@ -3,6 +3,9 @@ import {Department} from "../models/department.mjs";
 import {Town} from "../models/town.mjs";
 import axios from "axios";
 import {config} from "dotenv";
+import {TypeVote} from "../models/type-vote.mjs";
+import {Round} from "../models/round.mjs";
+import {Color} from "../models/color.mjs";
 
 class Coordinates {
 
@@ -58,6 +61,7 @@ function GetLocationFromAddress(address, zip_code) {
         });
     });
 }
+
 /**
  * Récupère la liste des régions
  * @returns {Promise<unknown>}
@@ -65,8 +69,13 @@ function GetLocationFromAddress(address, zip_code) {
  */
 const GetRegions = () => {
     return new Promise((resolve, _) => {
-        new Region().GetAll().then((res) => {
-            const code = (res) ? 200 : 204;
+        new Region().GetAll().then(async (res) => {
+            const code = (res.length > 0) ? 200 : 204;
+            for (let i = 0; i < res.length; i++) {
+                if (res[i].id_color) {
+                    res[i].color = await new Color().GetById(res[i].id_color)
+                }
+            }
             resolve({status: code, data: res})
         }).catch((e) => {
             resolve({status: 500, data: e})
@@ -81,8 +90,13 @@ const GetRegions = () => {
  */
 const GetDepartments = () => {
     return new Promise((resolve, _) => {
-        new Department().GetAll().then((res) => {
-            const code = (res) ? 200 : 204;
+        new Department().GetAll().then(async (res) => {
+            const code = (res.length > 0) ? 200 : 204;
+            for (let i = 0; i < res.length; i++) {
+                if (res[i].id_color) {
+                    res[i].color = await new Color().GetById(res[i].id_color)
+                }
+            }
             resolve({status: code, data: res})
         }).catch((e) => {
             resolve({status: 500, data: e})
@@ -138,8 +152,13 @@ const GetDepartmentByRegion = (code_insee) => {
         if(!code_insee) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            new Department().GetByRegion(code_insee).then((res) => {
-                const code = (res) ? 200 : 204;
+            new Department().GetByRegion(code_insee).then(async (res) => {
+                const code = (res.length > 0) ? 200 : 204;
+                for (let i = 0; i < res.length; i++) {
+                    if (res[i].id_color) {
+                        res[i].color = await new Color().GetById(res[i].id_color)
+                    }
+                }
                 resolve({status: code, data: res})
             }).catch((e) => {
                 resolve({status: 500, data: e})
