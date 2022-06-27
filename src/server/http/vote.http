@@ -27,7 +27,7 @@ Content-Type: application/json
 
 ###
 # @name Get vote
-GET {{url}}/vote?includeFinish=true&includeFuture=true
+GET {{url}}/election/5/vote?includeFinish=true&includeFuture=true
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 Content-Type: application/json

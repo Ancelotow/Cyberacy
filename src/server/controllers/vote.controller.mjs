@@ -110,8 +110,6 @@ const GetVote = (nir, idElection, includeFinish = false, includeFuture = true) =
                 if (res[i].department_code) {
                     res[i].department = await new Department().GetById(res[i].department_code)
                 }
-                let listTypes = await new TypeVote().Get()
-                res[i].type_vote = listTypes.filter(e => e.id === res[i].id_type_vote)[0]
                 res[i].rounds = await new Round().Get(nir, res[i].id)
             }
             resolve({status: code, data: res})

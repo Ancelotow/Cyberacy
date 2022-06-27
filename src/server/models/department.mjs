@@ -69,7 +69,7 @@ Department.prototype.Add = function() {
 Department.prototype.GetById = function(code) {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'SELECT * from filter_department($1, null)',
+            text: 'SELECT * from filter_department(null, $1)',
             values: [code],
         }
         pool.query(request, (error, result) => {
@@ -92,7 +92,7 @@ Department.prototype.GetById = function(code) {
 Department.prototype.GetByRegion = function(code_insee) {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'SELECT * from filter_department(null, $1)',
+            text: 'SELECT * from filter_department($1, null)',
             values: [code_insee],
         }
         pool.query(request, (error, result) => {
