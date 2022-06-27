@@ -120,4 +120,11 @@ export default  {
         candidat_nir: "012457832032045"
     },
 
+    AddElection: {
+        name: "Présidentielle 2022",
+        date_start: "2022-04-10 08:00",
+        date_end: "2022-04-24 20:00",
+        id_type_vote: 1,
+    },
+
 };

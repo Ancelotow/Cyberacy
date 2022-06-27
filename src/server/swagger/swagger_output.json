@@ -486,10 +486,66 @@
         ]
       }
     },
+    "/election": {
+      "post": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Ajout de une nouvelle élection.",
+        "parameters": [
+          {
+            "name": "election",
+            "in": "body",
+            "description": "La nouvelle élection",
+            "schema": {
+              "$ref": "#/definitions/AddElection"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Récupère la liste des élections.",
+        "parameters": [
+          {
+            "name": "includeFinish",
+            "in": "query",
+            "description": "Inclure les votes passés (exclus par défaut)",
+            "type": "boolean"
+          },
+          {
+            "name": "includeFuture",
+            "in": "query",
+            "description": "Inclure les futures votes (include pas défaut)",
+            "type": "boolean"
+          },
+          {
+            "name": "idElection",
+            "in": "query",
+            "description": "L'id d'une élection recherchée",
+            "type": "number"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/election/{id}/vote": {
       "post": {
         "tags": [
-          "Vote"
+          "Election"
         ],
         "description": "Ajout de un nouveau vote.",
         "parameters": [
@@ -522,7 +578,7 @@
       },
       "get": {
         "tags": [
-          "Vote"
+          "Election"
         ],
         "description": "Récupère les votes d",
         "parameters": [
@@ -562,7 +618,7 @@
     "/vote/{id}/round": {
       "post": {
         "tags": [
-          "Vote"
+          "Election"
         ],
         "description": "Ajout de un nouveau tour de vote.",
         "parameters": [
@@ -590,7 +646,7 @@
       },
       "get": {
         "tags": [
-          "Vote"
+          "Election"
         ],
         "description": "Récupère les tours de vote.",
         "parameters": [
@@ -612,7 +668,7 @@
     "/vote/{id_vote}/round/{num_round}/choice": {
       "post": {
         "tags": [
-          "Vote"
+          "Election"
         ],
         "description": "Ajout de un nouveau choix.",
         "parameters": [
@@ -646,7 +702,7 @@
       },
       "get": {
         "tags": [
-          "Vote"
+          "Election"
         ],
         "description": "Récupère les choix pour un tour de vote donné.",
         "parameters": [
@@ -674,7 +730,7 @@
     "/vote/{id_vote}/round/{num_round}": {
       "post": {
         "tags": [
-          "Vote"
+          "Election"
         ],
         "description": "Voter pour un tour de vote donné",
         "parameters": [
@@ -1898,6 +1954,27 @@
         "candidat_nir": {
           "type": "string",
           "example": "012457832032045"
+        }
+      }
+    },
+    "AddElection": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Présidentielle 2022"
+        },
+        "date_start": {
+          "type": "string",
+          "example": "2022-04-10 08:00"
+        },
+        "date_end": {
+          "type": "string",
+          "example": "2022-04-24 20:00"
+        },
+        "id_type_vote": {
+          "type": "number",
+          "example": 1
         }
       }
     }

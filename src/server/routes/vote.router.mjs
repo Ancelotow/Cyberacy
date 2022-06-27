@@ -3,8 +3,48 @@ import express from "express"
 
 const routerVote = express.Router()
 
+routerVote.post("/election", async (req, res) => {
+    // #swagger.tags = ['Election']
+    // #swagger.description = 'Ajout de une nouvelle élection.'
+    // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['election'] = {
+                               in: 'body',
+                               description: 'La nouvelle élection',
+                               schema: { $ref: '#/definitions/AddElection' }
+    } */
+
+    const response = await voteCtrl.AddElection(req.body)
+    res.status(response.status).send(response.data)
+});
+
+routerVote.get("/election", async (req, res) => {
+    // #swagger.tags = ['Election']
+    // #swagger.description = 'Récupère la liste des élections.'
+    // #swagger.security = [{ "Bearer": [] }]
+    /* #swagger.parameters['includeFinish'] = {
+         in: 'query',
+         description: 'Inclure les votes passés (exclus par défaut)',
+         type: 'boolean'
+    } */
+    /* #swagger.parameters['includeFuture'] = {
+         in: 'query',
+         description: 'Inclure les futures votes (include pas défaut)',
+         type: 'boolean'
+    } */
+    /* #swagger.parameters['idElection'] = {
+        in: 'query',
+        description: 'L\'id d\'une élection recherchée',
+        type: 'number'
+   } */
+
+    const includeFinish = (req.query.includeFinish == null) ? false : req.query.includeFinish
+    const includeFuture = (req.query.includeFuture == null) ? true : req.query.includeFuture
+    const response = await voteCtrl.GetElection(req.data.nir, req.query.idElection, includeFinish, includeFuture)
+    res.status(response.status).send(response.data)
+});
+
 routerVote.post("/election/:id/vote", async (req, res) => {
-    // #swagger.tags = ['Vote']
+    // #swagger.tags = ['Election']
     // #swagger.description = 'Ajout de un nouveau vote.'
     // #swagger.security = [{ "Bearer": [] }]
     /*  #swagger.parameters['vote'] = {
@@ -18,7 +58,7 @@ routerVote.post("/election/:id/vote", async (req, res) => {
 });
 
 routerVote.get("/election/:id/vote", async (req, res) => {
-    // #swagger.tags = ['Vote']
+    // #swagger.tags = ['Election']
     // #swagger.description = 'Récupère les votes d'une élection.'
     // #swagger.security = [{ "Bearer": [] }]
     /* #swagger.parameters['includeFinish'] = {
@@ -44,7 +84,7 @@ routerVote.get("/election/:id/vote", async (req, res) => {
 });
 
 routerVote.post("/vote/:id/round", async (req, res) => {
-    // #swagger.tags = ['Vote']
+    // #swagger.tags = ['Election']
     // #swagger.description = 'Ajout de un nouveau tour de vote.'
     // #swagger.security = [{ "Bearer": [] }]
     /*  #swagger.parameters['round'] = {
@@ -58,7 +98,7 @@ routerVote.post("/vote/:id/round", async (req, res) => {
 });
 
 routerVote.get("/vote/:id/round", async (req, res) => {
-    // #swagger.tags = ['Vote']
+    // #swagger.tags = ['Election']
     // #swagger.description = 'Récupère les tours de vote.'
     // #swagger.security = [{ "Bearer": [] }]
 
@@ -67,7 +107,7 @@ routerVote.get("/vote/:id/round", async (req, res) => {
 });
 
 routerVote.post("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
-    // #swagger.tags = ['Vote']
+    // #swagger.tags = ['Election']
     // #swagger.description = 'Ajout de un nouveau choix.'
     // #swagger.security = [{ "Bearer": [] }]
     /*  #swagger.parameters['choice'] = {
@@ -82,7 +122,7 @@ routerVote.post("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
 });
 
 routerVote.get("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
-    // #swagger.tags = ['Vote']
+    // #swagger.tags = ['Election']
     // #swagger.description = 'Récupère les choix pour un tour de vote donné.'
     // #swagger.security = [{ "Bearer": [] }]
 
@@ -91,7 +131,7 @@ routerVote.get("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
 });
 
 routerVote.post("/vote/:id_vote/round/:num_round", async (req, res) => {
-    // #swagger.tags = ['Vote']
+    // #swagger.tags = ['Election']
     // #swagger.description = 'Voter pour un tour de vote donné'
     // #swagger.security = [{ "Bearer": [] }]
 

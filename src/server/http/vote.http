@@ -39,3 +39,10 @@ Accept: application/json
 Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
+###
+# @name Get election
+GET {{url}}/election?includeFinish=true&includeFuture=true
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+

@@ -731,13 +731,14 @@ as
 $filter$
 begin
     return query
-        select get_nb_voter_to_vote(elc.elc_id, _num_round)                                 as nb_participation,
-               (get_nb_voter_to_vote(elc.elc_id, _num_round)::decimal / get_nb_voter(elc.elc_id)) * 100 as perc_participation,
-               elc_date_start                                                          as date_start,
-               elc_id                                                                  as id_election,
-               elc_name                                                                as name_election,
-               elc.tvo_id                                                              as id_type_vote,
-               tvo_name                                                                as name_type_vote
+        select get_nb_voter_to_vote(elc.elc_id, _num_round) as nb_participation,
+               (get_nb_voter_to_vote(elc.elc_id, _num_round)::decimal / get_nb_voter(elc.elc_id)) *
+               100                                          as perc_participation,
+               elc_date_start                               as date_start,
+               elc_id                                       as id_election,
+               elc_name                                     as name_election,
+               elc.tvo_id                                   as id_type_vote,
+               tvo_name                                     as name_type_vote
         from election elc
                  join type_vote tvo on elc.tvo_id = tvo.tvo_id
         where elc.tvo_id = _tvo_id
@@ -766,15 +767,16 @@ as
 $filter$
 begin
     return query
-        select cho_id                                                                       as id_choice,
-               cho_name                                                                     as libelle_choice,
-               cho_nb_vote                                                                  as nb_voice,
-               (cho_nb_vote::decimal / vte_nb_voter) * 100                                  as perc_with_abstention,
-               (cho_nb_vote::decimal / get_nb_voter_to_one_vote(rnd.vte_id, rnd.rnd_num)) * 100 as perc_without_abstention,
-               rnd.vte_id                                                                   as id_vote,
-               vte_name                                                                     as name_vote,
-               rnd.rnd_num                                                                  as num_round,
-               rnd_name                                                                     as name_round
+        select cho_id                                      as id_choice,
+               cho_name                                    as libelle_choice,
+               cho_nb_vote                                 as nb_voice,
+               (cho_nb_vote::decimal / vte_nb_voter) * 100 as perc_with_abstention,
+               (cho_nb_vote::decimal / get_nb_voter_to_one_vote(rnd.vte_id, rnd.rnd_num)) *
+               100                                         as perc_without_abstention,
+               rnd.vte_id                                  as id_vote,
+               vte_name                                    as name_vote,
+               rnd.rnd_num                                 as num_round,
+               rnd_name                                    as name_round
         from choice cho
                  join round rnd on cho.rnd_num = rnd.rnd_num
                  join vote vte on rnd.vte_id = vte.vte_id
@@ -982,3 +984,44 @@ begin
 end;
 $filter$
     language plpgsql;
+
+
+-- Filtre pour la table élection
+create or replace function filter_election(_nir person.prs_nir%type, _elc_id election.elc_id%type default null,
+                                           _include_finish boolean default false, _include_future boolean default true)
+    returns table
+            (
+                id           election.elc_id%type,
+                name         election.elc_name%type,
+                date_start   election.elc_date_start%type,
+                date_end     election.elc_date_end%type,
+                id_type_vote election.tvo_id%type
+            )
+as
+$filter$
+declare
+    today timestamp := now();
+begin
+    return query
+        select elc.elc_id     as id,
+               elc_name       as name,
+               elc_date_start as date_start,
+               elc_date_end   as date_end,
+               elc.tvo_id     as id_type_vote
+        from election elc
+        where (elc.elc_id = _elc_id or _elc_id is null)
+          and ((_include_finish = false and elc_date_end >= today) or _include_finish = true)
+          and ((_include_future = false and elc_date_start <= today) or _include_future = true)
+        order by elc_date_start desc;
+end;
+$filter$
+    language plpgsql;
+
+/*
+
+
+ and vte.elc_id = _elc_id
+          and ((_include_finish = false and rnd.rnd_date_end >= today) or _include_finish = true)
+          and ((_include_future = false and rnd.rnd_date_start <= today) or _include_future = true)
+
+ */
