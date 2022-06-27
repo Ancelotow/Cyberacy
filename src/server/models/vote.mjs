@@ -152,9 +152,11 @@ const GetResults = (id_vote) => {
                 reject(error)
             } else {
                 let res = (result.rows.length > 0) ? result.rows : null
-                for(let i = 0; i < res.length; i++){
-                    res[i].perc_without_abstention = parseFloat(res[i].perc_without_abstention)
-                    res[i].perc_with_abstention = parseFloat(res[i].perc_with_abstention)
+                if(res != null) {
+                    for(let i = 0; i < res.length; i++){
+                        res[i].perc_without_abstention = parseFloat(res[i].perc_without_abstention)
+                        res[i].perc_with_abstention = parseFloat(res[i].perc_with_abstention)
+                    }
                 }
                 resolve(res)
             }

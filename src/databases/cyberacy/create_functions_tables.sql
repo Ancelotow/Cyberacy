@@ -760,8 +760,7 @@ create or replace function vote_get_results(_vte_id vote.vte_id%type)
                 id_vote                 vote.vte_id%type,
                 name_vote               vote.vte_name%type,
                 num_round               round.rnd_num%type,
-                name_round              round.rnd_name%type,
-                name_type_vote          type_vote.tvo_name%type
+                name_round              round.rnd_name%type
             )
 as
 $filter$

@@ -54,6 +54,6 @@ Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get vote results
-GET {{url}}/statistics/vote/results
+GET {{url}}/statistics/vote/393/results
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
