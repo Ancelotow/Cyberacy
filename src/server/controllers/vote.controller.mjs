@@ -54,12 +54,13 @@ function CheckTypeVote(vote) {
  * @returns {Promise<unknown>}
  * @constructor
  * @param voteJson
+ * @param id_election
  */
-const AddVote = (voteJson) => {
+const AddVote = (voteJson, id_election) => {
     return new Promise((resolve, _) => {
         if (!voteJson) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!voteJson.name || !voteJson.id_type_vote) {
+        } else if (!voteJson.name || !voteJson.id_type_vote || id_election || !voteJson.nb_voter) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
             if(!CheckTypeVote(voteJson)) {
@@ -68,6 +69,7 @@ const AddVote = (voteJson) => {
                 let vote = new Vote()
                 Object.assign(vote, voteJson)
                 vote.date_start = new Date(vote.date_start)
+                vote.id_election = id_election
                 vote.date_end = new Date(vote.date_end)
                 vote.Add().then((res) => {
                     if (res) {
@@ -88,15 +90,15 @@ const AddVote = (voteJson) => {
 /**
  * Récupère la liste des votes selon les filtres
  * @param nir Le NIR de l'utilisateur
+ * @param idElection
  * @param includeFinish Inclus les votes passés
  * @param includeFuture Inclus les votes futur
- * @param idTypeVote L'id du type de vote
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetVote = (nir, includeFinish = false, includeFuture = true, idTypeVote = null) => {
+const GetVote = (nir, idElection, includeFinish = false, includeFuture = true) => {
     return new Promise((resolve, _) => {
-        new Vote().Get(nir, includeFinish, includeFuture, idTypeVote).then(async (res) => {
+        new Vote().Get(nir, idElection, includeFinish, includeFuture).then(async (res) => {
             const code = (res.length > 0) ? 200 : 204;
             for (let i = 0; i < res.length; i++) {
                 if (res[i].town_code_insee) {
@@ -110,7 +112,7 @@ const GetVote = (nir, includeFinish = false, includeFuture = true, idTypeVote = 
                 }
                 let listTypes = await new TypeVote().Get()
                 res[i].type_vote = listTypes.filter(e => e.id === res[i].id_type_vote)[0]
-                res[i].rounds = await new Round().Get(nir, true, true, null, res[i].id)
+                res[i].rounds = await new Round().Get(nir, res[i].id)
             }
             resolve({status: code, data: res})
         }).catch((e) => {
@@ -130,9 +132,13 @@ const GetVote = (nir, includeFinish = false, includeFuture = true, idTypeVote = 
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetRound = (nir, includeFinish = false, includeFuture = true, idTypeVote = null, idVote = null) => {
+const GetRound = (nir, idVote) => {
     return new Promise((resolve, _) => {
-        new Round().Get(nir, includeFinish, includeFuture, idTypeVote, idVote).then((res) => {
+        if (!idVote) {
+            resolve({status: 400, data: "Missing parameters."})
+            return
+        }
+        new Round().Get(nir, idVote).then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {
@@ -155,7 +161,7 @@ const AddRound = (roundJson, idVote) => {
             resolve({status: 400, data: "Missing parameters."})
         } else if (!roundJson.num || !idVote || !roundJson.name) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!roundJson.nb_voter || !roundJson.date_start || !roundJson.date_end) {
+        } else if (!roundJson.date_start || !roundJson.date_end) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
             let round = new Round()

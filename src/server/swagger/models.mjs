@@ -55,6 +55,7 @@ export default  {
         department_code: "94",
         reg_code_insee: "1",
         id_political_party: 1,
+        nb_voter: 58000000,
     },
 
     AddRoundVote: {
@@ -62,7 +63,6 @@ export default  {
         num: 1,
         date_start: "2022-04-29 08:00",
         date_end: "2022-04-29 20:00",
-        nb_voter: 58000000,
     },
 
     AddPoliticalParty: {

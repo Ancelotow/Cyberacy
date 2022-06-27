@@ -6,7 +6,6 @@ class Round {
     name
     date_start
     date_end
-    nb_voter
 }
 
 /**
@@ -22,8 +21,8 @@ Round.prototype.Add = function () {
             resolve(false)
         }
         const request = {
-            text: 'INSERT INTO round (rnd_num, rnd_name, rnd_date_start, rnd_date_end, rnd_nb_voter, vte_id) VALUES ($1, $2, $3, $4, $5, $6)',
-            values: [this.num, this.name, this.date_start, this.date_end, this.nb_voter, this.id_vote],
+            text: 'INSERT INTO round (rnd_num, rnd_name, rnd_date_start, rnd_date_end, vte_id) VALUES ($1, $2, $3, $4, $5)',
+            values: [this.num, this.name, this.date_start, this.date_end, this.id_vote],
         }
         pool.query(request, (error, _) => {
             if (error) {
@@ -45,11 +44,11 @@ Round.prototype.Add = function () {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Round.prototype.Get = function (nir, includeFinish = false, includeFuture = true, idTypeVote = null, idVote = null) {
+Round.prototype.Get = function (nir, idVote) {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'SELECT * FROM filter_round($1, $2, $3, $4, $5)',
-            values: [nir, includeFinish, includeFuture, idTypeVote, idVote],
+            text: 'SELECT * FROM filter_round($1, $2)',
+            values: [nir, idVote],
         }
         pool.query(request, (error, result) => {
             if (error) {

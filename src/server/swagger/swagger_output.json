@@ -486,13 +486,24 @@
         ]
       }
     },
-    "/vote": {
+    "/election/{id}/vote": {
       "post": {
         "tags": [
           "Vote"
         ],
         "description": "Ajout de un nouveau vote.",
         "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          },
           {
             "name": "vote",
             "in": "body",
@@ -513,8 +524,14 @@
         "tags": [
           "Vote"
         ],
-        "description": "Récupère les votes.",
+        "description": "Récupère les votes d",
         "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "includeFinish",
             "in": "query",
@@ -570,9 +587,7 @@
             "Bearer": []
           }
         ]
-      }
-    },
-    "/round": {
+      },
       "get": {
         "tags": [
           "Vote"
@@ -580,28 +595,10 @@
         "description": "Récupère les tours de vote.",
         "parameters": [
           {
-            "name": "includeFinish",
-            "in": "query",
-            "description": "Inclure les votes passés (exclus par défaut)",
-            "type": "boolean"
-          },
-          {
-            "name": "includeFuture",
-            "in": "query",
-            "description": "Inclure les futures votes (include pas défaut)",
-            "type": "boolean"
-          },
-          {
-            "name": "idTypeVote",
-            "in": "query",
-            "description": "Le type de votes",
-            "type": "int"
-          },
-          {
-            "name": "idVote",
-            "in": "query",
-            "description": "Le vote",
-            "type": "int"
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {},
@@ -1450,6 +1447,12 @@
         "description": "Récupération des statistiques d\\'abstention aux votes.",
         "parameters": [
           {
+            "name": "numRound",
+            "in": "query",
+            "description": "Le numéro du tour de vote",
+            "type": "number"
+          },
+          {
             "name": "typeVote",
             "in": "query",
             "description": "Trié par type de vote (NULL pour tout inclure)",
@@ -1472,6 +1475,12 @@
         "description": "Récupération des statistiques de participation aux votes.",
         "parameters": [
           {
+            "name": "numRound",
+            "in": "query",
+            "description": "Le numéro du tour de vote",
+            "type": "number"
+          },
+          {
             "name": "typeVote",
             "in": "query",
             "description": "Trié par type de vote (NULL pour tout inclure)",
@@ -1486,7 +1495,7 @@
         ]
       }
     },
-    "/statistics/vote/results": {
+    "/statistics/vote/{id}/results": {
       "get": {
         "tags": [
           "Statistiques"
@@ -1494,16 +1503,10 @@
         "description": "Récupération des résultats aux votes.",
         "parameters": [
           {
-            "name": "typeVote",
-            "in": "query",
-            "description": "Trié par type de vote (NULL pour tout inclure)",
-            "type": "number"
-          },
-          {
-            "name": "vote",
-            "in": "query",
-            "description": "Trié par vote (NULL pour tout inclure)",
-            "type": "number"
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {},
@@ -1692,6 +1695,10 @@
         "id_political_party": {
           "type": "number",
           "example": 1
+        },
+        "nb_voter": {
+          "type": "number",
+          "example": 58000000
         }
       }
     },
@@ -1713,10 +1720,6 @@
         "date_end": {
           "type": "string",
           "example": "2022-04-29 20:00"
-        },
-        "nb_voter": {
-          "type": "number",
-          "example": 58000000
         }
       }
     },

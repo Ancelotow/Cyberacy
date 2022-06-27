@@ -220,19 +220,20 @@ const GetMessagesByWeeks = (nir, year = new Date().getFullYear()) => {
 
 /**
  * Récupère les absentions
+ * @param num_round
  * @param id_type_vote Tri par type de vote
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetVoteAbstention = (id_type_vote = null) => {
+const GetVoteAbstention = (num_round = 1, id_type_vote = null) => {
     return new Promise(async (resolve, _) => {
         try {
-            let stats = await GetStatsAbsentions(id_type_vote);
+            let stats = await GetStatsAbsentions(num_round, id_type_vote);
             if (stats == null) {
                 resolve({status: 204, data: stats})
                 return;
             }
-            resolve({status: 200, data: TransformResultVote(stats)})
+            resolve({status: 200, data: stats})
         } catch (e) {
             console.error(e)
             resolve({status: 500, data: e})
@@ -242,19 +243,20 @@ const GetVoteAbstention = (id_type_vote = null) => {
 
 /**
  * Récupère les participations
+ * @param num_round
  * @param id_type_vote Tri par type de vote
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetVoteParticipation = (id_type_vote = null) => {
+const GetVoteParticipation = (num_round = 1, id_type_vote = null) => {
     return new Promise(async (resolve, _) => {
         try {
-            let stats = await GetStatsParticipations(id_type_vote);
+            let stats = await GetStatsParticipations(num_round, id_type_vote);
             if (stats == null) {
                 resolve({status: 204, data: stats})
                 return;
             }
-            resolve({status: 200, data: TransformResultVote(stats)})
+            resolve({status: 200, data: stats})
         } catch (e) {
             console.error(e)
             resolve({status: 500, data: e})
@@ -269,15 +271,15 @@ const GetVoteParticipation = (id_type_vote = null) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetVoteResults = (id_type_vote = null, id_vote = null) => {
+const GetVoteResults = (id_vote) => {
     return new Promise(async (resolve, _) => {
         try {
-            let stats = await GetResults(id_type_vote, id_vote);
+            let stats = await GetResults(id_vote);
             if (stats == null) {
                 resolve({status: 204, data: stats})
                 return;
             }
-            resolve({status: 200, data: TransformResultVote_Result(stats)})
+            resolve({status: 200, data: TransformResultVote(stats)})
         } catch (e) {
             console.error(e)
             resolve({status: 500, data: e})
@@ -305,37 +307,6 @@ function TransformResultThread(result) {
 }
 
 function TransformResultVote(result) {
-    if (!result) {
-        return null;
-    }
-    const listVote = []
-
-    let vote;
-    let indexVote;
-    for (let i = 0; i < result.length; i++) {
-        vote = {
-            id: result[i].id_vote,
-            vote: result[i].name_vote,
-            type_vote: result[i].name_type_vote,
-            id_type_vote: result[i].id_type_vote
-        };
-        indexVote = listVote.findIndex(e => e.id === vote.id);
-        if (indexVote < 0) {
-            listVote.push(vote);
-            indexVote = listVote.findIndex(e => e.id === vote.id);
-        }
-        if(listVote[indexVote].rounds == null) listVote[indexVote].rounds = []
-        delete result[i].name_vote;
-        delete result[i].id_vote;
-        delete result[i].name_type_vote;
-        delete result[i].id_type_vote;
-        listVote[indexVote].rounds.push(result[i])
-
-    }
-    return listVote;
-}
-
-function TransformResultVote_Result(result) {
     if (!result) {
         return null;
     }
