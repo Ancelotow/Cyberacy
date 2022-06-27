@@ -56,7 +56,7 @@ class _NavigationPageState extends State<NavigationPage> {
                 ),
                 NavBarItem(
                   icon: Icons.how_to_vote,
-                  label: "Vote",
+                  label: "Elections",
                   onTap: click,
                 ),
                 NavBarItem(

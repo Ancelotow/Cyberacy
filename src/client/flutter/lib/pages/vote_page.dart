@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
-
-import '../models/entities/vote.dart';
+import 'package:intl/intl.dart';
+import '../models/entities/election.dart';
 import '../models/services/vote_service.dart';
 import '../widgets/buttons/button_card.dart';
 import '../widgets/cards/card_shimmer.dart';
@@ -14,7 +14,7 @@ class VotePage extends StatefulWidget {
 }
 
 class _VotePageState extends State<VotePage> {
-  List<Vote> votes = [];
+  List<Election> elections = [];
   bool _sortAsc_colId = true;
   late MapShapeSource _mapSource;
   late List<Model> _data;
@@ -56,11 +56,11 @@ class _VotePageState extends State<VotePage> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: FutureBuilder(
-        future: VoteService().getAllVote(),
-        builder: (BuildContext context, AsyncSnapshot<List<Vote>> snapshot) {
+        future: VoteService().getAllElection(),
+        builder: (BuildContext context, AsyncSnapshot<List<Election>> snapshot) {
           if (snapshot.hasData) {
-            if (votes.isEmpty) {
-              votes = snapshot.data!;
+            if (elections.isEmpty) {
+              elections = snapshot.data!;
             }
             return _getTable(context);
           } else if (snapshot.hasError) {
@@ -157,15 +157,15 @@ class _VotePageState extends State<VotePage> {
   }
 
   List<DataRow> _getRows(BuildContext context) {
-    return votes
+    return elections
         .map(
           (e) => DataRow(
             cells: [
-              DataCell(Text(e.id!.toString())),
-              DataCell(Text(e.name!.toString())),
+              DataCell(Text(e.id.toString())),
+              DataCell(Text(e.name.toString())),
               DataCell(Text(e.getTypeName())),
-              DataCell(Text(e.getLocalite())),
-              DataCell(Text(e.getDateStartStr()))
+              DataCell(Text(DateFormat("dd/MM/yyyy HH:mm").format(e.dateStart))),
+              DataCell(Text(DateFormat("dd/MM/yyyy HH:mm").format(e.dateEnd))),
             ],
           ),
         )
@@ -181,24 +181,24 @@ class _VotePageState extends State<VotePage> {
           setState(() {
             _sortAsc_colId = !_sortAsc_colId;
             if (_sortAsc_colId) {
-              votes.sort((a, b) => a.id!.compareTo(b.id!));
+              elections.sort((a, b) => a.id.compareTo(b.id));
             } else {
-              votes.sort((a, b) => b.id!.compareTo(a.id!));
+              elections.sort((a, b) => b.id.compareTo(a.id));
             }
           });
         },
       ),
       const DataColumn(label: Text("nom")),
       const DataColumn(label: Text("type")),
-      const DataColumn(label: Text("localité")),
-      const DataColumn(label: Text("date debut"))
+      const DataColumn(label: Text("date debut")),
+      const DataColumn(label: Text("date fin"))
     ];
   }
 
   Widget _getButtonAdd(BuildContext context) {
     return ButtonCard(
       icon: Icons.add_circle_outline,
-      label: "Ajouter un vote",
+      label: "Ajouter une élection",
       width: 300,
       height: 100,
       color: Theme.of(context).highlightColor,
