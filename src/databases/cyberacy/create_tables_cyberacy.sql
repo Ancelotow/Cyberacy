@@ -1,3 +1,14 @@
+create table color
+(
+    clr_id      serial                 not null,
+    clr_name    varchar(25)            not null,
+    clr_red     decimal                not null,
+    clr_green   decimal                not null,
+    clr_blue    decimal                not null,
+    clr_opacity decimal default (1.00) not null,
+    constraint pk_color primary key (clr_id)
+);
+
 create table document
 (
     doc_id            serial       not null,
@@ -56,7 +67,9 @@ create table region
 (
     reg_code_insee varchar(15) not null,
     reg_name       varchar(50) not null,
-    constraint pk_region primary key (reg_code_insee)
+    clr_id         int         null,
+    constraint pk_region primary key (reg_code_insee),
+    constraint fk_region_color foreign key (clr_id) references color (clr_id)
 );
 
 create table department
@@ -64,8 +77,10 @@ create table department
     dpt_code       varchar(5)  not null,
     dpt_name       varchar(25) not null,
     reg_code_insee varchar(15) not null,
+    clr_id         int         null,
     constraint pk_department primary key (dpt_code),
-    constraint fk_department_region foreign key (reg_code_insee) references region (reg_code_insee)
+    constraint fk_department_region foreign key (reg_code_insee) references region (reg_code_insee),
+    constraint fk_department_color foreign key (clr_id) references color (clr_id)
 );
 
 create table town
@@ -197,13 +212,15 @@ create table political_party
     doc_id_logo          int                       null,
     doc_id_chart         int                       null,
     doc_id_bank_details  int                       null,
+    clr_id               int                       null,
     constraint pk_politicalparty primary key (pop_id),
     constraint fk_politicalparty_person foreign key (prs_nir) references person (prs_nir),
     constraint fk_politicalparty_politicaledge foreign key (poe_id) references political_edge (poe_id),
     constraint fk_politicalparty_town foreign key (twn_code_insee) references town (twn_code_insee),
     constraint fk_politicalparty_documentlogo foreign key (doc_id_logo) references document (doc_id),
     constraint fk_politicalparty_documentchart foreign key (doc_id_chart) references document (doc_id),
-    constraint fk_politicalparty_documentbankdetails foreign key (doc_id_bank_details) references document (doc_id)
+    constraint fk_politicalparty_documentbankdetails foreign key (doc_id_bank_details) references document (doc_id),
+    constraint fk_politicalparty_color foreign key (clr_id) references color (clr_id)
 );
 
 create table annual_fee
