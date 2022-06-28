@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "384126364480",
+    "firebase_url": "https://cyberacy-1e929-default-rtdb.firebaseio.com",
+    "project_id": "cyberacy-1e929",
+    "storage_bucket": "cyberacy-1e929.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384126364480:android:6884c2a7d499f034aba8a5",
+        "android_client_info": {
+          "package_name": "com.cyberacy.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384126364480-c6u3ukm0lgipg8qt94ga70bgb0f1jbb7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnwn_8lhQFj_9633TpGKpqZ9zJcyWkPZU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384126364480-c6u3ukm0lgipg8qt94ga70bgb0f1jbb7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "384126364480-o0jv1eopo6gu75v576rg7vv8ec5051qq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cyberacy.stats"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
