@@ -1,4 +1,5 @@
 import 'package:bo_cyberacy/models/entities/type_vote.dart';
+import 'package:bo_cyberacy/models/enums/state_progress.dart';
 
 class Election{
 
@@ -33,6 +34,17 @@ class Election{
       return type!.name;
     }
     return "";
+  }
+
+  StateProgress getStateProgress() {
+    DateTime today = DateTime.now();
+    if(today.isAfter(dateEnd)) {
+      return StateProgress.passed;
+    } else if (today.isBefore(dateStart)) {
+      return StateProgress.coming;
+    } else {
+      return StateProgress.inProgress;
+    }
   }
 
   Object toJson() {

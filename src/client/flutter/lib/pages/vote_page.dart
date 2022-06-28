@@ -1,8 +1,5 @@
-import 'package:bo_cyberacy/models/entities/department.dart';
-import 'package:bo_cyberacy/models/entities/region.dart';
-import 'package:bo_cyberacy/models/services/geo_service.dart';
 import 'package:bo_cyberacy/pages/election/add_election.dart';
-import 'package:bo_cyberacy/widgets/interactive_map.dart';
+import 'package:bo_cyberacy/widgets/cards/card_state_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/entities/election.dart';
@@ -117,6 +114,7 @@ class _VotePageState extends State<VotePage> {
               DataCell(
                   Text(DateFormat("dd/MM/yyyy HH:mm").format(e.dateStart))),
               DataCell(Text(DateFormat("dd/MM/yyyy HH:mm").format(e.dateEnd))),
+              DataCell(CardStateProgress(stateProgress: e.getStateProgress())),
             ],
           ),
         )
@@ -142,7 +140,8 @@ class _VotePageState extends State<VotePage> {
       const DataColumn(label: Text("nom")),
       const DataColumn(label: Text("type")),
       const DataColumn(label: Text("date debut")),
-      const DataColumn(label: Text("date fin"))
+      const DataColumn(label: Text("date fin")),
+      const DataColumn(label: Text("état")),
     ];
   }
 
