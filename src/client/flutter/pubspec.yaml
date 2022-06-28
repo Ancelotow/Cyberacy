@@ -1,0 +1,48 @@
+name: bo_cyberacy
+description: A flutter project for ESGI.
+version: 1.0.0+1
+
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  http: ^0.13.4
+  hive: ^2.2.1
+  flutter_map: ^0.14.0
+  latlong2: ^0.8.1
+  path_provider: ^2.0.11
+  shimmer: ^2.0.0
+  syncfusion_flutter_maps: ^20.1.61
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+
+flutter:
+  uses-material-design: true
+
+  fonts:
+    - family: HK-Nova
+      fonts:
+        - asset: assets/fonts/HKNova-Medium.ttf
+
+  assets:
+    - assets/images/logo_normal.png
+    - assets/images/logo_white.png
+    - assets/maps/france_dept.json
+    - assets/maps/france_towns.json
+    - assets/maps/france_reg.json

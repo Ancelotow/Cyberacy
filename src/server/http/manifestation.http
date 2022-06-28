@@ -69,23 +69,23 @@ Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
-  "address_street": "28 rue de Noisy",
+  "address_street": "28 rzeue de QSQs",
   "date_arrived": "2022-05-20",
-  "id_manifestation": 3,
-  "id_step_type": 1,
+  "id_manifestation": 9,
+  "id_step_type": 2,
   "town_code_insee": "94079"
 }
 
 ###
 # @name Get steps from manifestation
-GET {{url}}/manifestation/step/3
+GET {{url}}/manifestation/9/step
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 ###
 # @name Delete step of manifestation
-DELETE {{url}}/manifestation/step/2
+DELETE {{url}}/manifestation/9/step
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
