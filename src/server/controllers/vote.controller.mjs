@@ -129,7 +129,7 @@ const AddElection = (electionJson) => {
     return new Promise((resolve, _) => {
         if (!electionJson) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!electionJson.name || !electionJson.id_type_vote || electionJson.date_start || electionJson.date_end) {
+        } else if (!electionJson.name || !electionJson.id_type_vote || !electionJson.date_start || !electionJson.date_end) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
             let election = new Election()
