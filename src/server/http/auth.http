@@ -16,6 +16,7 @@ Content-Type: application/json
   "sex": 1,
   "profile": 1
 }
+
 ###
 # @name Login App
 POST {{url}}/login_app

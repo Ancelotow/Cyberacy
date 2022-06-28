@@ -1,3 +1,14 @@
+create table color
+(
+    clr_id      serial                 not null,
+    clr_name    varchar(25)            not null,
+    clr_red     decimal                not null,
+    clr_green   decimal                not null,
+    clr_blue    decimal                not null,
+    clr_opacity decimal default (1.00) not null,
+    constraint pk_color primary key (clr_id)
+);
+
 create table document
 (
     doc_id            serial       not null,
@@ -34,12 +45,12 @@ create table type_vote
 
 create table profile
 (
-    prf_id          serial                  not null,
-    prf_name        varchar(25)             not null,
-    prf_description varchar(250)            null,
-    prf_date_create timestamp               not null,
-    prf_is_delete   boolean default (false) not null,
-    prf_date_delete timestamp               null,
+    prf_id          serial                    not null,
+    prf_name        varchar(25)               not null,
+    prf_description varchar(250)              null,
+    prf_date_create timestamp default (now()) not null,
+    prf_is_delete   boolean   default (false) not null,
+    prf_date_delete timestamp                 null,
     constraint pk_profile primary key (prf_id)
 );
 
@@ -56,7 +67,9 @@ create table region
 (
     reg_code_insee varchar(15) not null,
     reg_name       varchar(50) not null,
-    constraint pk_region primary key (reg_code_insee)
+    clr_id         int         null,
+    constraint pk_region primary key (reg_code_insee),
+    constraint fk_region_color foreign key (clr_id) references color (clr_id)
 );
 
 create table department
@@ -64,8 +77,10 @@ create table department
     dpt_code       varchar(5)  not null,
     dpt_name       varchar(25) not null,
     reg_code_insee varchar(15) not null,
+    clr_id         int         null,
     constraint pk_department primary key (dpt_code),
-    constraint fk_department_region foreign key (reg_code_insee) references region (reg_code_insee)
+    constraint fk_department_region foreign key (reg_code_insee) references region (reg_code_insee),
+    constraint fk_department_color foreign key (clr_id) references color (clr_id)
 );
 
 create table town
@@ -154,6 +169,8 @@ create table step
     stp_address_street varchar(250)            not null,
     stp_date_arrived   timestamp               not null,
     stp_is_delete      boolean default (false) not null,
+    stp_latitude       decimal,
+    stp_longitude      decimal,
     twn_code_insee     varchar(15)             not null,
     tst_id             int                     not null,
     man_id             int                     not null,
@@ -195,13 +212,15 @@ create table political_party
     doc_id_logo          int                       null,
     doc_id_chart         int                       null,
     doc_id_bank_details  int                       null,
+    clr_id               int                       null,
     constraint pk_politicalparty primary key (pop_id),
     constraint fk_politicalparty_person foreign key (prs_nir) references person (prs_nir),
     constraint fk_politicalparty_politicaledge foreign key (poe_id) references political_edge (poe_id),
     constraint fk_politicalparty_town foreign key (twn_code_insee) references town (twn_code_insee),
     constraint fk_politicalparty_documentlogo foreign key (doc_id_logo) references document (doc_id),
     constraint fk_politicalparty_documentchart foreign key (doc_id_chart) references document (doc_id),
-    constraint fk_politicalparty_documentbankdetails foreign key (doc_id_bank_details) references document (doc_id)
+    constraint fk_politicalparty_documentbankdetails foreign key (doc_id_bank_details) references document (doc_id),
+    constraint fk_politicalparty_color foreign key (clr_id) references color (clr_id)
 );
 
 create table annual_fee
@@ -302,21 +321,33 @@ create table message
     constraint fk_message_thread foreign key (thr_id) references thread (thr_id)
 );
 
+create table election
+(
+    elc_id         serial      not null,
+    elc_name       varchar(50) not null,
+    elc_date_start timestamp   not null,
+    elc_date_end   timestamp   not null,
+    tvo_id         int         not null,
+    constraint pk_election primary key (elc_id),
+    constraint fk_election_typevote foreign key (tvo_id) references type_vote (tvo_id)
+);
+
 create table vote
 (
     vte_id         serial      not null,
-    vte_name       varchar(50) not null,
-    tvo_id         int         not null,
+    vte_name       varchar(200) not null,
+    vte_nb_voter   int         not null,
+    elc_id         int         not null,
     twn_code_insee varchar(15) null,
     dpt_code       varchar(5)  null,
-    reg_code_insee varchar(15) null,
     pop_id         int         null,
+    reg_code_insee varchar(15) null,
     constraint pk_vote primary key (vte_id),
     constraint fk_vote_town foreign key (twn_code_insee) references town (twn_code_insee),
     constraint fk_vote_department foreign key (dpt_code) references department (dpt_code),
     constraint fk_vote_region foreign key (reg_code_insee) references region (reg_code_insee),
-    constraint fk_vote_typevote foreign key (tvo_id) references type_vote (tvo_id),
-    constraint fk_vote_politicalparty foreign key (pop_id) references political_party (pop_id)
+    constraint fk_vote_politicalparty foreign key (pop_id) references political_party (pop_id),
+    constraint fk_vote_election foreign key (elc_id) references election (elc_id)
 );
 
 create table round
@@ -325,7 +356,6 @@ create table round
     rnd_name       varchar(50) not null,
     rnd_date_start timestamp   not null,
     rnd_date_end   timestamp   not null,
-    rnd_nb_voter   int         not null,
     vte_id         int         not null,
     constraint pk_round primary key (rnd_num, vte_id),
     constraint fk_round_vote foreign key (vte_id) references vote (vte_id)

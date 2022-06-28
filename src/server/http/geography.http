@@ -22,3 +22,14 @@ Accept: application/json
 # @name Get departments by region
 GET {{url}}/region/11/department
 Accept: application/json
+
+###
+# @name Get departments by region
+GET {{url}}/region/11/department
+Accept: application/json
+
+###
+# @name Get coordinates
+GET {{url}}/coordinates?address_street=28bis rue de noisy&zip_code=94350
+Accept: application/json
+Authorization: Bearer {{jwt_token}}

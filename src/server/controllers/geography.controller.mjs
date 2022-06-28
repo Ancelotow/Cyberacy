@@ -1,6 +1,66 @@
-import region from "../models/region.mjs";
-import department from "../models/department.mjs";
-import town from "../models/town.mjs";
+import {Region} from "../models/region.mjs";
+import {Department} from "../models/department.mjs";
+import {Town} from "../models/town.mjs";
+import axios from "axios";
+import {config} from "dotenv";
+import {TypeVote} from "../models/type-vote.mjs";
+import {Round} from "../models/round.mjs";
+import {Color} from "../models/color.mjs";
+
+class Coordinates {
+
+    latitude = 0.00
+    longitude = 0.00
+
+    constructor(longitude, latitude) {
+        this.latitude = latitude
+        this.longitude = longitude
+    }
+
+}
+
+/**
+ * Récupère la lattitude et longitude en fonction de l'addresse
+ * @param address L'adresse
+ * @param zip_code  Le code postale
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+function GetLocationFromAddress(address, zip_code) {
+    return new Promise((resolve, reject) => {
+        if (address === null) {
+            reject("Address is required")
+            return
+        }
+        config()
+        axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address},${zip_code},France&key=${process.env.GOOGLE_MAPS_TOKEN}`).then(async (res) => {
+            if (res.data) {
+                if (res.data.status === "OK" && res.data.results !== null) {
+                    if (res.data.results.length >= 0) {
+                        let geo = res.data.results[0].geometry
+                        if (geo !== null) {
+                            let loc = geo.location
+                            if (loc !== null) {
+                                let coordinates = new Coordinates()
+                                coordinates.latitude = loc.lat
+                                coordinates.longitude = loc.lng
+                                resolve(coordinates)
+                                return
+                            }
+                        }
+                    }
+                }
+            }
+            resolve(null)
+        }).catch((error) => {
+            if (error.response.status === 404) {
+                reject("Google API not found.")
+            } else {
+                reject(error.response.status)
+            }
+        });
+    });
+}
 
 /**
  * Récupère la liste des régions
@@ -9,8 +69,13 @@ import town from "../models/town.mjs";
  */
 const GetRegions = () => {
     return new Promise((resolve, _) => {
-        region.GetAll().then((res) => {
-            const code = (res) ? 200 : 204;
+        new Region().GetAll().then(async (res) => {
+            const code = (res.length > 0) ? 200 : 204;
+            for (let i = 0; i < res.length; i++) {
+                if (res[i].id_color) {
+                    res[i].color = await new Color().GetById(res[i].id_color)
+                }
+            }
             resolve({status: code, data: res})
         }).catch((e) => {
             resolve({status: 500, data: e})
@@ -25,8 +90,13 @@ const GetRegions = () => {
  */
 const GetDepartments = () => {
     return new Promise((resolve, _) => {
-        department.GetAll().then((res) => {
-            const code = (res) ? 200 : 204;
+        new Department().GetAll().then(async (res) => {
+            const code = (res.length > 0) ? 200 : 204;
+            for (let i = 0; i < res.length; i++) {
+                if (res[i].id_color) {
+                    res[i].color = await new Color().GetById(res[i].id_color)
+                }
+            }
             resolve({status: code, data: res})
         }).catch((e) => {
             resolve({status: 500, data: e})
@@ -41,7 +111,7 @@ const GetDepartments = () => {
  */
 const GetTowns = () => {
     return new Promise((resolve, _) => {
-        town.GetAll().then((res) => {
+        new Town().GetAll().then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {
@@ -61,7 +131,7 @@ const GetTownsByDepartment = (code) => {
         if(!code) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            town.GetByDepartment(code).then((res) => {
+            new Town().GetByDepartment(code).then((res) => {
                 const code = (res) ? 200 : 204;
                 resolve({status: code, data: res})
             }).catch((e) => {
@@ -82,7 +152,34 @@ const GetDepartmentByRegion = (code_insee) => {
         if(!code_insee) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            department.GetByRegion(code_insee).then((res) => {
+            new Department().GetByRegion(code_insee).then(async (res) => {
+                const code = (res.length > 0) ? 200 : 204;
+                for (let i = 0; i < res.length; i++) {
+                    if (res[i].id_color) {
+                        res[i].color = await new Color().GetById(res[i].id_color)
+                    }
+                }
+                resolve({status: code, data: res})
+            }).catch((e) => {
+                resolve({status: 500, data: e})
+            })
+        }
+    });
+}
+
+/**
+ * Rétourne les coordonées géographiques d'un lieu
+ * @param address_street L'adresse du lieu
+ * @param zip_code La code postal du lieu
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetCoordinates = (address_street, zip_code) => {
+    return new Promise((resolve, _) => {
+        if(address_street == null || zip_code == null) {
+            resolve({status: 400, data: "Missing parameters."})
+        } else {
+            GetLocationFromAddress(address_street, zip_code).then((res) => {
                 const code = (res) ? 200 : 204;
                 resolve({status: code, data: res})
             }).catch((e) => {
@@ -93,4 +190,4 @@ const GetDepartmentByRegion = (code_insee) => {
 }
 
 
-export default {GetRegions, GetDepartments, GetTowns, GetTownsByDepartment, GetDepartmentByRegion}
+export default {GetRegions, GetDepartments, GetTowns, GetTownsByDepartment, GetDepartmentByRegion, GetCoordinates, GetLocationFromAddress}

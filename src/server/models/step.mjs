@@ -1,6 +1,6 @@
 import {pool} from "../middlewares/postgres.mjs";
 
-class Step {
+export class Step {
     id
     address_street
     date_arrived
@@ -8,19 +8,22 @@ class Step {
     id_manifestation
     id_step_type
     town_code_insee
+    town_zip_code
+    latitude
+    longitude
 }
 
 /**
  * Ajoute une nouvelle étape pour une manifestation
- * @param step L'étape rajouter
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Add = (step) => {
+Step.prototype.Add = function() {
     return new Promise((resolve, reject) => {
-        const request = `INSERT INTO step (stp_address_street, stp_date_arrived, tst_id, twn_code_insee, man_id)
-                         VALUES ('${step.address_street}', '${step.date_arrived}', ${step.id_step_type},
-                                 '${step.town_code_insee}', ${step.id_manifestation})`
+        const request = {
+            text: 'INSERT INTO step (stp_address_street, stp_date_arrived, tst_id, twn_code_insee, man_id, stp_latitude, stp_longitude) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+            values: [this.address_street, this.date_arrived, this.id_step_type, this.town_code_insee, this.id_manifestation, this.latitude, this.longitude],
+        }
         pool.query(request, (error, _) => {
             if (error) {
                 reject(error)
@@ -37,16 +40,12 @@ const Add = (step) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetById = (id) => {
+Step.prototype.GetById = function() {
     return new Promise((resolve, reject) => {
-        const request = `SELECT stp_id             as id,
-                                stp_address_street as address_street,
-                                twn_code_insee     as town_code_insee,
-                                man_id             as id_manifestation,
-                                tst_id             as id_step_type
-                         FROM step
-                         WHERE stp_id = ${id}
-                           AND stp_is_delete = false`
+        const request = {
+            text: 'select * from filter_step() where id = $1',
+            values: [this.id],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -64,13 +63,14 @@ const GetById = (id) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Delete = (id) => {
+Step.prototype.Delete = function() {
     return new Promise((resolve, reject) => {
-        GetById(id).then((result) => {
+        this.GetById().then((result) => {
             if (result) {
-                const request = `UPDATE step
-                                 SET stp_is_delete = true
-                                 WHERE stp_id = ${id}`
+                const request = {
+                    text: 'UPDATE step SET stp_is_delete = true WHERE stp_id = $1',
+                    values: [this.id],
+                }
                 pool.query(request, (error, _) => {
                     if (error) {
                         reject(error)
@@ -93,16 +93,12 @@ const Delete = (id) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetAll = (id_manifestation = null) => {
+Step.prototype.GetAll = function(id_manifestation = null) {
     return new Promise((resolve, reject) => {
-        let request = `SELECT stp_id             as id,
-                                stp_address_street as address_street,
-                                twn_code_insee     as town_code_insee,
-                                man_id             as id_manifestation,
-                                tst_id             as id_step_type
-                         FROM step
-                         WHERE man_id = ${id_manifestation}
-                           AND stp_is_delete = false`
+        const request = {
+            text: 'select * from filter_step($1)',
+            values: [id_manifestation],
+        }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
@@ -113,5 +109,3 @@ const GetAll = (id_manifestation = null) => {
         });
     });
 }
-
-export default {GetAll, Delete, Add, Step}
