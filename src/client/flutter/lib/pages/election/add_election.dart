@@ -1,30 +1,27 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'package:bo_cyberacy/models/entities/manifestation.dart';
-import 'package:bo_cyberacy/models/services/manifestation_service.dart';
+import 'package:bo_cyberacy/models/entities/election.dart';
+import 'package:bo_cyberacy/models/entities/type_vote.dart';
+import 'package:bo_cyberacy/models/services/vote_service.dart';
+import 'package:bo_cyberacy/pages/vote_page.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import '../../models/dialog/alert_normal.dart';
 import '../../models/errors/api_service_error.dart';
 import '../../models/errors/invalid_form_error.dart';
 import '../../models/notifications/navigation_notification.dart';
+import '../../models/services/ref_service.dart';
 import '../../widgets/buttons/button.dart';
 import '../../widgets/input_field/input_date.dart';
+import '../../widgets/input_field/input_selected.dart';
 import '../../widgets/input_field/input_text.dart';
-import 'package:intl/intl.dart';
 
-import '../manifestion_page.dart';
 
-class AddManifestationPage extends StatelessWidget {
-  static const String routeName = "addManifPage";
-
-  AddManifestationPage({Key? key}) : super(key: key);
+class AddElectionPage extends StatelessWidget {
+  AddElectionPage({Key? key}) : super(key: key);
 
   final TextEditingController ctrlName = TextEditingController();
   final TextEditingController ctrlDtStart = TextEditingController();
   final TextEditingController ctrlDtEnd = TextEditingController();
-  final TextEditingController ctrlObject = TextEditingController();
-  final TextEditingController ctrlSecurityDesc = TextEditingController();
-  final TextEditingController ctrlNbPerson = TextEditingController();
+  TypeVote? currentType;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +36,7 @@ class AddManifestationPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Nouvelle manifestation",
+                "Nouvelle élection",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline1,
               ),
@@ -74,31 +71,23 @@ class AddManifestationPage extends StatelessWidget {
                   ],
                 ),
               ),
-              InputText(
-                placeholder: "Objet",
-                icon: Icons.abc,
+              InputSelected<TypeVote>(
+                future: RefService().getAllTypeVote(),
+                items: [],
+                value: currentType,
+                placeholder: "Type d'élection",
+                icon: Icons.how_to_vote_sharp,
                 width: width,
-                controller: ctrlObject,
-              ),
-              InputText(
-                placeholder: "Description de la sécurité",
-                icon: Icons.shield,
-                width: width,
-                controller: ctrlSecurityDesc,
-              ),
-              InputText(
-                type: TextInputType.number,
-                icon: Icons.group,
-                placeholder: "Estimation du nombre de participant",
-                width: width,
-                controller: ctrlNbPerson,
+                onChanged: (value) {
+                  currentType = value;
+                },
               ),
               SizedBox(height: 10),
               Button(
                 label: "Sauvegarder",
                 width: width,
                 pressedColor: Colors.lightBlue,
-                click: () => _saveParty(context),
+                click: () => _saveElection(context),
               ),
               SizedBox(height: 10),
               Button(
@@ -106,7 +95,7 @@ class AddManifestationPage extends StatelessWidget {
                 width: width,
                 color: Colors.red,
                 pressedColor: Colors.redAccent,
-                click: () => NavigationNotification(ManifestationPage()).dispatch(context),
+                click: () => NavigationNotification(VotePage()).dispatch(context),
               ),
             ],
           ),
@@ -115,19 +104,18 @@ class AddManifestationPage extends StatelessWidget {
     );
   }
 
-  Future<void> _saveParty(BuildContext context) async {
+  Future<void> _saveElection(BuildContext context) async {
     try {
       _formIsValid();
-      Manifestation manif = Manifestation(
+      Election election = Election(
+        id: -1,
         name: ctrlName.text,
         dateStart: DateFormat("dd/MM/yyyy HH:mm").parse(ctrlDtStart.text),
         dateEnd: DateFormat("dd/MM/yyyy HH:mm").parse(ctrlDtEnd.text),
-        object: ctrlObject.text,
-        securityDescription: ctrlSecurityDesc.text,
-        nbPersonEstimate: int.parse(ctrlNbPerson.text),
+        idTypeVote: currentType!.id,
       );
-      await ManifService().addManifestation(manif);
-      NavigationNotification(ManifestationPage()).dispatch(context);
+      await VoteService().addElection(election);
+      NavigationNotification(VotePage()).dispatch(context);
     } on InvalidFormError catch (e) {
       AlertNormal(
         context: context,
@@ -152,14 +140,8 @@ class AddManifestationPage extends StatelessWidget {
       throw InvalidFormError("Le champ \"Date de début\" est obligatoire");
     } else if (ctrlDtEnd.text.isEmpty) {
       throw InvalidFormError("Le champ \"Date de fin\" est obligatoire");
-    } else if (ctrlObject.text.isEmpty) {
-      throw InvalidFormError("Le champ \"Objet\" est obligatoire");
-    } else if (ctrlSecurityDesc.text.isEmpty) {
-      throw InvalidFormError(
-          "Le champ \"Description de la sécurité\" est obligatoire");
-    } else if (ctrlNbPerson.text.isEmpty) {
-      throw InvalidFormError(
-          "Le champ \"Estimation du nombre de participant\" est obligatoire");
+    } else if (currentType == null) {
+      throw InvalidFormError("Le champ \"Type d'élection\" est obligatoire");
     }
   }
 

@@ -35,4 +35,13 @@ class Election{
     return "";
   }
 
+  Object toJson() {
+    return {
+      "name": name,
+      "id_type_vote": idTypeVote.toString(),
+      "date_start": dateStart.toString(),
+      "date_end": dateEnd.toString()
+    };
+  }
+
 }

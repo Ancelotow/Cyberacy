@@ -47,4 +47,17 @@ class VoteService extends ApiService {
     }
   }
 
+  Future<String> addElection(Election election) async {
+    var response = await http.post(
+      getUrl("election", null),
+      headers: await getHeaders(auth: true),
+      body: election.toJson(),
+    );
+    if (response.statusCode == 201) {
+      return response.body;
+    } else {
+      throw ApiServiceError(response);
+    }
+  }
+
 }

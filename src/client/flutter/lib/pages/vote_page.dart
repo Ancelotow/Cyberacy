@@ -1,10 +1,12 @@
 import 'package:bo_cyberacy/models/entities/department.dart';
 import 'package:bo_cyberacy/models/entities/region.dart';
 import 'package:bo_cyberacy/models/services/geo_service.dart';
+import 'package:bo_cyberacy/pages/election/add_election.dart';
 import 'package:bo_cyberacy/widgets/interactive_map.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/entities/election.dart';
+import '../models/notifications/navigation_notification.dart';
 import '../models/services/vote_service.dart';
 import '../widgets/buttons/button_card.dart';
 import '../widgets/cards/card_shimmer.dart';
@@ -151,7 +153,7 @@ class _VotePageState extends State<VotePage> {
       width: 300,
       height: 100,
       color: Theme.of(context).highlightColor,
-      onTap: () => {},
+      onTap: () => NavigationNotification(AddElectionPage()).dispatch(context),
     );
   }
 }
