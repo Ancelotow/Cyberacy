@@ -1,12 +1,18 @@
+import 'package:flutter/material.dart';
+import 'my_color.dart';
+
 class Department {
   String code;
   String name;
   String codeRegion;
+  int? idColor;
+  MyColor? color;
 
   Department({
     required this.code,
     required this.name,
     required this.codeRegion,
+    this.idColor
   });
 
   @override
@@ -19,7 +25,19 @@ class Department {
   Department.fromJson(Map<String, dynamic> json)
       : code = json["code"],
         name = json["name"],
-        codeRegion = json["region_code_insee"];
+        idColor = json["id_color"],
+        codeRegion = json["region_code_insee"] {
+    if(json["color"] != null) {
+      color = MyColor.fromJson(json["color"]);
+    }
+  }
+
+  Color getColor() {
+    if(color != null) {
+      return color!.toColor();
+    }
+    return Colors.grey;
+  }
 
   @override
   String toString() {
