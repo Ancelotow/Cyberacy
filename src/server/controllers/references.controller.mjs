@@ -1,6 +1,6 @@
 import type_step from "../models/step-type.mjs";
 import sex from "../models/sexe.mjs";
-import type_vote from "../models/type-vote.mjs";
+import {TypeVote} from "../models/type-vote.mjs";
 import political_edge from "../models/political-edge.mjs";
 
 /**
@@ -42,7 +42,7 @@ const GetSex = () => {
  */
 const GetTypeVote = () => {
     return new Promise((resolve, _) => {
-        type_vote.Get().then((res) => {
+        new TypeVote().Get().then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {

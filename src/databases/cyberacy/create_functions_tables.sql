@@ -401,17 +401,18 @@ $filter$
 
 
 -- Filtre pour la table vote
-create or replace function filter_vote(_nir person.prs_nir%type, _include_finish boolean default false,
-                                       _include_future boolean default true, _tvo_id vote.tvo_id%type default null)
+create or replace function filter_vote(_nir person.prs_nir%type, _elc_id vote.elc_id%type,
+                                       _include_finish boolean default false, _include_future boolean default true)
     returns table
             (
                 id                 vote.vte_id%type,
                 name               vote.vte_name%type,
-                id_type_vote       vote.tvo_id%type,
+                nb_voter           vote.vte_nb_voter%type,
                 town_code_insee    vote.twn_code_insee%type,
                 department_code    vote.dpt_code%type,
                 reg_code_insee     vote.reg_code_insee%type,
-                id_political_party vote.pop_id%type
+                id_political_party vote.pop_id%type,
+                id_election        vote.elc_id%type
             )
 as
 $filter$
@@ -423,36 +424,33 @@ begin
     return query
         select vte.vte_id         as id,
                vte_name           as name,
-               vte.tvo_id         as id_type_vote,
+               vte.vte_nb_voter   as nb_voter,
                vte.twn_code_insee as town_code_insee,
                vte.dpt_code       as department_code,
                vte.reg_code_insee as reg_code_insee,
-               vte.pop_id         as id_political_party
+               vte.pop_id         as id_political_party,
+               vte.elc_id         as id_election
         from vote vte
                  left join round rnd on vte.vte_id = rnd.vte_id
                  left join adherent adh on vte.pop_id = adh.pop_id and adh_is_left = false and adh.prs_nir = _nir
         where (is_granted = true or is_granted_all = true)
-          and (_tvo_id is null or vte.tvo_id = _tvo_id)
-          and ((vte.tvo_id = 7 and (is_granted_all = true or adh.adh_id is not null)) or vte.tvo_id <> 7)
-          and ((_include_finish = true and rnd.rnd_date_end >= today) or _include_finish = false)
-          and ((_include_future = true and rnd.rnd_date_start <= today) or _include_future = false)
-        order by rnd_date_start;
+          and vte.elc_id = _elc_id
+          and ((_include_finish = false and rnd.rnd_date_end >= today) or _include_finish = true)
+          and ((_include_future = false and rnd.rnd_date_start <= today) or _include_future = true)
+        order by rnd_date_start desc;
 end;
 $filter$
     language plpgsql;
 
 
 -- Filtre pour la table round
-create or replace function filter_round(_nir person.prs_nir%type, _include_finish boolean default false,
-                                        _include_future boolean default true, _tvo_id vote.tvo_id%type default null,
-                                        _vte_id round.vte_id%type default null)
+create or replace function filter_round(_nir person.prs_nir%type, _vte_id round.vte_id%type)
     returns table
             (
                 num        round.rnd_num%type,
                 name       round.rnd_name%type,
                 date_start round.rnd_date_start%type,
                 date_end   round.rnd_date_end%type,
-                nb_voter   round.rnd_nb_voter%type,
                 id_vote    round.vte_id%type
             )
 as
@@ -463,11 +461,9 @@ begin
                rnd_name       as name,
                rnd_date_start as date_start,
                rnd_date_end   as date_end,
-               rnd_nb_voter   as nb_voter,
                vte_id         as id_vote
         from round rnd
-                 join filter_vote(_nir, _include_finish, _include_future, _tvo_id) vte on rnd.vte_id = vte.id
-        where (_vte_id is null or rnd.vte_id = _vte_id)
+        where rnd.vte_id = _vte_id
         order by rnd_date_start, rnd_num;
 end;
 $filter$
@@ -542,6 +538,7 @@ end;
 $filter$
     language plpgsql;
 
+
 -- Statistiques pour les parties politiques (nb meeting)
 create or replace function stats_meeting_from_party(_nir adherent.prs_nir%type,
                                                     _year int default extract(year from now()))
@@ -574,6 +571,7 @@ begin
 end;
 $filter$
     language plpgsql;
+
 
 -- Statistiques pour les parties politiques (cotisation annuelles)
 create or replace function stats_fee_from_party(_nir adherent.prs_nir%type)
@@ -682,80 +680,77 @@ $filter$
 
 
 -- Statistiques pour les absentions par vote
-create or replace function vote_get_absention(_tvo_id type_vote.tvo_id%type default null)
+create or replace function vote_get_absention(_num_round round.rnd_num%type, _tvo_id type_vote.tvo_id%type default null)
     returns table
             (
                 nb_abstention   int,
                 perc_abstention decimal,
-                id_vote         vote.vte_id%type,
-                name_vote       vote.vte_name%type,
-                num_round       round.rnd_num%type,
-                name_round      round.rnd_name%type,
-                id_type_vote    vote.tvo_id%type,
+                date_start      election.elc_date_start%type,
+                id_election     election.elc_id%type,
+                name_election   election.elc_name%type,
+                id_type_vote    election.tvo_id%type,
                 name_type_vote  type_vote.tvo_name%type
             )
 as
 $filter$
 begin
     return query
-        select rnd_nb_voter - get_nb_voter(rnd.vte_id, rnd_num)                                   as nb_abstention,
-               ((rnd_nb_voter - get_nb_voter(rnd.vte_id, rnd_num))::decimal / rnd_nb_voter) * 100 as perc_abstention,
-               rnd.vte_id                                                                         as id_vote,
-               vte_name                                                                           as name_vote,
-               rnd_num                                                                            as num_round,
-               rnd_name                                                                           as name_round,
-               vte.tvo_id                                                                         as id_type_vote,
-               tvo_name                                                                           as name_type_vote
-        from round rnd
-                 left join vote vte on rnd.vte_id = vte.vte_id
-                 left join type_vote tvo on tvo.tvo_id = vte.tvo_id
-        where vte.tvo_id = _tvo_id
+        select get_nb_voter(elc.elc_id) - get_nb_voter_to_vote(elc.elc_id, _num_round) as nb_abstention,
+               ((get_nb_voter(elc.elc_id) - get_nb_voter_to_vote(elc.elc_id, _num_round))::decimal /
+                get_nb_voter(elc.elc_id)) *
+               100                                                                     as perc_abstention,
+               elc_date_start                                                          as date_start,
+               elc_id                                                                  as id_election,
+               elc_name                                                                as name_election,
+               elc.tvo_id                                                              as id_type_vote,
+               tvo_name                                                                as name_type_vote
+        from election elc
+                 join type_vote tvo on elc.tvo_id = tvo.tvo_id
+        where elc.tvo_id = _tvo_id
            or _tvo_id is null
-        order by rnd_date_start desc;
+        order by elc_date_start desc;
 end;
 $filter$
     language plpgsql;
 
 
 -- Statistiques pour les participations par vote
-create or replace function vote_get_participation(_tvo_id type_vote.tvo_id%type default null)
+create or replace function vote_get_participation(_num_round round.rnd_num%type,
+                                                  _tvo_id type_vote.tvo_id%type default null)
     returns table
             (
                 nb_participation   int,
                 perc_participation decimal,
-                id_vote            vote.vte_id%type,
-                name_vote          vote.vte_name%type,
-                num_round          round.rnd_num%type,
-                name_round         round.rnd_name%type,
-                id_type_vote       vote.tvo_id%type,
+                date_start         election.elc_date_start%type,
+                id_election        election.elc_id%type,
+                name_election      election.elc_name%type,
+                id_type_vote       election.tvo_id%type,
                 name_type_vote     type_vote.tvo_name%type
             )
 as
 $filter$
 begin
     return query
-        select get_nb_voter(vte.vte_id, rnd_num)                                 as nb_participation,
-               (get_nb_voter(vte.vte_id, rnd_num)::decimal / rnd_nb_voter) * 100 as perc_participation,
-               rnd.vte_id                                                        as id_vote,
-               vte_name                                                          as name_vote,
-               rnd_num                                                           as num_round,
-               rnd_name                                                          as name_round,
-               vte.tvo_id                                                        as id_type_vote,
-               tvo_name                                                          as name_type_vote
-        from round rnd
-                 left join vote vte on rnd.vte_id = vte.vte_id
-                 left join type_vote tvo on tvo.tvo_id = vte.tvo_id
-        where vte.tvo_id = _tvo_id
+        select get_nb_voter_to_vote(elc.elc_id, _num_round) as nb_participation,
+               (get_nb_voter_to_vote(elc.elc_id, _num_round)::decimal / get_nb_voter(elc.elc_id)) *
+               100                                          as perc_participation,
+               elc_date_start                               as date_start,
+               elc_id                                       as id_election,
+               elc_name                                     as name_election,
+               elc.tvo_id                                   as id_type_vote,
+               tvo_name                                     as name_type_vote
+        from election elc
+                 join type_vote tvo on elc.tvo_id = tvo.tvo_id
+        where elc.tvo_id = _tvo_id
            or _tvo_id is null
-        order by rnd_date_start desc;
+        order by elc_date_start desc;
 end;
 $filter$
     language plpgsql;
 
 
 -- Résultats de vote
-create or replace function vote_get_results(_tvo_id type_vote.tvo_id%type default null,
-                                            _tve_id vote.vte_id%type default null)
+create or replace function vote_get_results(_vte_id vote.vte_id%type)
     returns table
             (
                 id_choice               choice.cho_id%type,
@@ -766,32 +761,267 @@ create or replace function vote_get_results(_tvo_id type_vote.tvo_id%type defaul
                 id_vote                 vote.vte_id%type,
                 name_vote               vote.vte_name%type,
                 num_round               round.rnd_num%type,
-                name_round              round.rnd_name%type,
-                id_type_vote            vote.tvo_id%type,
-                name_type_vote          type_vote.tvo_name%type
+                name_round              round.rnd_name%type
             )
 as
 $filter$
 begin
     return query
-        select cho_id                                                               as id_choice,
-               cho_name                                                             as libelle_choice,
-               cho_nb_vote                                                          as nb_voice,
-               (cho_nb_vote::decimal / rnd_nb_voter) * 100                          as perc_with_abstention,
-               (cho_nb_vote::decimal / get_nb_voter(rnd.vte_id, rnd.rnd_num)) * 100 as perc_without_abstention,
-               rnd.vte_id                                                           as id_vote,
-               vte_name                                                             as name_vote,
-               rnd.rnd_num                                                          as num_round,
-               rnd_name                                                             as name_round,
-               vte.tvo_id                                                           as id_type_vote,
-               tvo_name                                                             as name_type_vote
+        select cho_id                                      as id_choice,
+               cho_name                                    as libelle_choice,
+               cho_nb_vote                                 as nb_voice,
+               (cho_nb_vote::decimal / vte_nb_voter) * 100 as perc_with_abstention,
+               (cho_nb_vote::decimal / get_nb_voter_to_one_vote(rnd.vte_id, rnd.rnd_num)) *
+               100                                         as perc_without_abstention,
+               rnd.vte_id                                  as id_vote,
+               vte_name                                    as name_vote,
+               rnd.rnd_num                                 as num_round,
+               rnd_name                                    as name_round
         from choice cho
                  join round rnd on cho.rnd_num = rnd.rnd_num
                  join vote vte on rnd.vte_id = vte.vte_id
-                 join type_vote tvo on tvo.tvo_id = vte.tvo_id
-        where (rnd.vte_id = _tve_id or _tve_id is null)
-          and (vte.tvo_id = _tvo_id or _tvo_id is null)
+        where rnd.vte_id = _vte_id
         order by rnd_date_start desc, perc_without_abstention desc;
 end;
 $filter$
     language plpgsql;
+
+
+-- Filtre pour la table step
+create or replace function filter_step(_man_id step.man_id%type default null)
+    returns table
+            (
+                id               step.stp_id%type,
+                address_street   step.stp_address_street%type,
+                town_code_insee  step.twn_code_insee%type,
+                town_zip_code    town.twn_zip_code%type,
+                town_name        town.twn_name%type,
+                id_manifestation step.man_id%type,
+                longitude        step.stp_longitude%type,
+                latitude         step.stp_latitude%type,
+                id_step_type     step.tst_id%type,
+                date_arrived     step.stp_date_arrived%type
+            )
+as
+$filter$
+begin
+    return query
+        select stp.stp_id             as id,
+               stp.stp_address_street as address_street,
+               stp.twn_code_insee     as town_code_insee,
+               twn.twn_zip_code       as town_zip_code,
+               twn.twn_name           as town_name,
+               stp.man_id             as id_manifestation,
+               stp.stp_longitude      as longitude,
+               stp.stp_latitude       as latitude,
+               stp.tst_id             as id_step_type,
+               stp.stp_date_arrived   as date_arrived
+        from step stp
+                 left join town twn on stp.twn_code_insee = twn.twn_code_insee
+        where (man_id = _man_id or _man_id is null)
+          and stp.stp_is_delete = false
+        order by date_arrived;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table profile
+create or replace function filter_profile(_nir person.prs_nir%type default null)
+    returns table
+            (
+                id          profile.prf_id%type,
+                name        profile.prf_name%type,
+                description profile.prf_description%type,
+                date_create profile.prf_date_create%type
+            )
+as
+$filter$
+begin
+    return query
+        select prf_id          as id,
+               prf_name        as name,
+               prf_description as description,
+               prf_date_create as date_create
+        from profile
+        where prf_is_delete = false;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table role
+create or replace function filter_role(_nir person.prs_nir%type default null, _prf_id profile.prf_id%type default null)
+    returns table
+            (
+                id          role.rle_id%type,
+                title       role.rle_title%type,
+                description role.rle_description%type,
+                code        role.rle_code%type
+            )
+as
+$filter$
+begin
+    return query
+        select rle.rle_id      as id,
+               rle_title       as title,
+               rle_description as description,
+               rle_code        as code
+        from role rle
+                 left join link_role_profile lrp on rle.rle_id = lrp.rle_id
+        where _prf_id is null
+           or lrp.prf_id = _prf_id;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table département
+create or replace function filter_department(_code_insee department.reg_code_insee%type default null,
+                                             _code department.dpt_code%type default null)
+    returns table
+            (
+                code              department.dpt_code%type,
+                name              department.dpt_name%type,
+                region_code_insee department.reg_code_insee%type,
+                id_color          department.clr_id%type
+            )
+as
+$filter$
+begin
+    return query
+        select dpt_code       as code,
+               dpt_name       as name,
+               reg_code_insee as region_code_insee,
+               clr_id         as id_color
+        from department
+        where (_code_insee is null or reg_code_insee = _code_insee)
+          and (_code is null or dpt_code = _code)
+        order by code;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table town
+create or replace function filter_town(_code_insee town.twn_code_insee%type default null,
+                                       _code town.dpt_code%type default null)
+    returns table
+            (
+                code_insee      town.twn_code_insee%type,
+                name            town.twn_name%type,
+                zip_code        town.twn_zip_code%type,
+                nb_resident     town.twn_nb_resident%type,
+                department_code town.dpt_code%type
+            )
+as
+$filter$
+begin
+    return query
+        select twn_code_insee  as code_insee,
+               twn_name        as name,
+               twn_zip_code    as zip_code,
+               twn_nb_resident as nb_resident,
+               dpt_code        as department_code
+        from town
+        where (_code_insee is null or twn_code_insee = _code_insee)
+          and (_code is null or dpt_code = _code)
+        order by name;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table région
+create or replace function filter_region(_code_insee region.reg_code_insee%type default null)
+    returns table
+            (
+                code_insee region.reg_code_insee%type,
+                name       region.reg_name%type,
+                id_color   region.clr_id%type
+            )
+as
+$filter$
+begin
+    return query
+        select reg_code_insee as code_insee,
+               reg_name       as name,
+               clr_id         as id_color
+        from region
+        where reg_code_insee = _code_insee
+           or _code_insee is null
+        order by name;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table color
+create or replace function filter_color(_id color.clr_id%type default null)
+    returns table
+            (
+                id      color.clr_id%type,
+                name    color.clr_name%type,
+                red     color.clr_red%type,
+                green   color.clr_green%type,
+                blue    color.clr_blue%type,
+                opacity color.clr_opacity%type
+            )
+as
+$filter$
+begin
+    return query
+        select clr_id      as id,
+               clr_name    as name,
+               clr_red     as red,
+               clr_green   as green,
+               clr_blue    as blue,
+               clr_opacity as opacity
+        from color
+        where clr_id = _id
+           or _id is null
+        order by clr_name;
+end;
+$filter$
+    language plpgsql;
+
+
+-- Filtre pour la table élection
+create or replace function filter_election(_nir person.prs_nir%type, _elc_id election.elc_id%type default null,
+                                           _include_finish boolean default false, _include_future boolean default true)
+    returns table
+            (
+                id           election.elc_id%type,
+                name         election.elc_name%type,
+                date_start   election.elc_date_start%type,
+                date_end     election.elc_date_end%type,
+                id_type_vote election.tvo_id%type
+            )
+as
+$filter$
+declare
+    today timestamp := now();
+begin
+    return query
+        select elc.elc_id     as id,
+               elc_name       as name,
+               elc_date_start as date_start,
+               elc_date_end   as date_end,
+               elc.tvo_id     as id_type_vote
+        from election elc
+        where (elc.elc_id = _elc_id or _elc_id is null)
+          and ((_include_finish = false and elc_date_end >= today) or _include_finish = true)
+          and ((_include_future = false and elc_date_start <= today) or _include_future = true)
+        order by elc_date_start desc;
+end;
+$filter$
+    language plpgsql;
+
+/*
+
+
+ and vte.elc_id = _elc_id
+          and ((_include_finish = false and rnd.rnd_date_end >= today) or _include_finish = true)
+          and ((_include_future = false and rnd.rnd_date_start <= today) or _include_future = true)
+
+ */
