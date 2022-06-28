@@ -1,22 +1,3 @@
 <resources>
     <string name="app_name">Cyberacy</string>
-
-    <!-- Buttons -->
-    <string name="btn_login">Log in</string>
-    <string name="btn_register">You don\'t have account ?</string>
-    <string name="btn_forgot_pwd">Forgot password</string>
-    <string name="btn_submit">Submit</string>
-
-    <!-- Hint -->
-    <string name="hint_phone_number">Phone number</string>
-    <string name="hint_email">Email</string>
-    <string name="hint_pwd">Password</string>
-
-    <!-- Text -->
-    <string name="txt_register">Register</string>
-    <string name="txt_last_vote">My last votes</string>
-    <string name="txt_ue_vote">European vote</string>
-    <string name="txt_lg_vote">Legislative vote</string>
-    <string name="txt_prd_vote">Presidential vote</string>
-    <string name="txt_vote_for">To vote for…</string>
 </resources>

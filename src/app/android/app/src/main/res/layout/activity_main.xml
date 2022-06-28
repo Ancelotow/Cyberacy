@@ -1,79 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#3b5998"
-    android:gravity="center"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:layout_width="160dp"
-        android:layout_height="60dp"
-        android:src="@drawable/cyberacy_logo"
-        android:layout_marginTop="70dp"/>
-
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:hint="@string/hint_email"
-        android:padding="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"/>
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:hint="@string/hint_pwd"
-        android:padding="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"/>
-
-    <Button
-        android:id="@+id/log_in"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#577fbc"
-        android:text="@string/btn_login"
-        android:padding="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:textAllCaps="false"
-        android:textColor="#ffffff"
-        android:textSize="18sp"/>
-
-    <Button
-        android:id="@+id/no_account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#577fbc"
-        android:text="@string/btn_register"
-        android:padding="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:textAllCaps="false"
-        android:textColor="#ffffff"
-        android:textSize="18sp"/>
-
     <TextView
-        android:id="@+id/forget_password"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btn_forgot_pwd"
-        android:textColor="#ffffff"
-        android:gravity="center"
-        android:layout_marginTop="30dp"
-        android:textSize="15sp" />
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
