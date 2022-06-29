@@ -17,4 +17,10 @@ interface ApiService {
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<List<PoliticalParty>?>
 
+    @POST("political_party/{id}/join")
+    fun joinParty(
+        @Path("id") id: Int,
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<String>
+
 }
