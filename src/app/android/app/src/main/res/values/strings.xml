@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Cyberacy</string>
+
+    <string name="desc_logo">logo</string>
+
+    <!-- hint -->
+    <string name="hint_nir">Numéro de sécurité sociale</string>
+    <string name="hint_pwd">Mot de passe</string>
+
+    <!-- button -->
+    <string name="btn_login">Connection</string>
+
 </resources>
