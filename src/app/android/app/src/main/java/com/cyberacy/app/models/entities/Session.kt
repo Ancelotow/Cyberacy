@@ -19,10 +19,17 @@ class Session private constructor(private val jwtToken: String) {
         fun getSession(): Session? {
             return instance
         }
+
+        fun getJwtToken(): String {
+            if(instance != null) {
+                return instance!!.jwtToken
+            }
+            return ""
+        }
     }
 
-    fun getJwtToken(): String {
-        return this.jwtToken
-    }
+
+
+
 
 }

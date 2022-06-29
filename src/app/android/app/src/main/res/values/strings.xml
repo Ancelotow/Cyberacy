@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Cyberacy</string>
 
+    <!-- description -->
     <string name="desc_logo">logo</string>
 
     <!-- hint -->
@@ -15,6 +16,9 @@
     <string name="nav_party">Parti politique</string>
     <string name="nav_manifestation">Manifestations</string>
     <string name="nav_vote">Votes</string>
+
+    <!-- text -->
+    <string name="txt_no_party">Sélectionnez un parti politique à rejoindre</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

@@ -10,4 +10,6 @@
 
     <color name="navy">#10167C</color>
     <color name="accent">#2833F8</color>
+    <color name="shimmerColor">#C2C2C2</color>
+    <color name="cardColor">#74869EF4</color>
 </resources>

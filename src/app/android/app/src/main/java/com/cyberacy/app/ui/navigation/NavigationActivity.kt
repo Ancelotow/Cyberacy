@@ -34,6 +34,6 @@ class NavigationActivity : AppCompatActivity() {
         val navHost = supportFragmentManager.findFragmentById(R.id.host_view) as NavHostFragment
         setupWithNavController(navBar, navHost.navController)
 
-        Session.getSession()?.let { Log.v("JWT TOKEN", it.getJwtToken()) }
+        Log.v("JWT TOKEN", Session.getJwtToken())
     }
 }
