@@ -9,5 +9,13 @@
 
     <!-- button -->
     <string name="btn_login">Connection</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
+
+    <!-- navigation bottom bar-->
+    <string name="nav_party">Parti politique</string>
+    <string name="nav_manifestation">Manifestations</string>
+    <string name="nav_vote">Votes</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

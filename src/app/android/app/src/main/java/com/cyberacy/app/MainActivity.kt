@@ -1,5 +1,6 @@
 package com.cyberacy.app
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.cyberacy.app.models.entities.Connection
 import com.cyberacy.app.models.entities.Session
 import com.cyberacy.app.models.services.ApiConnection
+import com.cyberacy.app.ui.navigation.NavigationActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
@@ -24,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var layoutLogin: TextInputLayout
     lateinit var layoutPassword: TextInputLayout
     lateinit var btnConnection: MaterialButton
-    lateinit var circulaProgress: CircularProgressIndicator
+    lateinit var circularProgress: CircularProgressIndicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         layoutLogin = findViewById(R.id.layout_login)
         layoutPassword = findViewById(R.id.layout_password)
         btnConnection = findViewById(R.id.btnConnection)
-        circulaProgress = findViewById(R.id.progress_circular)
+        circularProgress = findViewById(R.id.progress_circular)
         btnConnection.setOnClickListener { this.connection() }
     }
 
@@ -54,20 +56,22 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        circulaProgress.visibility = View.VISIBLE
+        circularProgress.visibility = View.VISIBLE
         btnConnection.visibility = View.GONE
         lifecycleScope.launch {
             val infoConnection = Connection(nir, pwd)
             try{
                 val token = ApiConnection.connection().login(infoConnection).await()
                 Session.openSession(token)
+                val i = Intent(this@MainActivity, NavigationActivity::class.java)
+                startActivity(i)
             } catch (e: HttpException) {
                 if(e.code() == 401) {
                     layoutLogin.error = "L'identidiant et/ou le mot de passe sont incorrects"
                     password.text = null
                 }
             } finally {
-                circulaProgress.visibility = View.GONE
+                circularProgress.visibility = View.GONE
                 btnConnection.visibility = View.VISIBLE
             }
         }
