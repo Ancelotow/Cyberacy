@@ -46,6 +46,18 @@ class PoliticalParty(
             }
         }
 
+        suspend fun getPoliticalPartyById(id: Int): PoliticalParty? {
+            try{
+                val result = ApiConnection.connection().getPoliticalParty(false, id).await() ?: emptyList()
+                if(result.isEmpty()) {
+                    return null
+                }
+                return result[0]
+            } catch (e: HttpException) {
+                throw e
+            }
+        }
+
     }
 
 }

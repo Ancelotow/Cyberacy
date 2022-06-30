@@ -31,6 +31,17 @@ object PoliticalPartyRepository {
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun fetchPartyById(id: Int): Flow<PartyState> {
+        return flow {
+            emit(PartyStateLoading)
+            try {
+                emit(PartyStateSuccessMine(PoliticalParty.getPoliticalPartyById(id)))
+            } catch (e: HttpException) {
+                emit(PartyStateError(e))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
 }
 
 sealed class PartyState

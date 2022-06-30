@@ -13,6 +13,7 @@ import com.cyberacy.app.models.repositories.PartyStateError
 import com.cyberacy.app.models.repositories.PartyStateLoading
 import com.cyberacy.app.models.repositories.PartyStateSuccessMine
 import com.cyberacy.app.ui.party.join_party.JoinPartyFragment
+import com.cyberacy.app.ui.party.main_party.MainPartyFragment
 import com.google.android.material.progressindicator.CircularProgressIndicator
 
 class PartyFragment : Fragment() {
@@ -46,16 +47,20 @@ class PartyFragment : Fragment() {
                     loader.visibility = View.GONE
                     childView.visibility = View.VISIBLE
                     if(it.party != null) {
-                        Log.e("PARTY", "Already join this !")
+                        changeView(MainPartyFragment.newInstance(it.party.id))
                     } else {
-                        childFragmentManager.beginTransaction()
-                            .replace(R.id.party_view, JoinPartyFragment())
-                            .commit()
+                        changeView(JoinPartyFragment())
                     }
                 }
                 else -> {}
             }
         }
+    }
+
+    fun changeView(view: Fragment) {
+        childFragmentManager.beginTransaction()
+            .replace(R.id.party_view, view)
+            .commit()
     }
 
 }
