@@ -24,4 +24,9 @@ interface ApiService {
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<String>
 
+    @GET("thread")
+    fun getThreads(
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<List<Thread>?>
+
 }

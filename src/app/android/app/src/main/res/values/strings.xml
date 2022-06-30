@@ -23,8 +23,7 @@
     <string name="txt_no_party">Sélectionnez un parti politique à rejoindre</string>
     <string name="txt_join_party">Rejoindre un parti</string>
     <string name="txt_join_party_cancel">Annulation</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="txt_messagerie">Messagerie</string>
 
 
 </resources>
