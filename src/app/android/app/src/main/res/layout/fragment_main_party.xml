@@ -46,7 +46,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:text="@string/txt_no_party"
-            android:textColor="@color/black"
             android:fontFamily="@font/hk_nova"
             android:textSize="20sp"
             android:textAlignment="textStart"
