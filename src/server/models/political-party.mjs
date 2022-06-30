@@ -126,12 +126,9 @@ const GetAll = () => {
  */
 const Get = (nir = null, includeLeft = false, siren = null, idPoliticalParty = null) => {
     return new Promise((resolve, reject) => {
-        const _nir = (nir == null) ? null : `'${nir}'`
-        const _siren = (siren == null) ? null : `'${siren}'`
-        const _idPoliticalParty = (idPoliticalParty == null) ? null : `${idPoliticalParty}`
         const request = {
             text: 'SELECT * FROM filter_political_party($1, $2, $3, $4)',
-            values: [_nir, _siren, _idPoliticalParty, includeLeft],
+            values: [nir, siren, idPoliticalParty, includeLeft],
         }
         pool.query(request, (error, result) => {
             if (error) {
