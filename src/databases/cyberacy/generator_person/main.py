@@ -1,5 +1,7 @@
 import json
 import csv
+from multiprocessing import Process
+
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import names
@@ -30,27 +32,37 @@ def get_all_town():
     results_town = []
     with get_connection() as conn:
         with conn.cursor(cursor_factory=RealDictCursor) as cursor:
-            request = '''SELECT * FROM town WHERE dpt_code = '75' '''
+            request = '''SELECT * FROM town WHERE dpt_code = '01' '''
             cursor.execute(request)
             results_town = cursor.fetchall()
         conn.commit()
     return results_town
 
 
+def insert_person(town):
+    list_persons = []
+    for i in range(0, town["twn_nb_resident"]):
+        list_persons.append(Person(town["twn_code_insee"]).__dict__)
+    with get_connection() as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+            request = '''
+                INSERT INTO person(prs_nir, prs_firstname, prs_lastname, prs_email, twn_code_insee, sex_id) 
+                VALUES(%(nir)s, %(firstname)s, %(name)s, %(email)s, %(town_code)s, %(sex)s)          
+            '''
+            cursor.executemany(request, tuple(list_persons))
+            print(town["twn_name"])
+        conn.commit()
+
+
 def main():
     list_towns = get_all_town()
-    list_persons = []
-    index = 0
+    list_tasks = []
     for town in list_towns:
-        for i in range(0, town["twn_nb_resident"]):
-            index += 1
-            list_persons.append(Person(town["twn_code_insee"]).__dict__)
-            print(index)
-    keys = list_persons[0].keys()
-    with open("persons.csv", "a") as file:
-        dict_writer = csv.DictWriter(file, keys)
-        dict_writer.writeheader()
-        dict_writer.writerows(list_persons)
+        task = Process(target=insert_person, args=(town, ))
+        task.start()
+        list_tasks.append(task)
+    for task in list_tasks:
+        task.join()
 
 
 if __name__ == "__main__":
