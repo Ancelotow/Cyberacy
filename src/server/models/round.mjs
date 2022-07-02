@@ -1,4 +1,5 @@
 import {pool} from "../middlewares/postgres.mjs";
+import {Department} from "./department.mjs";
 
 class Round {
     num
@@ -6,6 +7,7 @@ class Round {
     name
     date_start
     date_end
+    choices = []
 }
 
 /**
@@ -37,9 +39,6 @@ Round.prototype.Add = function () {
 /**
  * Récupère la liste des tours de votes selon les filtres
  * @param nir Le NIR de l'utilisateur
- * @param includeFinish Inclus les votes passés
- * @param includeFuture Inclus les votes futur
- * @param idTypeVote L'id du type de vote
  * @param idVote L'id du vote
  * @returns {Promise<unknown>}
  * @constructor
@@ -54,8 +53,9 @@ Round.prototype.Get = function (nir, idVote) {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows : null
-                resolve(res)
+                let listRounds = []
+                result.rows.forEach(e => listRounds.push(Object.assign(new Round(), e)));
+                resolve(listRounds)
             }
         });
     });

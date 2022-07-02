@@ -191,7 +191,10 @@ const GetRound = (nir, idVote) => {
             return
         }
         new Round().Get(nir, idVote).then((res) => {
-            const code = (res) ? 200 : 204;
+            const code = (res.length > 0) ? 200 : 204;
+            for (let i = 0; i < res.length; i++) {
+                res[i].choices = new Choice().Get(nir, res[i].num_round, idVote)
+            }
             resolve({status: code, data: res})
         }).catch((e) => {
             if (e.code === '23503') resolve({status: 400, data: e.message})
