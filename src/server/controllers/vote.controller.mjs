@@ -167,6 +167,7 @@ const GetElection = (nir, idElection = null, includeFinish = false, includeFutur
             for (let i = 0; i < res.length; i++) {
                 let listTypes = await new TypeVote().Get()
                 res[i].type_vote = listTypes.filter(e => e.id === res[i].id_type_vote)[0]
+                res[i].votes = await new Vote().Get(nir, res[i].id, true, true)
             }
             resolve({status: code, data: res})
         }).catch((e) => {
@@ -179,9 +180,6 @@ const GetElection = (nir, idElection = null, includeFinish = false, includeFutur
 /**
  * Récupère la liste des tours de votes selon les filtres
  * @param nir Le NIR de l'utilisateur
- * @param includeFinish Inclus les votes passés
- * @param includeFuture Inclus les votes futur
- * @param idTypeVote L'id du type de vote
  * @param idVote L'id du vote
  * @returns {Promise<unknown>}
  * @constructor

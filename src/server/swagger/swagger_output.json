@@ -469,7 +469,7 @@
             "name": "address_street",
             "in": "query",
             "description": "L'adresse (rue).",
-            "type": "boolean"
+            "type": "string"
           },
           {
             "name": "zip_code",

@@ -55,7 +55,7 @@ routerGeo.get("/coordinates", async (req, res) => {
     /* #swagger.parameters['address_street'] = {
           in: 'query',
           description: 'L\'adresse (rue).',
-          type: 'boolean'
+          type: 'string'
    } */
 
     const response = await geographyCtrl.GetCoordinates(req.query.address_street, req.query.zip_code)
