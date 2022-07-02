@@ -40,6 +40,7 @@ const authToken = (req, res, next) => {
         if (err) {
             return res.sendStatus(403)
         }
+        console.log(data)
         // utilisateur reconnu
         req.data = data
         next()

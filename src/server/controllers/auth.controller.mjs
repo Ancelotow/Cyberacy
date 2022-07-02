@@ -41,43 +41,45 @@ const Authentication = async (nir, password, code_role) => {
     return new Promise(async (resolve, _) => {
         if(nir == null || password == null) {
             resolve({status: 400, data: "Missing parameters."})
+            return
         } else if (code_role == null) {
             resolve({status: 500, data: "Missing code role."})
+            return
         }
         try{
             const res = await GetByIdAndPassword(nir, password);
             if(!res) {
                 resolve({status: 401, data: "This NIR and password not matching."})
+                return
             }
             const isGranted = await IsGranted(nir, code_role);
             if(!isGranted) {
                 resolve({status: 401, data: "You are not allowed to access at this ressources."})
+                return
             }
-            resolve({status: 200, data: GenerateToken(nir)})
+            resolve({status: 200, data: GenerateToken(res)})
         } catch(error) {
             resolve({status: 500, data: error})
         }
-        GetByIdAndPassword(nir, password).then((res) => {
-            if(!res) {
-                resolve({status: 401, data: "This NIR and password not matching."})
-            }
-            resolve({status: 200, data: GenerateToken(nir)})
-        }).catch((e) => {
-        })
     });
 }
 
 /**
  * Génère le JWT token
- * @param nir Le NIR (aussi appelé numéro de sécurité sociale)
  * @returns {*|null}
  * @constructor
+ * @param person
  */
-const GenerateToken = (nir) => {
-    if(!nir) {
+const GenerateToken = (person) => {
+    if(!person) {
         return null
     }
-    return jwt.sign({nir}, process.env.TOKEN, { expiresIn: "1d" })
+    try{
+        return jwt.sign(person, process.env.TOKEN, { expiresIn: "2800s" })
+    } catch(e) {
+        console.log(e)
+        throw e
+    }
 }
 
 export {Register, Authentication}

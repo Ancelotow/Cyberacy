@@ -46,7 +46,7 @@ const GetById = (nir) => {
 const GetByIdAndPassword = (nir, password) => {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'SELECT * FROM person WHERE prs_nir = $1 AND prs_password = $2',
+            text: 'SELECT f.* FROM filter_person($1) f JOIN person p ON f.nir = p.prs_nir AND nir = $1 AND prs_password = $2',
             values: [nir, password],
         }
         pool.query(request, (error, result) => {

@@ -87,7 +87,7 @@ routerMsg.post("/thread/:id/message", async (req, res) => {
           }
     */
 
-    const response = await messagingCtrl.AddMessage(req.data.nir, req.params.id, req.body)
+    const response = await messagingCtrl.AddMessage(req.data, req.params.id, req.body)
     res.status(response.status).send(response.data)
 });
 

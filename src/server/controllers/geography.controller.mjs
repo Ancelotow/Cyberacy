@@ -3,8 +3,6 @@ import {Department} from "../models/department.mjs";
 import {Town} from "../models/town.mjs";
 import axios from "axios";
 import {config} from "dotenv";
-import {TypeVote} from "../models/type-vote.mjs";
-import {Round} from "../models/round.mjs";
 import {Color} from "../models/color.mjs";
 
 class Coordinates {

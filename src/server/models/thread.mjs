@@ -61,6 +61,30 @@ const Get = (nir, onlyMine = true) => {
 }
 
 /**
+ * Récupère un thread par son ID
+ * @param nir Le NIR de l'utilisateur
+ * @param id L'ID du Thread
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetById = (nir, id) => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT * FROM filter_thread($1, false) WHERE id = $2',
+            values: [nir, id],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows[0] : null
+                resolve(res)
+            }
+        });
+    });
+}
+
+/**
  * Vérifie si un thread éxiste ou non selon l'id
  * @param id L'id du thread
  * @returns {Promise<unknown>}
@@ -194,4 +218,4 @@ const Update = (thread) => {
     });
 }
 
-export default {Thread, Add, ChangeMainThread, Delete, IfExists, Update, Get}
+export default {Thread, Add, ChangeMainThread, Delete, IfExists, Update, Get, GetById}

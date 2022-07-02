@@ -13,8 +13,8 @@ Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
-  "name": "Test",
-  "id_political_party": 3
+  "name": "Thread principal",
+  "id_political_party": 26
 }
 
 ###
@@ -25,9 +25,9 @@ Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
-  "id": 2,
-  "name": "THE_TEST",
-  "id_political_party": 3
+  "id": 68,
+  "name": "LREM : Générale",
+  "id_political_party": 26
 }
 
 ###
@@ -44,12 +44,14 @@ Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Publish message
-POST {{url}}/thread/29/message
+POST {{url}}/thread/68/message
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
-Content-Type: text/plain
+Content-Type: application/json
 
-"Salut tout le monde !"
+{
+  "message": "Salut tout le monde !"
+}
 
 
 ###
@@ -68,7 +70,7 @@ Content-Type: application/json
 
 ###
 # @name Join thread
-POST {{url}}/thread/29/join
+POST {{url}}/thread/68/join
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 Content-Type: application/json

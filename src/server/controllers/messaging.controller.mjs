@@ -2,6 +2,7 @@ import threadMod from "../models/thread.mjs";
 import messageMod from "../models/message.mjs";
 import memberMod from "../models/member.mjs";
 import adherentMod from "../models/adherent.mjs";
+import {NotificationPush} from "../models/notification-push.mjs";
 
 /**
  * Ajoute un nouveau thread
@@ -129,28 +130,43 @@ const GetThread = (nir, onlyMine = true) => {
 
 /**
  * Publie un nouveau message
- * @param nir Le NIR de la personne qui publie le message
+ * @param person
  * @param idThread L'ID du thread
  * @param message Le message à publier
  * @returns {Promise<unknown>}
  * @constructor
  */
-const AddMessage = (nir, idThread, message) => {
+const AddMessage = (person, idThread, message) => {
     return new Promise(async (resolve, _) => {
-        if (!idThread || !message) {
+        if (idThread == null || message == null) {
+            resolve({status: 400, data: "Missing parameters."})
+        }
+        else if (message.message == null) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            const idMember = await memberMod.GetMemberIdByNIR(nir, idThread);
+            const idMember = await memberMod.GetMemberIdByNIR(person.nir, idThread);
             if (idMember === null || idMember === -1) {
                 resolve({status: 400, data: "You are not in this thread."})
             } else {
-                messageMod.Add(message, idThread, idMember).then((res) => {
+                messageMod.Add(message.message, idThread, idMember).then(async (res) => {
                     if (res) {
+                        // Envoi d'une notification PUSH lorsqu'un message est ajouté
+                        try {
+                            let notif = new NotificationPush()
+                            let nameSender = `${person.lastname} ${person.firstname}`
+                            let thread = await threadMod.GetById(person.nir, idThread)
+                            notif.priority = "high"
+                            notif.InitMessage(`(${thread.name}) Nouveau message`, `${nameSender} : ${message.message}`)
+                            await notif.Send()
+                        } catch (e) {
+                            console.log(e)
+                        }
                         resolve({status: 201, data: "The message has been published."})
                     } else {
                         resolve({status: 400, data: "This message already published."})
                     }
                 }).catch((e) => {
+                    console.log(e)
                     if (e.code === '23503') resolve({status: 400, data: e.message})
                     resolve({status: 500, data: e})
                 })
