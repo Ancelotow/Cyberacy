@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_party"
+        android:icon="@drawable/ic_party"
+        android:title="@string/nav_party" />
+
+    <item
+        android:id="@+id/navigation_vote"
+        android:icon="@drawable/ic_vote"
+        android:title="@string/nav_vote" />
+
+    <item
+        android:id="@+id/navigation_manifestation"
+        android:icon="@drawable/ic_manifestation"
+        android:title="@string/nav_manifestation" />
+
+</menu>

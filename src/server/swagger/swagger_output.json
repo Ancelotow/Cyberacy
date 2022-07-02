@@ -458,13 +458,108 @@
         "responses": {}
       }
     },
-    "/vote": {
+    "/coordinates": {
+      "get": {
+        "tags": [
+          "Geography"
+        ],
+        "description": "Récupération des coordonnées géographique d\\'une adresse.",
+        "parameters": [
+          {
+            "name": "address_street",
+            "in": "query",
+            "description": "L'adresse (rue).",
+            "type": "boolean"
+          },
+          {
+            "name": "zip_code",
+            "in": "query",
+            "description": "Le code postale",
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/election": {
       "post": {
         "tags": [
-          "Vote"
+          "Election"
+        ],
+        "description": "Ajout de une nouvelle élection.",
+        "parameters": [
+          {
+            "name": "election",
+            "in": "body",
+            "description": "La nouvelle élection",
+            "schema": {
+              "$ref": "#/definitions/AddElection"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Récupère la liste des élections.",
+        "parameters": [
+          {
+            "name": "includeFinish",
+            "in": "query",
+            "description": "Inclure les votes passés (exclus par défaut)",
+            "type": "boolean"
+          },
+          {
+            "name": "includeFuture",
+            "in": "query",
+            "description": "Inclure les futures votes (include pas défaut)",
+            "type": "boolean"
+          },
+          {
+            "name": "idElection",
+            "in": "query",
+            "description": "L'id d'une élection recherchée",
+            "type": "number"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/election/{id}/vote": {
+      "post": {
+        "tags": [
+          "Election"
         ],
         "description": "Ajout de un nouveau vote.",
         "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          },
           {
             "name": "vote",
             "in": "body",
@@ -483,10 +578,16 @@
       },
       "get": {
         "tags": [
-          "Vote"
+          "Election"
         ],
-        "description": "Récupère les votes.",
+        "description": "Récupère les votes d",
         "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "includeFinish",
             "in": "query",
@@ -517,7 +618,7 @@
     "/vote/{id}/round": {
       "post": {
         "tags": [
-          "Vote"
+          "Election"
         ],
         "description": "Ajout de un nouveau tour de vote.",
         "parameters": [
@@ -542,38 +643,18 @@
             "Bearer": []
           }
         ]
-      }
-    },
-    "/round": {
+      },
       "get": {
         "tags": [
-          "Vote"
+          "Election"
         ],
         "description": "Récupère les tours de vote.",
         "parameters": [
           {
-            "name": "includeFinish",
-            "in": "query",
-            "description": "Inclure les votes passés (exclus par défaut)",
-            "type": "boolean"
-          },
-          {
-            "name": "includeFuture",
-            "in": "query",
-            "description": "Inclure les futures votes (include pas défaut)",
-            "type": "boolean"
-          },
-          {
-            "name": "idTypeVote",
-            "in": "query",
-            "description": "Le type de votes",
-            "type": "int"
-          },
-          {
-            "name": "idVote",
-            "in": "query",
-            "description": "Le vote",
-            "type": "int"
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {},
@@ -587,7 +668,7 @@
     "/vote/{id_vote}/round/{num_round}/choice": {
       "post": {
         "tags": [
-          "Vote"
+          "Election"
         ],
         "description": "Ajout de un nouveau choix.",
         "parameters": [
@@ -621,7 +702,7 @@
       },
       "get": {
         "tags": [
-          "Vote"
+          "Election"
         ],
         "description": "Récupère les choix pour un tour de vote donné.",
         "parameters": [
@@ -649,7 +730,7 @@
     "/vote/{id_vote}/round/{num_round}": {
       "post": {
         "tags": [
-          "Vote"
+          "Election"
         ],
         "description": "Voter pour un tour de vote donné",
         "parameters": [
@@ -1422,6 +1503,12 @@
         "description": "Récupération des statistiques d\\'abstention aux votes.",
         "parameters": [
           {
+            "name": "numRound",
+            "in": "query",
+            "description": "Le numéro du tour de vote",
+            "type": "number"
+          },
+          {
             "name": "typeVote",
             "in": "query",
             "description": "Trié par type de vote (NULL pour tout inclure)",
@@ -1444,6 +1531,12 @@
         "description": "Récupération des statistiques de participation aux votes.",
         "parameters": [
           {
+            "name": "numRound",
+            "in": "query",
+            "description": "Le numéro du tour de vote",
+            "type": "number"
+          },
+          {
             "name": "typeVote",
             "in": "query",
             "description": "Trié par type de vote (NULL pour tout inclure)",
@@ -1458,7 +1551,7 @@
         ]
       }
     },
-    "/statistics/vote/results": {
+    "/statistics/vote/{id}/results": {
       "get": {
         "tags": [
           "Statistiques"
@@ -1466,16 +1559,10 @@
         "description": "Récupération des résultats aux votes.",
         "parameters": [
           {
-            "name": "typeVote",
-            "in": "query",
-            "description": "Trié par type de vote (NULL pour tout inclure)",
-            "type": "number"
-          },
-          {
-            "name": "vote",
-            "in": "query",
-            "description": "Trié par vote (NULL pour tout inclure)",
-            "type": "number"
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {},
@@ -1610,7 +1697,7 @@
       "properties": {
         "address_street": {
           "type": "string",
-          "example": "23 avenue du Générale De Gaulle"
+          "example": "6 parvis de Notre-Dame - Pl. Jean-Paul II"
         },
         "date_arrived": {
           "type": "string",
@@ -1626,7 +1713,15 @@
         },
         "town_code_insee": {
           "type": "string",
-          "example": "11003"
+          "example": "75104"
+        },
+        "latitude": {
+          "type": "number",
+          "example": 48.8535738
+        },
+        "longitude": {
+          "type": "number",
+          "example": 2.3514893
         }
       }
     },
@@ -1656,6 +1751,10 @@
         "id_political_party": {
           "type": "number",
           "example": 1
+        },
+        "nb_voter": {
+          "type": "number",
+          "example": 58000000
         }
       }
     },
@@ -1677,10 +1776,6 @@
         "date_end": {
           "type": "string",
           "example": "2022-04-29 20:00"
-        },
-        "nb_voter": {
-          "type": "number",
-          "example": 58000000
         }
       }
     },
@@ -1859,6 +1954,27 @@
         "candidat_nir": {
           "type": "string",
           "example": "012457832032045"
+        }
+      }
+    },
+    "AddElection": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Présidentielle 2022"
+        },
+        "date_start": {
+          "type": "string",
+          "example": "2022-04-10 08:00"
+        },
+        "date_end": {
+          "type": "string",
+          "example": "2022-04-24 20:00"
+        },
+        "id_type_vote": {
+          "type": "number",
+          "example": 1
         }
       }
     }

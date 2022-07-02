@@ -3,8 +3,48 @@ import express from "express"
 
 const routerVote = express.Router()
 
-routerVote.post("/vote", async (req, res) => {
-    // #swagger.tags = ['Vote']
+routerVote.post("/election", async (req, res) => {
+    // #swagger.tags = ['Election']
+    // #swagger.description = 'Ajout de une nouvelle élection.'
+    // #swagger.security = [{ "Bearer": [] }]
+    /*  #swagger.parameters['election'] = {
+                               in: 'body',
+                               description: 'La nouvelle élection',
+                               schema: { $ref: '#/definitions/AddElection' }
+    } */
+
+    const response = await voteCtrl.AddElection(req.body)
+    res.status(response.status).send(response.data)
+});
+
+routerVote.get("/election", async (req, res) => {
+    // #swagger.tags = ['Election']
+    // #swagger.description = 'Récupère la liste des élections.'
+    // #swagger.security = [{ "Bearer": [] }]
+    /* #swagger.parameters['includeFinish'] = {
+         in: 'query',
+         description: 'Inclure les votes passés (exclus par défaut)',
+         type: 'boolean'
+    } */
+    /* #swagger.parameters['includeFuture'] = {
+         in: 'query',
+         description: 'Inclure les futures votes (include pas défaut)',
+         type: 'boolean'
+    } */
+    /* #swagger.parameters['idElection'] = {
+        in: 'query',
+        description: 'L\'id d\'une élection recherchée',
+        type: 'number'
+   } */
+
+    const includeFinish = (req.query.includeFinish == null) ? false : req.query.includeFinish
+    const includeFuture = (req.query.includeFuture == null) ? true : req.query.includeFuture
+    const response = await voteCtrl.GetElection(req.data.nir, req.query.idElection, includeFinish, includeFuture)
+    res.status(response.status).send(response.data)
+});
+
+routerVote.post("/election/:id/vote", async (req, res) => {
+    // #swagger.tags = ['Election']
     // #swagger.description = 'Ajout de un nouveau vote.'
     // #swagger.security = [{ "Bearer": [] }]
     /*  #swagger.parameters['vote'] = {
@@ -13,13 +53,13 @@ routerVote.post("/vote", async (req, res) => {
                                schema: { $ref: '#/definitions/AddVote' }
     } */
 
-    const response = await voteCtrl.AddVote(req.body)
+    const response = await voteCtrl.AddVote(req.body, req.query.id)
     res.status(response.status).send(response.data)
 });
 
-routerVote.get("/vote", async (req, res) => {
-    // #swagger.tags = ['Vote']
-    // #swagger.description = 'Récupère les votes.'
+routerVote.get("/election/:id/vote", async (req, res) => {
+    // #swagger.tags = ['Election']
+    // #swagger.description = 'Récupère les votes d'une élection.'
     // #swagger.security = [{ "Bearer": [] }]
     /* #swagger.parameters['includeFinish'] = {
          in: 'query',
@@ -39,12 +79,12 @@ routerVote.get("/vote", async (req, res) => {
 
     const includeFinish = (req.query.includeFinish == null) ? false : req.query.includeFinish
     const includeFuture = (req.query.includeFuture == null) ? true : req.query.includeFuture
-    const response = await voteCtrl.GetVote(req.data.nir, includeFinish, includeFuture, req.query.idTypeVote)
+    const response = await voteCtrl.GetVote(req.data.nir, req.params.id, includeFinish, includeFuture)
     res.status(response.status).send(response.data)
 });
 
 routerVote.post("/vote/:id/round", async (req, res) => {
-    // #swagger.tags = ['Vote']
+    // #swagger.tags = ['Election']
     // #swagger.description = 'Ajout de un nouveau tour de vote.'
     // #swagger.security = [{ "Bearer": [] }]
     /*  #swagger.parameters['round'] = {
@@ -53,44 +93,21 @@ routerVote.post("/vote/:id/round", async (req, res) => {
                                schema: { $ref: '#/definitions/AddRoundVote' }
     } */
 
-
     const response = await voteCtrl.AddRound(req.body, req.params.id)
     res.status(response.status).send(response.data)
 });
 
-routerVote.get("/round", async (req, res) => {
-    // #swagger.tags = ['Vote']
+routerVote.get("/vote/:id/round", async (req, res) => {
+    // #swagger.tags = ['Election']
     // #swagger.description = 'Récupère les tours de vote.'
     // #swagger.security = [{ "Bearer": [] }]
-    /* #swagger.parameters['includeFinish'] = {
-         in: 'query',
-         description: 'Inclure les votes passés (exclus par défaut)',
-         type: 'boolean'
-    } */
-    /* #swagger.parameters['includeFuture'] = {
-         in: 'query',
-         description: 'Inclure les futures votes (include pas défaut)',
-         type: 'boolean'
-    } */
-    /* #swagger.parameters['idTypeVote'] = {
-         in: 'query',
-         description: 'Le type de votes',
-         type: 'int'
-    } */
-    /* #swagger.parameters['idVote'] = {
-         in: 'query',
-         description: 'Le vote',
-         type: 'int'
-    } */
 
-    const includeFinish = (req.query.includeFinish == null) ? false : req.query.includeFinish
-    const includeFuture = (req.query.includeFuture == null) ? true : req.query.includeFuture
-    const response = await voteCtrl.GetRound(req.data.nir, includeFinish, includeFuture, req.query.idTypeVote, req.query.idVote)
+    const response = await voteCtrl.GetRound(req.data.nir, req.params.id)
     res.status(response.status).send(response.data)
 });
 
 routerVote.post("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
-    // #swagger.tags = ['Vote']
+    // #swagger.tags = ['Election']
     // #swagger.description = 'Ajout de un nouveau choix.'
     // #swagger.security = [{ "Bearer": [] }]
     /*  #swagger.parameters['choice'] = {
@@ -105,7 +122,7 @@ routerVote.post("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
 });
 
 routerVote.get("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
-    // #swagger.tags = ['Vote']
+    // #swagger.tags = ['Election']
     // #swagger.description = 'Récupère les choix pour un tour de vote donné.'
     // #swagger.security = [{ "Bearer": [] }]
 
@@ -114,7 +131,7 @@ routerVote.get("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
 });
 
 routerVote.post("/vote/:id_vote/round/:num_round", async (req, res) => {
-    // #swagger.tags = ['Vote']
+    // #swagger.tags = ['Election']
     // #swagger.description = 'Voter pour un tour de vote donné'
     // #swagger.security = [{ "Bearer": [] }]
 

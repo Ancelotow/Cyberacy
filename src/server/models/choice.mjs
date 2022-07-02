@@ -14,15 +14,14 @@ class Choice{
 
 /**
  * Ajoute un nouveau choix pour un vote
- * @param choice Le nouveau choix
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Add = (choice) => {
+Choice.prototype.Add = function() {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'INSERT INTO choice (cho_name, cho_order, rnd_num, vte_id, cho_description, prs_nir) VALUES ($1, $2, $3, $4, $5, $6)',
-            values: [choice.name, choice.choice_order, choice.num_round, choice.id_vote, choice.description, choice.candidat_nir],
+            values: [this.name, this.choice_order, this.num_round, this.id_vote, this.description, this.candidat_nir],
         }
         pool.query(request, (error, _) => {
             if (error) {
@@ -42,7 +41,7 @@ const Add = (choice) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Get = (nir, numRound, idVote) => {
+Choice.prototype.Get = function(nir, numRound, idVote) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * FROM filter_choice($1, $2, $3)',
@@ -68,11 +67,11 @@ const Get = (nir, numRound, idVote) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const AddVoter = (nir, numRound, idVote, idChoice) => {
+Choice.prototype.AddVoter = function(nir) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT add_vote_to_choice($1, $2, $3, $4)',
-            values: [nir, idChoice, numRound, idVote],
+            values: [nir, this.id, this.num_round, this.id_vote],
         }
         pool.query(request, (error, result) => {
             if (error) {
@@ -85,4 +84,4 @@ const AddVoter = (nir, numRound, idVote, idChoice) => {
     });
 }
 
-export default {Choice, Add, Get, AddVoter}
+export {Choice}

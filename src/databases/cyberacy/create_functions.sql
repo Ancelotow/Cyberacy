@@ -288,7 +288,7 @@ $body$
 
 
 -- Récupère le nombre de votant pour un tour donné
-create or replace function get_nb_voter(_vte_id round.vte_id%type, _rnd_num round.rnd_num%type)
+create or replace function get_nb_voter_to_vote(_elc_id election.elc_id%type, _rnd_num round.rnd_num%type)
     returns int
 as
 $body$
@@ -297,9 +297,57 @@ declare
 begin
     select count(*)
     into count
-    from link_person_round
-    where vte_id = _vte_id
-      and rnd_num = _rnd_num;
+    from link_person_round lpr
+    where lpr.vte_id in (select vte.vte_id
+                         from vote vte
+                         where vte.elc_id = _elc_id)
+      and lpr.rnd_num = _rnd_num;
+
+    if count is null then
+        count := 0;
+    end if;
+
+    return count;
+end;
+$body$
+    language plpgsql;
+
+-- Récupère le nombre de votant pour un tour donné
+create or replace function get_nb_voter(_elc_id election.elc_id%type)
+    returns int
+as
+$body$
+declare
+    count int;
+begin
+    select sum(vte_nb_voter)
+    into count
+    from vote
+    where elc_id = _elc_id;
+
+    if count is null then
+        count := 0;
+    end if;
+
+    return count;
+end;
+$body$
+    language plpgsql;
+
+
+-- Récupère le nombre de votant pour un tour donné
+create or replace function get_nb_voter_to_one_vote(_vte_id vote.vte_id%type, _rnd_num round.rnd_num%type)
+    returns int
+as
+$body$
+declare
+    count int;
+begin
+    select count(*)
+    into count
+    from link_person_round lpr
+    where lpr.vte_id = _vte_id
+      and lpr.rnd_num = _rnd_num;
 
     if count is null then
         count := 0;

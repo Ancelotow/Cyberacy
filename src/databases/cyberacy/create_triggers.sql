@@ -206,3 +206,54 @@ create trigger trg_add_add_vote_for_choice
     on choice
     for each row
 execute procedure add_vote_for_choice();
+
+
+-- Trigger AFTER INSERT pour la table "election"
+create or replace function add_election()
+    returns trigger
+as
+$trigger$
+begin
+
+    -- Présidentielle / Sondage / Référendum
+    if new.tvo_id in (1, 8, 6) then
+        insert into vote (vte_name, elc_id, vte_nb_voter)
+        select new.elc_name, new.elc_id, sum(twn_nb_resident)
+        from town
+        group by new.elc_name, new.elc_id;
+
+    -- Régionale
+    elsif new.tvo_id = 2 then
+        insert into vote (vte_name, elc_id, vte_nb_voter, reg_code_insee)
+        select concat(new.elc_name, ' : ', reg_name), new.elc_id, sum(twn_nb_resident), reg.reg_code_insee
+        from region reg
+                 join department dpt on reg.reg_code_insee = dpt.reg_code_insee
+                 join town twn on dpt.dpt_code = twn.dpt_code
+        group by reg_name, new.elc_name, new.elc_id, reg.reg_code_insee;
+
+    -- Départementale
+    elsif new.tvo_id = 3 then
+        insert into vote (vte_name, elc_id, vte_nb_voter, dpt_code)
+        select concat(new.elc_name, ' : ', dpt_name), new.elc_id, sum(twn_nb_resident), dpt.dpt_code
+        from department dpt
+                 join town twn on dpt.dpt_code = twn.dpt_code
+        group by dpt_name, new.elc_name, new.elc_id, dpt.dpt_code;
+
+    -- Municipale
+    elsif new.tvo_id = 4 then
+        insert into vote (vte_name, elc_id, vte_nb_voter, twn_code_insee)
+        select concat(new.elc_name, ' : ', twn_name), new.elc_id, twn_nb_resident, twn_code_insee
+        from town twn;
+    end if;
+
+    return new;
+end
+$trigger$
+    language plpgsql;
+
+create trigger trg_add_election
+    after insert
+    on election
+    for each row
+execute procedure add_election();
+

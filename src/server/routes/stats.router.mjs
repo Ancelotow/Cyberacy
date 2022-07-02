@@ -106,8 +106,10 @@ routerStats.get("/statistics/vote/abstention", async (req, res) => {
     // #swagger.description = 'Récupération des statistiques d\'abstention aux votes.'
     // #swagger.security = [{ "Bearer": [] }]
     // #swagger.parameters['typeVote'] = {in: 'query', description: 'Trié par type de vote (NULL pour tout inclure)', type: 'number' }
+    // #swagger.parameters['numRound'] = {in: 'query', description: 'Le numéro du tour de vote', type: 'number' }
 
-    const response = await statsCtrl.GetVoteAbstention(req.query.typeVote)
+    const numRound = (req.query.numRound == null) ? 1 : req.query.numRound
+    const response = await statsCtrl.GetVoteAbstention(numRound, req.query.typeVote)
     res.status(response.status).send(response.data)
 });
 
@@ -116,19 +118,19 @@ routerStats.get("/statistics/vote/participation", async (req, res) => {
     // #swagger.description = 'Récupération des statistiques de participation aux votes.'
     // #swagger.security = [{ "Bearer": [] }]
     // #swagger.parameters['typeVote'] = {in: 'query', description: 'Trié par type de vote (NULL pour tout inclure)', type: 'number' }
+    // #swagger.parameters['numRound'] = {in: 'query', description: 'Le numéro du tour de vote', type: 'number' }
 
-    const response = await statsCtrl.GetVoteParticipation(req.query.typeVote)
+    const numRound = (req.query.numRound == null) ? 1 : req.query.numRound
+    const response = await statsCtrl.GetVoteParticipation(numRound, req.query.typeVote)
     res.status(response.status).send(response.data)
 });
 
-routerStats.get("/statistics/vote/results", async (req, res) => {
+routerStats.get("/statistics/vote/:id/results", async (req, res) => {
     // #swagger.tags = ['Statistiques']
     // #swagger.description = 'Récupération des résultats aux votes.'
     // #swagger.security = [{ "Bearer": [] }]
-    // #swagger.parameters['typeVote'] = {in: 'query', description: 'Trié par type de vote (NULL pour tout inclure)', type: 'number' }
-    // #swagger.parameters['vote'] = {in: 'query', description: 'Trié par vote (NULL pour tout inclure)', type: 'number' }
 
-    const response = await statsCtrl.GetVoteResults(req.query.typeVote, req.query.vote)
+    const response = await statsCtrl.GetVoteResults(req.params.vote)
     res.status(response.status).send(response.data)
 });
 

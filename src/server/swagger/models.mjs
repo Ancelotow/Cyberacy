@@ -39,11 +39,13 @@ export default  {
     },
 
     AddStepManifestation: {
-        address_street : "23 avenue du Générale De Gaulle",
+        address_street : "6 parvis de Notre-Dame - Pl. Jean-Paul II",
         date_arrived: "2019-10-02 08:10",
         id_manifestation: 1,
         id_step_type: 1,
-        town_code_insee: "11003"
+        town_code_insee: "75104",
+        latitude: 48.8535738,
+        longitude: 2.3514893
     },
 
     AddVote: {
@@ -53,6 +55,7 @@ export default  {
         department_code: "94",
         reg_code_insee: "1",
         id_political_party: 1,
+        nb_voter: 58000000,
     },
 
     AddRoundVote: {
@@ -60,7 +63,6 @@ export default  {
         num: 1,
         date_start: "2022-04-29 08:00",
         date_end: "2022-04-29 20:00",
-        nb_voter: 58000000,
     },
 
     AddPoliticalParty: {
@@ -116,6 +118,13 @@ export default  {
         choice_order: 1,
         description: "Elections aux législatives : Edouard PHILLIPE",
         candidat_nir: "012457832032045"
+    },
+
+    AddElection: {
+        name: "Présidentielle 2022",
+        date_start: "2022-04-10 08:00",
+        date_end: "2022-04-24 20:00",
+        id_type_vote: 1,
     },
 
 };
