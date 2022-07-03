@@ -273,10 +273,12 @@ create table adherent
     adh_date_left date                    null,
     adh_is_left   boolean default (false) not null,
     pop_id        int                     not null,
+    prf_id        int                     null,
     prs_nir       varchar(20)             not null,
     constraint pk_adherent primary key (adh_id),
     constraint fk_adherent_person foreign key (prs_nir) references person (prs_nir),
-    constraint fk_adherent_politiclparty foreign key (pop_id) references political_party (pop_id)
+    constraint fk_adherent_politiclparty foreign key (pop_id) references political_party (pop_id),
+    constraint fk_adherent_profile foreign key (prf_id) references profile (prf_id)
 );
 
 create table thread
