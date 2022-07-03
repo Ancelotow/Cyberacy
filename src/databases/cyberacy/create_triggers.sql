@@ -6,6 +6,8 @@ $trigger$
 begin
     insert into thread(thr_main, thr_name, thr_description, thr_is_private, thr_url_logo, pop_id)
     values (true, new.pop_name, 'Messagerie principale du parti.', false, new.pop_url_logo, new.pop_id);
+
+    return new;
 end
 $trigger$
     language plpgsql;

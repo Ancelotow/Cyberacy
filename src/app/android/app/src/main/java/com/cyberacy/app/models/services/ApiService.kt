@@ -15,6 +15,7 @@ interface ApiService {
     fun getPoliticalParty(
         @Query("mine") mine: Boolean = false,
         @Query("idPoliticalParty") id: Int? = null,
+        @Query("includeLeft") includeLeft: Boolean = false,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<List<PoliticalParty>?>
 

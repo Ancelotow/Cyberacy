@@ -2,6 +2,7 @@ package com.cyberacy.app.ui.party.main_party
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -25,6 +27,7 @@ import com.cyberacy.app.models.services.ApiConnection
 import com.cyberacy.app.ui.navigation.NavigationActivity
 import com.cyberacy.app.ui.party.join_party.JoinPartyViewModel
 import com.cyberacy.app.ui.party.join_party.ListAdapterParty
+import com.cyberacy.app.ui.party.messaging.MessagingActivity
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
@@ -66,6 +69,7 @@ class MainPartyFragment : Fragment() {
         val loader = view.findViewById<ProgressBar>(R.id.loader_main_party)
         val name = view.findViewById<TextView>(R.id.title)
         val logo = view.findViewById<ImageView>(R.id.logo)
+        val cardMsg = view.findViewById<CardView>(R.id.card_messagerie)
         loader.visibility = View.VISIBLE
         body.visibility = View.GONE
         lifecycleScope.launch {
@@ -79,6 +83,10 @@ class MainPartyFragment : Fragment() {
             }
             loader.visibility = View.GONE
             body.visibility = View.VISIBLE
+        }
+        cardMsg.setOnClickListener {
+            val intent = Intent(view.context, MessagingActivity::class.java)
+            startActivity(intent)
         }
     }
 

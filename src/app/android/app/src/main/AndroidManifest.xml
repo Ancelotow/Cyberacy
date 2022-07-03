@@ -18,7 +18,7 @@
         android:theme="@style/Theme.Cyberacy"
         tools:targetApi="31">
         <activity
-            android:name=".MessagingActivity"
+            android:name=".ui.party.messaging.MessagingActivity"
             android:exported="false" />
         <activity
             android:name=".ui.navigation.NavigationActivity"

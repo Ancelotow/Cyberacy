@@ -28,7 +28,7 @@ class PoliticalParty(
 
         suspend fun getPoliticalParties(): List<PoliticalParty> {
             try {
-                return ApiConnection.connection().getPoliticalParty().await() ?: emptyList()
+                return ApiConnection.connection().getPoliticalParty(includeLeft = true).await() ?: emptyList()
             } catch (e: HttpException) {
                 throw e
             }
