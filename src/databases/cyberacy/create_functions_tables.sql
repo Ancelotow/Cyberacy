@@ -312,12 +312,14 @@ begin
                thr_url_logo    as url_logo,
                thr.pop_id      as id_political_party
         from thread thr
-                 left join member mem on thr.thr_id = mem.thr_id and mem.mem_is_left = false
-                 left join adherent adh on mem.adh_id = adh.adh_id and adh.prs_nir = _nir
-        where ((_only_mine = false and
-                (is_granted_all = true or (thr.pop_id = adh.pop_id and thr_is_private = false))) or
-               (is_granted = true and adh.adh_id is not null))
+                 join adherent adh on thr.pop_id = adh.pop_id and adh.prs_nir = _nir and adh.adh_is_left = false
+                 left join member mem on thr.thr_id = mem.thr_id and adh.adh_id = mem.adh_id
+        where (
+                (_only_mine = false and mem.mem_id is null and (is_granted_all = true or thr_is_private = false)) or
+                (_only_mine = true and mem.mem_id is not null and mem.mem_is_left = false)
+            )
           and thr_is_delete = false
+          and (is_granted_all = true or is_granted = true)
         order by name;
 end;
 $filter$
