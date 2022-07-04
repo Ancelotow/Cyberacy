@@ -12,6 +12,7 @@
     <color name="accent">#2833F8</color>
     <color name="shimmerColor">#C2C2C2</color>
     <color name="cardColor">#4DC8C8C8</color>
-
     <color name="cardBlue">#333BC3</color>
+    <color name="grey">#969595</color>
+
 </resources>

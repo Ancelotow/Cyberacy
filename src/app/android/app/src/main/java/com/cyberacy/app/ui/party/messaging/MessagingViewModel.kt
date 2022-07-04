@@ -1,4 +1,10 @@
 package com.cyberacy.app.ui.party.messaging
 
-class MessagingViewModel {
+
+import androidx.lifecycle.ViewModel
+
+class MessagingViewModel : ViewModel() {
+
+
+
 }

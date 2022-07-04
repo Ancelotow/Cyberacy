@@ -102,14 +102,14 @@ class ListAdapterParty(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_party, parent, false)
-        return PartyViewHolder(view).listen { pos, type ->
-            val item = parties.get(pos)
+        return PartyViewHolder(view).listen { pos, _ ->
+            val item = parties[pos]
             itemSelected(item, parent.context)
         }
     }
 
     override fun onBindViewHolder(holder: PartyViewHolder, position: Int) {
-        holder.setItem(parties[position], (position + 1))
+        holder.setItem(parties[position])
     }
 
     override fun getItemCount(): Int {
@@ -145,7 +145,7 @@ class PartyViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     private val partyName = v.findViewById<TextView>(R.id.party_name)
     private val partyLogo = v.findViewById<ImageView>(R.id.logo)
 
-    fun setItem(item: PoliticalParty, rank: Int) {
+    fun setItem(item: PoliticalParty) {
         partyName.text = item.name
         Picasso.get().load(item.urlLogo).into(partyLogo)
     }
