@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.cyberacy.app.R
 import com.cyberacy.app.ui.party.messaging.my_threads.MyThreadsFragment
+import com.cyberacy.app.ui.party.messaging.other_threads.OtherThreadsFragment
 import com.google.android.material.tabs.TabLayout
 
 class MessagingActivity : AppCompatActivity() {
@@ -29,7 +30,7 @@ class MessagingActivity : AppCompatActivity() {
 
                 when (tab.position) {
                     0 -> changeFragment(MyThreadsFragment())
-                    //1 -> changeFragment(AlbumRankFragment())
+                    1 -> changeFragment(OtherThreadsFragment())
                 }
             }
             override fun onTabUnselected(p0: TabLayout.Tab?) {

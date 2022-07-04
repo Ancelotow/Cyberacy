@@ -35,5 +35,7 @@
     <!-- Tab bar -->
     <string name="tb_conversation">Mes conversations</string>
     <string name="tb_other_conversation">Autres discussions</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

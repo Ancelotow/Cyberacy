@@ -1,6 +1,5 @@
-package com.cyberacy.app.ui.party.messaging.my_threads
+package com.cyberacy.app.ui.party.messaging.other_threads
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,27 +8,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cyberacy.app.R
-import com.cyberacy.app.models.entities.PoliticalParty
 import com.cyberacy.app.models.entities.ThreadMessaging
-import com.cyberacy.app.models.repositories.*
-import com.cyberacy.app.ui.party.join_party.ListAdapterParty
+import com.cyberacy.app.models.repositories.ThreadStateError
+import com.cyberacy.app.models.repositories.ThreadStateLoading
+import com.cyberacy.app.models.repositories.ThreadStateSuccess
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.squareup.picasso.Picasso
 
-class MyThreadsFragment : Fragment() {
 
-    private val viewModel: MyThreadViewModel by viewModels()
+class OtherThreadsFragment : Fragment() {
+
+    private val viewModel: OtherThreadsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_my_threads, container, false)
+        return inflater.inflate(R.layout.fragment_other_threads, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,7 +36,7 @@ class MyThreadsFragment : Fragment() {
         val shimmer_layout = view.findViewById<ShimmerFrameLayout>(R.id.shimmer_layout)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview)
         recyclerView.visibility = View.GONE
-        viewModel.myThreads.observe(viewLifecycleOwner) {
+        viewModel.otherThreads.observe(viewLifecycleOwner) {
             when (it) {
                 is ThreadStateError -> {
                     shimmer_layout.visibility = View.GONE
@@ -50,7 +49,7 @@ class MyThreadsFragment : Fragment() {
                     shimmer_layout.visibility = View.GONE
                     recyclerView.visibility = View.VISIBLE
                     recyclerView.adapter =
-                        ListAdapterMyThread(it.threads as MutableList<ThreadMessaging>) { thread ->
+                        ListAdapterOtherThread(it.threads as MutableList<ThreadMessaging>) { thread ->
 
                         }
                     recyclerView.layoutManager = GridLayoutManager(context, 1)
@@ -61,22 +60,21 @@ class MyThreadsFragment : Fragment() {
 
 }
 
-
-class ListAdapterMyThread(
+class ListAdapterOtherThread(
     val threads: MutableList<ThreadMessaging>,
     val threadClick: (item: ThreadMessaging) -> Unit
-) : RecyclerView.Adapter<MyThreadViewHolder>() {
+) : RecyclerView.Adapter<OtherThreadViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyThreadViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OtherThreadViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_mythread, parent, false)
-        return MyThreadViewHolder(view).listen { pos, _ ->
+        val view = inflater.inflate(R.layout.item_thread, parent, false)
+        return OtherThreadViewHolder(view).listen { pos, _ ->
             val item = threads[pos]
             itemSelected(item, parent.context)
         }
     }
 
-    override fun onBindViewHolder(holder: MyThreadViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: OtherThreadViewHolder, position: Int) {
         holder.setItem(threads[position])
     }
 
@@ -98,17 +96,13 @@ class ListAdapterMyThread(
 
 }
 
-class MyThreadViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+class OtherThreadViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
     private val threadName = v.findViewById<TextView>(R.id.name)
-    private val threadDateLastMsg = v.findViewById<TextView>(R.id.date_last_msg)
-    private val threadLastMessage = v.findViewById<TextView>(R.id.last_message)
     private val threadLogo = v.findViewById<ImageView>(R.id.logo)
 
     fun setItem(item: ThreadMessaging) {
         threadName.text = item.name
-        threadDateLastMsg.text = "20/07/2021"
-        threadLastMessage.text = "Owen : Bonjour tout le monde !"
         if(item.urlLogo != null) {
             if(item.urlLogo.isNotEmpty()) {
                 Picasso.get().load(item.urlLogo).into(threadLogo)
