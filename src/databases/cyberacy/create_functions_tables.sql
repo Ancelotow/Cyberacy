@@ -336,7 +336,8 @@ create or replace function filter_message(_nir person.prs_nir%type, _thr_id mess
                 message        message.msg_message%type,
                 date_published message.msg_date_published%type,
                 id_thread      message.thr_id%type,
-                id_member      message.mem_id%type
+                id_member      message.mem_id%type,
+                mine           boolean
             )
 as
 $filter$
@@ -350,7 +351,11 @@ begin
                msg_message        as type,
                msg_date_published as date_published,
                msg.thr_id         as id_thread,
-               msg.mem_id         as id_member
+               msg.mem_id         as id_member,
+               case
+                   when adh.prs_nir = _nir then true
+                   else false
+               end as mine
         from message msg
                  join thread thr on msg.thr_id = thr.thr_id and thr.thr_id = _thr_id
                  join member mem on msg.mem_id = mem.mem_id and mem.mem_is_left = false

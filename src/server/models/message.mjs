@@ -6,6 +6,7 @@ class Message {
     date_published
     id_thread
     id_member
+    mine
 }
 
 /**
