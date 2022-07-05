@@ -4,12 +4,14 @@
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <color name="teal_700">#1C6564</color>
+    <color name="green_grey">#505C5C</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
     <color name="navy">#10167C</color>
     <color name="accent">#2833F8</color>
+    <color name="blue">#5AFAED</color>
     <color name="shimmerColor">#C2C2C2</color>
     <color name="cardColor">#4DC8C8C8</color>
     <color name="cardBlue">#333BC3</color>

@@ -1,9 +1,6 @@
 package com.cyberacy.app.models.services
 
-import com.cyberacy.app.models.entities.Connection
-import com.cyberacy.app.models.entities.PoliticalParty
-import com.cyberacy.app.models.entities.Session
-import com.cyberacy.app.models.entities.ThreadMessaging
+import com.cyberacy.app.models.entities.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -37,5 +34,17 @@ interface ApiService {
         @Query("onlyMine") onlyMine: Boolean = false,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<List<ThreadMessaging>?>
+
+    @GET("thread/{id}/message")
+    fun getMessages(
+        @Path("id") id: Int,
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<List<Message>?>
+
+    @POST("thread/{id}/message")
+    fun postMessage(
+        @Query("id") id: Int,
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<List<Message>?>
 
 }

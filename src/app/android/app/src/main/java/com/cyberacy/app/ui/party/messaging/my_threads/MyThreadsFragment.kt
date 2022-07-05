@@ -1,6 +1,7 @@
 package com.cyberacy.app.ui.party.messaging.my_threads
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cyberacy.app.R
 import com.cyberacy.app.models.entities.ThreadMessaging
 import com.cyberacy.app.models.repositories.*
+import com.cyberacy.app.ui.party.messaging.thread.ThreadActivity
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.squareup.picasso.Picasso
 import java.time.format.DateTimeFormatter
@@ -52,7 +54,11 @@ class MyThreadsFragment : Fragment() {
                         recyclerView.visibility = View.VISIBLE
                         recyclerView.adapter =
                             ListAdapterMyThread(it.threads as MutableList<ThreadMessaging>) { thread ->
-
+                                val intent = Intent(view.context, ThreadActivity::class.java)
+                                intent.putExtra("idThread",thread.id)
+                                intent.putExtra("nameThread",thread.name)
+                                intent.putExtra("logoThread",thread.urlLogo)
+                                startActivity(intent)
                             }
                         recyclerView.layoutManager = GridLayoutManager(context, 1)
                     }
@@ -87,7 +93,7 @@ class ListAdapterMyThread(
     }
 
     private fun itemSelected(item: ThreadMessaging, context: Context) {
-        print("coucou !")
+        threadClick.invoke(item)
     }
 
     // Listener quand on clique sur l'élément
