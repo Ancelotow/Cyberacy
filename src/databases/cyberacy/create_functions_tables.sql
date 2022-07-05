@@ -301,21 +301,22 @@ declare
     is_granted_all boolean := is_granted(_nir, 'THREAD#READ_ALL');
 begin
     return query
-        select thr.thr_id      as id,
-               thr_name        as name,
-               thr_main        as main,
-               thr_description as description,
-               thr_date_create as date_create,
-               thr_is_delete   as is_delete,
-               thr_date_delete as date_delete,
-               thr_is_private  as is_private,
-               thr_url_logo    as url_logo,
-               thr.pop_id      as id_political_party
+        select distinct thr.thr_id      as id,
+                        thr_name        as name,
+                        thr_main        as main,
+                        thr_description as description,
+                        thr_date_create as date_create,
+                        thr_is_delete   as is_delete,
+                        thr_date_delete as date_delete,
+                        thr_is_private  as is_private,
+                        thr_url_logo    as url_logo,
+                        thr.pop_id      as id_political_party
         from thread thr
                  join adherent adh on thr.pop_id = adh.pop_id and adh.prs_nir = _nir and adh.adh_is_left = false
                  left join member mem on thr.thr_id = mem.thr_id and adh.adh_id = mem.adh_id
         where (
-                (_only_mine = false and mem.mem_id is null and (is_granted_all = true or thr_is_private = false)) or
+                (_only_mine = false and is_member_of_thread(adh.adh_id, thr.thr_id) = false and
+                 (is_granted_all = true or thr_is_private = false)) or
                 (_only_mine = true and mem.mem_id is not null and mem.mem_is_left = false)
             )
           and thr_is_delete = false
@@ -355,7 +356,7 @@ begin
                case
                    when adhSender.prs_nir = _nir then true
                    else false
-               end as mine
+                   end            as mine
         from message msg
                  join thread thr on msg.thr_id = thr.thr_id and thr.thr_id = _thr_id
                  join member memSender on msg.mem_id = memSender.mem_id

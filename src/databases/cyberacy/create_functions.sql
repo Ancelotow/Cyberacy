@@ -357,3 +357,32 @@ begin
 end;
 $body$
     language plpgsql;
+
+
+-- Récupère si un adhérent appartient déjà à un thread ou non
+create or replace function is_member_of_thread(_adh_id adherent.adh_id%type, _thr_id thread.thr_id%type)
+    returns boolean
+as
+$body$
+declare
+    count int;
+begin
+    select count(*)
+    into count
+    from member
+    where mem_is_left = false
+      and adh_id = _adh_id
+      and thr_id = _thr_id;
+
+    if count is null then
+        count := 0;
+    end if;
+
+    if count = 0 then
+        return false;
+    else
+        return true;
+    end if;
+end;
+$body$
+    language plpgsql;
