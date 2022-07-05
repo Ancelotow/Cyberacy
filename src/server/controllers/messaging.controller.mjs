@@ -1,4 +1,4 @@
-import threadMod from "../models/thread.mjs";
+import {Thread} from "../models/thread.mjs";
 import {Message} from "../models/message.mjs";
 import memberMod from "../models/member.mjs";
 import adherentMod from "../models/adherent.mjs";
@@ -6,18 +6,19 @@ import {NotificationPush} from "../models/notification-push.mjs";
 
 /**
  * Ajoute un nouveau thread
- * @param thread Le nouveau thread
  * @returns {Promise<unknown>}
  * @constructor
  */
-const AddThread = (thread) => {
+const AddThread = (thrJson) => {
     return new Promise(async (resolve, _) => {
-        if (!thread) {
+        if (!thrJson) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!thread.name || !thread.id_political_party) {
+        } else if (!thrJson.name || !thrJson.id_political_party) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            threadMod.Add(thread).then((res) => {
+            let thread = new Thread()
+            Object.assign(thread, thrJson)
+            thread.Add().then((res) => {
                 if (res) {
                     resolve({status: 201, data: "Thread has been created."})
                 } else {
@@ -42,7 +43,9 @@ const DeleteThread = (id) => {
         if (!id) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            threadMod.Delete(id).then((res) => {
+            let thread = new Thread()
+            thread.id = id
+            thread.Delete().then((res) => {
                 if (res) {
                     resolve({status: 200, data: "Thread has been deleted."})
                 } else {
@@ -68,7 +71,7 @@ const ChangeMainThread = (id, id_political_party) => {
         if (!id || !id_political_party) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            threadMod.ChangeMainThread(id, id_political_party).then((res) => {
+            new Thread().ChangeMainThread(id, id_political_party).then((res) => {
                 if (res) {
                     resolve({status: 200, data: "The main thread has been updated."})
                 } else {
@@ -84,18 +87,19 @@ const ChangeMainThread = (id, id_political_party) => {
 
 /**
  * Modifie un thread
- * @param thread Le thread à modifier
  * @returns {Promise<unknown>}
  * @constructor
  */
-const UpdateThread = (thread) => {
+const UpdateThread = (thrJson) => {
     return new Promise(async (resolve, _) => {
-        if (!thread || !thread.id) {
+        if (!thrJson || !thrJson.id) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!thread.id || !thread.name || !thread.id_political_party) {
+        } else if (!thrJson.id || !thrJson.name || !thrJson.id_political_party) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            threadMod.Update(thread).then((res) => {
+            let thread = new Thread()
+            Object.assign(thread, thrJson)
+            thread.Update().then((res) => {
                 if (res) {
                     resolve({status: 200, data: "Thread has been updated."})
                 } else {
@@ -118,8 +122,8 @@ const UpdateThread = (thread) => {
  */
 const GetThread = (nir, onlyMine = true) => {
     return new Promise((resolve, _) => {
-        threadMod.Get(nir, onlyMine).then(async (res) => {
-            const code = (res) ? 200 : 204;
+        new Thread().Get(nir, onlyMine).then(async (res) => {
+            const code = (res.length > 0) ? 200 : 204;
             if(code === 200) {
                 for(let i = 0; i < res.length; i++) {
                     try{
@@ -170,7 +174,7 @@ const AddMessage = (person, idThread, msgJson) => {
                         try {
                             let notif = new NotificationPush()
                             let nameSender = `${person.lastname} ${person.firstname}`
-                            let thread = await threadMod.GetById(person.nir, idThread)
+                            let thread = await new Thread().GetById(person.nir, idThread)
                             notif.priority = "high"
                             notif.InitMessage(`(${thread.name}) Nouveau message`, `${nameSender} : ${message.message}`)
                             await notif.Send()

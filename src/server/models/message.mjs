@@ -25,8 +25,9 @@ Message.prototype.Get = function(nir, idThread) {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows : null
-                resolve(res)
+                let listMessages = []
+                result.rows.forEach(e => listMessages.push(Object.assign(new Message(), e)));
+                resolve(listMessages)
             }
         });
     });
