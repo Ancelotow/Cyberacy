@@ -2,8 +2,10 @@ package com.cyberacy.app.models.entities
 
 import com.cyberacy.app.models.services.ApiConnection
 import com.google.gson.annotations.SerializedName
+import com.google.type.DateTime
 import retrofit2.HttpException
 import retrofit2.await
+import java.time.LocalDateTime
 
 class ThreadMessaging(
     @SerializedName("id")
@@ -17,6 +19,9 @@ class ThreadMessaging(
 
     @SerializedName("url_logo")
     val urlLogo: String,
+
+    @SerializedName("date_create")
+    val dateCreate: LocalDateTime,
 
     @SerializedName("is_private")
     val isPrivate: Boolean,

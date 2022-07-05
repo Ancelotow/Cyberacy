@@ -1,25 +1,23 @@
 package com.cyberacy.app.ui.party.messaging.my_threads
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cyberacy.app.R
-import com.cyberacy.app.models.entities.PoliticalParty
 import com.cyberacy.app.models.entities.ThreadMessaging
 import com.cyberacy.app.models.repositories.*
-import com.cyberacy.app.ui.party.join_party.ListAdapterParty
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.squareup.picasso.Picasso
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MyThreadsFragment : Fragment() {
 
@@ -107,8 +105,13 @@ class MyThreadViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
     fun setItem(item: ThreadMessaging) {
         threadName.text = item.name
-        threadDateLastMsg.text = "20/07/2021"
-        threadLastMessage.text = "Owen : Bonjour tout le monde !"
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        if(item.lastMessage == null) {
+            threadDateLastMsg.text = formatter.format(item.dateCreate)
+        } else {
+            threadDateLastMsg.text =  formatter.format(item.lastMessage.datePublished)
+            threadLastMessage.text = item.lastMessage.message
+        }
         if(item.urlLogo != null) {
             if(item.urlLogo.isNotEmpty()) {
                 Picasso.get().load(item.urlLogo).into(threadLogo)

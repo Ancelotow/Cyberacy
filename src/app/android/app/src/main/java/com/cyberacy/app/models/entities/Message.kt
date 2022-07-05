@@ -1,6 +1,7 @@
 package com.cyberacy.app.models.entities
 
 import com.google.gson.annotations.SerializedName
+import java.time.LocalDateTime
 
 class Message(
     @SerializedName("id")
@@ -16,5 +17,5 @@ class Message(
     val message: String,
 
     @SerializedName("date_published")
-    val datePublished: String
+    val datePublished: LocalDateTime
 )

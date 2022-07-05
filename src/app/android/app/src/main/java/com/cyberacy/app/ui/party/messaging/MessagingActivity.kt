@@ -1,5 +1,6 @@
 package com.cyberacy.app.ui.party.messaging
 
+import android.content.res.Configuration
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.widget.ImageView
@@ -21,7 +22,13 @@ class MessagingActivity : AppCompatActivity() {
         actionBar?.hide()
 
         val logoMsg = findViewById<ImageView>(R.id.logo_msg)
-        logoMsg.setColorFilter(getResources().getColor(android.R.color.black), PorterDuff.Mode.SRC_IN);
+        var colorIcon = android.R.color.black
+        when (resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+            Configuration.UI_MODE_NIGHT_YES -> {colorIcon = android.R.color.white}
+            Configuration.UI_MODE_NIGHT_NO -> {colorIcon = android.R.color.black}
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> {colorIcon = android.R.color.black}
+        }
+        logoMsg.setColorFilter(resources.getColor(colorIcon), PorterDuff.Mode.SRC_IN);
 
         val tabs = findViewById<TabLayout>(R.id.tabs)
         changeFragment(MyThreadsFragment())
