@@ -25,7 +25,7 @@ class ThreadMessaging(
     @SerializedName("is_private")
     val isPrivate: Boolean,
 
-    @SerializedName("last_message")
+    @SerializedName("lastMessage")
     val lastMessage: Message?
 ) {
 

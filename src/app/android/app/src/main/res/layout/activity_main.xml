@@ -107,6 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/hk_nova"
+        android:textColor="@color/white"
         app:cornerRadius="5dp"
         app:backgroundTint="@color/navy"
         app:layout_constraintLeft_toLeftOf="@id/gl_start"
