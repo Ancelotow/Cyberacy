@@ -44,13 +44,13 @@ Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Publish message
-POST {{url}}/thread/68/message
+POST {{url}}/thread/74/message
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
-  "message": "Salut tout le monde !"
+  "message": "Salut Jean ! Comment va-tu depuis le temps ?"
 }
 
 

@@ -154,7 +154,7 @@ const GetThread = (nir, onlyMine = true) => {
  */
 const AddMessage = (person, idThread, msgJson) => {
     return new Promise(async (resolve, _) => {
-        if (idThread == null || message == null) {
+        if (idThread == null || msgJson == null) {
             resolve({status: 400, data: "Missing parameters."})
         }
         else if (msgJson.message == null) {
