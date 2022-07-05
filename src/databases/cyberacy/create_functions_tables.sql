@@ -357,7 +357,8 @@ begin
                  join adherent adh on mem.adh_id = adh.adh_id and adh.prs_nir = _nir
                  join person prs on adh.prs_nir = prs.prs_nir
         where is_granted = true
-        order by msg_date_published;
+        order by msg_date_published desc
+        limit 200;
 end;
 $filter$
     language plpgsql;

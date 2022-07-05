@@ -11,6 +11,7 @@ class Thread {
     is_private
     url_logo
     id_political_party
+    lastMessage = null
 }
 
 /**

@@ -1,5 +1,5 @@
 import threadMod from "../models/thread.mjs";
-import messageMod from "../models/message.mjs";
+import {Message} from "../models/message.mjs";
 import memberMod from "../models/member.mjs";
 import adherentMod from "../models/adherent.mjs";
 import {NotificationPush} from "../models/notification-push.mjs";
@@ -118,8 +118,20 @@ const UpdateThread = (thread) => {
  */
 const GetThread = (nir, onlyMine = true) => {
     return new Promise((resolve, _) => {
-        threadMod.Get(nir, onlyMine).then((res) => {
+        threadMod.Get(nir, onlyMine).then(async (res) => {
             const code = (res) ? 200 : 204;
+            if(code === 200) {
+                for(let i = 0; i < res.length; i++) {
+                    try{
+                        let listMessage = await new Message().Get(nir, res[i].id)
+                        if(listMessage != null && listMessage.length > 0) {
+                            res[i].lastMessage = listMessage[0]
+                        }
+                    } catch(e) {
+                        console.error("Error get messages", e)
+                    }
+                }
+            }
             resolve({status: code, data: res})
         }).catch((e) => {
             if (e.code === '23503') resolve({status: 400, data: e.message})
@@ -132,23 +144,27 @@ const GetThread = (nir, onlyMine = true) => {
  * Publie un nouveau message
  * @param person
  * @param idThread L'ID du thread
- * @param message Le message à publier
+ * @param msgJson
  * @returns {Promise<unknown>}
  * @constructor
  */
-const AddMessage = (person, idThread, message) => {
+const AddMessage = (person, idThread, msgJson) => {
     return new Promise(async (resolve, _) => {
         if (idThread == null || message == null) {
             resolve({status: 400, data: "Missing parameters."})
         }
-        else if (message.message == null) {
+        else if (msgJson.message == null) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
             const idMember = await memberMod.GetMemberIdByNIR(person.nir, idThread);
             if (idMember === null || idMember === -1) {
                 resolve({status: 400, data: "You are not in this thread."})
             } else {
-                messageMod.Add(message.message, idThread, idMember).then(async (res) => {
+                let message = new Message()
+                message.message = msgJson.message
+                message.id_member = idMember
+                message.id_thread = idThread
+                message.Add().then(async (res) => {
                     if (res) {
                         // Envoi d'une notification PUSH lorsqu'un message est ajouté
                         try {
@@ -185,7 +201,7 @@ const AddMessage = (person, idThread, message) => {
  */
 const GetMessage = (nir, idThread) => {
     return new Promise((resolve, _) => {
-        messageMod.Get(nir, idThread).then((res) => {
+        new Message().Get(nir, idThread).then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {

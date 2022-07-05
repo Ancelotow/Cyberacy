@@ -15,7 +15,7 @@ class Message {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Get = (nir, idThread) => {
+Message.prototype.Get = function(nir, idThread) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * FROM filter_message($1, $2)',
@@ -34,17 +34,14 @@ const Get = (nir, idThread) => {
 
 /**
  * Ajoute un nouveau message
- * @param message Le message
- * @param idThread L'ID du thread
- * @param idMember L'ID du membre
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Add = (message, idThread, idMember) => {
+Message.prototype.Add = function() {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'INSERT INTO message(msg_message, thr_id, mem_id) VALUES($1, $2, $3)',
-            values: [message, idThread, idMember],
+            values: [this.message, this.id_thread, this.id_member],
         }
         pool.query(request, (error, _) => {
             if (error) {
@@ -56,4 +53,4 @@ const Add = (message, idThread, idMember) => {
     });
 }
 
-export default {Message, Add, Get}
+export {Message}

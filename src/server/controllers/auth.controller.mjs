@@ -75,7 +75,7 @@ const GenerateToken = (person) => {
         return null
     }
     try{
-        return jwt.sign(person, process.env.TOKEN, { expiresIn: "2800s" })
+        return jwt.sign(person, process.env.TOKEN, { expiresIn: "1d" })
     } catch(e) {
         console.log(e)
         throw e
