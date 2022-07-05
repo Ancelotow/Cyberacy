@@ -26,6 +26,12 @@ interface ApiService {
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<String>
 
+    @POST("thread/{id}/join")
+    fun joinThread(
+        @Path("id") id: Int,
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<String>
+
     @GET("thread")
     fun getThreads(
         @Query("onlyMine") onlyMine: Boolean = false,

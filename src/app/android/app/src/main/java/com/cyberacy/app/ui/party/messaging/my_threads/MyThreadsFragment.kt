@@ -16,7 +16,6 @@ import com.cyberacy.app.models.entities.ThreadMessaging
 import com.cyberacy.app.models.repositories.*
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.squareup.picasso.Picasso
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class MyThreadsFragment : Fragment() {
@@ -34,6 +33,7 @@ class MyThreadsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val shimmer_layout = view.findViewById<ShimmerFrameLayout>(R.id.shimmer_layout)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview)
+        val labelNoData = view.findViewById<TextView>(R.id.label_no_data)
         recyclerView.visibility = View.GONE
         viewModel.myThreads.observe(viewLifecycleOwner) {
             when (it) {
@@ -46,12 +46,16 @@ class MyThreadsFragment : Fragment() {
                 }
                 is ThreadStateSuccess -> {
                     shimmer_layout.visibility = View.GONE
-                    recyclerView.visibility = View.VISIBLE
-                    recyclerView.adapter =
-                        ListAdapterMyThread(it.threads as MutableList<ThreadMessaging>) { thread ->
+                    if(it.threads.isEmpty()) {
+                        labelNoData.visibility = View.VISIBLE
+                    } else {
+                        recyclerView.visibility = View.VISIBLE
+                        recyclerView.adapter =
+                            ListAdapterMyThread(it.threads as MutableList<ThreadMessaging>) { thread ->
 
-                        }
-                    recyclerView.layoutManager = GridLayoutManager(context, 1)
+                            }
+                        recyclerView.layoutManager = GridLayoutManager(context, 1)
+                    }
                 }
             }
         }

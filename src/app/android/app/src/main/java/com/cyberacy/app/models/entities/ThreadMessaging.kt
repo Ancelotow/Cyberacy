@@ -2,7 +2,6 @@ package com.cyberacy.app.models.entities
 
 import com.cyberacy.app.models.services.ApiConnection
 import com.google.gson.annotations.SerializedName
-import com.google.type.DateTime
 import retrofit2.HttpException
 import retrofit2.await
 import java.time.LocalDateTime

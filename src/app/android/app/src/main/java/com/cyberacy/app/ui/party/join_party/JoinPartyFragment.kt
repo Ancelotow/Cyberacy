@@ -63,9 +63,7 @@ class JoinPartyFragment : Fragment() {
                     recyclerView.visibility = View.VISIBLE
                     recyclerView.adapter =
                         ListAdapterParty(it.parties as MutableList<PoliticalParty>) { party ->
-                            partySelected(
-                                party
-                            )
+                            partySelected(party)
                         }
                     recyclerView.layoutManager = GridLayoutManager(context, 1)
                 }
@@ -74,7 +72,7 @@ class JoinPartyFragment : Fragment() {
         }
     }
 
-    fun partySelected(party: PoliticalParty) {
+    private fun partySelected(party: PoliticalParty) {
         loaderJoin.visibility = View.VISIBLE
         activity?.window?.setFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -83,6 +81,7 @@ class JoinPartyFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 ApiConnection.connection().joinParty(party.id).await()
+                activity?.recreate()
             } catch (e: HttpException) {
                 Log.e("Erreur HTTP", e.message())
             } finally {
