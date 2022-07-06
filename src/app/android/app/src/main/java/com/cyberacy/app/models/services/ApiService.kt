@@ -48,4 +48,10 @@ interface ApiService {
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<String>
 
+    @DELETE("thread/{id}/left")
+    fun leaveThread(
+        @Path("id") id: Int,
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<String>
+
 }

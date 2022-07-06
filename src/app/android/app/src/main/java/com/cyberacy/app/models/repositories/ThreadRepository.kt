@@ -1,10 +1,14 @@
 package com.cyberacy.app.models.repositories
 
+import com.cyberacy.app.models.entities.Message
 import com.cyberacy.app.models.entities.ThreadMessaging
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.isActive
 import retrofit2.HttpException
 
 object ThreadRepository {
@@ -13,7 +17,10 @@ object ThreadRepository {
         return flow {
             emit(ThreadStateLoading)
             try {
-                emit(ThreadStateSuccess(ThreadMessaging.getMyThreads()))
+                while(currentCoroutineContext().isActive) {
+                    emit(ThreadStateSuccess(ThreadMessaging.getMyThreads()))
+                    delay(2000)
+                }
             } catch (e: HttpException) {
                 emit(ThreadStateError(e))
             }

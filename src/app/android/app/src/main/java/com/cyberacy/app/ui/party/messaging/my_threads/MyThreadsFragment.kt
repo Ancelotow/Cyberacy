@@ -3,6 +3,7 @@ package com.cyberacy.app.ui.party.messaging.my_threads
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,34 +34,38 @@ class MyThreadsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val shimmer_layout = view.findViewById<ShimmerFrameLayout>(R.id.shimmer_layout)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview)
-        val labelNoData = view.findViewById<TextView>(R.id.label_no_data)
-        recyclerView.visibility = View.GONE
+        initMyThread()
+    }
+
+    fun initMyThread() {
+        val shimmer_layout = view?.findViewById<ShimmerFrameLayout>(R.id.shimmer_layout)
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerview)
+        val labelNoData = view?.findViewById<TextView>(R.id.label_no_data)
+        recyclerView?.visibility = View.GONE
         viewModel.myThreads.observe(viewLifecycleOwner) {
             when (it) {
                 is ThreadStateError -> {
-                    shimmer_layout.visibility = View.GONE
+                    shimmer_layout?.visibility = View.GONE
                 }
                 ThreadStateLoading -> {
-                    recyclerView.visibility = View.GONE
-                    shimmer_layout.visibility = View.VISIBLE
+                    recyclerView?.visibility = View.GONE
+                    shimmer_layout?.visibility = View.VISIBLE
                 }
                 is ThreadStateSuccess -> {
-                    shimmer_layout.visibility = View.GONE
+                    shimmer_layout?.visibility = View.GONE
                     if(it.threads.isEmpty()) {
-                        labelNoData.visibility = View.VISIBLE
+                        labelNoData?.visibility = View.VISIBLE
                     } else {
-                        recyclerView.visibility = View.VISIBLE
-                        recyclerView.adapter =
+                        recyclerView?.visibility = View.VISIBLE
+                        recyclerView?.adapter =
                             ListAdapterMyThread(it.threads as MutableList<ThreadMessaging>) { thread ->
-                                val intent = Intent(view.context, ThreadActivity::class.java)
+                                val intent = Intent(view?.context, ThreadActivity::class.java)
                                 intent.putExtra("idThread",thread.id)
                                 intent.putExtra("nameThread",thread.name)
                                 intent.putExtra("logoThread",thread.urlLogo)
                                 startActivity(intent)
                             }
-                        recyclerView.layoutManager = GridLayoutManager(context, 1)
+                        recyclerView?.layoutManager = GridLayoutManager(context, 1)
                     }
                 }
             }

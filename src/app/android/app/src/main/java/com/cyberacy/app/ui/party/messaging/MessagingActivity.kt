@@ -3,6 +3,7 @@ package com.cyberacy.app.ui.party.messaging
 import android.content.res.Configuration
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -30,8 +31,22 @@ class MessagingActivity : AppCompatActivity() {
         }
         logoMsg.setColorFilter(resources.getColor(colorIcon), PorterDuff.Mode.SRC_IN);
 
-        val tabs = findViewById<TabLayout>(R.id.tabs)
         changeFragment(MyThreadsFragment())
+        initTabs()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        initTabs()
+    }
+
+    fun changeFragment(view: Fragment) {
+        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.messaging_view, view).commit()
+    }
+
+    fun initTabs() {
+        val tabs = findViewById<TabLayout>(R.id.tabs)
         tabs.addOnTabSelectedListener(object:TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab : TabLayout.Tab) {
 
@@ -47,11 +62,6 @@ class MessagingActivity : AppCompatActivity() {
 
             }
         })
-    }
-
-    fun changeFragment(view: Fragment) {
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.messaging_view, view).commit()
     }
 
 }

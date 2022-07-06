@@ -17,8 +17,8 @@ object MessageRepository {
             emit(MessageStateLoading)
             try {
                 while(currentCoroutineContext().isActive) {
-                    delay(2000)
                     emit(MessageStateSuccess(Message.getMessages(id)))
+                    delay(2000)
                 }
             } catch (e: HttpException) {
                 emit(MessageStateError(e))
