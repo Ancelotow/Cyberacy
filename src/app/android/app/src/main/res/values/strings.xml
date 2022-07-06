@@ -37,6 +37,7 @@
     <string name="txt_no_mythreads">Vous ne participez à aucune discussion\nAllez sur \"Autres Discussions\" pour en rejoindre une</string>
     <string name="txt_no_threads">Vous n\'avez aucune invitations ou de nouvelles discussions à rejoindre pour le moment</string>
     <string name="txt_no_messages">Ecrivez le premier message dans cette discussion !</string>
+    <string name="txt_message_sent">Message envoyé</string>
 
     <!-- Tab bar -->
     <string name="tb_conversation">Mes conversations</string>

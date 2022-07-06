@@ -1,5 +1,6 @@
 package com.cyberacy.app.ui.party.messaging.thread
 
+import android.content.Intent
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,42 +12,71 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.marginEnd
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cyberacy.app.R
+import com.cyberacy.app.models.entities.Connection
 import com.cyberacy.app.models.entities.Message
+import com.cyberacy.app.models.entities.SendMessage
+import com.cyberacy.app.models.entities.Session
 import com.cyberacy.app.models.repositories.*
+import com.cyberacy.app.models.services.ApiConnection
+import com.cyberacy.app.ui.navigation.NavigationActivity
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import retrofit2.await
 import java.time.format.DateTimeFormatter
+import kotlin.properties.Delegates
 
 class ThreadActivity : AppCompatActivity() {
 
     private lateinit var viewModel: ThreadViewModel
+    private lateinit var loaderMsg: ProgressBar
+    private lateinit var loaderSend: ProgressBar
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var labelNoData: TextView
+    private lateinit var buttonSend: MaterialButton
+    private lateinit var layoutMessage: TextInputLayout
+    private lateinit var message: TextInputEditText
+    private var idThread by Delegates.notNull<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_thread)
 
-        val idThread = intent.getIntExtra("idThread", 0)
+        idThread = intent.getIntExtra("idThread", 0)
         val nameThread = intent.getStringExtra("nameThread")
         val logoThread = intent.getStringExtra("logoThread")
 
         val vm: ThreadViewModel by viewModels { ThreadViewModel.Factory(idThread) }
         viewModel = vm
 
-        val loaderMsg = findViewById<ProgressBar>(R.id.loader_msg)
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val labelNoData = findViewById<TextView>(R.id.label_no_data)
+        loaderMsg = findViewById(R.id.loader_msg)
+        loaderSend = findViewById(R.id.loader_send)
+        recyclerView = findViewById(R.id.recyclerview)
+        labelNoData = findViewById(R.id.label_no_data)
+        buttonSend = findViewById(R.id.btn_send)
+        layoutMessage = findViewById(R.id.layout_message)
+        message = findViewById(R.id.message)
 
+        initMessages()
+        buttonSend.setOnClickListener { this.sendMessage() }
+    }
 
+    fun initMessages() {
         recyclerView.visibility = View.GONE
         viewModel.messages.observe(this) {
             when (it) {
@@ -61,8 +91,10 @@ class ThreadActivity : AppCompatActivity() {
                 is MessageStateSuccess -> {
                     loaderMsg.visibility = View.GONE
                     if (it.messages.isEmpty()) {
+                        recyclerView.visibility = View.GONE
                         labelNoData.visibility = View.VISIBLE
                     } else {
+                        labelNoData.visibility = View.GONE
                         recyclerView.visibility = View.VISIBLE
                         recyclerView.adapter =
                             ListAdapterMessage(it.messages as MutableList<Message>, resources)
@@ -73,6 +105,29 @@ class ThreadActivity : AppCompatActivity() {
         }
     }
 
+    fun sendMessage() {
+        layoutMessage.error = null
+        val textMessage = this.message.text.toString()
+
+        if (textMessage.isEmpty()) {
+            layoutMessage.error = "Le message ne peut pas être nul"
+            return
+        }
+
+        loaderSend.visibility = View.VISIBLE
+        buttonSend.visibility = View.GONE
+        lifecycleScope.launch {
+            val messageToSend = SendMessage(textMessage)
+            try{
+                ApiConnection.connection().postMessage(idThread, messageToSend).await()
+                Toast.makeText(this@ThreadActivity, R.string.txt_message_sent, Toast.LENGTH_SHORT).show()
+                this@ThreadActivity.message.text = null
+            } finally {
+                loaderSend.visibility = View.GONE
+                buttonSend.visibility = View.VISIBLE
+            }
+        }
+    }
 }
 
 

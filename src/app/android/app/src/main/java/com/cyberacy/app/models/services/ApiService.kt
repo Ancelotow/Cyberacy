@@ -43,8 +43,9 @@ interface ApiService {
 
     @POST("thread/{id}/message")
     fun postMessage(
-        @Query("id") id: Int,
+        @Path("id") id: Int,
+        @Body message: SendMessage,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
-    ): Call<List<Message>?>
+    ): Call<String>
 
 }
