@@ -6,10 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +26,7 @@ import com.cyberacy.app.models.services.ApiConnection
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import retrofit2.await
 import java.time.format.DateTimeFormatter
@@ -40,15 +43,20 @@ class ThreadActivity : AppCompatActivity() {
     private lateinit var buttonSend: MaterialButton
     private lateinit var layoutMessage: TextInputLayout
     private lateinit var message: TextInputEditText
+    private lateinit var nameThread: String
+    private lateinit var logoThread: String
     private var idThread by Delegates.notNull<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_thread)
 
+        val actionBar: ActionBar? = supportActionBar
+        actionBar?.hide()
+
         idThread = intent.getIntExtra("idThread", 0)
-        val nameThread = intent.getStringExtra("nameThread")
-        val logoThread = intent.getStringExtra("logoThread")
+        nameThread = intent.getStringExtra("nameThread").toString()
+        logoThread = intent.getStringExtra("logoThread").toString()
 
         val vm: ThreadViewModel by viewModels { ThreadViewModel.Factory(idThread) }
         viewModel = vm
@@ -61,8 +69,18 @@ class ThreadActivity : AppCompatActivity() {
         layoutMessage = findViewById(R.id.layout_message)
         message = findViewById(R.id.message)
 
+        designActionBar()
         initMessages()
         buttonSend.setOnClickListener { this.sendMessage() }
+    }
+
+    fun designActionBar() {
+        findViewById<TextView>(R.id.name).text = nameThread
+        if(logoThread != null) {
+            if(logoThread.isNotEmpty()) {
+                Picasso.get().load(logoThread).into(findViewById<ImageView>(R.id.logo))
+            }
+        }
     }
 
     fun initMessages() {
