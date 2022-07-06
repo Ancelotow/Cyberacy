@@ -292,7 +292,8 @@ create or replace function filter_thread(_nir person.prs_nir%type, _only_mine bo
                 date_delete        thread.thr_date_delete%type,
                 is_private         thread.thr_is_private%type,
                 url_logo           thread.thr_url_logo%type,
-                id_political_party thread.pop_id%type
+                id_political_party thread.pop_id%type,
+                fcm_topic          thread.thr_fcm_topic%type
             )
 as
 $filter$
@@ -310,7 +311,8 @@ begin
                         thr_date_delete as date_delete,
                         thr_is_private  as is_private,
                         thr_url_logo    as url_logo,
-                        thr.pop_id      as id_political_party
+                        thr.pop_id      as id_political_party,
+                        thr_fcm_topic   as fcm_topic
         from thread thr
                  join adherent adh on thr.pop_id = adh.pop_id and adh.prs_nir = _nir and adh.adh_is_left = false
                  left join member mem on thr.thr_id = mem.thr_id and adh.adh_id = mem.adh_id

@@ -12,6 +12,7 @@ class Thread {
     is_private
     url_logo
     id_political_party
+    fcm_topic
     lastMessage = null
 }
 
@@ -72,7 +73,7 @@ Thread.prototype.Get = function (nir, onlyMine = true) {
 Thread.prototype.GetById = function (nir, id) {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'SELECT * FROM filter_thread($1, false) WHERE id = $2',
+            text: 'SELECT * FROM filter_thread($1, true) WHERE id = $2',
             values: [nir, id],
         }
         pool.query(request, (error, result) => {

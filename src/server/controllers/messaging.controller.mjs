@@ -176,6 +176,7 @@ const AddMessage = (person, idThread, msgJson) => {
                             let nameSender = `${person.lastname} ${person.firstname}`
                             let thread = await new Thread().GetById(person.nir, idThread)
                             notif.priority = "high"
+                            notif.to = `/topics/${thread.fcm_topic}`
                             notif.InitMessage(`(${thread.name}) Nouveau message`, `${nameSender} : ${message.message}`)
                             await notif.Send()
                         } catch (e) {

@@ -257,3 +257,24 @@ create trigger trg_add_election
     for each row
 execute procedure add_election();
 
+-- Trigger AFTER INSERT pour la table "thread"
+create or replace function add_thread()
+    returns trigger
+as
+$trigger$
+begin
+    update thread
+    set thr_fcm_topic = concat('thread_', new.thr_id)
+    where thr_id = new.thr_id;
+
+    return new;
+end
+$trigger$
+    language plpgsql;
+
+create trigger trg_insert_thread
+    after insert
+    on thread
+    for each row
+execute procedure add_thread();
+
