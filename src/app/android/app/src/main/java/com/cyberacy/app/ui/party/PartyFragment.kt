@@ -15,6 +15,8 @@ import com.cyberacy.app.models.repositories.PartyStateSuccessMine
 import com.cyberacy.app.ui.party.join_party.JoinPartyFragment
 import com.cyberacy.app.ui.party.main_party.MainPartyFragment
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 
 class PartyFragment : Fragment() {
 
@@ -33,6 +35,7 @@ class PartyFragment : Fragment() {
         val childView = view.findViewById<FragmentContainerView>(R.id.party_view)
         loader.visibility = View.VISIBLE
         childView.visibility = View.GONE
+        Firebase.messaging.subscribeToTopic("all")
         viewModel.mineParty.observe(viewLifecycleOwner) {
             when (it) {
                 is PartyStateError -> {

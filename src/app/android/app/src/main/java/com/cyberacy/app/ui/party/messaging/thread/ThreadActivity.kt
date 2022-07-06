@@ -1,11 +1,7 @@
 package com.cyberacy.app.ui.party.messaging.thread
 
-import android.content.Intent
 import android.content.res.Resources
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,32 +10,25 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginEnd
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cyberacy.app.R
-import com.cyberacy.app.models.entities.Connection
 import com.cyberacy.app.models.entities.Message
 import com.cyberacy.app.models.entities.SendMessage
-import com.cyberacy.app.models.entities.Session
 import com.cyberacy.app.models.repositories.*
 import com.cyberacy.app.models.services.ApiConnection
-import com.cyberacy.app.ui.navigation.NavigationActivity
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import retrofit2.await
 import java.time.format.DateTimeFormatter
 import kotlin.properties.Delegates
+
 
 class ThreadActivity : AppCompatActivity() {
 
@@ -96,9 +85,12 @@ class ThreadActivity : AppCompatActivity() {
                     } else {
                         labelNoData.visibility = View.GONE
                         recyclerView.visibility = View.VISIBLE
-                        recyclerView.adapter =
-                            ListAdapterMessage(it.messages as MutableList<Message>, resources)
-                        recyclerView.layoutManager = GridLayoutManager(this, 1)
+                        val linearLayoutManager = LinearLayoutManager(this)
+                        linearLayoutManager.reverseLayout = true
+                        linearLayoutManager.stackFromEnd = true
+                        recyclerView.layoutManager = linearLayoutManager
+                        recyclerView.adapter = ListAdapterMessage(it.messages as MutableList<Message>, resources)
+                        recyclerView.scrollToPosition(0)
                     }
                 }
             }
