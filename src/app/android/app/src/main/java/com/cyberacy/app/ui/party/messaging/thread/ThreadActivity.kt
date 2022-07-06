@@ -3,13 +3,11 @@ package com.cyberacy.app.ui.party.messaging.thread
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -168,22 +166,17 @@ class MessageViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     private val message = v.findViewById<TextView>(R.id.message)
     private val messageDate = v.findViewById<TextView>(R.id.date_message)
     private val cardMessage = v.findViewById<ConstraintLayout>(R.id.card_message)
+    private val layoutMessage = v.findViewById<RelativeLayout>(R.id.layout_message)
 
     fun setItem(item: Message, resources: Resources) {
         val mv = 15
         val mh = 100
         if (item.mine) {
             cardMessage.background = resources.getDrawable(R.drawable.message_mine)
-            val param = (cardMessage.layoutParams as ViewGroup.MarginLayoutParams).apply {
-                setMargins(mh, mv, 0, mv)
-            }
-            cardMessage.layoutParams = param
+            layoutMessage.gravity = Gravity.RIGHT
         } else {
             cardMessage.background = resources.getDrawable(R.drawable.message_other)
-            val param = (cardMessage.layoutParams as ViewGroup.MarginLayoutParams).apply {
-                setMargins(0, mv, mh, mv)
-            }
-            cardMessage.layoutParams = param
+            layoutMessage.gravity = Gravity.LEFT
         }
         message.text = item.message
         messageUser.text = item.getUserName()
