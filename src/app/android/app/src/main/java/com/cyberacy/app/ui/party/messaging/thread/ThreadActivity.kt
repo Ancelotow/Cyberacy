@@ -3,6 +3,8 @@ package com.cyberacy.app.ui.party.messaging.thread
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,11 +20,16 @@ import com.cyberacy.app.R
 import com.cyberacy.app.models.entities.Message
 import com.cyberacy.app.models.repositories.*
 import com.facebook.shimmer.ShimmerFrameLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
 class ThreadActivity : AppCompatActivity() {
 
-    private val viewModel: ThreadViewModel by viewModels()
+    private lateinit var viewModel: ThreadViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +39,14 @@ class ThreadActivity : AppCompatActivity() {
         val nameThread = intent.getStringExtra("nameThread")
         val logoThread = intent.getStringExtra("logoThread")
 
+        val vm: ThreadViewModel by viewModels { ThreadViewModel.Factory(idThread) }
+        viewModel = vm
+
         val loaderMsg = findViewById<ProgressBar>(R.id.loader_msg)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
         val labelNoData = findViewById<TextView>(R.id.label_no_data)
+
+
         recyclerView.visibility = View.GONE
         viewModel.messages.observe(this) {
             when (it) {
