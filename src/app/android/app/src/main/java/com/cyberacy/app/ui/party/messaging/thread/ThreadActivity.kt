@@ -169,8 +169,6 @@ class MessageViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     private val layoutMessage = v.findViewById<RelativeLayout>(R.id.layout_message)
 
     fun setItem(item: Message, resources: Resources) {
-        val mv = 15
-        val mh = 100
         if (item.mine) {
             cardMessage.background = resources.getDrawable(R.drawable.message_mine)
             layoutMessage.gravity = Gravity.RIGHT
@@ -180,7 +178,6 @@ class MessageViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         }
         message.text = item.message
         messageUser.text = item.getUserName()
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        messageDate.text = formatter.format(item.datePublished)
+        messageDate.text = item.getDateMessage()
     }
 }

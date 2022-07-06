@@ -119,7 +119,7 @@ class MyThreadViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         if(item.lastMessage == null) {
             threadDateLastMsg.text = formatter.format(item.dateCreate)
         } else {
-            threadDateLastMsg.text =  formatter.format(item.lastMessage.datePublished)
+            threadDateLastMsg.text =  item.lastMessage.getDateMessage()
             threadLastMessage.text = "${item.lastMessage.firstname} : ${item.lastMessage.message}"
         }
         if(item.urlLogo != null) {
