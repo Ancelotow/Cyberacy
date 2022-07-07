@@ -2,7 +2,9 @@ package com.cyberacy.app.ui.party.messaging.thread
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -11,6 +13,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,6 +50,7 @@ class ThreadActivity : AppCompatActivity() {
     private lateinit var labelNoData: TextView
     private lateinit var buttonSend: MaterialButton
     private lateinit var buttonExit: MaterialButton
+    private lateinit var buttonBack: MaterialButton
     private lateinit var layoutMessage: TextInputLayout
     private lateinit var message: TextInputEditText
     private lateinit var nameThread: String
@@ -75,6 +79,7 @@ class ThreadActivity : AppCompatActivity() {
         labelNoData = findViewById(R.id.label_no_data)
         buttonSend = findViewById(R.id.btn_send)
         buttonExit = findViewById(R.id.btn_exit)
+        buttonBack = findViewById(R.id.btn_back)
         layoutMessage = findViewById(R.id.layout_message)
         message = findViewById(R.id.message)
 
@@ -91,6 +96,15 @@ class ThreadActivity : AppCompatActivity() {
                 Picasso.get().load(logoThread).into(findViewById<ImageView>(R.id.logo))
             }
         }
+        var colorIcon = android.R.color.black
+        when (resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+            Configuration.UI_MODE_NIGHT_YES -> {colorIcon = android.R.color.white}
+            Configuration.UI_MODE_NIGHT_NO -> {colorIcon = android.R.color.black}
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> {colorIcon = android.R.color.black}
+        }
+        buttonBack.iconTint = ContextCompat.getColorStateList(this, colorIcon)
+        buttonBack.setOnClickListener { finish() }
+
     }
 
     fun initMessages() {
