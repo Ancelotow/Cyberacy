@@ -35,7 +35,6 @@ class PartyFragment : Fragment() {
         val childView = view.findViewById<FragmentContainerView>(R.id.party_view)
         loader.visibility = View.VISIBLE
         childView.visibility = View.GONE
-        Firebase.messaging.subscribeToTopic("all")
         viewModel.mineParty.observe(viewLifecycleOwner) {
             when (it) {
                 is PartyStateError -> {

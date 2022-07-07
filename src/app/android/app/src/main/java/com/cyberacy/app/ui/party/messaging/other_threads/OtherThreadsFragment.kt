@@ -25,6 +25,8 @@ import com.cyberacy.app.models.repositories.ThreadStateLoading
 import com.cyberacy.app.models.repositories.ThreadStateSuccess
 import com.cyberacy.app.models.services.ApiConnection
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -85,6 +87,7 @@ class OtherThreadsFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 ApiConnection.connection().joinThread(thread.id).await()
+                Firebase.messaging.subscribeToTopic(thread.fcmTopic)
                 activity?.recreate()
             } catch (e: HttpException) {
                 Log.e("Erreur HTTP", e.message())

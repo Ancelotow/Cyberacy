@@ -15,6 +15,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.cyberacy.app.R
 import com.cyberacy.app.databinding.ActivityNavigationBinding
 import com.cyberacy.app.models.entities.Session
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 
 class NavigationActivity : AppCompatActivity() {
 
@@ -34,6 +36,6 @@ class NavigationActivity : AppCompatActivity() {
         val navHost = supportFragmentManager.findFragmentById(R.id.host_view) as NavHostFragment
         setupWithNavController(navBar, navHost.navController)
 
-        Log.v("JWT TOKEN", Session.getJwtToken())
+        Firebase.messaging.subscribeToTopic("all")
     }
 }

@@ -26,7 +26,10 @@ class ThreadMessaging(
     val isPrivate: Boolean,
 
     @SerializedName("lastMessage")
-    val lastMessage: Message?
+    val lastMessage: Message?,
+
+    @SerializedName("fcm_topic")
+    val fcmTopic: String
 ) {
 
     companion object Service {

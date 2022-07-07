@@ -25,6 +25,8 @@ import com.cyberacy.app.ui.navigation.NavigationActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -46,6 +48,7 @@ class ThreadActivity : AppCompatActivity() {
     private lateinit var message: TextInputEditText
     private lateinit var nameThread: String
     private lateinit var logoThread: String
+    private lateinit var fcmTopicThread: String
     private var idThread by Delegates.notNull<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +61,7 @@ class ThreadActivity : AppCompatActivity() {
         idThread = intent.getIntExtra("idThread", 0)
         nameThread = intent.getStringExtra("nameThread").toString()
         logoThread = intent.getStringExtra("logoThread").toString()
+        fcmTopicThread = intent.getStringExtra("fcmTopicThread").toString()
 
         val vm: ThreadViewModel by viewModels { ThreadViewModel.Factory(idThread) }
         viewModel = vm
@@ -155,6 +159,7 @@ class ThreadActivity : AppCompatActivity() {
                 loaderSend.visibility = View.VISIBLE
                 try{
                     ApiConnection.connection().leaveThread(idThread).await()
+                    Firebase.messaging.unsubscribeFromTopic(fcmTopicThread)
                     this@ThreadActivity.finish();
                 } catch (e: HttpException) {
                     if(e.code() == 401) {

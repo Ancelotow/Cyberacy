@@ -63,6 +63,7 @@ class MyThreadsFragment : Fragment() {
                                 intent.putExtra("idThread",thread.id)
                                 intent.putExtra("nameThread",thread.name)
                                 intent.putExtra("logoThread",thread.urlLogo)
+                                intent.putExtra("fcmTopicThread",thread.fcmTopic)
                                 startActivity(intent)
                             }
                         recyclerView?.layoutManager = GridLayoutManager(context, 1)
