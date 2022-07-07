@@ -348,24 +348,24 @@ declare
     is_granted boolean := is_granted(_nir, 'MESSAGE#READ');
 begin
     return query
-        select msg.msg_id         as id,
-               prs_firstname      as firstname,
-               prs_lastname       as lastname,
-               msg_message        as type,
-               msg_date_published as date_published,
-               msg.thr_id         as id_thread,
-               msg.mem_id         as id_member,
-               case
-                   when adhSender.prs_nir = _nir then true
-                   else false
-                   end            as mine
+        select distinct msg.msg_id         as id,
+                        prs_firstname      as firstname,
+                        prs_lastname       as lastname,
+                        msg_message        as type,
+                        msg_date_published as date_published,
+                        msg.thr_id         as id_thread,
+                        msg.mem_id         as id_member,
+                        case
+                            when adhSender.prs_nir = _nir then true
+                            else false
+                            end            as mine
         from message msg
                  join thread thr on msg.thr_id = thr.thr_id and thr.thr_id = _thr_id
                  join member memSender on msg.mem_id = memSender.mem_id
                  join adherent adhSender on memSender.adh_id = adhSender.adh_id
                  join person prs on adhSender.prs_nir = prs.prs_nir
                  join member mem on mem.thr_id = thr.thr_id and mem.mem_is_left = false
-                 join adherent adh on mem.adh_id = adh.adh_id and adh.prs_nir = _nir
+                 join adherent adh on mem.adh_id = adh.adh_id and adh.prs_nir = _nir and adh.adh_is_left = false
         where is_granted = true
         order by msg_date_published desc
         limit 200;
