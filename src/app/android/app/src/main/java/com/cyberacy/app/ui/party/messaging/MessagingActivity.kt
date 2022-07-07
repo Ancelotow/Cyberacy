@@ -7,11 +7,13 @@ import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.cyberacy.app.R
 import com.cyberacy.app.ui.party.messaging.my_threads.MyThreadsFragment
 import com.cyberacy.app.ui.party.messaging.other_threads.OtherThreadsFragment
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayout
 
 class MessagingActivity : AppCompatActivity() {
@@ -22,14 +24,15 @@ class MessagingActivity : AppCompatActivity() {
         val actionBar: ActionBar? = supportActionBar
         actionBar?.hide()
 
-        val logoMsg = findViewById<ImageView>(R.id.logo_msg)
+        val buttonBack = findViewById<MaterialButton>(R.id.btn_back)
         var colorIcon = android.R.color.black
         when (resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
             Configuration.UI_MODE_NIGHT_YES -> {colorIcon = android.R.color.white}
             Configuration.UI_MODE_NIGHT_NO -> {colorIcon = android.R.color.black}
             Configuration.UI_MODE_NIGHT_UNDEFINED -> {colorIcon = android.R.color.black}
         }
-        logoMsg.setColorFilter(resources.getColor(colorIcon), PorterDuff.Mode.SRC_IN);
+        buttonBack.iconTint = ContextCompat.getColorStateList(this, colorIcon)
+        buttonBack.setOnClickListener { finish() }
 
         changeFragment(MyThreadsFragment())
         initTabs()
