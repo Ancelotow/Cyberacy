@@ -1,4 +1,5 @@
 import {pool} from "../middlewares/postgres.mjs";
+import {Vote} from "./vote.mjs";
 
 class Meeting {
     id
@@ -20,6 +21,7 @@ class Meeting {
     price_excl
     latitude
     longitude
+    town = null
 }
 
 /**
@@ -79,7 +81,7 @@ Meeting.prototype.IfExists = function(id) {
  */
 Meeting.prototype.Aborted = function(id, reason) {
     return new Promise((resolve, reject) => {
-        IfExists(id).then((result) => {
+        this.IfExists(id).then((result) => {
             if (result) {
                 const request = {
                     text: 'UPDATE meeting SET mee_is_aborted = true, mee_reason_aborted = $1, mee_date_aborted = now() WHERE mee_id = $2 AND mee_is_aborted = false',
@@ -108,21 +110,23 @@ Meeting.prototype.Aborted = function(id, reason) {
  * @param nir Le NIR du participant
  * @param includeAborted Inclus les meetings annulé
  * @param includeCompleted Inclus les meetings complet
+ * @param includeFinished
  * @returns {Promise<unknown>}
  * @constructor
  */
-Meeting.prototype.Get = function(town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true) {
+Meeting.prototype.Get = function(town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true, includeFinished = false) {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'SELECT * FROM filter_meeting($1, $2, $3, $4, $5)',
-            values: [town, idPoliticalParty, nir, includeAborted, includeCompleted],
+            text: 'SELECT * FROM filter_meeting($1, $2, $3, $4, $5, $6)',
+            values: [town, idPoliticalParty, nir, includeAborted, includeCompleted, includeFinished],
         }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows : null
-                resolve(res)
+                let listMeetings = []
+                result.rows.forEach(e => listMeetings.push(Object.assign(new Meeting(), e)));
+                resolve(listMeetings)
             }
         });
     });

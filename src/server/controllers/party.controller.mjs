@@ -3,6 +3,7 @@ import partyMod from "../models/political-party.mjs"
 import adherentMod from "../models/adherent.mjs";
 import documentMod from "../models/document.mjs";
 import feeMod from "../models/annual-fee.mjs";
+import {Meeting} from "../models/meeting.mjs";
 
 const uri_api_siren = "https://entreprise.data.gouv.fr/api/sirene/v3/unites_legales/"
 
@@ -82,8 +83,16 @@ const AddParty = (party) => {
  */
 const GetPoliticalParty = (siren = null, nir = null, includeLeft = false, idPoliticalParty = null) => {
     return new Promise((resolve, _) => {
-        partyMod.Get(nir, includeLeft, siren, idPoliticalParty).then((res) => {
+        partyMod.Get(nir, includeLeft, siren, idPoliticalParty).then(async (res) => {
             const code = (res) ? 200 : 204;
+            if(code === 200) {
+                for(let i = 0; i < res.length; i++) {
+                    let listMeeting = await new Meeting().Get(null, res[i].id, null, false, true)
+                    if(listMeeting.length > 0) {
+                        res[i].next_meeting = listMeeting[0]
+                    }
+                }
+            }
             resolve({status: code, data: res})
         }).catch((e) => {
             if (e.code === '23503') resolve({status: 400, data: e.message})

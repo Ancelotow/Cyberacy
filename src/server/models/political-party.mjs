@@ -22,6 +22,7 @@ class PoliticalParty {
     doc_logo
     doc_bank_details
     doc_chart
+    next_meeting = null
 }
 
 class StatsAdherent {

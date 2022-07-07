@@ -2,6 +2,7 @@ import {Meeting} from "../models/meeting.mjs";
 import participantMod from "../models/participant.mjs";
 import {Vote} from "../models/vote.mjs";
 import geoCtrl from "./geography.controller.mjs";
+import {Town} from "../models/town.mjs";
 
 /**
  * Ajout d'un nouveau meeting
@@ -77,8 +78,13 @@ const AbortedMeeting = (id, reason = null) => {
  */
 const GetMeeting = (town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true) => {
     return new Promise((resolve, _) => {
-        new Meeting().Get(town, idPoliticalParty, nir, includeAborted, includeCompleted).then((res) => {
-            const code = (res) ? 200 : 204;
+        new Meeting().Get(town, idPoliticalParty, nir, includeAborted, includeCompleted).then(async (res) => {
+            const code = (res.length > 0) ? 200 : 204;
+            for(let i = 0; i < res.length; i++) {
+                if(res[i].town_code_insee != null) {
+                    res[i].town = await new Town().GetById(res[i].town_code_insee)
+                }
+            }
             resolve({status: code, data: res})
         }).catch((e) => {
             if(e.code === '23503') resolve({status: 400, data: e.message})

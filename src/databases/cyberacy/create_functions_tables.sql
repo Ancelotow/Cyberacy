@@ -164,7 +164,8 @@ create or replace function filter_meeting(_town meeting.twn_code_insee%type defa
                                           _pop_id meeting.pop_id%type default null,
                                           _nir person.prs_nir%type default null,
                                           _include_aborted meeting.mee_is_aborted%type default false,
-                                          _include_completed meeting.mee_is_aborted%type default true)
+                                          _include_completed boolean default true,
+                                          _include_finished boolean default false)
     returns table
             (
                 id                 meeting.mee_id%type,
@@ -217,7 +218,8 @@ begin
           and (_pop_id is null or mee.pop_id = _pop_id)
           and (_town is null or mee.twn_code_insee = _town)
           and (_include_completed = true or nb_place_vacant > 0)
-        order by mee_date_start, mee_name desc;
+          and (_include_finished = true or mee_date_start > now())
+        order by mee_date_start, mee_name;
 
 end;
 $filter$
