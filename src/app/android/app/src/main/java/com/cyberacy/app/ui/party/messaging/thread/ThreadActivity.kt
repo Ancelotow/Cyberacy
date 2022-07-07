@@ -27,6 +27,9 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
+import com.google.mlkit.nl.smartreply.SmartReply
+import com.google.mlkit.nl.smartreply.SmartReplySuggestionResult
+import com.google.mlkit.nl.smartreply.TextMessage
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -83,8 +86,8 @@ class ThreadActivity : AppCompatActivity() {
 
     fun designActionBar() {
         findViewById<TextView>(R.id.name).text = nameThread
-        if(logoThread != null) {
-            if(logoThread.isNotEmpty()) {
+        if (logoThread != null) {
+            if (logoThread.isNotEmpty()) {
                 Picasso.get().load(logoThread).into(findViewById<ImageView>(R.id.logo))
             }
         }
@@ -114,7 +117,8 @@ class ThreadActivity : AppCompatActivity() {
                         linearLayoutManager.reverseLayout = true
                         linearLayoutManager.stackFromEnd = true
                         recyclerView.layoutManager = linearLayoutManager
-                        recyclerView.adapter = ListAdapterMessage(it.messages as MutableList<Message>, resources)
+                        recyclerView.adapter =
+                            ListAdapterMessage(it.messages as MutableList<Message>, resources)
                         recyclerView.scrollToPosition(0)
                     }
                 }
@@ -135,9 +139,10 @@ class ThreadActivity : AppCompatActivity() {
         buttonSend.visibility = View.GONE
         lifecycleScope.launch {
             val messageToSend = SendMessage(textMessage)
-            try{
+            try {
                 ApiConnection.connection().postMessage(idThread, messageToSend).await()
-                Toast.makeText(this@ThreadActivity, R.string.txt_message_sent, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ThreadActivity, R.string.txt_message_sent, Toast.LENGTH_SHORT)
+                    .show()
                 this@ThreadActivity.message.text = null
             } finally {
                 loaderSend.visibility = View.GONE
@@ -157,12 +162,12 @@ class ThreadActivity : AppCompatActivity() {
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 )
                 loaderSend.visibility = View.VISIBLE
-                try{
+                try {
                     ApiConnection.connection().leaveThread(idThread).await()
                     Firebase.messaging.unsubscribeFromTopic(fcmTopicThread)
                     this@ThreadActivity.finish();
                 } catch (e: HttpException) {
-                    if(e.code() == 401) {
+                    if (e.code() == 401) {
                         Log.e("Erreur 401", e.message())
                     }
                     loaderSend.visibility = View.GONE
@@ -175,6 +180,8 @@ class ThreadActivity : AppCompatActivity() {
         }
         alertDialogBuilder.show()
     }
+
+
 }
 
 
