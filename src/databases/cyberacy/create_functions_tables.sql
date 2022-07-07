@@ -179,8 +179,13 @@ create or replace function filter_meeting(_town meeting.twn_code_insee%type defa
                 nb_place_vacant    int,
                 address_street     meeting.mee_address_street%type,
                 link_twitch        meeting.mee_link_twitch%type,
+                link_youtube       meeting.mee_link_youtube%type,
                 id_political_party meeting.pop_id%type,
-                town_code_insee    meeting.twn_code_insee%type
+                town_code_insee    meeting.twn_code_insee%type,
+                vta_rate           meeting.mee_vta_rate%type,
+                price_excl         meeting.mee_price_excl%type,
+                latitude           meeting.mee_lat%type,
+                longitude          meeting.mee_lng%type
             )
 as
 $filter$
@@ -198,8 +203,13 @@ begin
                get_nb_place_vacant(mee.mee_id) as nb_place_vacant,
                mee_address_street              as address_street,
                mee_link_twitch                 as link_twitch,
+               mee_link_youtube                as link_youtube,
                mee.pop_id                      as id_political_party,
-               mee.twn_code_insee              as town_code_insee
+               mee.twn_code_insee              as town_code_insee,
+               mee_vta_rate                    as vta_rate,
+               mee_price_excl                  as price_excl,
+               mee_lat                         as latitude,
+               mee_lng                         as longitude
         from meeting mee
                  left join participant ptc on mee.mee_id = ptc.mee_id
         where (_include_aborted = true or mee_is_aborted = false)

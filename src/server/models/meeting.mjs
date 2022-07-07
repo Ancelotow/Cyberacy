@@ -13,21 +13,25 @@ class Meeting {
     nb_place_vacant
     street_address
     link_twitch
+    link_youtube
     id_political_party
     town_code_insee
+    vta_rate
+    price_excl
+    latitude
+    longitude
 }
 
 /**
  * Ajoute un nouveau meeting
- * @param meeting Le nouveau meeting
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Add = (meeting) => {
+Meeting.prototype.Add = function() {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'INSERT INTO meeting (mee_name, mee_object, mee_description, mee_date_start, mee_nb_time, mee_nb_place, mee_address_street, mee_link_twitch, pop_id, twn_code_insee) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
-            values: [meeting.name, meeting.object, meeting.description, meeting.date_start, meeting.nb_time, meeting.nb_place, meeting.address_street, meeting.link_twitch, meeting.id_political_party, meeting.town_code_insee],
+            text: 'INSERT INTO meeting (mee_name, mee_object, mee_description, mee_date_start, mee_nb_time, mee_nb_place, mee_address_street, mee_link_twitch, mee_link_youtube, pop_id, twn_code_insee, mee_vta_rate, mee_price_excl, mee_lat, mee_lng) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)',
+            values: [this.name, this.object, this.description, this.date_start, this.nb_time, this.nb_place, this.street_address, this.link_twitch, this.link_youtube, this.id_political_party, this.town_code_insee, this.vta_rate, this.price_excl, this.latitude, this.longitude],
         }
         pool.query(request, (error, _) => {
             if (error) {
@@ -45,7 +49,7 @@ const Add = (meeting) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const IfExists = (id) => {
+Meeting.prototype.IfExists = function(id) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT COUNT(*) FROM meeting WHERE mee_id = $1',
@@ -73,7 +77,7 @@ const IfExists = (id) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Aborted = (id, reason) => {
+Meeting.prototype.Aborted = function(id, reason) {
     return new Promise((resolve, reject) => {
         IfExists(id).then((result) => {
             if (result) {
@@ -107,7 +111,7 @@ const Aborted = (id, reason) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Get = (town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true) => {
+Meeting.prototype.Get = function(town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * FROM filter_meeting($1, $2, $3, $4, $5)',
@@ -124,4 +128,4 @@ const Get = (town = null, idPoliticalParty = null, nir = null, includeAborted = 
     });
 }
 
-export default {Meeting, IfExists, Add, Aborted, Get}
+export {Meeting}

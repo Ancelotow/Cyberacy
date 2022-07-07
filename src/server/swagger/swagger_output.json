@@ -1248,18 +1248,20 @@
           "Messaging"
         ],
         "description": "Publier un nouveau message sur un thread donné.",
-        "consumes": [
-          "text/plain"
-        ],
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "thread",
+            "in": "body",
+            "description": "Le nouveau message",
+            "schema": {
+              "$ref": "#/definitions/AddMessage"
+            }
           }
         ],
         "responses": {},
@@ -1267,13 +1269,7 @@
           {
             "Bearer": []
           }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "text/plain": "Ceci est mon nouveau message. Super !!!!!"
-          }
-        }
+        ]
       }
     },
     "/thread/{id}/member": {
@@ -1880,13 +1876,25 @@
           "type": "string",
           "example": "https://www.twitch.tv/samueletienne"
         },
+        "link_youtube": {
+          "type": "string",
+          "example": "https://www.youtube.com/channel/UCk2xd7NXB2BL5diWVNQj4Tg"
+        },
         "id_political_party": {
           "type": "number",
           "example": 1
         },
         "town_code_insee": {
           "type": "string",
-          "example": "11003"
+          "example": "75112"
+        },
+        "price_excl": {
+          "type": "number",
+          "example": 35
+        },
+        "vta_rate": {
+          "type": "number",
+          "example": 20
         }
       }
     },
@@ -1975,6 +1983,15 @@
         "id_type_vote": {
           "type": "number",
           "example": 1
+        }
+      }
+    },
+    "AddMessage": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Bonjour tout le monde !"
         }
       }
     }

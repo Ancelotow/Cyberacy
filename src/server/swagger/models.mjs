@@ -94,8 +94,11 @@ export default  {
         nb_place: 5000,
         street_address: "Accord Hotel Arena",
         link_twitch: "https://www.twitch.tv/samueletienne",
+        link_youtube: "https://www.youtube.com/channel/UCk2xd7NXB2BL5diWVNQj4Tg",
         id_political_party: 1,
-        town_code_insee: "11003"
+        town_code_insee: "75112",
+        price_excl: 35.00,
+        vta_rate: 20.00
     },
 
     AddThread: {
@@ -125,6 +128,10 @@ export default  {
         date_start: "2022-04-10 08:00",
         date_end: "2022-04-24 20:00",
         id_type_vote: 1,
+    },
+
+    AddMessage: {
+        message: "Bonjour tout le monde !"
     },
 
 };

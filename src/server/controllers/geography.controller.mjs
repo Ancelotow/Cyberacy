@@ -33,6 +33,7 @@ function GetLocationFromAddress(address, zip_code) {
         config()
         axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address},${zip_code},France&key=${process.env.GOOGLE_MAPS_TOKEN}`).then(async (res) => {
             if (res.data) {
+                console.log(res.data)
                 if (res.data.status === "OK" && res.data.results !== null) {
                     if (res.data.results.length >= 0) {
                         let geo = res.data.results[0].geometry

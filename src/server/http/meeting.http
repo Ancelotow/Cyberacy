@@ -28,5 +28,9 @@ Content-Type: application/json
   "object": "Présidentiel",
   "date_start": "2022-05-12",
   "nb_time": 2.20,
-  "id_political_party": 3
+  "id_political_party": 32,
+  "price_excl": 20.00,
+  "vta_rate": 10.50,
+  "street_address": "28 rue de Noisy",
+  "town_code_insee": "94079"
 }

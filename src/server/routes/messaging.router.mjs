@@ -75,17 +75,13 @@ routerMsg.get("/thread/:id/message", async (req, res) => {
 
 routerMsg.post("/thread/:id/message", async (req, res) => {
     // #swagger.tags = ['Messaging']
-    // #swagger.produces = ['application/json']
-    // #swagger.consumes = ['text/plain']
     // #swagger.description = 'Publier un nouveau message sur un thread donné.'
     // #swagger.security = [{ "Bearer": [] }]
-    /* #swagger.requestBody = {
-              required: true,
-              content: {
-                "text/plain": "Ceci est mon nouveau message. Super !!!!!"
-            }
-          }
-    */
+    /*  #swagger.parameters['thread'] = {
+                       in: 'body',
+                       description: 'Le nouveau message',
+                       schema: { $ref: '#/definitions/AddMessage' }
+    } */
 
     const response = await messagingCtrl.AddMessage(req.data, req.params.id, req.body)
     res.status(response.status).send(response.data)

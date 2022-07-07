@@ -1,22 +1,31 @@
-import meetingMod from "../models/meeting.mjs";
+import {Meeting} from "../models/meeting.mjs";
 import participantMod from "../models/participant.mjs";
+import {Vote} from "../models/vote.mjs";
+import geoCtrl from "./geography.controller.mjs";
 
 /**
  * Ajout d'un nouveau meeting
- * @param meeting Le nouveau meeting
  * @returns {Promise<unknown>}
  * @constructor
+ * @param meetingJson
  */
-const AddMeeting = (meeting) => {
-    return new Promise((resolve, _) => {
-        if (!meeting) {
+const AddMeeting = (meetingJson) => {
+    return new Promise(async (resolve, _) => {
+        if (!meetingJson) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!meeting.name || !meeting.object) {
+        } else if (!meetingJson.name || !meetingJson.object) {
             resolve({status: 400, data: "Missing parameters."})
-        } else if (!meeting.date_start || !meeting.id_political_party) {
+        } else if (!meetingJson.date_start || !meetingJson.id_political_party) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            meetingMod.Add(meeting).then((res) => {
+            let meeting = new Meeting()
+            Object.assign(meeting, meetingJson)
+            let coordinates = await geoCtrl.GetLocationFromAddress(meeting.street_address, meeting.town_code_insee)
+            if(coordinates !== null) {
+                meeting.latitude = coordinates.latitude
+                meeting.longitude = coordinates.longitude
+            }
+            meeting.Add().then((res) => {
                 if (res) {
                     resolve({status: 201, data: "Meeting has been created."})
                 } else {
@@ -42,7 +51,7 @@ const AbortedMeeting = (id, reason = null) => {
         if (!id) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
-            meetingMod.Aborted(id, reason).then((res) => {
+            new Meeting().Aborted(id, reason).then((res) => {
                 if (res) {
                     resolve({status: 200, data: "Meeting has been aborted."})
                 } else {
@@ -68,7 +77,7 @@ const AbortedMeeting = (id, reason = null) => {
  */
 const GetMeeting = (town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true) => {
     return new Promise((resolve, _) => {
-        meetingMod.Get(town, idPoliticalParty, nir, includeAborted, includeCompleted).then((res) => {
+        new Meeting().Get(town, idPoliticalParty, nir, includeAborted, includeCompleted).then((res) => {
             const code = (res) ? 200 : 204;
             resolve({status: code, data: res})
         }).catch((e) => {
