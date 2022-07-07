@@ -109,6 +109,10 @@ class ThreadActivity : AppCompatActivity() {
 
     fun initMessages() {
         recyclerView.visibility = View.GONE
+        val linearLayoutManager = LinearLayoutManager(this)
+        linearLayoutManager.reverseLayout = true
+        linearLayoutManager.stackFromEnd = true
+        recyclerView.layoutManager = linearLayoutManager
         viewModel.messages.observe(this) {
             when (it) {
                 is MessageStateError -> {
@@ -127,13 +131,10 @@ class ThreadActivity : AppCompatActivity() {
                     } else {
                         labelNoData.visibility = View.GONE
                         recyclerView.visibility = View.VISIBLE
-                        val linearLayoutManager = LinearLayoutManager(this)
-                        linearLayoutManager.reverseLayout = true
-                        linearLayoutManager.stackFromEnd = true
-                        recyclerView.layoutManager = linearLayoutManager
-                        recyclerView.adapter =
-                            ListAdapterMessage(it.messages as MutableList<Message>, resources)
-                        recyclerView.scrollToPosition(0)
+                        if(it.messages.size != recyclerView.adapter?.itemCount) {
+                            recyclerView.adapter = ListAdapterMessage(it.messages as MutableList<Message>, resources)
+                            recyclerView.scrollToPosition(0)
+                        }
                     }
                 }
             }
