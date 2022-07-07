@@ -54,4 +54,13 @@ interface ApiService {
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<String>
 
+    @GET("meeting")
+    fun getMeeting(
+        @Path("idPoliticalParty") idPoliticalParty: Int,
+        @Path("mine") mine: Boolean = true,
+        @Path("includeAborted") includeAborted: Boolean = false,
+        @Path("includeCompleted") includeCompleted: Boolean = false,
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<List<Meeting>?>
+
 }

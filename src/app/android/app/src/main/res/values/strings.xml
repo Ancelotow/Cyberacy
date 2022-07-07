@@ -11,6 +11,7 @@
 
     <!-- button -->
     <string name="btn_login">Connection</string>
+    <string name="btn_more_meeting">Voir plus de meetings</string>
     <string name="title_activity_navigation">NavigationActivity</string>
     <string name="btn_yes">Oui</string>
     <string name="btn_no">Non</string>
@@ -26,6 +27,7 @@
     <string name="txt_join_thread">Rejoindre une discussion</string>
     <string name="txt_join_party_cancel">Annulation</string>
     <string name="txt_messagerie">Messagerie</string>
+    <string name="txt_meeting">Prochains meetings</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -38,6 +40,7 @@
     <string name="txt_no_threads">Vous n\'avez aucune invitations ou de nouvelles discussions à rejoindre pour le moment</string>
     <string name="txt_no_messages">Ecrivez le premier message dans cette discussion !</string>
     <string name="txt_message_sent">Message envoyé</string>
+    <string name="txt_no_meetings">Il n\'y a aucun meeting pour le moment</string>
 
     <!-- Tab bar -->
     <string name="tb_conversation">Mes conversations</string>

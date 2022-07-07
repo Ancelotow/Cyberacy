@@ -1,9 +1,7 @@
 package com.cyberacy.app.models.entities
 
-import android.util.Log
 import com.cyberacy.app.models.services.ApiConnection
 import com.google.gson.annotations.SerializedName
-import com.google.type.DateTime
 import retrofit2.HttpException
 import retrofit2.await
 
@@ -21,7 +19,10 @@ class PoliticalParty(
     val dateCreate: String,
 
     @SerializedName("siren")
-    val siren: String
+    val siren: String,
+
+    @SerializedName("next_meeting")
+    val nextMeeting: Meeting?
 ) {
 
     companion object Service {
