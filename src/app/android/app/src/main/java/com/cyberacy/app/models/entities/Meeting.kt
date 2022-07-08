@@ -89,7 +89,7 @@ class Meeting(
 
         suspend fun getMeetings(id: Int): List<Meeting> {
             try {
-                return ApiConnection.connection().getMeeting(idPoliticalParty=id, mine=false, includeCompleted=true, includeFinished=true).await() ?: emptyList()
+                return ApiConnection.connection().getMeeting(idPoliticalParty=id, mine=false, includeCompleted=true, includeFinished=false).await() ?: emptyList()
             } catch (e: HttpException) {
                 throw e
             }
