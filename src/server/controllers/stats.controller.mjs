@@ -154,14 +154,20 @@ const GetAnnualFee = (nir) => {
         }
         try {
             let stats = await partyMod.GetAnnualFee(nir);
+            let allPartys = await partyMod.GetAllPartyForStats()
             if (stats == null) {
                 resolve({status: 204, data: "You haven't join any political party."})
                 return;
             }
-            const statsParty = groupBy(stats, function (n) {
-                return n.party_name;
-            });
-            resolve({status: 200, data: statsParty})
+            let listStats = []
+            for(let i = 0; i < allPartys.length; i++) {
+                allPartys[i].year = parseInt(year)
+                allPartys[i].stats = stats.filter(s => s.id_political_party === allPartys[i].id)
+                if(allPartys[i].stats.length > 0) {
+                    listStats.push(allPartys[i])
+                }
+            }
+            resolve({status: 200, data: listStats})
         } catch (e) {
             console.error(e)
             resolve({status: 500, data: e})
@@ -271,7 +277,6 @@ const GetVoteParticipation = (num_round = 1, id_type_vote = null) => {
 
 /**
  * Récupère les résultats des votes
- * @param id_type_vote Filtrer par types de votes
  * @param id_vote Filtre sur un vote
  * @returns {Promise<unknown>}
  * @constructor
@@ -306,7 +311,13 @@ function TransformResultThread(result) {
         resultThread = groupBy(statsParty[keys[i]], function (n) {
             return n.thread_name;
         });
-        statsFilterThread.push({name: keys[i], threads: resultThread})
+        let keysThread = Object.keys(resultThread);
+        let threads = []
+        for(let j = 0; j < keysThread.length; j++) {
+            let stats = statsParty[keys[i]].filter(e => e.thread_name === keysThread[j])
+            threads.push({name: keysThread[j], stats})
+        }
+        statsFilterThread.push({name: keys[i], threads})
     }
     return statsFilterThread;
 }
