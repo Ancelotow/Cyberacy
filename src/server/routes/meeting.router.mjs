@@ -72,7 +72,7 @@ routerMee.get("/meeting", async (req, res) => {
    }*/
 
     const nir = (req.query.mine && req.query.mine === 'true') ? req.data.nir : null
-    const response = await meetingCtrl.GetMeeting(req.query.town, req.query.idPoliticalParty, nir, req.query.includeAborted, req.query.includeCompleted, req.query.includeFinished)
+    const response = await meetingCtrl.GetMeeting(req.query.town, req.query.idPoliticalParty, nir, req.query.includeAborted, req.query.includeCompleted, req.query.includeFinished, req.query.id)
     res.status(response.status).send(response.data)
 });
 
