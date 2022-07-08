@@ -70,8 +70,8 @@
 
         <!-- Google Maps -->
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBVQkLeRIrhx7eZqQZfUbZuHizLgboeoPM" />
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBVQkLeRIrhx7eZqQZfUbZuHizLgboeoPM"/>
 
     </application>
 

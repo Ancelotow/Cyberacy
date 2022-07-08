@@ -19,7 +19,7 @@ class MeetingViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         meetingMonth.text = item.getMonthPrefix()
         meetingDay.text = item.dateStart.dayOfMonth.toString()
         meetingName.text = item.name
-        meetingPlace.text = item.getPlace()
+        meetingPlace.text = item.getPosition()
         meetingPrice.text = "Prix : ${item.getPriceStr()}"
     }
 

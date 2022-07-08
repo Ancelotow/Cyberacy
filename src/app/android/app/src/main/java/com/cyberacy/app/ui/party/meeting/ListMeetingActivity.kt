@@ -80,7 +80,7 @@ class ListMeetingActivity : AppCompatActivity() {
                     } else {
                         labelNoData.visibility = View.GONE
                         recyclerView.visibility = View.VISIBLE
-                        recyclerView.adapter = ListAdapterMeeting(it.meetings as MutableList<Meeting>)
+                        recyclerView.adapter = ListAdapterMeeting(it.meetings as MutableList<Meeting>, this@ListMeetingActivity)
                         recyclerView.scrollToPosition(0)
                     }
                 }

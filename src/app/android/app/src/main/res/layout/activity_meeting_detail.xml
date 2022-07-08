@@ -1,283 +1,348 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_back"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:backgroundTint="@color/transparent"
+        app:cornerRadius="50dp"
+        app:icon="@drawable/ic_back"
+        app:iconGravity="textStart"
+        app:iconTint="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hk_nova"
+        android:gravity="center"
+        android:lines="2"
+        android:text="Présidentielle 2027 : Bercy !"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/btn_back"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/body_meeting"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintBottom_toBottomOf="parent" >
 
-        <com.google.android.material.button.MaterialButton
-            style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/btn_back"
-            android:layout_width="30dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            app:backgroundTint="@color/transparent"
-            app:cornerRadius="50dp"
-            app:icon="@drawable/ic_back"
-            app:iconGravity="textStart"
-            app:iconTint="@color/black"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@id/title"
-            app:layout_constraintBottom_toBottomOf="@id/title"/>
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Présidentielle 2027 : Bercy !"
-            android:fontFamily="@font/hk_nova"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:lines="2"
-            app:layout_constraintLeft_toRightOf="@id/btn_back"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Google Maps -->
-        <fragment
-            android:id="@+id/google_maps"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            class="com.google.android.gms.maps.SupportMapFragment"
-            map:mapId="376372772509ba3a"
-            app:layout_constraintTop_toBottomOf="@id/title"/>
+            android:layout_height="match_parent">
 
-        <!-- Places -->
-        <ImageView
-            android:id="@+id/img_place"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_place"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:contentDescription="@string/desc_logo"
-            app:layout_constraintTop_toBottomOf="@id/google_maps"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            <!-- Google Maps -->
+            <fragment xmlns:map="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/google_maps"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:layout_constraintTop_toTopOf="parent"
+                map:mapId="376372772509ba3a" />
 
-        <TextView
-            android:id="@+id/nb_place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="50 places restantes"
-            android:fontFamily="@font/hk_nova"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:lines="1"
-            android:layout_marginStart="5dp"
-            app:layout_constraintLeft_toRightOf="@id/img_place"
-            app:layout_constraintBottom_toBottomOf="@id/img_place"
-            app:layout_constraintTop_toTopOf="@id/img_place" />
+            <!-- Places -->
+            <ImageView
+                android:id="@+id/img_place"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/desc_logo"
+                android:src="@drawable/ic_place"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/google_maps" />
 
-        <!-- Prix -->
-        <ImageView
-            android:id="@+id/img_price"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_euro"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:contentDescription="@string/desc_logo"
-            app:layout_constraintTop_toBottomOf="@id/img_place"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            <TextView
+                android:id="@+id/nb_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/hk_nova"
+                android:gravity="center"
+                android:lines="1"
+                android:text="50 places restantes"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/img_place"
+                app:layout_constraintLeft_toRightOf="@id/img_place"
+                app:layout_constraintTop_toTopOf="@id/img_place" />
 
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Prix: 50.00 €"
-            android:fontFamily="@font/hk_nova"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:lines="1"
-            android:layout_marginStart="5dp"
-            app:layout_constraintLeft_toRightOf="@id/img_price"
-            app:layout_constraintBottom_toBottomOf="@id/img_price"
-            app:layout_constraintTop_toTopOf="@id/img_price" />
+            <!-- Prix -->
+            <ImageView
+                android:id="@+id/img_price"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/desc_logo"
+                android:src="@drawable/ic_euro"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_place" />
 
-        <!-- Positions -->
-        <ImageView
-            android:id="@+id/img_pos"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_position"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:contentDescription="@string/desc_logo"
-            app:layout_constraintTop_toBottomOf="@id/google_maps"
-            app:layout_constraintRight_toLeftOf="@id/position" />
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/hk_nova"
+                android:gravity="center"
+                android:lines="1"
+                android:text="Prix: 50.00 €"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/img_price"
+                app:layout_constraintLeft_toRightOf="@id/img_price"
+                app:layout_constraintTop_toTopOf="@id/img_price" />
 
-        <TextView
-            android:id="@+id/position"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxWidth="200dp"
-            android:text="39 rue Jacques Kablé"
-            android:fontFamily="@font/hk_nova"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:lines="3"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/img_pos"
-            app:layout_constraintTop_toTopOf="@id/img_pos" />
+            <!-- Positions -->
+            <ImageView
+                android:id="@+id/img_pos"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/desc_logo"
+                android:src="@drawable/ic_position"
+                app:layout_constraintRight_toLeftOf="@id/position"
+                app:layout_constraintTop_toBottomOf="@id/google_maps" />
 
-        <!-- Temps -->
-        <ImageView
-            android:id="@+id/img_time"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_nb_time"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:contentDescription="@string/desc_logo"
-            app:layout_constraintTop_toBottomOf="@id/img_pos"
-            app:layout_constraintRight_toLeftOf="@id/position" />
+            <TextView
+                android:id="@+id/position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/hk_nova"
+                android:gravity="center"
+                android:lines="3"
+                android:maxWidth="200dp"
+                android:text="39 rue Jacques Kablé"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/img_pos"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/img_pos" />
 
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5 heures"
-            android:fontFamily="@font/hk_nova"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:lines="1"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintLeft_toRightOf="@id/img_time"
-            app:layout_constraintBottom_toBottomOf="@id/img_time"
-            app:layout_constraintTop_toTopOf="@id/img_time" />
+            <!-- Temps -->
+            <ImageView
+                android:id="@+id/img_time"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/desc_logo"
+                android:src="@drawable/ic_nb_time"
+                app:layout_constraintRight_toLeftOf="@id/position"
+                app:layout_constraintTop_toBottomOf="@id/img_pos" />
 
-        <!-- Date -->
-        <ImageView
-            android:id="@+id/img_date"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_calendar"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:contentDescription="@string/desc_logo"
-            app:layout_constraintTop_toBottomOf="@id/img_price"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/hk_nova"
+                android:gravity="center"
+                android:lines="1"
+                android:text="Durée : 5 heures"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/img_time"
+                app:layout_constraintLeft_toRightOf="@id/img_time"
+                app:layout_constraintTop_toTopOf="@id/img_time" />
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="20/05/2022 20h00"
-            android:fontFamily="@font/hk_nova"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:lines="1"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintLeft_toRightOf="@id/img_date"
-            app:layout_constraintBottom_toBottomOf="@id/img_date"
-            app:layout_constraintTop_toTopOf="@id/img_date" />
+            <!-- Date -->
+            <ImageView
+                android:id="@+id/img_date"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/desc_logo"
+                android:src="@drawable/ic_calendar"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_price" />
 
-        <!-- Description -->
-        <TextView
-            android:id="@+id/title_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_desc"
-            android:fontFamily="@font/hk_nova"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:lines="1"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="10dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/img_date" />
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/hk_nova"
+                android:gravity="center"
+                android:lines="1"
+                android:text="20/05/2022 20h00"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/img_date"
+                app:layout_constraintLeft_toRightOf="@id/img_date"
+                app:layout_constraintTop_toTopOf="@id/img_date" />
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-            android:fontFamily="@font/hk_nova"
-            android:textSize="12sp"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title_desc" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_google_calendar"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/hk_nova"
+                android:lines="2"
+                android:text="@string/btn_add_event"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:backgroundTint="@color/white"
+                app:cornerRadius="30dp"
+                app:icon="@drawable/ic_google_calendar"
+                app:iconSize="15dp"
+                app:iconTint="@null"
+                app:layout_constraintBottom_toBottomOf="@id/img_date"
+                app:layout_constraintLeft_toRightOf="@id/date"
+                app:layout_constraintTop_toTopOf="@id/img_date" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_twitch"
-            android:text="@string/btn_twitch"
-            android:layout_height="60dp"
-            android:layout_width="0dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/hk_nova"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:layout_marginStart="10dp"
-            android:lines="2"
-            app:cornerRadius="5dp"
-            app:icon="@drawable/ic_twitch"
-            app:iconTint="@color/white"
-            app:iconSize="20dp"
-            app:backgroundTint="@color/colorTwitch"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/description"/>
+            <!-- Description -->
+            <TextView
+                android:id="@+id/title_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/hk_nova"
+                android:gravity="center"
+                android:lines="1"
+                android:text="@string/txt_desc"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_date" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_youtube"
-            android:text="@string/btn_youtube"
-            android:layout_height="60dp"
-            android:layout_width="0dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/hk_nova"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:lines="2"
-            app:cornerRadius="5dp"
-            app:icon="@drawable/ic_youtube"
-            app:iconTint="@color/white"
-            app:iconSize="20dp"
-            app:backgroundTint="@color/colorYoutube"
-            app:layout_constraintLeft_toRightOf="@id/btn_twitch"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/description"/>
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/hk_nova"
+                android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_desc" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_paypal"
-            android:text="@string/btn_paypal_meeting"
-            android:layout_height="40dp"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/hk_nova"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:background="@drawable/paypal_gradiant"
-            app:backgroundTint="@null"
-            app:cornerRadius="10dp"
-            app:icon="@drawable/ic_paypal"
-            app:iconTint="@null"
-            app:iconSize="20dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_youtube"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_twitch"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/hk_nova"
+                android:lines="2"
+                android:text="@string/btn_twitch"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:backgroundTint="@color/colorTwitch"
+                app:cornerRadius="30dp"
+                app:icon="@drawable/ic_twitch"
+                app:iconSize="20dp"
+                app:iconTint="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/description" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_youtube"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/hk_nova"
+                android:lines="2"
+                android:text="@string/btn_youtube"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:backgroundTint="@color/colorYoutube"
+                app:cornerRadius="30dp"
+                app:icon="@drawable/ic_youtube"
+                app:iconSize="20dp"
+                app:iconTint="@color/white"
+                app:layout_constraintLeft_toRightOf="@id/btn_twitch"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/description" />
 
-</androidx.core.widget.NestedScrollView>
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="btn_youtube,btn_twitch" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_paypal"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/paypal_gradiant"
+                android:fontFamily="@font/hk_nova"
+                android:text="@string/btn_paypal_meeting"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:backgroundTint="@null"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/ic_paypal"
+                app:iconSize="20dp"
+                app:iconTint="@null"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/loader"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"/>
+
+    <TextView
+        android:id="@+id/text_no_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/hk_nova"
+        android:gravity="center"
+        android:text="@string/txt_no_meetings_detail"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 

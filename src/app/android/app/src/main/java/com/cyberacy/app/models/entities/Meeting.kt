@@ -5,7 +5,10 @@ import com.cyberacy.app.models.services.ApiConnection
 import com.google.gson.annotations.SerializedName
 import retrofit2.HttpException
 import retrofit2.await
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 class Meeting(
     @SerializedName("id")
@@ -18,7 +21,7 @@ class Meeting(
     val meetingObject: String,
 
     @SerializedName("description")
-    val description: String,
+    val description: String?,
 
     @SerializedName("date_start")
     val dateStart: LocalDateTime,
@@ -55,6 +58,12 @@ class Meeting(
 
     @SerializedName("town_code_insee")
     val townCodeInsee: String?,
+
+    @SerializedName("latitude")
+    val latitude: Double?,
+
+    @SerializedName("longitude")
+    val longitude: Double?,
 ) {
 
     fun getMonthPrefix(): String {
@@ -84,7 +93,7 @@ class Meeting(
         }
     }
 
-    fun getPlace(): String {
+    fun getPosition(): String {
         return if (addressStreet == null || townCodeInsee == null || addressStreet.isEmpty() || townCodeInsee.isEmpty()) {
             if (linkYoutube != null) {
                 "Youtube"
@@ -96,6 +105,52 @@ class Meeting(
         } else {
             addressStreet
         }
+    }
+
+    fun getNbPlaceStr(): String {
+        return if(nbPlaceVacant < 0) {
+            "Illimité"
+        } else if(nbPlaceVacant == 0) {
+            "Complet"
+        } else if(nbPlaceVacant in 1..10) {
+            "Plus que $nbPlaceVacant places"
+        } else {
+            "$nbPlaceVacant places restantes"
+        }
+    }
+
+    fun getDateMeeting(): String{
+        val formatterDate: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+        val formatterTime: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+        val today: LocalDate = LocalDateTime.now().atZone(ZoneId.systemDefault()).toLocalDate()
+        val dateMeeting: LocalDate = dateStart.atZone(ZoneId.systemDefault()).toLocalDate()
+        return if(today.isEqual(dateMeeting)) {
+            "Aujourd'hui à ${formatterTime.format(dateStart)}"
+        } else {
+            formatterDate.format(dateStart)
+        }
+    }
+
+    fun getTimeStr(): String{
+        if(nbTime <= 0) {
+            return "Indéterminée"
+        }
+        val nbTotalMinutes = nbTime * 60
+        val nbHour = nbTime.toInt()
+        val nbMinutes = (nbTotalMinutes - (nbHour * 60)).toInt()
+        return "${nbHour}h$nbMinutes"
+    }
+
+    fun getTimeEnd(): LocalDateTime{
+        return dateStart.plusMinutes((nbTime * 60).toLong())
+    }
+
+    fun getDescriptionStr(): String{
+        return description ?: "Aucune description"
+    }
+
+    fun reservationIsAvailable(): Boolean {
+        return (dateStart > LocalDateTime.now() && nbPlaceVacant != 0)
     }
 
     companion object Service {

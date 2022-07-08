@@ -18,6 +18,7 @@ import com.cyberacy.app.R
 import com.cyberacy.app.models.entities.Meeting
 import com.cyberacy.app.models.services.ApiConnection
 import com.cyberacy.app.ui.party.meeting.ListMeetingActivity
+import com.cyberacy.app.ui.party.meeting.meeting_detail.MeetingDetailActivity
 import com.cyberacy.app.ui.party.messaging.MessagingActivity
 import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
@@ -97,21 +98,13 @@ class MainPartyFragment : Fragment() {
             view?.findViewById<TextView>(R.id.txt_month)?.text = meeting.getMonthPrefix()
             view?.findViewById<TextView>(R.id.txt_day)?.text = meeting.dateStart.dayOfMonth.toString()
             view?.findViewById<TextView>(R.id.txt_name)?.text = meeting.name
-            view?.findViewById<TextView>(R.id.txt_lieu)?.text = meeting.getPlace()
+            view?.findViewById<TextView>(R.id.txt_lieu)?.text = meeting.getPosition()
             view?.findViewById<TextView>(R.id.txt_price)?.text = "Prix : ${meeting.getPriceStr()}"
             nextMeeting?.isClickable = true
             nextMeeting?.setOnClickListener {
-                /*val intent = Intent(view?.context, MeetingDetailActivity::class.java)
+                val intent = Intent(view?.context, MeetingDetailActivity::class.java)
                 intent.putExtra("idMeeting", meeting.id)
-                startActivity(intent)*/
-                val cal: Calendar = Calendar.getInstance()
-                val intent = Intent(Intent.ACTION_EDIT)
-                intent.type = "vnd.android.cursor.item/event"
-                intent.putExtra("beginTime", cal.getTimeInMillis())
-                intent.putExtra("allDay", true)
-                intent.putExtra("rrule", "FREQ=YEARLY")
-                intent.putExtra("endTime", cal.getTimeInMillis() + 60 * 60 * 1000)
-                intent.putExtra("title", "A Test Event from android app")
+                intent.putExtra("nameMeeting", meeting.name)
                 startActivity(intent)
             }
             btnMoreMeeting?.setOnClickListener {
