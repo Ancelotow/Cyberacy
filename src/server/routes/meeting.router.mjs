@@ -40,31 +40,36 @@ routerMee.get("/meeting", async (req, res) => {
            description: 'Inclure les meetings annulés.',
            type: 'boolean'
     }
-    #swagger.parameters['mine'] = {
+   #swagger.parameters['mine'] = {
           in: 'query',
           description: 'Voir uniquement les meetings auxquelles je participe.',
           type: 'boolean'
    }
-    #swagger.parameters['town'] = {
+   #swagger.parameters['town'] = {
           in: 'query',
           description: 'Code INSEE d\'une ville.',
           type: 'string'
    }
-    #swagger.parameters['idPoliticalParty'] = {
+   #swagger.parameters['idPoliticalParty'] = {
           in: 'query',
           description: 'L\'id du parti politique',
           type: 'int'
    }
-    #swagger.parameters['includeCompleted'] = {
+   #swagger.parameters['includeCompleted'] = {
           in: 'query',
           description: 'Inclure les meetings complet',
           type: 'boolean'
    }
-    #swagger.parameters['includeFinished'] = {
+   #swagger.parameters['includeFinished'] = {
           in: 'query',
           description: 'Inclure les meetings finis',
           type: 'boolean'
-   } */
+   }
+   #swagger.parameters['id'] = {
+          in: 'query',
+          description: 'L\'id du meeting',
+          type: 'number'
+   }*/
 
     const nir = (req.query.mine && req.query.mine === 'true') ? req.data.nir : null
     const response = await meetingCtrl.GetMeeting(req.query.town, req.query.idPoliticalParty, nir, req.query.includeAborted, req.query.includeCompleted, req.query.includeFinished)

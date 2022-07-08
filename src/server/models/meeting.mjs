@@ -110,15 +110,16 @@ Meeting.prototype.Aborted = function(id, reason) {
  * @param nir Le NIR du participant
  * @param includeAborted Inclus les meetings annulé
  * @param includeCompleted Inclus les meetings complet
- * @param includeFinished
+ * @param includeFinished Inclus les meetings finis
+ * @param id L'id d'un meeting
  * @returns {Promise<unknown>}
  * @constructor
  */
-Meeting.prototype.Get = function(town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true, includeFinished = false) {
+Meeting.prototype.Get = function(town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true, includeFinished = false, id = null) {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'SELECT * FROM filter_meeting($1, $2, $3, $4, $5, $6)',
-            values: [town, idPoliticalParty, nir, includeAborted, includeCompleted, includeFinished],
+            text: 'SELECT * FROM filter_meeting($1, $2, $3, $4, $5, $6, $7)',
+            values: [town, idPoliticalParty, nir, includeAborted, includeCompleted, includeFinished, id],
         }
         pool.query(request, (error, result) => {
             if (error) {

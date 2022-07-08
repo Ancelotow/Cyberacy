@@ -1033,6 +1033,12 @@
             "in": "query",
             "description": "Inclure les meetings finis",
             "type": "boolean"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "L'id du meeting",
+            "type": "number"
           }
         ],
         "responses": {},
