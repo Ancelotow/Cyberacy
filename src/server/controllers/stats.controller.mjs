@@ -17,14 +17,20 @@ const GetNbAdherentByMonth = (nir, year = new Date().getFullYear()) => {
         }
         try {
             let stats = await partyMod.GetNbAdherent(nir, year);
+            let allPartys = await partyMod.GetAllPartyForStats()
             if (stats == null) {
                 resolve({status: 204, data: "You haven't join any political party."})
                 return;
             }
-            const statsParty = groupBy(stats, function (n) {
-                return n.party_name;
-            });
-            resolve({status: 200, data: statsParty})
+            let listStats = []
+            for(let i = 0; i < allPartys.length; i++) {
+                allPartys[i].year = parseInt(year)
+                allPartys[i].stats = stats.filter(s => s.id_political_party === allPartys[i].id)
+                if(allPartys[i].stats.length > 0) {
+                    listStats.push(allPartys[i])
+                }
+            }
+            resolve({status: 200, data: listStats})
         } catch (e) {
             console.error(e)
             resolve({status: 500, data: e})
@@ -42,28 +48,25 @@ const GetNbAdherentByYear = (nir) => {
     return new Promise(async (resolve, _) => {
         let year = new Date().getFullYear() - 10;
         let result;
-        let total;
-        let statsYears = {};
-        let keys;
+        let allPartys = await partyMod.GetAllPartyForStats()
+        for(let i = 0; i < allPartys.length; i++) {
+            allPartys[i].stats = []
+        }
         for (year; year <= new Date().getFullYear(); year++) {
-            result = await GetNbAdherentByMonth(nir, year)
-            if (result.status !== 200) {
-                resolve(result);
-                return;
-            }
-            keys = Object.keys(result.data);
-            total = 0;
-            for (let j = 0; j < keys.length; j++) {
-                for (let i = 0; i < result.data[keys[j]].length; i++) {
-                    total += result.data[keys[j]][i].nb_adherent;
+            result = await partyMod.GetNbAdherent(nir, year)
+            for(let i = 0; i < allPartys.length; i++) {
+                let resultMonth  = result.filter(s => s.id_political_party === allPartys[i].id)
+                if(resultMonth.length > 0) {
+                    let total = 0
+                    for(let j = 0; j < resultMonth.length; j++) {
+                        total += resultMonth[j].nb_adherent
+                    }
+                    allPartys[i].stats.push({year, total})
                 }
-                if (statsYears[keys[j]] == null) {
-                    statsYears[keys[j]] = []
-                }
-                statsYears[keys[j]].push({year, nb_adherent: total});
             }
         }
-        resolve({status: 200, data: statsYears})
+        let statsYear = allPartys.filter(party => party.stats.length > 0)
+        resolve({status: 200, data: statsYear})
     });
 }
 
@@ -82,14 +85,20 @@ const GetNbMeetingByMonth = (nir, year = new Date().getFullYear()) => {
         }
         try {
             let stats = await partyMod.GetNbMeeting(nir, year);
+            let allPartys = await partyMod.GetAllPartyForStats()
             if (stats == null) {
                 resolve({status: 204, data: "You haven't join any political party."})
                 return;
             }
-            const statsParty = groupBy(stats, function (n) {
-                return n.party_name;
-            });
-            resolve({status: 200, data: statsParty})
+            let listStats = []
+            for(let i = 0; i < allPartys.length; i++) {
+                allPartys[i].year = parseInt(year)
+                allPartys[i].stats = stats.filter(s => s.id_political_party === allPartys[i].id)
+                if(allPartys[i].stats.length > 0) {
+                    listStats.push(allPartys[i])
+                }
+            }
+            resolve({status: 200, data: listStats})
         } catch (e) {
             console.error(e)
             resolve({status: 500, data: e})
@@ -107,31 +116,27 @@ const GetNbMeetingByYear = (nir) => {
     return new Promise(async (resolve, _) => {
         let year = new Date().getFullYear() - 10;
         let result;
-        let total_meeting;
-        let total_participant;
-        let statsYears = {};
-        let keys;
+        let allPartys = await partyMod.GetAllPartyForStats()
+        for(let i = 0; i < allPartys.length; i++) {
+            allPartys[i].stats = []
+        }
         for (year; year <= new Date().getFullYear(); year++) {
-            result = await GetNbMeetingByMonth(nir, year)
-            if (result.status !== 200) {
-                resolve(result);
-                return;
-            }
-            keys = Object.keys(result.data);
-            total_meeting = 0;
-            total_participant = 0;
-            for (let j = 0; j < keys.length; j++) {
-                for (let i = 0; i < result.data[keys[j]].length; i++) {
-                    total_meeting += result.data[keys[j]][i].nb_meeting;
-                    total_participant += result.data[keys[j]][i].nb_participant;
+            result = await partyMod.GetNbMeeting(nir, year)
+            for(let i = 0; i < allPartys.length; i++) {
+                let resultMonth  = result.filter(s => s.id_political_party === allPartys[i].id)
+                if(resultMonth.length > 0) {
+                    let total_participant = 0
+                    let total_meeting = 0
+                    for(let j = 0; j < resultMonth.length; j++) {
+                        total_participant += resultMonth[j].nb_participant
+                        total_meeting += resultMonth[j].nb_meeting
+                    }
+                    allPartys[i].stats.push({year, total_participant, total_meeting})
                 }
-                if (statsYears[keys[j]] == null) {
-                    statsYears[keys[j]] = []
-                }
-                statsYears[keys[j]].push({year, nb_meeting: total_meeting, nb_participant: total_participant});
             }
         }
-        resolve({status: 200, data: statsYears})
+        let statsYear = allPartys.filter(party => party.stats.length > 0)
+        resolve({status: 200, data: statsYear})
     });
 }
 

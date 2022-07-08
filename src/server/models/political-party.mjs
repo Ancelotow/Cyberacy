@@ -117,6 +117,28 @@ const GetAll = () => {
 }
 
 /**
+ * Récupère tout les partie politique pour les statistiques
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetAllPartyForStats = () => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT pop_id as id, pop_name as name  FROM political_party',
+            values: [],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows : null
+                resolve(res)
+            }
+        });
+    });
+}
+
+/**
  * Récupère les partis politiques en fonction du filtre
  * @param siren Le SIREN du parti politique
  * @param nir Le NIR de la personne
@@ -415,5 +437,6 @@ export default {
     GetNbMeeting,
     GetAnnualFee,
     GetNbMessageByDay,
-    GetNbMessageByWeeks
+    GetNbMessageByWeeks,
+    GetAllPartyForStats
 }
