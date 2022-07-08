@@ -55,15 +55,28 @@ class Meeting(
 
     @SerializedName("town_code_insee")
     val townCodeInsee: String?,
-    ) {
+) {
 
     fun getMonthPrefix(): String {
-        val listMonthPrefix = listOf("JANV", "FEV", "MARS", "AVR", "MAI", "JUIN", "JUIL", "AOÛT", "SEPT", "OCT", "NOV", "DEC")
+        val listMonthPrefix = listOf(
+            "JANV",
+            "FEV",
+            "MARS",
+            "AVR",
+            "MAI",
+            "JUIN",
+            "JUIL",
+            "AOÛT",
+            "SEPT",
+            "OCT",
+            "NOV",
+            "DEC"
+        )
         return listMonthPrefix[dateStart.monthValue - 1]
     }
 
     fun getPriceStr(): String {
-        return if(priceExcl <= 0.00) {
+        return if (priceExcl <= 0.00) {
             "gratuit"
         } else {
             val price = priceExcl + (priceExcl * (rateVTA / 100))
@@ -72,10 +85,10 @@ class Meeting(
     }
 
     fun getPlace(): String {
-        return if(addressStreet == null || townCodeInsee == null || addressStreet.isEmpty() || townCodeInsee.isEmpty()) {
-            if(linkYoutube != null) {
+        return if (addressStreet == null || townCodeInsee == null || addressStreet.isEmpty() || townCodeInsee.isEmpty()) {
+            if (linkYoutube != null) {
                 "Youtube"
-            } else if(linkTwitch != null) {
+            } else if (linkTwitch != null) {
                 "Twitch"
             } else {
                 "Inconnu"
@@ -87,9 +100,32 @@ class Meeting(
 
     companion object Service {
 
-        suspend fun getMeetings(id: Int): List<Meeting> {
+        suspend fun getMeetings(partyId: Int): List<Meeting> {
             try {
-                return ApiConnection.connection().getMeeting(idPoliticalParty=id, mine=false, includeCompleted=true, includeFinished=false).await() ?: emptyList()
+                return ApiConnection.connection().getMeeting(
+                    idPoliticalParty = partyId,
+                    mine = false,
+                    includeCompleted = true,
+                    includeFinished = false
+                ).await() ?: emptyList()
+            } catch (e: HttpException) {
+                throw e
+            }
+        }
+
+        suspend fun getMeetingById(id: Int): Meeting? {
+            try {
+                val result = ApiConnection.connection().getMeeting(
+                    mine = false,
+                    includeCompleted = true,
+                    includeFinished = true,
+                    includeAborted = true,
+                    id = id
+                ).await() ?: emptyList()
+                if(result.isEmpty()) {
+                    return null
+                }
+                return result[0]
             } catch (e: HttpException) {
                 throw e
             }

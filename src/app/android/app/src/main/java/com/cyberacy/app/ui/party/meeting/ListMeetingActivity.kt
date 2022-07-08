@@ -84,6 +84,7 @@ class ListMeetingActivity : AppCompatActivity() {
                         recyclerView.scrollToPosition(0)
                     }
                 }
+                else -> {}
             }
         }
     }

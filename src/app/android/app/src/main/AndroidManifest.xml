@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Cyberacy"
         tools:targetApi="31">
         <activity
+            android:name=".ui.party.meeting.meeting_detail.MeetingDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.party.meeting.ListMeetingActivity"
             android:exported="false" />
         <activity
