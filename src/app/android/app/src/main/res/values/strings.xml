@@ -27,7 +27,8 @@
     <string name="txt_join_thread">Rejoindre une discussion</string>
     <string name="txt_join_party_cancel">Annulation</string>
     <string name="txt_messagerie">Messagerie</string>
-    <string name="txt_meeting">Prochains meetings</string>
+    <string name="txt_next_meeting">Prochains meetings</string>
+    <string name="txt_meeting">Meetings</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

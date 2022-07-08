@@ -28,7 +28,9 @@ import com.cyberacy.app.models.services.ApiConnection
 import com.cyberacy.app.ui.navigation.NavigationActivity
 import com.cyberacy.app.ui.party.join_party.JoinPartyViewModel
 import com.cyberacy.app.ui.party.join_party.ListAdapterParty
+import com.cyberacy.app.ui.party.meeting.ListMeetingActivity
 import com.cyberacy.app.ui.party.messaging.MessagingActivity
+import com.cyberacy.app.ui.party.messaging.thread.ThreadActivity
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
@@ -110,6 +112,15 @@ class MainPartyFragment : Fragment() {
             view?.findViewById<TextView>(R.id.txt_name)?.text = meeting.name
             view?.findViewById<TextView>(R.id.txt_lieu)?.text = meeting.getPlace()
             view?.findViewById<TextView>(R.id.txt_price)?.text = "Prix : ${meeting.getPriceStr()}"
+            nextMeeting?.isClickable = true
+            nextMeeting?.setOnClickListener {
+                Log.e("test", "meeting")
+            }
+            btnMoreMeeting?.setOnClickListener {
+                val intent = Intent(view?.context, ListMeetingActivity::class.java)
+                intent.putExtra("idParty", idParty)
+                startActivity(intent)
+            }
         }
     }
 

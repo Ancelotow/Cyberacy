@@ -89,7 +89,7 @@ class ThreadActivity : AppCompatActivity() {
         buttonExit.setOnClickListener { this.leaveThread() }
     }
 
-    fun designActionBar() {
+    private fun designActionBar() {
         findViewById<TextView>(R.id.name).text = nameThread
         if (logoThread != null) {
             if (logoThread.isNotEmpty()) {
@@ -107,7 +107,7 @@ class ThreadActivity : AppCompatActivity() {
 
     }
 
-    fun initMessages() {
+    private fun initMessages() {
         recyclerView.visibility = View.GONE
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.reverseLayout = true
@@ -141,7 +141,7 @@ class ThreadActivity : AppCompatActivity() {
         }
     }
 
-    fun sendMessage() {
+    private fun sendMessage() {
         layoutMessage.error = null
         val textMessage = this.message.text.toString()
 
@@ -166,7 +166,7 @@ class ThreadActivity : AppCompatActivity() {
         }
     }
 
-    fun leaveThread() {
+    private fun leaveThread() {
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(R.string.txt_join_thread)
         alertDialogBuilder.setMessage("Êtes-vous sûr(e) de vouloir quitter cette discussion ?")

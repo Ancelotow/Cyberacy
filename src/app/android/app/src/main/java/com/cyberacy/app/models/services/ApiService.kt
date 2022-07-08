@@ -56,10 +56,11 @@ interface ApiService {
 
     @GET("meeting")
     fun getMeeting(
-        @Path("idPoliticalParty") idPoliticalParty: Int,
-        @Path("mine") mine: Boolean = true,
-        @Path("includeAborted") includeAborted: Boolean = false,
-        @Path("includeCompleted") includeCompleted: Boolean = false,
+        @Query("idPoliticalParty") idPoliticalParty: Int,
+        @Query("mine") mine: Boolean = true,
+        @Query("includeAborted") includeAborted: Boolean = false,
+        @Query("includeCompleted") includeCompleted: Boolean = false,
+        @Query("includeFinished") includeFinished: Boolean = false,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<List<Meeting>?>
 

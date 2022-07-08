@@ -1,5 +1,6 @@
 package com.cyberacy.app.models.entities
 
+import android.util.Log
 import com.cyberacy.app.models.services.ApiConnection
 import com.google.gson.annotations.SerializedName
 import retrofit2.HttpException
@@ -88,7 +89,7 @@ class Meeting(
 
         suspend fun getMeetings(id: Int): List<Meeting> {
             try {
-                return ApiConnection.connection().getMeeting(id).await() ?: emptyList()
+                return ApiConnection.connection().getMeeting(idPoliticalParty=id, mine=false, includeCompleted=true, includeFinished=true).await() ?: emptyList()
             } catch (e: HttpException) {
                 throw e
             }
