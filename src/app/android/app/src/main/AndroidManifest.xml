@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cyberacy"
         tools:targetApi="31">
-
+        <activity
+            android:name=".PaymentActivity"
+            android:exported="false" />
         <!-- This element is required to enable Google Pay in your app. -->
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
@@ -47,33 +49,23 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Icône pour les Notifications PUSH -->
+        </activity> <!-- Icône pour les Notifications PUSH -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notification" />
-
-        <!-- Couleur pour les Notifications PUSH -->
+            android:resource="@drawable/ic_notification" /> <!-- Couleur pour les Notifications PUSH -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/navy" />
-
-        <!-- Service Kotlin pour gérer les Notifications PUSG -->
+            android:resource="@color/navy" /> <!-- Service Kotlin pour gérer les Notifications PUSG -->
         <service
             android:name=".models.services.FCMService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>
-
-        <!-- Google Maps -->
+        </service> <!-- Google Maps -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBVQkLeRIrhx7eZqQZfUbZuHizLgboeoPM"/>
-
+            android:value="AIzaSyBVQkLeRIrhx7eZqQZfUbZuHizLgboeoPM" />
     </application>
-
 
 </manifest>

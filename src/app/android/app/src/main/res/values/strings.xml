@@ -14,7 +14,7 @@
     <string name="btn_twitch">Lien vers Twitch</string>
     <string name="btn_youtube">Lien vers YouTube</string>
     <string name="btn_add_event">Ajouter un rappel</string>
-    <string name="btn_paypal_meeting">Réserver avec PayPal</string>
+    <string name="btn_book_meeting">Réserver meeting</string>
     <string name="btn_more_meeting">Voir plus de meetings</string>
     <string name="title_activity_navigation">NavigationActivity</string>
     <string name="btn_yes">Oui</string>
