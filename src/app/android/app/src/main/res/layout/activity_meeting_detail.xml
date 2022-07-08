@@ -1,9 +1,283 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.button.MaterialButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/btn_back"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            app:backgroundTint="@color/transparent"
+            app:cornerRadius="50dp"
+            app:icon="@drawable/ic_back"
+            app:iconGravity="textStart"
+            app:iconTint="@color/black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/title"
+            app:layout_constraintBottom_toBottomOf="@id/title"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Présidentielle 2027 : Bercy !"
+            android:fontFamily="@font/hk_nova"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:lines="2"
+            app:layout_constraintLeft_toRightOf="@id/btn_back"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Google Maps -->
+        <fragment
+            android:id="@+id/google_maps"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            map:mapId="376372772509ba3a"
+            app:layout_constraintTop_toBottomOf="@id/title"/>
+
+        <!-- Places -->
+        <ImageView
+            android:id="@+id/img_place"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_place"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/desc_logo"
+            app:layout_constraintTop_toBottomOf="@id/google_maps"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/nb_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50 places restantes"
+            android:fontFamily="@font/hk_nova"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:lines="1"
+            android:layout_marginStart="5dp"
+            app:layout_constraintLeft_toRightOf="@id/img_place"
+            app:layout_constraintBottom_toBottomOf="@id/img_place"
+            app:layout_constraintTop_toTopOf="@id/img_place" />
+
+        <!-- Prix -->
+        <ImageView
+            android:id="@+id/img_price"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_euro"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/desc_logo"
+            app:layout_constraintTop_toBottomOf="@id/img_place"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prix: 50.00 €"
+            android:fontFamily="@font/hk_nova"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:lines="1"
+            android:layout_marginStart="5dp"
+            app:layout_constraintLeft_toRightOf="@id/img_price"
+            app:layout_constraintBottom_toBottomOf="@id/img_price"
+            app:layout_constraintTop_toTopOf="@id/img_price" />
+
+        <!-- Positions -->
+        <ImageView
+            android:id="@+id/img_pos"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_position"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/desc_logo"
+            app:layout_constraintTop_toBottomOf="@id/google_maps"
+            app:layout_constraintRight_toLeftOf="@id/position" />
+
+        <TextView
+            android:id="@+id/position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="200dp"
+            android:text="39 rue Jacques Kablé"
+            android:fontFamily="@font/hk_nova"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:lines="3"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/img_pos"
+            app:layout_constraintTop_toTopOf="@id/img_pos" />
+
+        <!-- Temps -->
+        <ImageView
+            android:id="@+id/img_time"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_nb_time"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/desc_logo"
+            app:layout_constraintTop_toBottomOf="@id/img_pos"
+            app:layout_constraintRight_toLeftOf="@id/position" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5 heures"
+            android:fontFamily="@font/hk_nova"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:lines="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintLeft_toRightOf="@id/img_time"
+            app:layout_constraintBottom_toBottomOf="@id/img_time"
+            app:layout_constraintTop_toTopOf="@id/img_time" />
+
+        <!-- Date -->
+        <ImageView
+            android:id="@+id/img_date"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_calendar"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/desc_logo"
+            app:layout_constraintTop_toBottomOf="@id/img_price"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20/05/2022 20h00"
+            android:fontFamily="@font/hk_nova"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:lines="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintLeft_toRightOf="@id/img_date"
+            app:layout_constraintBottom_toBottomOf="@id/img_date"
+            app:layout_constraintTop_toTopOf="@id/img_date" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/title_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_desc"
+            android:fontFamily="@font/hk_nova"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:lines="1"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/img_date" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+            android:fontFamily="@font/hk_nova"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_desc" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_twitch"
+            android:text="@string/btn_twitch"
+            android:layout_height="60dp"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/hk_nova"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_marginStart="10dp"
+            android:lines="2"
+            app:cornerRadius="5dp"
+            app:icon="@drawable/ic_twitch"
+            app:iconTint="@color/white"
+            app:iconSize="20dp"
+            app:backgroundTint="@color/colorTwitch"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/description"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_youtube"
+            android:text="@string/btn_youtube"
+            android:layout_height="60dp"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/hk_nova"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:lines="2"
+            app:cornerRadius="5dp"
+            app:icon="@drawable/ic_youtube"
+            app:iconTint="@color/white"
+            app:iconSize="20dp"
+            app:backgroundTint="@color/colorYoutube"
+            app:layout_constraintLeft_toRightOf="@id/btn_twitch"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/description"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_paypal"
+            android:text="@string/btn_paypal_meeting"
+            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/hk_nova"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:background="@drawable/paypal_gradiant"
+            app:backgroundTint="@null"
+            app:cornerRadius="10dp"
+            app:icon="@drawable/ic_paypal"
+            app:iconTint="@null"
+            app:iconSize="20dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_youtube"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
+

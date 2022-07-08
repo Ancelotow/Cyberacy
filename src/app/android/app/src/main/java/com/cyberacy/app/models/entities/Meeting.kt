@@ -106,7 +106,7 @@ class Meeting(
                     idPoliticalParty = partyId,
                     mine = false,
                     includeCompleted = true,
-                    includeFinished = false
+                    includeFinished = true
                 ).await() ?: emptyList()
             } catch (e: HttpException) {
                 throw e

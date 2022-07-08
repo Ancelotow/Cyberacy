@@ -11,6 +11,9 @@
 
     <!-- button -->
     <string name="btn_login">Connection</string>
+    <string name="btn_twitch">Lien vers Twitch</string>
+    <string name="btn_youtube">Lien vers YouTube</string>
+    <string name="btn_paypal_meeting">Réserver avec PayPal</string>
     <string name="btn_more_meeting">Voir plus de meetings</string>
     <string name="title_activity_navigation">NavigationActivity</string>
     <string name="btn_yes">Oui</string>
@@ -42,9 +45,20 @@
     <string name="txt_no_messages">Ecrivez le premier message dans cette discussion !</string>
     <string name="txt_message_sent">Message envoyé</string>
     <string name="txt_no_meetings">Il n\'y a aucun meeting pour le moment</string>
+    <string name="txt_desc">Description</string>
 
     <!-- Tab bar -->
     <string name="tb_conversation">Mes conversations</string>
     <string name="tb_other_conversation">Autres discussions</string>
+
+    <!-- Checkout activity -->
+    <string name="title_activity_checkout">CheckoutActivity</string>
+    <string name="checkout_item_description">Description</string>
+    <string name="googlepay_status_unavailable" translatable="false">Unfortunately, Google Pay is
+        not available on this phone.
+    </string>
+    <string name="payments_show_name" translatable="false">Successfully received payment data for
+        %s!
+    </string>
 
 </resources>
