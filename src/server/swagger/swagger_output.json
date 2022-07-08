@@ -1007,23 +1007,32 @@
           {
             "name": "town",
             "in": "query",
+            "description": "Code INSEE d'une ville.",
             "type": "string"
           },
           {
             "name": "idPoliticalParty",
             "in": "query",
-            "type": "string"
+            "description": "L'id du parti politique",
+            "type": "int"
           },
           {
             "name": "includeAborted",
             "in": "query",
-            "description": "Inclure les meetings annuler.",
+            "description": "Inclure les meetings annulés.",
             "type": "boolean"
           },
           {
             "name": "includeCompleted",
             "in": "query",
-            "type": "string"
+            "description": "Inclure les meetings complet",
+            "type": "boolean"
+          },
+          {
+            "name": "includeFinished",
+            "in": "query",
+            "description": "Inclure les meetings finis",
+            "type": "boolean"
           }
         ],
         "responses": {},
