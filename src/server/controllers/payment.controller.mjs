@@ -15,7 +15,7 @@ const GetPaymentSheet = (paymentJson) => {
         } else if (payment.libelle === null || payment.amount_excl === null ) {
             resolve({status: 400, data: "Missing parameters"})
             return
-        }  else if (payment.amount_including_tax < 100) {
+        }  else if (payment.amount_including_tax < 1) {
             resolve({status: 400, data: "The amount must be above 1 EUR"})
             return
         }
@@ -37,7 +37,7 @@ const GetPaymentSheet = (paymentJson) => {
             {apiVersion: '2020-08-27'}
         );
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: payment.amount_including_tax,
+            amount: payment.amount_including_tax * 100,
             description: payment.libelle,
             receipt_email: "ancelotow@gmail.com",
             currency: 'eur',
