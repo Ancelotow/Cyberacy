@@ -17,6 +17,7 @@ import androidx.core.widget.NestedScrollView
 import com.cyberacy.app.R
 import com.cyberacy.app.models.entities.Meeting
 import com.cyberacy.app.models.repositories.*
+import com.cyberacy.app.ui.payment.PaymentCyberacyActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -115,17 +116,18 @@ class MeetingDetailActivity : AppCompatActivity() {
 
             val btnTwitch = findViewById<MaterialButton>(R.id.btn_twitch)
             val btnYoutube = findViewById<MaterialButton>(R.id.btn_youtube)
-            val btnPaypal = findViewById<MaterialButton>(R.id.btn_paypal)
+            val btnPayment = findViewById<MaterialButton>(R.id.btn_pay)
             val btnGoogleCalendar = findViewById<MaterialButton>(R.id.btn_google_calendar)
 
             btnTwitch.visibility = if (meeting!!.linkTwitch == null) View.GONE else View.VISIBLE
             btnYoutube.visibility = if (meeting!!.linkYoutube == null) View.GONE else View.VISIBLE
-            btnPaypal.visibility =
+            btnPayment.visibility =
                 if (meeting!!.reservationIsAvailable()) View.VISIBLE else View.GONE
 
             btnGoogleCalendar.setOnClickListener { openGoogleCalendar() }
             btnTwitch.setOnClickListener { openTwitch() }
             btnYoutube.setOnClickListener { openYoutube() }
+            btnPayment.setOnClickListener { goToCheckout() }
         }
     }
 
@@ -141,6 +143,15 @@ class MeetingDetailActivity : AppCompatActivity() {
             Intent(Intent.ACTION_VIEW, webpage)
         }
         startActivity(youtubeIntent)
+    }
+
+    private fun goToCheckout() {
+        val intent = Intent(this, PaymentCyberacyActivity::class.java)
+        intent.putExtra("name", meeting?.name)
+        intent.putExtra("type", "Réservation meeting")
+        intent.putExtra("price", meeting?.priceExcl)
+        intent.putExtra("vta", meeting?.rateVTA)
+        startActivity(intent)
     }
 
     private fun openGoogleCalendar() {

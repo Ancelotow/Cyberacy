@@ -21,23 +21,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cyberacy.app.R
 import com.cyberacy.app.models.entities.Message
 import com.cyberacy.app.models.entities.SendMessage
-import com.cyberacy.app.models.entities.Session
 import com.cyberacy.app.models.repositories.*
 import com.cyberacy.app.models.services.ApiConnection
-import com.cyberacy.app.ui.navigation.NavigationActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
-import com.google.mlkit.nl.smartreply.SmartReply
-import com.google.mlkit.nl.smartreply.SmartReplySuggestionResult
-import com.google.mlkit.nl.smartreply.TextMessage
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.await
-import java.time.format.DateTimeFormatter
 import kotlin.properties.Delegates
 
 
