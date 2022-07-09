@@ -1,4 +1,5 @@
 import Stripe from 'stripe';
+import {Payment} from "../models/payment.mjs"
 
 const GetPaymentSheet = (paymentJson) => {
     return new Promise(async (resolve, reject) => {

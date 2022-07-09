@@ -5,3 +5,5 @@ class Payment {
     libelle
     is_test = true
 }
+
+export {Payment}
