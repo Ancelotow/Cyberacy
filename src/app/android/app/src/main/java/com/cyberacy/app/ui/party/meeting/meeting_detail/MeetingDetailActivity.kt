@@ -1,5 +1,6 @@
 package com.cyberacy.app.ui.party.meeting.meeting_detail
 
+import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
@@ -9,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +26,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.button.MaterialButton
 import java.time.ZoneOffset
-import java.util.*
 import kotlin.properties.Delegates
 
 
@@ -35,6 +36,14 @@ class MeetingDetailActivity : AppCompatActivity() {
     private lateinit var nameMeeting: String
     private var meeting: Meeting? = null
 
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        // val data: Intent? = result.data
+        if (result.resultCode == RESULT_OK) {
+            Log.e("SUCESS", "OKKKKKKKKKK")
+        } else if(result.resultCode == RESULT_CANCELED) {
+            Log.e("CANCELED", "HO..")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,7 +158,7 @@ class MeetingDetailActivity : AppCompatActivity() {
         intent.putExtra("libelle", "Réservation meeting : ${meeting?.name}")
         intent.putExtra("amountExcl", meeting?.priceExcl)
         intent.putExtra("rateVAT", meeting?.rateVTA)
-        startActivity(intent)
+        resultLauncher.launch(intent)
     }
 
     private fun openGoogleCalendar() {

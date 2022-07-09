@@ -1,5 +1,6 @@
 package com.cyberacy.app.ui.payment
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
@@ -13,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.cyberacy.app.R
 import com.cyberacy.app.models.entities.Payment
+import com.cyberacy.app.models.enums.EResultPayment
 import com.cyberacy.app.models.services.ApiConnection
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -80,7 +82,10 @@ class PaymentCyberacyActivity : AppCompatActivity() {
             }
         }
         buttonBack.iconTint = ContextCompat.getColorStateList(this, colorIcon)
-        buttonBack.setOnClickListener { finish() }
+        buttonBack.setOnClickListener {
+            setResult(RESULT_CANCELED, intent)
+            finish()
+        }
     }
 
     private fun initInformation() {
@@ -192,7 +197,7 @@ class PaymentCyberacyActivity : AppCompatActivity() {
 
     }
 
-    fun presentPaymentSheet() {
+    private fun presentPaymentSheet() {
         val googlePayConfiguration = PaymentSheet.GooglePayConfiguration(
             environment = PaymentSheet.GooglePayConfiguration.Environment.Test,
             countryCode = "FR",
@@ -209,18 +214,22 @@ class PaymentCyberacyActivity : AppCompatActivity() {
         )
     }
 
-    fun onPaymentSheetResult(paymentSheetResult: PaymentSheetResult) {
-        when (paymentSheetResult) {
+    private fun onPaymentSheetResult(paymentSheetResult: PaymentSheetResult) {
+        val result: EResultPayment = when (paymentSheetResult) {
             is PaymentSheetResult.Canceled -> {
-                Log.e("Canceled", "ss")
+                EResultPayment.CANCELED
             }
             is PaymentSheetResult.Failed -> {
-                Log.e("Error: ${paymentSheetResult.error}", "ss")
+                EResultPayment.FAILED
             }
             is PaymentSheetResult.Completed -> {
-                // Display for example, an order confirmation screen
-                Log.e("Completed", "ss")
+                EResultPayment.SUCCESS
             }
         }
+        val intent = Intent()
+        intent.putExtra("result_payment", result)
+        val intentResult = if (result == EResultPayment.CANCELED) RESULT_CANCELED else RESULT_OK
+        setResult(intentResult, intent)
+        finish()
     }
 }
