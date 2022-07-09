@@ -102,7 +102,6 @@ class MeetingDetailActivity : AppCompatActivity() {
         }
         buttonBack.iconTint = ContextCompat.getColorStateList(this, colorIcon)
         buttonBack.setOnClickListener { finish() }
-
     }
 
     private fun initInformation() {
@@ -147,10 +146,9 @@ class MeetingDetailActivity : AppCompatActivity() {
 
     private fun goToCheckout() {
         val intent = Intent(this, PaymentCyberacyActivity::class.java)
-        intent.putExtra("name", meeting?.name)
-        intent.putExtra("type", "Réservation meeting")
-        intent.putExtra("price", meeting?.priceExcl)
-        intent.putExtra("vta", meeting?.rateVTA)
+        intent.putExtra("libelle", "Réservation meeting : ${meeting?.name}")
+        intent.putExtra("amountExcl", meeting?.priceExcl)
+        intent.putExtra("rateVAT", meeting?.rateVTA)
         startActivity(intent)
     }
 

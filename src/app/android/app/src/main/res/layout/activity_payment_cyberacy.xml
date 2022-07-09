@@ -41,7 +41,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/hk_nova"
         android:lines="2"
-        android:text="Réservation Meeting : Meeting Annuel"
         android:textSize="25sp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
@@ -58,7 +57,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/hk_nova"
         android:lines="1"
-        android:text="Total HT : 8.59 €"
         android:textSize="20sp"
         android:layout_marginTop="30dp"
         android:layout_marginStart="10dp"
@@ -71,7 +69,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/hk_nova"
         android:lines="1"
-        android:text="TVA : 20% "
         android:textSize="20sp"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
@@ -96,7 +93,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/hk_nova"
         android:lines="1"
-        android:text="Total TTC : 10.99"
         android:textSize="20sp"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
@@ -137,10 +133,10 @@
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btn_pay"/>
+        app:layout_constraintBottom_toTopOf="@+id/barrier"/>
 
     <TextView
-        android:id="@+id/txt_cdv"
+        android:id="@+id/text_cgv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/hk_nova"
@@ -161,7 +157,6 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/hk_nova"
-        android:text="Payer par carte (10.99 €)"
         android:textColor="@color/white"
         android:textSize="14sp"
         app:backgroundTint="@color/navy"
@@ -169,6 +164,25 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/txt_or"/>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_circular"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/txt_or" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="progress_circular,btn_pay" />
 
     <TextView
         android:id="@+id/txt_or"
