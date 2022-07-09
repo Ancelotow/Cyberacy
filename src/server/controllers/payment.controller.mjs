@@ -21,7 +21,7 @@ const GetPaymentSheet = (paymentJson) => {
         }
 
         let vatRate = payment.vat_rate / 100
-        let recalculate_amount_excl = payment.amount_including_tax - (payment.amount_including_tax * vatRate)
+        let recalculate_amount_excl = payment.amount_excl + (payment.amount_excl * vatRate)
         if(recalculate_amount_excl !== payment.amount_excl) {
             resolve({status: 400, data: "The amount including associate with VAT not corresponding with excl. tax amount"})
             return
