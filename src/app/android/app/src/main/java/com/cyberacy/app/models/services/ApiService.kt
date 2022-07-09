@@ -67,6 +67,7 @@ interface ApiService {
 
     @POST("payment-sheet")
     fun paymentSheetStripe(
+        @Body payment: Payment,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<ResultStripe>
 

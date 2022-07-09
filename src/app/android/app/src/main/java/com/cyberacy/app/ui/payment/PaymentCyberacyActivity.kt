@@ -6,6 +6,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.cyberacy.app.R
+import com.cyberacy.app.models.entities.Payment
 import com.cyberacy.app.models.services.ApiConnection
 import com.paypal.checkout.PayPalCheckout
 import com.paypal.checkout.approve.OnApprove
@@ -42,7 +43,6 @@ class PaymentCyberacyActivity : AppCompatActivity() {
         setContentView(R.layout.activity_payment_cyberacy)
         val actionBar: ActionBar? = supportActionBar
         actionBar?.hide()
-        configureStripe()
         configurePaypal()
     }
 
@@ -64,15 +64,15 @@ class PaymentCyberacyActivity : AppCompatActivity() {
             createOrder =
             CreateOrder { createOrderActions ->
                 val order = Order(
-                        intent = OrderIntent.CAPTURE,
-                        appContext = AppContext(userAction = UserAction.PAY_NOW),
-                        purchaseUnitList =
-                        listOf(
-                            PurchaseUnit(
-                                amount = Amount(currencyCode = CurrencyCode.EUR, value = "01.00")
-                            )
+                    intent = OrderIntent.CAPTURE,
+                    appContext = AppContext(userAction = UserAction.PAY_NOW),
+                    purchaseUnitList =
+                    listOf(
+                        PurchaseUnit(
+                            amount = Amount(currencyCode = CurrencyCode.EUR, value = "01.00")
                         )
                     )
+                )
                 createOrderActions.create(order)
             },
             onApprove =
@@ -88,7 +88,16 @@ class PaymentCyberacyActivity : AppCompatActivity() {
         paymentSheet = PaymentSheet(this, ::onPaymentSheetResult)
         lifecycleScope.launch {
             try {
-                val paymentSheet = ApiConnection.connection().paymentSheetStripe().await()
+                val paymentInfo = Payment(
+                    amountExcl = 1.592,
+                    amountIncludingTax = 1.99,
+                    rateVAT = 20.00,
+                    libelle = "Meeting réservation",
+                    isTest = true,
+                    email = ""
+                )
+                val paymentSheet =
+                    ApiConnection.connection().paymentSheetStripe(paymentInfo).await()
                 paymentIntentClientSecret = paymentSheet.paymentIntent
                 customerConfig = PaymentSheet.CustomerConfiguration(
                     paymentSheet.customer,
@@ -96,7 +105,7 @@ class PaymentCyberacyActivity : AppCompatActivity() {
                 )
                 PaymentConfiguration.init(this@PaymentCyberacyActivity, paymentSheet.publishableKey)
                 presentPaymentSheet()
-            } catch(e: HttpException) {
+            } catch (e: HttpException) {
                 Log.e("Erreur API", e.message())
             }
         }
@@ -121,16 +130,16 @@ class PaymentCyberacyActivity : AppCompatActivity() {
     }
 
     fun onPaymentSheetResult(paymentSheetResult: PaymentSheetResult) {
-        when(paymentSheetResult) {
+        when (paymentSheetResult) {
             is PaymentSheetResult.Canceled -> {
-                print("Canceled")
+                Log.e("Canceled", "ss")
             }
             is PaymentSheetResult.Failed -> {
-                print("Error: ${paymentSheetResult.error}")
+                Log.e("Error: ${paymentSheetResult.error}", "ss")
             }
             is PaymentSheetResult.Completed -> {
                 // Display for example, an order confirmation screen
-                print("Completed")
+                Log.e("Completed", "ss")
             }
         }
     }

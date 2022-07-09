@@ -8,6 +8,7 @@
     <string name="hint_nir">Numéro de sécurité sociale</string>
     <string name="hint_pwd">Mot de passe</string>
     <string name="hint_message">Message</string>
+    <string name="hint_email">Adresse mail</string>
 
     <!-- button -->
     <string name="btn_login">Connection</string>
@@ -49,6 +50,9 @@
     <string name="txt_no_meetings">Il n\'y a aucun meeting pour le moment</string>
     <string name="txt_no_meetings_detail">Il n\'y a aucune informations concernant ce meeting…\nRéessayé plus tard</string>
     <string name="txt_desc">Description</string>
+    <string name="txt_or">ou</string>
+    <string name="txt_payment">Paiement</string>
+    <string name="txt_cdv">J\'ai lu et j\'accepte les <a href="https://www.geeksforgeeks.org">conditions de ventes</a></string>
 
     <!-- Tab bar -->
     <string name="tb_conversation">Mes conversations</string>
