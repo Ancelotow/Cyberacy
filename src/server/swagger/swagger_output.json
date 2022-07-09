@@ -1583,6 +1583,20 @@
           }
         ]
       }
+    },
+    "/payment-sheet": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "description": "Permet de payer les achats (ex: réservations de meetings)",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "definitions": {

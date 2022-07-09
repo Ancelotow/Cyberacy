@@ -11,6 +11,7 @@ import {routerParty} from "./routes/party.router.mjs";
 import {routerMee} from "./routes/meeting.router.mjs";
 import {routerMsg} from "./routes/messaging.router.mjs";
 import {routerStats} from "./routes/stats.router.mjs";
+import {routerPay} from "./routes/payment.router.mjs";
 import jobGeography from "./cron/geography.cron.mjs"
 import cors from 'cors'
 import {config} from 'dotenv'
@@ -54,6 +55,7 @@ app.use(routerParty)
 app.use(routerMee)
 app.use(routerMsg)
 app.use(routerStats)
+app.use(routerPay)
 
 // Cron jobs
 jobGeography.startJob()
