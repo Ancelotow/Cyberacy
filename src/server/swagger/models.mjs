@@ -134,4 +134,11 @@ export default  {
         message: "Bonjour tout le monde !"
     },
 
+    InitPayment: {
+        amount_including_tax: 10.99,
+        amount_excl: 8.792,
+        vat_rate: 20,
+        is_test: true,
+        libelle: "réservation place meeting : Horizons conférence annuelle !"
+    },
 };

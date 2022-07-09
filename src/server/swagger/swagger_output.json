@@ -1590,12 +1590,17 @@
           "Payment"
         ],
         "description": "Permet de payer les achats (ex: réservations de meetings)",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
+        "parameters": [
+          {
+            "name": "payment",
+            "in": "body",
+            "description": "Objet initialisant un nouveau paiement avec Stripe",
+            "schema": {
+              "$ref": "#/definitions/InitPayment"
+            }
           }
-        },
+        ],
+        "responses": {},
         "security": [
           {
             "Bearer": []
@@ -2026,6 +2031,31 @@
         "message": {
           "type": "string",
           "example": "Bonjour tout le monde !"
+        }
+      }
+    },
+    "InitPayment": {
+      "type": "object",
+      "properties": {
+        "amount_including_tax": {
+          "type": "number",
+          "example": 10.99
+        },
+        "amount_excl": {
+          "type": "number",
+          "example": 8.792
+        },
+        "vat_rate": {
+          "type": "number",
+          "example": 20
+        },
+        "is_test": {
+          "type": "boolean",
+          "example": true
+        },
+        "libelle": {
+          "type": "string",
+          "example": "réservation place meeting : Horizons conférence annuelle !"
         }
       }
     }
