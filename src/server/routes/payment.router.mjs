@@ -9,6 +9,7 @@ const routerPay = express.Router()
 
 routerPay.post("/payment-sheet", async (req, res) => {
     // #swagger.tags = ['Payment']
+    // #swagger.security = [{ "Bearer": [] }]
     // #swagger.description = 'Permet de payer les achats (ex: réservations de meetings)'
 
     const customer = await stripe.customers.create();
