@@ -1,13 +1,16 @@
 package com.cyberacy.app.ui.party.meeting.meeting_detail
 
-import android.app.Activity
+
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
 import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.PopupWindow
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,7 +30,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.button.MaterialButton
 import java.time.ZoneOffset
 import kotlin.properties.Delegates
-
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView
 
 class MeetingDetailActivity : AppCompatActivity() {
 
@@ -36,14 +40,32 @@ class MeetingDetailActivity : AppCompatActivity() {
     private lateinit var nameMeeting: String
     private var meeting: Meeting? = null
 
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        // val data: Intent? = result.data
-        if (result.resultCode == RESULT_OK) {
-            Log.e("SUCESS", "OKKKKKKKKKK")
-        } else if(result.resultCode == RESULT_CANCELED) {
-            Log.e("CANCELED", "HO..")
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val inflater = this.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val customView: View = inflater.inflate(R.layout.pop_up_activity, null)
+
+            if (result.resultCode == RESULT_OK) {
+                customView.findViewById<TextView>(R.id.message).text =
+                    "Votre réservation à été effectuée avec succès !"
+                customView.findViewById<ImageView>(R.id.icon)
+                    .setImageResource(R.drawable.ic_success)
+            } else if (result.resultCode == RESULT_CANCELED) {
+                customView.findViewById<TextView>(R.id.message).text =
+                    "Vous avez annulé le paiement de votre réservation"
+                customView.findViewById<ImageView>(R.id.icon)
+                    .setImageResource(R.drawable.ic_canceled)
+            }
+            val popup = PopupWindow(
+                customView,
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT
+            )
+            customView.findViewById<MaterialButton>(R.id.btn_close)
+                .setOnClickListener { popup.dismiss() }
+            popup.elevation = 5.0F
+            popup.showAtLocation(findViewById(R.id.layout_meeting_details), Gravity.CENTER, 0, 0)
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -154,6 +176,8 @@ class MeetingDetailActivity : AppCompatActivity() {
     }
 
     private fun goToCheckout() {
+
+
         val intent = Intent(this, PaymentCyberacyActivity::class.java)
         intent.putExtra("libelle", "Réservation meeting : ${meeting?.name}")
         intent.putExtra("amountExcl", meeting?.priceExcl)
@@ -202,5 +226,6 @@ class MeetingDetailActivity : AppCompatActivity() {
             }
         }
     }
+
 
 }

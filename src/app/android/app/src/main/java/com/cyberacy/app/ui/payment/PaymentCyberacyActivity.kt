@@ -82,10 +82,7 @@ class PaymentCyberacyActivity : AppCompatActivity() {
             }
         }
         buttonBack.iconTint = ContextCompat.getColorStateList(this, colorIcon)
-        buttonBack.setOnClickListener {
-            setResult(RESULT_CANCELED, intent)
-            finish()
-        }
+        buttonBack.setOnClickListener { onBackPressed() }
     }
 
     private fun initInformation() {
@@ -128,7 +125,10 @@ class PaymentCyberacyActivity : AppCompatActivity() {
                     purchaseUnitList =
                     listOf(
                         PurchaseUnit(
-                            amount = Amount(currencyCode = CurrencyCode.EUR, value = amountIncludingTax.toString())
+                            amount = Amount(
+                                currencyCode = CurrencyCode.EUR,
+                                value = amountIncludingTax.toString()
+                            )
                         )
                     )
                 )
@@ -149,12 +149,12 @@ class PaymentCyberacyActivity : AppCompatActivity() {
         val checkBox = findViewById<CheckBox>(R.id.cb_cdv)
         layoutEmail.error = null
         checkBox.error = null
-        if(email == null || email.isEmpty()) {
+        if (email == null || email.isEmpty()) {
             layoutEmail.error = "Ce champ est obligatoire pour envoyer la facture"
             return false
         }
 
-        if(!checkBox.isChecked) {
+        if (!checkBox.isChecked) {
             checkBox.error = "Vous devez accepté le CGV pour continuer"
             return false
         }
@@ -162,7 +162,7 @@ class PaymentCyberacyActivity : AppCompatActivity() {
     }
 
     private fun configureStripe() {
-        if(!formIsValid()) {
+        if (!formIsValid()) {
             return
         }
         val loader = findViewById<CircularProgressIndicator>(R.id.progress_circular)
@@ -230,6 +230,11 @@ class PaymentCyberacyActivity : AppCompatActivity() {
         intent.putExtra("result_payment", result)
         val intentResult = if (result == EResultPayment.CANCELED) RESULT_CANCELED else RESULT_OK
         setResult(intentResult, intent)
+        finish()
+    }
+
+    override fun onBackPressed() {
+        setResult(RESULT_CANCELED, intent)
         finish()
     }
 }
