@@ -2056,6 +2056,10 @@
         "libelle": {
           "type": "string",
           "example": "réservation place meeting : Horizons conférence annuelle !"
+        },
+        "email": {
+          "type": "string",
+          "example": "toto@gmail.com"
         }
       }
     }

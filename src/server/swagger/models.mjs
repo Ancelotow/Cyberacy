@@ -139,6 +139,7 @@ export default  {
         amount_excl: 8.792,
         vat_rate: 20,
         is_test: true,
-        libelle: "réservation place meeting : Horizons conférence annuelle !"
+        libelle: "réservation place meeting : Horizons conférence annuelle !",
+        email: "toto@gmail.com"
     },
 };

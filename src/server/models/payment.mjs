@@ -4,6 +4,7 @@ class Payment {
     vat_rate
     libelle
     is_test = true
+    email
 }
 
 export {Payment}

@@ -12,7 +12,7 @@ const GetPaymentSheet = (paymentJson) => {
         if (payment.vat_rate === null || payment.amount_including_tax === null ) {
             resolve({status: 400, data: "Missing parameters"})
             return
-        } else if (payment.libelle === null || payment.amount_excl === null ) {
+        } else if (payment.libelle === null || payment.amount_excl === null || payment.email === null ) {
             resolve({status: 400, data: "Missing parameters"})
             return
         }  else if (payment.amount_including_tax < 1) {
@@ -39,7 +39,7 @@ const GetPaymentSheet = (paymentJson) => {
         const paymentIntent = await stripe.paymentIntents.create({
             amount: payment.amount_including_tax * 100,
             description: payment.libelle,
-            receipt_email: "ancelotow@gmail.com",
+            receipt_email: payment.email,
             currency: 'eur',
             customer: customer.id,
             automatic_payment_methods: {
