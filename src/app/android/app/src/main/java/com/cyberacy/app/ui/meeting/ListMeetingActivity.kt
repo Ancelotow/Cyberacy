@@ -1,11 +1,10 @@
-package com.cyberacy.app.ui.party.meeting
+package com.cyberacy.app.ui.meeting
 
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.CalendarView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar

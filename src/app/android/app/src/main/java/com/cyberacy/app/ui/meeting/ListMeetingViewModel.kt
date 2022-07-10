@@ -1,4 +1,4 @@
-package com.cyberacy.app.ui.party.meeting
+package com.cyberacy.app.ui.meeting
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.cyberacy.app.models.repositories.MeetingListState
 import com.cyberacy.app.models.repositories.MeetingRepository
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ListMeetingViewModel(private val idParty: Int) : ViewModel() {

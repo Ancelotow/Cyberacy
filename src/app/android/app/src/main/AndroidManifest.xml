@@ -2,10 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission
         android:name="android.permission.POST_NOTIFICATIONS"
         tools:node="remove" />
     <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:allowBackup="true"
@@ -17,21 +20,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cyberacy"
         tools:targetApi="31">
-
-        <!-- This element is required to enable Google Pay in your app. -->
-        <meta-data
-            android:name="com.google.android.gms.wallet.api.enabled"
-            android:value="true" />
-
+        <activity
+            android:name=".ui.meeting.meeting_ticket.MeetingTicketActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.payment.PaymentCyberacyActivity"
             android:exported="false" />
-
         <activity
-            android:name=".ui.party.meeting.meeting_detail.MeetingDetailActivity"
+            android:name="com.cyberacy.app.ui.meeting.meeting_detail.MeetingDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.party.meeting.ListMeetingActivity"
+            android:name="com.cyberacy.app.ui.meeting.ListMeetingActivity"
             android:exported="false" />
         <activity
             android:name=".ui.party.messaging.thread.ThreadActivity"
@@ -53,7 +52,10 @@
             </intent-filter>
         </activity>
 
-
+        <!-- This element is required to enable Google Pay in your app. -->
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
         <!-- Icône pour les Notifications PUSH -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

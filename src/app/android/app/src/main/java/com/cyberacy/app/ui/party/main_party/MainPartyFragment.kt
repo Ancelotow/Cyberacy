@@ -17,14 +17,13 @@ import androidx.lifecycle.lifecycleScope
 import com.cyberacy.app.R
 import com.cyberacy.app.models.entities.Meeting
 import com.cyberacy.app.models.services.ApiConnection
-import com.cyberacy.app.ui.party.meeting.ListMeetingActivity
-import com.cyberacy.app.ui.party.meeting.meeting_detail.MeetingDetailActivity
+import com.cyberacy.app.ui.meeting.ListMeetingActivity
+import com.cyberacy.app.ui.meeting.meeting_detail.MeetingDetailActivity
 import com.cyberacy.app.ui.party.messaging.MessagingActivity
 import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import retrofit2.await
-import java.util.*
 
 private const val ARG_PARAM = "id_party"
 
@@ -101,6 +100,10 @@ class MainPartyFragment : Fragment() {
             view?.findViewById<TextView>(R.id.txt_name)?.text = meeting.name
             view?.findViewById<TextView>(R.id.txt_lieu)?.text = meeting.getPosition()
             view?.findViewById<TextView>(R.id.txt_price)?.text = "Prix : ${meeting.getPriceStr()}"
+            val btnQrcode = view?.findViewById<MaterialButton>(R.id.btn_qrcode)
+            if(meeting.isParticipated) {
+                btnQrcode?.visibility = View.VISIBLE
+            }
             nextMeeting?.isClickable = true
             nextMeeting?.setOnClickListener {
                 val intent = Intent(view?.context, MeetingDetailActivity::class.java)

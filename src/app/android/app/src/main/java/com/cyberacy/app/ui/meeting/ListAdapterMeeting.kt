@@ -1,4 +1,4 @@
-package com.cyberacy.app.ui.party.meeting
+package com.cyberacy.app.ui.meeting
 
 import android.app.Activity
 import android.content.Intent
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cyberacy.app.R
 import com.cyberacy.app.models.entities.Meeting
-import com.cyberacy.app.ui.party.meeting.meeting_detail.MeetingDetailActivity
+import com.cyberacy.app.ui.meeting.meeting_detail.MeetingDetailActivity
 
 class ListAdapterMeeting(
     val meetings: MutableList<Meeting>,

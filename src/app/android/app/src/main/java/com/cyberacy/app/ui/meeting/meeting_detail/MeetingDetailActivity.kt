@@ -1,4 +1,4 @@
-package com.cyberacy.app.ui.party.meeting.meeting_detail
+package com.cyberacy.app.ui.meeting.meeting_detail
 
 
 import android.content.Intent

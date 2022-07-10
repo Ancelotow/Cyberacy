@@ -1,4 +1,4 @@
-package com.cyberacy.app.ui.party.meeting.meeting_detail
+package com.cyberacy.app.ui.meeting.meeting_detail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

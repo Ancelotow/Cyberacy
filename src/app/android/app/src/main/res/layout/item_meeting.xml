@@ -91,4 +91,19 @@
         app:layout_constraintTop_toBottomOf="@id/txt_lieu"
         app:layout_constraintLeft_toLeftOf="@+id/txt_name"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_qrcode"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        app:cornerRadius="70dp"
+        app:icon="@drawable/ic_qrcode"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:backgroundTint="@color/yellow"
+        app:iconTint="@color/black"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

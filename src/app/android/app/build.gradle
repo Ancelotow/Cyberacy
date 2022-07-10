@@ -78,4 +78,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
     implementation 'com.paypal.checkout:android-sdk:0.6.3'
     implementation 'com.stripe:stripe-android:20.6.2'
+    implementation 'com.google.zxing:core:3.4.0'
 }
