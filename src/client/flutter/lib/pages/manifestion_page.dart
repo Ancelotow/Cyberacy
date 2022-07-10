@@ -10,6 +10,7 @@ import '../models/notifications/navigation_notification.dart';
 import '../widgets/buttons/button_card.dart';
 import '../widgets/cards/card_shimmer.dart';
 import '../widgets/draggable_target.dart';
+import '../widgets/info_error.dart';
 
 class ManifestationPage extends StatefulWidget {
   final Function(Manifestation)? callbackAddWorkspace;
@@ -40,7 +41,7 @@ class _ManifestationPageState extends State<ManifestationPage> {
             manifs = snapshot.data!;
             return _getListManifs(context);
           } else if (snapshot.hasError) {
-            return _getManifError();
+            return InfoError(error: snapshot.error as Error);
           } else {
             return _getManifLoader(context);
           }
@@ -90,14 +91,6 @@ class _ManifestationPageState extends State<ManifestationPage> {
         crossAxisAlignment: WrapCrossAlignment.center,
         children: cardLoad,
       ),
-    );
-  }
-
-  Widget _getManifError() {
-    return Icon(
-      Icons.error_outline,
-      color: Colors.red,
-      size: 60,
     );
   }
 

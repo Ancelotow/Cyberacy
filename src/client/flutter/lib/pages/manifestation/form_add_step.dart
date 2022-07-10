@@ -45,7 +45,7 @@ class _FormAddStepState extends State<FormAddStep> {
   void initState() {
     super.initState();
     timer =
-        Timer.periodic(const Duration(seconds: 5), (Timer t) => refreshMap());
+        Timer.periodic(const Duration(seconds: 15), (Timer t) => refreshMap());
   }
 
   @override

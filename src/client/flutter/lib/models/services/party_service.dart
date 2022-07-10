@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:bo_cyberacy/models/entities/political_party.dart';
 import 'package:http/http.dart' as http;
+import '../entities/response_api.dart';
 import '../errors/api_service_error.dart';
 import 'api_service.dart';
 
@@ -15,8 +16,9 @@ class PartyService extends ApiService {
         headers: await getHeaders(auth: true),
       );
       if (response.statusCode == 200) {
-        List<dynamic> list = jsonDecode(response.body);
-        parties = list.map((json) => PoliticalParty.fromJson(json)).toList();
+        ResponseAPI responseApi = ResponseAPI.fromJson(jsonDecode(response.body));
+        List<dynamic> listObject = responseApi.data;
+        parties = listObject.map((json) => PoliticalParty.fromJson(json)).toList();
       }
       return parties;
     } on ApiServiceError {
@@ -24,15 +26,14 @@ class PartyService extends ApiService {
     }
   }
 
-  Future<String> addParty(PoliticalParty party) async {
+  Future<void> addParty(PoliticalParty party) async {
     var response = await http.post(
       getUrl("political_party", null),
       headers: await getHeaders(auth: true),
       body: party.toJson(),
     );
-    print(response.body);
     if (response.statusCode == 201) {
-      return response.body;
+      return;
     } else {
       throw ApiServiceError(response);
     }

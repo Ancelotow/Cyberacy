@@ -9,6 +9,7 @@ import 'package:bo_cyberacy/widgets/draggable_target.dart';
 import 'package:flutter/material.dart';
 import '../models/notifications/navigation_notification.dart';
 import '../widgets/cards/card_shimmer.dart';
+import '../widgets/info_error.dart';
 
 class PartyPage extends StatefulWidget {
   final Function(PoliticalParty)? callbackAddWorkspace;
@@ -39,7 +40,7 @@ class _PartyPageState extends State<PartyPage> {
             parties = snapshot.data!;
             return _getListParty(context);
           } else if (snapshot.hasError) {
-            return _getPartyError();
+            return InfoError(error: snapshot.error as Error);
           } else {
             return _getPartyLoader(context);
           }
@@ -88,14 +89,6 @@ class _PartyPageState extends State<PartyPage> {
         crossAxisAlignment: WrapCrossAlignment.center,
         children: cardLoad,
       ),
-    );
-  }
-
-  Widget _getPartyError() {
-    return Icon(
-      Icons.error_outline,
-      color: Colors.red,
-      size: 60,
     );
   }
 
