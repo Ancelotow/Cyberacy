@@ -3,13 +3,17 @@ package com.cyberacy.app.ui.party.meeting.meeting_detail
 
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
 import android.util.Log
+import android.view.Display
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup.LayoutParams
+import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -30,8 +34,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.button.MaterialButton
 import java.time.ZoneOffset
 import kotlin.properties.Delegates
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageView
 
 class MeetingDetailActivity : AppCompatActivity() {
 
@@ -56,9 +58,12 @@ class MeetingDetailActivity : AppCompatActivity() {
                 customView.findViewById<ImageView>(R.id.icon)
                     .setImageResource(R.drawable.ic_canceled)
             }
+            val display: Display = windowManager.defaultDisplay
+            val size = Point()
+            display.getSize(size)
             val popup = PopupWindow(
                 customView,
-                LayoutParams.WRAP_CONTENT,
+                size.x - 20,
                 LayoutParams.WRAP_CONTENT
             )
             customView.findViewById<MaterialButton>(R.id.btn_close)
