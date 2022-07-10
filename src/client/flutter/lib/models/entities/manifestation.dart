@@ -34,15 +34,14 @@ class Manifestation {
         object = json["object"],
         securityDescription = json["security_description"],
         nbPersonEstimate = json["nb_person_estimate"] {
-    try {
+    if(json["steps"] != null) {
       List<dynamic> listStepsJson = json["steps"];
-      List<dynamic> listOptionsJson = json["options"];
       steps = listStepsJson.map((jsonStep) => StepManif.fromJson(jsonStep)).toList();
-      options = listOptionsJson.map((jsonOpt) => Option.fromJson(jsonOpt)).toList();
-    } catch(e) {
-      print(e);
     }
-
+    if(json["options"] != null) {
+      List<dynamic> listOptionsJson = json["options"];
+      options = listOptionsJson.map((jsonOpt) => Option.fromJson(jsonOpt)).toList();
+    }
   }
 
   Object toJson() {
