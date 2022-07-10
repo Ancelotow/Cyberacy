@@ -81,7 +81,7 @@ const Add = (party) => {
             resolve(false)
         }
         const request = {
-            text: 'INSERT INTO political_party (pop_name, pop_description, pop_object, pop_address_street, pop_siren, pop_chart, pop_iban, poe_id, prs_nir, twn_code_insee, pop_date_create, pop_url_logo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
+            text: 'INSERT INTO political_party (pop_name, pop_description, pop_object, pop_address_street, pop_siren, pop_chart, pop_iban, poe_id, prs_nir, twn_code_insee, pop_date_create, pop_url_logo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)',
             values: [party.name, party.description, party.object, party.address_street, party.siren, party.chart, party.iban, party.id_political_edge, party.nir, party.town_code_insee, party.date_create, party.url_logo],
         }
         pool.query(request, (error, _) => {
