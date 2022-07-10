@@ -61,11 +61,11 @@ routerStats.get("/statistics/political_party/meeting", async (req, res) => {
     }*/
 
     if (req.query.sort === "year") {
-        const response = await statsCtrl.GetNbMeetingByYear(req.data.nir, req.data.idPoliticalParty)
+        const response = await statsCtrl.GetNbMeetingByYear(req.data.nir, req.query.idPoliticalParty)
         res.status(response.code).send(response)
     } else if (req.query.sort === "month") {
         const year = (req.query.year == null) ? new Date().getFullYear() : req.query.year
-        const response = await statsCtrl.GetNbMeetingByMonth(req.data.nir, year, req.data.idPoliticalParty)
+        const response = await statsCtrl.GetNbMeetingByMonth(req.data.nir, year, req.query.idPoliticalParty)
         res.status(response.code).send(response)
     } else {
         res.status(400).send(new ResponseApi().InitBadRequest("The parameters \"sort\" is required"))
