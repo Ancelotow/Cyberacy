@@ -29,31 +29,35 @@ class PoliticalParty(
 
         suspend fun getPoliticalParties(): List<PoliticalParty> {
             try {
-                return ApiConnection.connection().getPoliticalParty(includeLeft = true).await() ?: emptyList()
+                val response: ResponseAPI<List<PoliticalParty>?> =
+                    ApiConnection.connection().getPoliticalParty(includeLeft = true).await()
+                return response.data ?: emptyList()
             } catch (e: HttpException) {
                 throw e
             }
         }
 
         suspend fun getMinePoliticalParty(): PoliticalParty? {
-            try{
-                val result = ApiConnection.connection().getPoliticalParty(true).await() ?: emptyList()
-                if(result.isEmpty()) {
+            try {
+                val response: ResponseAPI<List<PoliticalParty>?> =
+                    ApiConnection.connection().getPoliticalParty(true).await()
+                if (response.data == null || response.data.isEmpty()) {
                     return null
                 }
-                return result[0]
+                return response.data[0]
             } catch (e: HttpException) {
                 throw e
             }
         }
 
         suspend fun getPoliticalPartyById(id: Int): PoliticalParty? {
-            try{
-                val result = ApiConnection.connection().getPoliticalParty(false, id).await() ?: emptyList()
-                if(result.isEmpty()) {
+            try {
+                val response: ResponseAPI<List<PoliticalParty>?> =
+                    ApiConnection.connection().getPoliticalParty(false, id).await()
+                if (response.data == null || response.data.isEmpty()) {
                     return null
                 }
-                return result[0]
+                return response.data[0]
             } catch (e: HttpException) {
                 throw e
             }

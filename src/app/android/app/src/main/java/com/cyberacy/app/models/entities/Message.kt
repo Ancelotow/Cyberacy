@@ -29,22 +29,22 @@ class Message(
     val mine: Boolean
 ) {
 
-    fun getUserName(): String{
-        return if(mine) {
+    fun getUserName(): String {
+        return if (mine) {
             "Moi"
         } else {
             "$lastname $firstname"
         }
     }
 
-    fun getDateMessage(): String{
+    fun getDateMessage(): String {
         val formatterDate: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
         val formatterTime: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
         val today: LocalDate = LocalDateTime.now().atZone(ZoneId.systemDefault()).toLocalDate()
         val dateMessage: LocalDate = datePublished.atZone(ZoneId.systemDefault()).toLocalDate()
-        if(today.isEqual(dateMessage)) {
+        if (today.isEqual(dateMessage)) {
             return "Aujourd'hui ${formatterTime.format(datePublished)}"
-        } else if(today.plusDays(-1).isEqual(dateMessage)) {
+        } else if (today.plusDays(-1).isEqual(dateMessage)) {
             return "Hier ${formatterTime.format(datePublished)}"
         } else {
             return formatterDate.format(datePublished)
@@ -55,7 +55,9 @@ class Message(
 
         suspend fun getMessages(id: Int): List<Message> {
             try {
-                return ApiConnection.connection().getMessages(id).await() ?: emptyList()
+                val response: ResponseAPI<List<Message>?> =
+                    ApiConnection.connection().getMessages(id).await()
+                return response.data ?: emptyList()
             } catch (e: HttpException) {
                 throw e
             }

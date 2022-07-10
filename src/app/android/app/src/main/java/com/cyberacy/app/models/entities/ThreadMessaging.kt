@@ -36,7 +36,9 @@ class ThreadMessaging(
 
         suspend fun getMyThreads(): List<ThreadMessaging> {
             try {
-                return ApiConnection.connection().getThreads(onlyMine = true).await() ?: emptyList()
+                val response: ResponseAPI<List<ThreadMessaging>?> =
+                    ApiConnection.connection().getThreads(onlyMine = true).await()
+                return response.data ?: emptyList()
             } catch (e: HttpException) {
                 throw e
             }
@@ -44,7 +46,9 @@ class ThreadMessaging(
 
         suspend fun getOtherThreads(): List<ThreadMessaging> {
             try {
-                return ApiConnection.connection().getThreads(onlyMine = false).await() ?: emptyList()
+                val response: ResponseAPI<List<ThreadMessaging>?> =
+                    ApiConnection.connection().getThreads(onlyMine = false).await()
+                return response.data ?: emptyList()
             } catch (e: HttpException) {
                 throw e
             }

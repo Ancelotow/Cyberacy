@@ -65,7 +65,8 @@ class MainPartyFragment : Fragment() {
         loader.visibility = View.VISIBLE
         body.visibility = View.GONE
         lifecycleScope.launch {
-            val listsParties = ApiConnection.connection().getPoliticalParty(false, idParty).await()
+            val responseApi = ApiConnection.connection().getPoliticalParty(false, idParty).await()
+            val listsParties = responseApi.data
             if(listsParties == null || listsParties.isEmpty()) {
                 Log.v("Party", "None")
             } else {

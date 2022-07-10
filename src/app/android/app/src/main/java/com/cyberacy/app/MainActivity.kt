@@ -61,10 +61,12 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val infoConnection = Connection(nir, pwd)
             try{
-                val token = ApiConnection.connection().login(infoConnection).await()
-                Session.openSession(token)
-                val i = Intent(this@MainActivity, NavigationActivity::class.java)
-                startActivity(i)
+                val response = ApiConnection.connection().login(infoConnection).await()
+                if(response.data != null) {
+                    Session.openSession(response.data)
+                    val i = Intent(this@MainActivity, NavigationActivity::class.java)
+                    startActivity(i)
+                }
             } catch (e: HttpException) {
                 if(e.code() == 401) {
                     layoutLogin.error = "L'identidiant et/ou le mot de passe sont incorrects"

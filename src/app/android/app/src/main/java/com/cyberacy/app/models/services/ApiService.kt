@@ -7,7 +7,7 @@ import retrofit2.http.*
 interface ApiService {
 
     @POST("login_app")
-    fun login(@Body connection: Connection): Call<String>
+    fun login(@Body connection: Connection): Call<ResponseAPI<Person>>
 
     @GET("political_party")
     fun getPoliticalParty(
@@ -15,44 +15,44 @@ interface ApiService {
         @Query("idPoliticalParty") id: Int? = null,
         @Query("includeLeft") includeLeft: Boolean = false,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
-    ): Call<List<PoliticalParty>?>
+    ): Call<ResponseAPI<List<PoliticalParty>?>>
 
     @POST("political_party/{id}/join")
     fun joinParty(
         @Path("id") id: Int,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
-    ): Call<String>
+    ): Call<ResponseAPI<String>>
 
     @POST("thread/{id}/join")
     fun joinThread(
         @Path("id") id: Int,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
-    ): Call<String>
+    ): Call<ResponseAPI<String>>
 
     @GET("thread")
     fun getThreads(
         @Query("onlyMine") onlyMine: Boolean = false,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
-    ): Call<List<ThreadMessaging>?>
+    ): Call<ResponseAPI<List<ThreadMessaging>?>>
 
     @GET("thread/{id}/message")
     fun getMessages(
         @Path("id") id: Int,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
-    ): Call<List<Message>?>
+    ): Call<ResponseAPI<List<Message>?>>
 
     @POST("thread/{id}/message")
     fun postMessage(
         @Path("id") id: Int,
         @Body message: SendMessage,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
-    ): Call<String>
+    ): Call<ResponseAPI<String>>
 
     @DELETE("thread/{id}/left")
     fun leaveThread(
         @Path("id") id: Int,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
-    ): Call<String>
+    ): Call<ResponseAPI<String>>
 
     @GET("meeting")
     fun getMeeting(
@@ -63,12 +63,12 @@ interface ApiService {
         @Query("includeFinished") includeFinished: Boolean = false,
         @Query("id") id: Int? = null,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
-    ): Call<List<Meeting>?>
+    ): Call<ResponseAPI<List<Meeting>?>>
 
     @POST("payment-sheet")
     fun paymentSheetStripe(
         @Body payment: Payment,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
-    ): Call<ResultStripe>
+    ): Call<ResponseAPI<ResultStripe>>
 
 }

@@ -157,12 +157,13 @@ class Meeting(
 
         suspend fun getMeetings(partyId: Int): List<Meeting> {
             try {
-                return ApiConnection.connection().getMeeting(
+                val response: ResponseAPI<List<Meeting>?> = ApiConnection.connection().getMeeting(
                     idPoliticalParty = partyId,
                     mine = false,
                     includeCompleted = true,
                     includeFinished = true
-                ).await() ?: emptyList()
+                ).await()
+                return response.data ?: emptyList()
             } catch (e: HttpException) {
                 throw e
             }
@@ -170,17 +171,17 @@ class Meeting(
 
         suspend fun getMeetingById(id: Int): Meeting? {
             try {
-                val result = ApiConnection.connection().getMeeting(
+                val response: ResponseAPI<List<Meeting>?> = ApiConnection.connection().getMeeting(
                     mine = false,
                     includeCompleted = true,
                     includeFinished = true,
                     includeAborted = true,
                     id = id
-                ).await() ?: emptyList()
-                if(result.isEmpty()) {
+                ).await()
+                if(response.data == null || response.data.isEmpty()) {
                     return null
                 }
-                return result[0]
+                return response.data[0]
             } catch (e: HttpException) {
                 throw e
             }

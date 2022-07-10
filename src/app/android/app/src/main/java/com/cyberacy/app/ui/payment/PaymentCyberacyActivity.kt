@@ -178,15 +178,17 @@ class PaymentCyberacyActivity : AppCompatActivity() {
                     isTest = true,
                     email = findViewById<TextInputEditText>(R.id.email).text.toString()
                 )
-                val paymentSheet =
-                    ApiConnection.connection().paymentSheetStripe(paymentInfo).await()
-                paymentIntentClientSecret = paymentSheet.paymentIntent
-                customerConfig = PaymentSheet.CustomerConfiguration(
-                    paymentSheet.customer,
-                    paymentSheet.ephemeralKey
-                )
-                PaymentConfiguration.init(this@PaymentCyberacyActivity, paymentSheet.publishableKey)
-                presentPaymentSheet()
+                val response = ApiConnection.connection().paymentSheetStripe(paymentInfo).await()
+                if(response.data != null) {
+                    val responseStripe = response.data
+                    paymentIntentClientSecret = responseStripe.paymentIntent
+                    customerConfig = PaymentSheet.CustomerConfiguration(
+                        responseStripe.customer,
+                        responseStripe.ephemeralKey
+                    )
+                    PaymentConfiguration.init(this@PaymentCyberacyActivity, responseStripe.publishableKey)
+                    presentPaymentSheet()
+                }
             } catch (e: HttpException) {
                 Log.e("Erreur API", e.response().toString())
             } finally {
