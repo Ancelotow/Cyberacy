@@ -575,7 +575,8 @@ $filter$
 
 -- Statistiques pour les parties politiques (nb meeting)
 create or replace function stats_meeting_from_party(_nir adherent.prs_nir%type,
-                                                    _year int default extract(year from now()))
+                                                    _year int default extract(year from now()),
+                                                    _pop_id political_party.pop_id%type default null)
     returns table
             (
                 id_political_party adherent.pop_id%type,
@@ -601,6 +602,7 @@ begin
              meeting mee
                  join political_party pop on mee.pop_id = pop.pop_id
                  join adherent adh on pop.pop_id = adh.pop_id and adh.prs_nir = _nir and adh.adh_is_left = false
+        where (_pop_id is null or pop.pop_id = _pop_id)
         order by year, month;
 end;
 $filter$

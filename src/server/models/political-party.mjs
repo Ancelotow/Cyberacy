@@ -327,14 +327,15 @@ const GetNbAdherent = (nir, year = new Date().getFullYear()) => {
  * Statistiques : Récupère le nombre de meeting et le nombre de participant pour un parti politiue par an et par mois
  * @param nir Le NIR de l'ahdérent
  * @param year L'année du tri
+ * @param idPoliticalParty
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetNbMeeting = (nir, year = new Date().getFullYear()) => {
+const GetNbMeeting = (nir, year = new Date().getFullYear(), idPoliticalParty = null) => {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'SELECT * FROM stats_meeting_from_party($1, $2)',
-            values: [nir, year],
+            text: 'SELECT * FROM stats_meeting_from_party($1, $2, $3)',
+            values: [nir, year, idPoliticalParty],
         }
         pool.query(request, (error, result) => {
             if (error) {

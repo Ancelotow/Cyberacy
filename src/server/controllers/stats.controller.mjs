@@ -74,17 +74,18 @@ const GetNbAdherentByYear = (nir) => {
  * Statistiques : récupère le nombre de meetings par mois
  * @param nir Le NIR de l'utilisateur
  * @param year L'année du filtre (l'année courante par défaut)
+ * @param idPoliticalParty
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetNbMeetingByMonth = (nir, year = new Date().getFullYear()) => {
+const GetNbMeetingByMonth = (nir, year = new Date().getFullYear(), idPoliticalParty = null) => {
     return new Promise(async (resolve, _) => {
         if (!nir) {
             resolve(new ResponseApi().InitMissingParameters())
             return;
         }
         try {
-            let stats = await partyMod.GetNbMeeting(nir, year);
+            let stats = await partyMod.GetNbMeeting(nir, year, idPoliticalParty);
             let allPartys = await partyMod.GetAllPartyForStats()
             if (stats == null) {
                 resolve(new ResponseApi().InitNoContent())
@@ -108,10 +109,11 @@ const GetNbMeetingByMonth = (nir, year = new Date().getFullYear()) => {
 /**
  * Statistiques : récupère le nombre de meeting par an
  * @param nir Le NIR de l'utilisateur
+ * @param idPoliticalParty
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetNbMeetingByYear = (nir) => {
+const GetNbMeetingByYear = (nir, idPoliticalParty = null) => {
     return new Promise(async (resolve, _) => {
         let year = new Date().getFullYear() - 10;
         let result;
@@ -120,7 +122,7 @@ const GetNbMeetingByYear = (nir) => {
             allPartys[i].stats = []
         }
         for (year; year <= new Date().getFullYear(); year++) {
-            result = await partyMod.GetNbMeeting(nir, year)
+            result = await partyMod.GetNbMeeting(nir, year, idPoliticalParty)
             for(let i = 0; i < allPartys.length; i++) {
                 let resultMonth  = result.filter(s => s.id_political_party === allPartys[i].id)
                 if(resultMonth.length > 0) {

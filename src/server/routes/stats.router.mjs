@@ -46,20 +46,26 @@ routerStats.get("/statistics/political_party/meeting", async (req, res) => {
                 '@enum': ['year', 'month']
             }
 
-    } */
-    /*  #swagger.parameters['year'] = {
+    }
+    #swagger.parameters['year'] = {
            in: 'query',
-           description: 'L année pour le tri',
+           description: 'L\'année pour le tri',
            type: 'int'
 
-    } */
+    }
+     #swagger.parameters['idPoliticalParty'] = {
+           in: 'query',
+           description: 'L\'id d\'un parti politique, NULL récupérant tout (à NULL par défault)',
+           type: 'int'
+
+    }*/
 
     if (req.query.sort === "year") {
-        const response = await statsCtrl.GetNbMeetingByYear(req.data.nir)
+        const response = await statsCtrl.GetNbMeetingByYear(req.data.nir, req.data.idPoliticalParty)
         res.status(response.code).send(response)
     } else if (req.query.sort === "month") {
         const year = (req.query.year == null) ? new Date().getFullYear() : req.query.year
-        const response = await statsCtrl.GetNbMeetingByMonth(req.data.nir, year)
+        const response = await statsCtrl.GetNbMeetingByMonth(req.data.nir, year, req.data.idPoliticalParty)
         res.status(response.code).send(response)
     } else {
         res.status(400).send(new ResponseApi().InitBadRequest("The parameters \"sort\" is required"))
