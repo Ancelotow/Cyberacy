@@ -56,7 +56,7 @@ Content-Type: application/json
 
 ###
 # @name Get messages
-GET {{url}}/thread/29/message
+GET {{url}}/thread/74/message
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 Content-Type: application/json

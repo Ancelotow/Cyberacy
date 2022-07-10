@@ -1,5 +1,6 @@
 import {Person, Add, GetByIdAndPassword, IsGranted} from '../models/person.mjs'
 import jwt from "jsonwebtoken"
+import {ResponseApi} from "../models/response-api.mjs";
 
 /**
  * Enregistre une nouvelle personne
@@ -9,21 +10,24 @@ import jwt from "jsonwebtoken"
 const Register = (person) => {
     return new Promise((resolve, _) => {
         if (person == null) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else if (person.nir == null || person.firstname == null || person.lastname == null) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else if (person.sex == null || person.town_code_insee == null) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             Add(person).then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "Person has been created."})
+                    resolve(new ResponseApi().InitCreated("Person has been created."))
                 } else {
-                    resolve({status: 400, data: "This person already existed."})
+                    resolve(new ResponseApi().InitBadRequest("This person already existed."))
                 }
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -40,26 +44,27 @@ const Register = (person) => {
 const Authentication = async (nir, password, code_role) => {
     return new Promise(async (resolve, _) => {
         if(nir == null || password == null) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
             return
         } else if (code_role == null) {
-            resolve({status: 500, data: "Missing code role."})
+            resolve(new ResponseApi().InitInternalServer(new Error("Missing code_role")))
             return
         }
         try{
             const res = await GetByIdAndPassword(nir, password);
             if(!res) {
-                resolve({status: 401, data: "This NIR and password not matching."})
+                resolve(new ResponseApi().InitUnauthorized("This NIR and password not matching."))
                 return
             }
             const isGranted = await IsGranted(nir, code_role);
             if(!isGranted) {
-                resolve({status: 401, data: "You are not allowed to access at this ressources."})
+                resolve(new ResponseApi().InitUnauthorized("You are not allowed to access at this ressources."))
                 return
             }
-            resolve({status: 200, data: GenerateToken(res)})
+            res.token = GenerateToken(res)
+            resolve(new ResponseApi().InitOK(res))
         } catch(error) {
-            resolve({status: 500, data: error})
+            resolve(new ResponseApi().InitInternalServer(error))
         }
     });
 }

@@ -14,7 +14,7 @@ routerPay.post("/payment-sheet", async (req, res) => {
     } */
 
     let response = await paymentCtrl.GetPaymentSheet(req.body)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 export {routerPay}

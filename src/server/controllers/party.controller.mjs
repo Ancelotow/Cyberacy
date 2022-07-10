@@ -4,6 +4,7 @@ import adherentMod from "../models/adherent.mjs";
 import documentMod from "../models/document.mjs";
 import feeMod from "../models/annual-fee.mjs";
 import {Meeting} from "../models/meeting.mjs";
+import {ResponseApi} from "../models/response-api.mjs";
 
 const uri_api_siren = "https://entreprise.data.gouv.fr/api/sirene/v3/unites_legales/"
 
@@ -46,25 +47,28 @@ function GetAssociationFromGov(party) {
 const AddParty = (party) => {
     return new Promise(async (resolve, _) => {
         if (!party) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else if (!party.siren || !party.url_logo | !party.object) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else if (!party.id_political_edge || !party.nir) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             GetAssociationFromGov(party).then((resultParty) => {
                 if (!resultParty) {
-                    resolve({status: 404, data: "This political party does not exists."})
+                    resolve(new ResponseApi().InitBadRequest("This political party does not exists."))
                 } else {
                     partyMod.Add(resultParty).then((res) => {
                         if (res) {
-                            resolve({status: 201, data: "Political party has been created."})
+                            resolve(new ResponseApi().InitCreated("Political party has been created."))
                         } else {
-                            resolve({status: 400, data: "This political party already existed."})
+                            resolve(new ResponseApi().InitBadRequest("This political party already existed."))
                         }
                     }).catch((e) => {
-                        if (e.code === '23503') resolve({status: 400, data: e.message})
-                        resolve({status: 500, data: e})
+                        if(e.code === '23503') {
+                            resolve(new ResponseApi().InitBadRequest(e.message))
+                            return
+                        }
+                        resolve(new ResponseApi().InitInternalServer(e))
                     })
                 }
             })
@@ -93,10 +97,13 @@ const GetPoliticalParty = (siren = null, nir = null, includeLeft = false, idPoli
                     }
                 }
             }
-            resolve({status: code, data: res})
+            resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            if (e.code === '23503') resolve({status: 400, data: e.message})
-            resolve({status: 500, data: e})
+            if(e.code === '23503') {
+                resolve(new ResponseApi().InitBadRequest(e.message))
+                return
+            }
+            resolve(new ResponseApi().InitInternalServer(e))
         })
     })
 }
@@ -111,17 +118,20 @@ const GetPoliticalParty = (siren = null, nir = null, includeLeft = false, idPoli
 const JoinParty = (nir, id_political_party) => {
     return new Promise((resolve, _) => {
         if (!nir || !id_political_party) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             adherentMod.Add(nir, id_political_party).then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "You join this political party."})
+                    resolve(new ResponseApi().InitCreated("You join this political party."))
                 } else {
-                    resolve({status: 400, data: "You already join on political party."})
+                    resolve(new ResponseApi().InitBadRequest("You already join on political party."))
                 }
             }).catch((e) => {
-                if (e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     })
@@ -136,17 +146,20 @@ const JoinParty = (nir, id_political_party) => {
 const LeftParty = (nir) => {
     return new Promise((resolve, _) => {
         if (!nir) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             adherentMod.Left(nir).then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "You left the political party."})
+                    resolve(new ResponseApi().InitCreated("You left the political party."))
                 } else {
-                    resolve({status: 400, data: "You already left political party."})
+                    resolve(new ResponseApi().InitBadRequest("You already left political party."))
                 }
             }).catch((e) => {
-                if (e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     })
@@ -161,19 +174,22 @@ const LeftParty = (nir) => {
 const AddAnnualFee = (annual_fee) => {
     return new Promise(async (resolve, _) => {
         if (!annual_fee) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else if (!annual_fee.fee || !annual_fee.id_political_party | !annual_fee.year) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             feeMod.Add(annual_fee).then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "The annual fee has been created."})
+                    resolve(new ResponseApi().InitCreated("The annual fee has been created."))
                 } else {
-                    resolve({status: 400, data: "An annual fee already existed fo this year."})
+                    resolve(new ResponseApi().InitBadRequest("An annual fee already existed fo this year."))
                 }
             }).catch((e) => {
-                if (e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -188,14 +204,16 @@ const AddAnnualFee = (annual_fee) => {
 const GetAnnualFeeByParty = (id_political_party) => {
     return new Promise((resolve, _) => {
         if (!id_political_party) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             feeMod.Get(null, id_political_party).then((res) => {
-                const code = (res) ? 200 : 204;
-                resolve({status: code, data: res})
+                resolve(new ResponseApi().InitData(res))
             }).catch((e) => {
-                if (e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     })
@@ -211,19 +229,22 @@ const GetAnnualFeeByParty = (id_political_party) => {
 const UploadLogo = (logo, idPoliticalParty) => {
     return new Promise(async (resolve, _) => {
         if (!logo) {
-            resolve({status: 400, data: "Missing file."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             try {
                 const doc_id = await documentMod.Add(logo);
                 const result = await partyMod.UpdateLogo(doc_id, idPoliticalParty)
                 if (result) {
-                    resolve({status: 201, data: "The logo has been updated."})
+                    resolve(new ResponseApi().InitCreated("The logo has been updated."))
                 } else {
-                    resolve({status: 404, data: "This political party doesn't existed."})
+                    resolve(new ResponseApi().InitBadRequest("This political party doesn't existed."))
                 }
             } catch (e) {
-                if (e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             }
         }
     })
@@ -239,19 +260,22 @@ const UploadLogo = (logo, idPoliticalParty) => {
 const UploadChart = (chart, idPoliticalParty) => {
     return new Promise(async (resolve, _) => {
         if (!chart) {
-            resolve({status: 400, data: "Missing file \"logo\"."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             try {
                 const doc_id = await documentMod.Add(chart);
                 const result = await partyMod.UpdateChart(doc_id, idPoliticalParty)
                 if (result) {
-                    resolve({status: 201, data: "The chart has been updated."})
+                    resolve(new ResponseApi().InitCreated("TThe chart has been updated."))
                 } else {
-                    resolve({status: 404, data: "This political party doesn't existed."})
+                    resolve(new ResponseApi().InitBadRequest("This political party doesn't existed."))
                 }
             } catch (e) {
-                if (e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             }
         }
     })
@@ -267,19 +291,22 @@ const UploadChart = (chart, idPoliticalParty) => {
 const UploadBankDetails = (bankDetails, idPoliticalParty) => {
     return new Promise(async (resolve, _) => {
         if (!bankDetails) {
-            resolve({status: 400, data: "Missing file \"bank_details\"."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             try {
                 const doc_id = await documentMod.Add(bankDetails);
                 const result = await partyMod.UpdateBankDetails(doc_id, idPoliticalParty)
                 if (result) {
-                    resolve({status: 201, data: "The bank details has been updated."})
+                    resolve(new ResponseApi().InitCreated("The bank details has been updated."))
                 } else {
-                    resolve({status: 404, data: "This political party doesn't existed."})
+                    resolve(new ResponseApi().InitBadRequest("This political party doesn't existed."))
                 }
             } catch (e) {
-                if (e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             }
         }
     })

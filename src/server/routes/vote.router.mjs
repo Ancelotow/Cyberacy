@@ -1,5 +1,6 @@
 import voteCtrl from "../controllers/vote.controller.mjs";
 import express from "express"
+import {ResponseApi} from "../models/response-api.mjs";
 
 const routerVote = express.Router()
 
@@ -14,7 +15,7 @@ routerVote.post("/election", async (req, res) => {
     } */
 
     const response = await voteCtrl.AddElection(req.body)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerVote.get("/election", async (req, res) => {
@@ -40,7 +41,7 @@ routerVote.get("/election", async (req, res) => {
     const includeFinish = (req.query.includeFinish == null) ? false : req.query.includeFinish
     const includeFuture = (req.query.includeFuture == null) ? true : req.query.includeFuture
     const response = await voteCtrl.GetElection(req.data.nir, req.query.idElection, includeFinish, includeFuture)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerVote.post("/election/:id/vote", async (req, res) => {
@@ -54,7 +55,7 @@ routerVote.post("/election/:id/vote", async (req, res) => {
     } */
 
     const response = await voteCtrl.AddVote(req.body, req.query.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerVote.get("/election/:id/vote", async (req, res) => {
@@ -80,7 +81,7 @@ routerVote.get("/election/:id/vote", async (req, res) => {
     const includeFinish = (req.query.includeFinish == null) ? false : req.query.includeFinish
     const includeFuture = (req.query.includeFuture == null) ? true : req.query.includeFuture
     const response = await voteCtrl.GetVote(req.data.nir, req.params.id, includeFinish, includeFuture)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerVote.post("/vote/:id/round", async (req, res) => {
@@ -94,7 +95,7 @@ routerVote.post("/vote/:id/round", async (req, res) => {
     } */
 
     const response = await voteCtrl.AddRound(req.body, req.params.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerVote.get("/vote/:id/round", async (req, res) => {
@@ -103,7 +104,7 @@ routerVote.get("/vote/:id/round", async (req, res) => {
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await voteCtrl.GetRound(req.data.nir, req.params.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerVote.post("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
@@ -118,7 +119,7 @@ routerVote.post("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
 
 
     const response = await voteCtrl.AddChoice(req.body, req.params.id_vote, req.params.num_round)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerVote.get("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
@@ -127,7 +128,7 @@ routerVote.get("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await voteCtrl.GetChoice(req.data.nir, req.params.num_round, req.params.id_vote)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerVote.post("/vote/:id_vote/round/:num_round", async (req, res) => {
@@ -139,10 +140,10 @@ routerVote.post("/vote/:id_vote/round/:num_round", async (req, res) => {
     try{
         idChoice = parseInt(req.body)
     } catch (e) {
-        res.status(400).send(e.message)
+        res.status(400).send(new ResponseApi().InitBadRequest(e.message))
     }
     const response = await voteCtrl.ToVote(req.data.nir, req.params.num_round, req.params.id_vote, idChoice)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 export {routerVote}

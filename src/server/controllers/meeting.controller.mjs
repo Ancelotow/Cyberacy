@@ -3,6 +3,7 @@ import participantMod from "../models/participant.mjs";
 import {Vote} from "../models/vote.mjs";
 import geoCtrl from "./geography.controller.mjs";
 import {Town} from "../models/town.mjs";
+import {ResponseApi} from "../models/response-api.mjs";
 
 /**
  * Ajout d'un nouveau meeting
@@ -13,11 +14,11 @@ import {Town} from "../models/town.mjs";
 const AddMeeting = (meetingJson) => {
     return new Promise(async (resolve, _) => {
         if (!meetingJson) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else if (!meetingJson.name || !meetingJson.object) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else if (!meetingJson.date_start || !meetingJson.id_political_party) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             let meeting = new Meeting()
             Object.assign(meeting, meetingJson)
@@ -28,13 +29,16 @@ const AddMeeting = (meetingJson) => {
             }
             meeting.Add().then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "Meeting has been created."})
+                    resolve(new ResponseApi().InitCreated("Meeting has been created."))
                 } else {
-                    resolve({status: 400, data: "This meeting already existed."})
+                    resolve(new ResponseApi().InitBadRequest("This meeting already existed."))
                 }
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -50,17 +54,20 @@ const AddMeeting = (meetingJson) => {
 const AbortedMeeting = (id, reason = null) => {
     return new Promise((resolve, _) => {
         if (!id) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             new Meeting().Aborted(id, reason).then((res) => {
                 if (res) {
-                    resolve({status: 200, data: "Meeting has been aborted."})
+                    resolve(new ResponseApi().InitOK(null))
                 } else {
-                    resolve({status: 400, data: "This meeting not existed or already aborted."})
+                    resolve(new ResponseApi().InitBadRequest("This meeting not existed or already aborted."))
                 }
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -82,16 +89,18 @@ const AbortedMeeting = (id, reason = null) => {
 const GetMeeting = (town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true, includeFinished = false, id = null, onlyMine = false) => {
     return new Promise((resolve, _) => {
         new Meeting().Get(town, idPoliticalParty, nir, includeAborted, includeCompleted, includeFinished, id, onlyMine).then(async (res) => {
-            const code = (res.length > 0) ? 200 : 204;
             for(let i = 0; i < res.length; i++) {
                 if(res[i].town_code_insee != null) {
                     res[i].town = await new Town().GetById(res[i].town_code_insee)
                 }
             }
-            resolve({status: code, data: res})
+            resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            if(e.code === '23503') resolve({status: 400, data: e.message})
-            resolve({status: 500, data: e})
+            if(e.code === '23503') {
+                resolve(new ResponseApi().InitBadRequest(e.message))
+                return
+            }
+            resolve(new ResponseApi().InitInternalServer(e))
         })
     });
 }
@@ -106,17 +115,20 @@ const GetMeeting = (town = null, idPoliticalParty = null, nir = null, includeAbo
 const AddParticipant = (nir, idMeeting) => {
     return new Promise((resolve, _) => {
         if (!nir || !idMeeting) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             participantMod.Add(nir, idMeeting).then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "Participant has been added."})
+                    resolve(new ResponseApi().InitCreated("Participant has been created."))
                 } else {
-                    resolve({status: 400, data: "This participant not existed."})
+                    resolve(new ResponseApi().InitBadRequest("This participant not existed."))
                 }
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -133,17 +145,20 @@ const AddParticipant = (nir, idMeeting) => {
 const AbortedParticipant = (nir, idMeeting, reason = null) => {
     return new Promise((resolve, _) => {
         if (!nir || !idMeeting) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             participantMod.Aborted(nir, idMeeting, reason).then((res) => {
                 if (res) {
-                    resolve({status: 200, data: "This participation has been aborted."})
+                    resolve(new ResponseApi().InitOK(null))
                 } else {
-                    resolve({status: 400, data: "This participant not existed or already aborted."})
+                    resolve(new ResponseApi().InitBadRequest("This participant not existed or already aborted."))
                 }
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });

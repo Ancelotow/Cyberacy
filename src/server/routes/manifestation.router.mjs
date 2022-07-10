@@ -14,7 +14,7 @@ routerMan.post("/manifestation", async (req, res) => {
     } */
 
     const response = await manifestationCtrl.AddManifestation(req.body)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerMan.patch("/manifestation/aborted", async (req, res) => {
@@ -28,7 +28,7 @@ routerMan.patch("/manifestation/aborted", async (req, res) => {
     } */
 
     const response = await manifestationCtrl.AbortedManifestation(req.body.id, req.body.reason)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerMan.get("/manifestation", async (req, res) => {
@@ -48,7 +48,7 @@ routerMan.get("/manifestation", async (req, res) => {
 
     const nir = (req.query.mine && req.query.mine === 'true') ? req.data.nir : null
     const response = await manifestationCtrl.GetAllManifestations(req.query.includeAborted, nir)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerMan.post("/manifestation/:id/participate", async (req, res) => {
@@ -58,7 +58,7 @@ routerMan.post("/manifestation/:id/participate", async (req, res) => {
 
     const nir = req.data.nir
     const response = await manifestationCtrl.Participate(nir, req.params.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerMan.post("/manifestation/option", async (req, res) => {
@@ -72,7 +72,7 @@ routerMan.post("/manifestation/option", async (req, res) => {
     } */
 
     const response = await manifestationCtrl.AddOption(req.body)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerMan.get("/manifestation/:id/option", async (req, res) => {
@@ -81,7 +81,7 @@ routerMan.get("/manifestation/:id/option", async (req, res) => {
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await manifestationCtrl.GetOptions(req.params.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerMan.delete("/manifestation/option/:id", async (req, res) => {
@@ -90,7 +90,7 @@ routerMan.delete("/manifestation/option/:id", async (req, res) => {
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await manifestationCtrl.DeleteOption(req.params.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerMan.post("/manifestation/step", async (req, res) => {
@@ -104,7 +104,7 @@ routerMan.post("/manifestation/step", async (req, res) => {
     } */
 
     const response = await manifestationCtrl.AddStep(req.body)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerMan.get("/manifestation/:id/step", async (req, res) => {
@@ -113,7 +113,7 @@ routerMan.get("/manifestation/:id/step", async (req, res) => {
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await manifestationCtrl.GetSteps(req.params.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerMan.delete("/manifestation/step/:id", async (req, res) => {
@@ -122,7 +122,7 @@ routerMan.delete("/manifestation/step/:id", async (req, res) => {
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await manifestationCtrl.DeleteStep(req.params.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 
