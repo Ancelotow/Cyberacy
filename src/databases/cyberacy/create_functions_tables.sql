@@ -1051,11 +1051,29 @@ end;
 $filter$
     language plpgsql;
 
-/*
-
-
- and vte.elc_id = _elc_id
-          and ((_include_finish = false and rnd.rnd_date_end >= today) or _include_finish = true)
-          and ((_include_future = false and rnd.rnd_date_start <= today) or _include_future = true)
-
- */
+-- Filtre pour la table options
+create or replace function filter_options(_id option_manifestation.man_id%type)
+    returns table
+            (
+                id               option_manifestation.omn_id%type,
+                name             option_manifestation.omn_name%type,
+                description      option_manifestation.omn_description%type,
+                is_delete        option_manifestation.omn_is_delete%type,
+                id_manifestation option_manifestation.man_id%type
+            )
+as
+$filter$
+begin
+    return query
+        select omn_id          as id,
+               omn_name        as name,
+               omn_description as description,
+               omn_is_delete   as is_delete,
+               man_id          as id_manifestation
+        from option_manifestation
+        where man_id = _id
+          and omn_is_delete = false
+        order by omn_name;
+end;
+$filter$
+    language plpgsql;

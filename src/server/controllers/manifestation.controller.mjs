@@ -1,26 +1,29 @@
-import manifestation from "../models/manifestation.mjs";
+import {Manifestation} from "../models/manifestation.mjs";
 import manifestant from "../models/manifestant.mjs";
-import option from "../models/option-manifestation.mjs"
+import {OptionManifestation} from "../models/option-manifestation.mjs"
 import geoCtrl from "./geography.controller.mjs"
 import {Step} from "../models/step.mjs"
 import {ResponseApi} from "../models/response-api.mjs";
+import {Vote} from "../models/vote.mjs";
 
 /**
  * Ajoute une nouvelle manifestation
- * @param manif La nouvelle manifestation
  * @returns {Promise<unknown>}
  * @constructor
+ * @param manifJson
  */
-const AddManifestation = (manif) => {
+const AddManifestation = (manifJson) => {
     return new Promise((resolve, _) => {
-        if (!manif) {
+        if (!manifJson) {
             resolve(new ResponseApi().InitMissingParameters())
-        } else if (!manif.name || !manif.object) {
+        } else if (!manifJson.name || !manifJson.object) {
             resolve(new ResponseApi().InitMissingParameters())
-        } else if (!manif.date_start || !manif.date_end) {
+        } else if (!manifJson.date_start || !manifJson.date_end) {
             resolve(new ResponseApi().InitMissingParameters())
         } else {
-            manifestation.Add(manif).then((res) => {
+            let manifestation = new Manifestation()
+            Object.assign(manifestation, manifJson)
+            manifestation.Add().then((res) => {
                 if (res) {
                     resolve(new ResponseApi().InitCreated("Manifestation has been created."))
                 } else {
@@ -49,7 +52,7 @@ const AbortedManifestation = (id, reason) => {
         if (!id) {
             resolve(new ResponseApi().InitMissingParameters())
         } else {
-            manifestation.Aborted(id, reason).then((res) => {
+            new Manifestation().Aborted(id, reason).then((res) => {
                 if (res) {
                     resolve(new ResponseApi().InitOK(null))
                 } else {
@@ -75,15 +78,10 @@ const AbortedManifestation = (id, reason) => {
  */
 const GetAllManifestations = (includeAborted = false, nir = null) => {
     return new Promise((resolve, _) => {
-        manifestation.Get(includeAborted, nir).then(async (res) => {
-            const code = (res) ? 200 : 204;
-            if (code === 200) {
-                for (let i = 0; i < res.length; i++) {
-                    let resStep = await GetSteps(res[i].id);
-                    res[i].steps = (resStep.status === 200) ? resStep.data : [];
-                    let resOpt = await GetOptions(res[i].id);
-                    res[i].options = (resOpt.status === 200) ? resOpt.data : [];
-                }
+        new Manifestation().Get(includeAborted, nir).then(async (res) => {
+            for (let i = 0; i < res.length; i++) {
+                res[i].steps = await new Step().GetAll(res[i].id)
+                res[i].options = await new OptionManifestation().GetAll(res[i])
             }
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
@@ -135,7 +133,7 @@ const GetOptions = (id_manifestation) => {
         if (!id_manifestation) {
             resolve(new ResponseApi().InitMissingParameters())
         } else {
-            option.GetAll(id_manifestation).then((res) => {
+            new OptionManifestation().GetAll(id_manifestation).then((res) => {
                 resolve(new ResponseApi().InitData(res))
             }).catch((e) => {
                 if(e.code === '23503') {
@@ -150,16 +148,18 @@ const GetOptions = (id_manifestation) => {
 
 /**
  * Ajoute une nouvelle option à une manifestation
- * @param opt Option de la manifestation à ajouter
  * @returns {Promise<unknown>}
  * @constructor
+ * @param optJson
  */
-const AddOption = (opt) => {
+const AddOption = (optJson) => {
     return new Promise((resolve, _) => {
-        if (!opt || !opt.name || !opt.id_manifestation) {
+        if (!optJson || !optJson.name || !optJson.id_manifestation) {
             resolve(new ResponseApi().InitMissingParameters())
         } else {
-            option.Add(opt).then((res) => {
+            let option = new OptionManifestation()
+            Object.assign(option, optJson)
+            option.Add().then((res) => {
                 if (res) {
                     resolve(new ResponseApi().InitCreated("Option has been created."))
                 } else {
@@ -187,7 +187,9 @@ const DeleteOption = (id) => {
         if (!id) {
             resolve(new ResponseApi().InitMissingParameters())
         } else {
-            option.Delete(id).then((res) => {
+            let option = new OptionManifestation()
+            option.id = id
+            option.Delete().then((res) => {
                 if (res) {
                     resolve(new ResponseApi().InitOK(null))
                 } else {
@@ -211,7 +213,6 @@ const DeleteOption = (id) => {
  * @constructor
  */
 const AddStep = (stp) => {
-    let response = new ResponseApi()
     return new Promise(async (resolve, _) => {
         if (stp === null) {
             resolve(new ResponseApi().InitMissingParameters())
@@ -255,7 +256,6 @@ const AddStep = (stp) => {
  * @constructor
  */
 const DeleteStep = (id) => {
-    let response = new ResponseApi()
     return new Promise((resolve, _) => {
         if (!id) {
             resolve(new ResponseApi().InitMissingParameters())
@@ -286,7 +286,6 @@ const DeleteStep = (id) => {
  * @constructor
  */
 const GetSteps = (id_manifestation) => {
-    let response = new ResponseApi()
     return new Promise((resolve, _) => {
         if (!id_manifestation) {
             resolve(new ResponseApi().InitMissingParameters())

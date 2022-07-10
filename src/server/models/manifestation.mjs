@@ -1,5 +1,6 @@
 import {pool} from "../middlewares/postgres.mjs";
 import {FormaterDate} from "../middlewares/formatter.mjs";
+import {Vote} from "./vote.mjs";
 
 class Manifestation {
     id
@@ -14,6 +15,9 @@ class Manifestation {
     nb_person_estimate
     url_document_signed
     reason_aborted
+
+    steps = []
+    options = []
 }
 
 /**
@@ -22,7 +26,7 @@ class Manifestation {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const IfExists = (id) => {
+Manifestation.prototype.IfExists = function (id) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT COUNT(*) FROM manifestation WHERE man_id = $1',
@@ -32,8 +36,9 @@ const IfExists = (id) => {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows[0] : null
-                resolve(res.count > 0)
+                let listManifestation = []
+                result.rows.forEach(e => listManifestation.push(Object.assign(new Manifestation(), e)));
+                resolve(listManifestation)
             }
         });
     });
@@ -41,17 +46,16 @@ const IfExists = (id) => {
 
 /**
  * Ajoute une nouvelle manifestation
- * @param manifestation La nouvelle manifestation
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Add = (manifestation) => {
+Manifestation.prototype.Add = function () {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'INSERT INTO manifestation (man_name, man_date_start, man_date_end, man_object, man_security_description, man_nb_person_estimate, man_url_document_signed) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-            values: [manifestation.name, manifestation.date_start, manifestation.date_end,
-                        manifestation.object, manifestation.security_description, manifestation.nb_person_estimate,
-                        manifestation.url_document_signed],
+            values: [this.name, this.date_start, this.date_end,
+                this.object, this.security_description, this.nb_person_estimate,
+                this.url_document_signed],
         }
         pool.query(request, (error, _) => {
             if (error) {
@@ -71,7 +75,7 @@ const Add = (manifestation) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Aborted = (id, reason) => {
+Manifestation.prototype.Aborted = function (id, reason) {
     return new Promise((resolve, reject) => {
         IfExists(id).then((result) => {
             if (result) {
@@ -109,7 +113,7 @@ const Aborted = (id, reason) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Get = (includeAborted = false, nir = null, id = null) => {
+Manifestation.prototype.Get = function(includeAborted = false, nir = null, id = null) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * FROM filter_manifestation($1, $2, $3)',
@@ -119,14 +123,15 @@ const Get = (includeAborted = false, nir = null, id = null) => {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows : null
-                resolve(res)
+                let listManifestation = []
+                result.rows.forEach(e => listManifestation.push(Object.assign(new Manifestation(), e)));
+                resolve(listManifestation)
             }
         });
     });
 }
 
-export default {Manifestation, Add, Aborted, Get}
+export {Manifestation}
 
 
 
