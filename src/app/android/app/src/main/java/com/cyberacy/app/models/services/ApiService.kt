@@ -65,6 +65,18 @@ interface ApiService {
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<ResponseAPI<List<Meeting>?>>
 
+    @GET("meeting/{id}")
+    fun getMeetingById(
+        @Path("id") id: Int? = null,
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<ResponseAPI<Meeting?>>
+
+    @POST("meeting/participate/{id}")
+    fun participateToMeeting(
+        @Path("id") id: Int? = null,
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<ResponseAPI<Unit>>
+
     @POST("payment-sheet")
     fun paymentSheetStripe(
         @Body payment: Payment,

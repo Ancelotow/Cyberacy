@@ -62,17 +62,17 @@ class ListMeetingActivity : AppCompatActivity() {
         recyclerView.layoutManager = linearLayoutManager
         viewModel.listMeetings.observe(this) {
             when (it) {
-                is MeetingStateError -> {
+                is MeetingListStateError -> {
                     Log.e("error", it.ex.message())
                     shimmerLayout.visibility = View.GONE
                 }
 
-                MeetingStateLoading -> {
+                MeetingListStateLoading -> {
                     recyclerView.visibility = View.GONE
                     shimmerLayout.visibility = View.VISIBLE
                 }
 
-                is MeetingStateSuccess -> {
+                is MeetingListStateSuccess -> {
                     shimmerLayout.visibility = View.GONE
                     if (it.meetings.isEmpty()) {
                         recyclerView.visibility = View.GONE

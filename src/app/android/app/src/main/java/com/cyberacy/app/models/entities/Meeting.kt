@@ -64,6 +64,15 @@ class Meeting(
 
     @SerializedName("longitude")
     val longitude: Double?,
+
+    @SerializedName("is_participate")
+    val isParticipated: Boolean = false,
+
+    @SerializedName("town_name")
+    val townName: String?,
+
+    @SerializedName("town")
+    val town: Town?,
 ) {
 
     fun getMonthPrefix(): String {
@@ -119,6 +128,14 @@ class Meeting(
         }
     }
 
+    fun getAddressFull(): String {
+        var addressFull = addressStreet ?: ""
+        if(town != null) {
+            addressFull += ", ${town.zip_code} ${town.name}"
+        }
+        return addressFull
+    }
+
     fun getDateMeeting(): String{
         val formatterDate: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
         val formatterTime: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
@@ -171,17 +188,17 @@ class Meeting(
 
         suspend fun getMeetingById(id: Int): Meeting? {
             try {
-                val response: ResponseAPI<List<Meeting>?> = ApiConnection.connection().getMeeting(
-                    mine = false,
-                    includeCompleted = true,
-                    includeFinished = true,
-                    includeAborted = true,
-                    id = id
-                ).await()
-                if(response.data == null || response.data.isEmpty()) {
-                    return null
-                }
-                return response.data[0]
+                val response: ResponseAPI<Meeting?> = ApiConnection.connection().getMeetingById(id).await()
+                return response.data
+            } catch (e: HttpException) {
+                throw e
+            }
+        }
+
+        suspend fun participatedToMeeting(id: Int): Unit {
+            try {
+                val response: ResponseAPI<Unit> = ApiConnection.connection().participateToMeeting(id).await()
+                return
             } catch (e: HttpException) {
                 throw e
             }

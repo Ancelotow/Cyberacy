@@ -3,18 +3,11 @@ package com.cyberacy.app.ui.party.meeting.meeting_detail
 
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
 import android.util.Log
-import android.view.Display
-import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup.LayoutParams
-import android.widget.ImageView
-import android.widget.PopupWindow
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import com.cyberacy.app.R
 import com.cyberacy.app.models.entities.Meeting
+import com.cyberacy.app.models.entities.PopUpWindow
 import com.cyberacy.app.models.repositories.*
 import com.cyberacy.app.ui.payment.PaymentCyberacyActivity
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -44,32 +38,12 @@ class MeetingDetailActivity : AppCompatActivity() {
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            val inflater = this.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val customView: View = inflater.inflate(R.layout.pop_up_activity, null)
-
             if (result.resultCode == RESULT_OK) {
-                customView.findViewById<TextView>(R.id.message).text =
-                    "Votre réservation à été effectuée avec succès !"
-                customView.findViewById<ImageView>(R.id.icon)
-                    .setImageResource(R.drawable.ic_success)
+                actionPaymentSuccessful()
             } else if (result.resultCode == RESULT_CANCELED) {
-                customView.findViewById<TextView>(R.id.message).text =
-                    "Vous avez annulé le paiement de votre réservation"
-                customView.findViewById<ImageView>(R.id.icon)
-                    .setImageResource(R.drawable.ic_canceled)
+                val popup = PopUpWindow("Vous avez annulé le paiement de votre réservation", R.drawable.ic_canceled)
+                popup.showPopUp(this)
             }
-            val display: Display = windowManager.defaultDisplay
-            val size = Point()
-            display.getSize(size)
-            val popup = PopupWindow(
-                customView,
-                size.x - 20,
-                LayoutParams.WRAP_CONTENT
-            )
-            customView.findViewById<MaterialButton>(R.id.btn_close)
-                .setOnClickListener { popup.dismiss() }
-            popup.elevation = 5.0F
-            popup.showAtLocation(findViewById(R.id.layout_meeting_details), Gravity.CENTER, 0, 0)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,17 +67,17 @@ class MeetingDetailActivity : AppCompatActivity() {
         textNoData.visibility = View.GONE
         viewModel.meeting.observe(this) {
             when (it) {
-                is MeetingStateError -> {
+                is MeetingDetailStateError -> {
                     Log.e("error", it.ex.message())
                     loader.visibility = View.GONE
                     textNoData.visibility = View.VISIBLE
                     textNoData.text = "Une erreur est survenue...\n${it.ex.message()}"
                 }
-                MeetingStateLoading -> {
+                MeetingDetailStateLoading -> {
                     body.visibility = View.GONE
                     loader.visibility = View.VISIBLE
                 }
-                is MeetingStateSuccessById -> {
+                is MeetingDetailStateSuccess -> {
                     loader.visibility = View.GONE
                     if (it.meeting == null) {
                         textNoData.visibility = View.VISIBLE
@@ -114,7 +88,6 @@ class MeetingDetailActivity : AppCompatActivity() {
                         initGoogleMaps()
                     }
                 }
-                else -> {}
             }
         }
     }
@@ -143,7 +116,7 @@ class MeetingDetailActivity : AppCompatActivity() {
     private fun initInformation() {
         if (meeting != null) {
             findViewById<TextView>(R.id.nb_place).text = meeting!!.getNbPlaceStr()
-            findViewById<TextView>(R.id.position).text = meeting!!.getPosition()
+            findViewById<TextView>(R.id.position).text = meeting!!.getAddressFull()
             findViewById<TextView>(R.id.price).text = "Prix : ${meeting!!.getPriceStr()}"
             findViewById<TextView>(R.id.date).text = meeting!!.getDateMeeting()
             findViewById<TextView>(R.id.time).text = "Durée : ${meeting!!.getTimeStr()}"
@@ -157,8 +130,10 @@ class MeetingDetailActivity : AppCompatActivity() {
             btnTwitch.visibility = if (meeting!!.linkTwitch == null) View.GONE else View.VISIBLE
             btnYoutube.visibility = if (meeting!!.linkYoutube == null) View.GONE else View.VISIBLE
             btnPayment.visibility =
-                if (meeting!!.reservationIsAvailable()) View.VISIBLE else View.GONE
+                if (meeting!!.reservationIsAvailable() && !meeting!!.isParticipated) View.VISIBLE else View.GONE
 
+            findViewById<TextView>(R.id.txt_participate).visibility =
+                if (meeting!!.isParticipated) View.VISIBLE else View.GONE
             btnGoogleCalendar.setOnClickListener { openGoogleCalendar() }
             btnTwitch.setOnClickListener { openTwitch() }
             btnYoutube.setOnClickListener { openYoutube() }
@@ -181,8 +156,6 @@ class MeetingDetailActivity : AppCompatActivity() {
     }
 
     private fun goToCheckout() {
-
-
         val intent = Intent(this, PaymentCyberacyActivity::class.java)
         intent.putExtra("libelle", "Réservation meeting : ${meeting?.name}")
         intent.putExtra("amountExcl", meeting?.priceExcl)
@@ -232,5 +205,37 @@ class MeetingDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun actionPaymentSuccessful() {
+        val btnPayment = findViewById<MaterialButton>(R.id.btn_pay)
+        val txtParticipated = findViewById<TextView>(R.id.txt_participate)
+        val loader = findViewById<ProgressBar>(R.id.loader)
+
+        btnPayment.visibility = View.GONE
+        txtParticipated.visibility = View.GONE
+        loader.visibility = View.VISIBLE
+        viewModel.participateMeeting()
+        viewModel.meetingParticipation.observe(this) {
+            when (it) {
+                is MeetingParticipateStateError -> {
+                    Log.e("error", it.ex.message())
+                    val popup = PopUpWindow("Une erreur est survenue lors de la réservation", R.drawable.ic_error)
+                    popup.showPopUp(this)
+                    loader.visibility = View.GONE
+                }
+                MeetingParticipateStateLoading -> {
+                    btnPayment.visibility = View.GONE
+                    txtParticipated.visibility = View.GONE
+                    loader.visibility = View.VISIBLE
+                }
+                is MeetingParticipateStateSuccess -> {
+                    btnPayment.visibility = View.GONE
+                    txtParticipated.visibility = View.VISIBLE
+                    loader.visibility = View.GONE
+                    val popup = PopUpWindow("Votre réservation à été effectuée avec succès !", R.drawable.ic_success)
+                    popup.showPopUp(this)
+                }
+            }
+        }
+    }
 
 }

@@ -299,7 +299,7 @@
         android:layout_height= "1dp"
         android:background="@color/grey"
         android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_pay"/>
+        app:layout_constraintBottom_toTopOf="@id/barrier_reservation"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_pay"
@@ -314,9 +314,35 @@
         android:textSize="14sp"
         app:backgroundTint="@color/navy"
         app:cornerRadius="10dp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/txt_participate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:fontFamily="@font/hk_nova"
+        android:gravity="center"
+        android:text="@string/txt_participate_meeting"
+        android:textColor="@color/success"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_reservation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="txt_participate,btn_pay" />
+
+
 
     <ProgressBar
         android:id="@+id/loader"

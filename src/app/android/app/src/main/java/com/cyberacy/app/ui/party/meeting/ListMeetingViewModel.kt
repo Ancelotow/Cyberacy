@@ -4,14 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.cyberacy.app.models.repositories.MeetingListState
 import com.cyberacy.app.models.repositories.MeetingRepository
-import com.cyberacy.app.models.repositories.MeetingState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ListMeetingViewModel(private val idParty: Int) : ViewModel() {
 
-    private val _meetings = MutableLiveData<MeetingState>()
+    private val _meetings = MutableLiveData<MeetingListState>()
     val listMeetings = _meetings
 
     class Factory(private val idParty: Int) : ViewModelProvider.Factory {

@@ -52,6 +52,7 @@
     <string name="txt_desc">Description</string>
     <string name="txt_or">ou</string>
     <string name="txt_payment">Paiement</string>
+    <string name="txt_participate_meeting">Je participe au meeting !</string>
     <string name="txt_cdv">J\'ai lu et j\'accepte les <a href="https://www.geeksforgeeks.org">conditions de ventes</a></string>
 
     <!-- Tab bar -->

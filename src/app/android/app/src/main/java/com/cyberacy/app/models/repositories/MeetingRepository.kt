@@ -10,32 +10,55 @@ import retrofit2.HttpException
 
 object MeetingRepository {
 
-    suspend fun fetchMeetings(partyId: Int): Flow<MeetingState> {
+    suspend fun fetchMeetings(partyId: Int): Flow<MeetingListState> {
         return flow {
-            emit(MeetingStateLoading)
+            emit(MeetingListStateLoading)
             try {
-                emit(MeetingStateSuccess(Meeting.getMeetings(partyId)))
+                emit(MeetingListStateSuccess(Meeting.getMeetings(partyId)))
             } catch (e: HttpException) {
-                emit(MeetingStateError(e))
+                emit(MeetingListStateError(e))
             }
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun fetchMeetingById(id: Int): Flow<MeetingState> {
+    suspend fun fetchMeetingById(id: Int): Flow<MeetingDetailState> {
         return flow {
-            emit(MeetingStateLoading)
+            emit(MeetingDetailStateLoading)
             try {
-                emit(MeetingStateSuccessById(Meeting.getMeetingById(id)))
+                emit(MeetingDetailStateSuccess(Meeting.getMeetingById(id)))
             } catch (e: HttpException) {
-                emit(MeetingStateError(e))
+                emit(MeetingDetailStateError(e))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun participateMeeting(id: Int): Flow<MeetingParticipateState> {
+        return flow {
+            emit(MeetingParticipateStateLoading)
+            try {
+                emit(MeetingParticipateStateSuccess(Meeting.participatedToMeeting(id)))
+            } catch (e: HttpException) {
+                emit(MeetingParticipateStateError(e))
             }
         }.flowOn(Dispatchers.IO)
     }
 
 }
 
-sealed class MeetingState
-object MeetingStateLoading: MeetingState()
-data class MeetingStateSuccess(val meetings: List<Meeting>): MeetingState()
-data class MeetingStateSuccessById(val meeting: Meeting?): MeetingState()
-data class MeetingStateError(val ex: HttpException): MeetingState()
+// List of Meeting
+sealed class MeetingListState
+object MeetingListStateLoading: MeetingListState()
+data class MeetingListStateSuccess(val meetings: List<Meeting>): MeetingListState()
+data class MeetingListStateError(val ex: HttpException): MeetingListState()
+
+// Details of Meeting
+sealed class MeetingDetailState
+object MeetingDetailStateLoading: MeetingDetailState()
+data class MeetingDetailStateSuccess(val meeting: Meeting?): MeetingDetailState()
+data class MeetingDetailStateError(val ex: HttpException): MeetingDetailState()
+
+// Participated to a Meeting
+sealed class MeetingParticipateState
+object MeetingParticipateStateLoading: MeetingParticipateState()
+data class MeetingParticipateStateSuccess(val response: Unit): MeetingParticipateState()
+data class MeetingParticipateStateError(val ex: HttpException): MeetingParticipateState()
