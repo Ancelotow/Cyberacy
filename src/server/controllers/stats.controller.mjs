@@ -1,6 +1,7 @@
 import partyMod from "../models/political-party.mjs"
 import {GetStatsAbsentions, GetStatsParticipations, GetResults} from "../models/vote.mjs"
 import groupBy from 'lodash/groupBy.js'
+import {ResponseApi} from "../models/response-api.mjs";
 
 /**
  * Statistiques : récupère le nombre d'adhérent par mois
@@ -12,14 +13,14 @@ import groupBy from 'lodash/groupBy.js'
 const GetNbAdherentByMonth = (nir, year = new Date().getFullYear()) => {
     return new Promise(async (resolve, _) => {
         if (!nir) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
             return;
         }
         try {
             let stats = await partyMod.GetNbAdherent(nir, year);
             let allPartys = await partyMod.GetAllPartyForStats()
             if (stats == null) {
-                resolve({status: 204, data: "You haven't join any political party."})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
             let listStats = []
@@ -30,10 +31,9 @@ const GetNbAdherentByMonth = (nir, year = new Date().getFullYear()) => {
                     listStats.push(allPartys[i])
                 }
             }
-            resolve({status: 200, data: listStats})
+            resolve(new ResponseApi().InitData(listStats))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }
@@ -66,7 +66,7 @@ const GetNbAdherentByYear = (nir) => {
             }
         }
         let statsYear = allPartys.filter(party => party.stats.length > 0)
-        resolve({status: 200, data: statsYear})
+        resolve(new ResponseApi().InitData(statsYear))
     });
 }
 
@@ -80,14 +80,14 @@ const GetNbAdherentByYear = (nir) => {
 const GetNbMeetingByMonth = (nir, year = new Date().getFullYear()) => {
     return new Promise(async (resolve, _) => {
         if (!nir) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
             return;
         }
         try {
             let stats = await partyMod.GetNbMeeting(nir, year);
             let allPartys = await partyMod.GetAllPartyForStats()
             if (stats == null) {
-                resolve({status: 204, data: "You haven't join any political party."})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
             let listStats = []
@@ -98,10 +98,9 @@ const GetNbMeetingByMonth = (nir, year = new Date().getFullYear()) => {
                     listStats.push(allPartys[i])
                 }
             }
-            resolve({status: 200, data: listStats})
+            resolve(new ResponseApi().InitData(listStats))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }
@@ -136,7 +135,7 @@ const GetNbMeetingByYear = (nir) => {
             }
         }
         let statsYear = allPartys.filter(party => party.stats.length > 0)
-        resolve({status: 200, data: statsYear})
+        resolve(new ResponseApi().InitData(statsYear))
     });
 }
 
@@ -149,14 +148,14 @@ const GetNbMeetingByYear = (nir) => {
 const GetAnnualFee = (nir) => {
     return new Promise(async (resolve, _) => {
         if (!nir) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
             return;
         }
         try {
             let stats = await partyMod.GetAnnualFee(nir);
             let allPartys = await partyMod.GetAllPartyForStats()
             if (stats == null) {
-                resolve({status: 204, data: "You haven't join any political party."})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
             let listStats = []
@@ -167,10 +166,9 @@ const GetAnnualFee = (nir) => {
                     listStats.push(allPartys[i])
                 }
             }
-            resolve({status: 200, data: listStats})
+            resolve(new ResponseApi().InitData(listStats))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }
@@ -185,19 +183,18 @@ const GetAnnualFee = (nir) => {
 const GetMessagesByDate = (nir, date = new Date()) => {
     return new Promise(async (resolve, _) => {
         if (!nir) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
             return;
         }
         try {
             let stats = await partyMod.GetNbMessageByDay(nir, new Date(date));
             if (stats == null) {
-                resolve({status: 204, data: "You haven't join any political party or thread."})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
-            resolve({status: 200, data: TransformResultThread(stats)})
+            resolve(new ResponseApi().InitData(TransformResultThread(stats)))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }
@@ -212,19 +209,18 @@ const GetMessagesByDate = (nir, date = new Date()) => {
 const GetMessagesByWeeks = (nir, year = new Date().getFullYear()) => {
     return new Promise(async (resolve, _) => {
         if (!nir) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
             return;
         }
         try {
             let stats = await partyMod.GetNbMessageByWeeks(nir, year);
             if (stats == null) {
-                resolve({status: 204, data: "You haven't join any political party or thread."})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
-            resolve({status: 200, data: TransformResultThread(stats)})
+            resolve(new ResponseApi().InitData(TransformResultThread(stats)))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }
@@ -241,13 +237,12 @@ const GetVoteAbstention = (num_round = 1, id_type_vote = null) => {
         try {
             let stats = await GetStatsAbsentions(num_round, id_type_vote);
             if (stats == null) {
-                resolve({status: 204, data: stats})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
-            resolve({status: 200, data: stats})
+            resolve(new ResponseApi().InitData(stats))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }
@@ -264,13 +259,12 @@ const GetVoteParticipation = (num_round = 1, id_type_vote = null) => {
         try {
             let stats = await GetStatsParticipations(num_round, id_type_vote);
             if (stats == null) {
-                resolve({status: 204, data: stats})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
-            resolve({status: 200, data: stats})
+            resolve(new ResponseApi().InitData(stats))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }
@@ -286,13 +280,12 @@ const GetVoteResults = (id_vote) => {
         try {
             let stats = await GetResults(id_vote);
             if (stats == null) {
-                resolve({status: 204, data: stats})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
-            resolve({status: 200, data: TransformResultVote(stats)})
+            resolve(new ResponseApi().InitData(TransformResultVote(stats)))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }

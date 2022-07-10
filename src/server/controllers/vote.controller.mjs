@@ -7,6 +7,7 @@ import {Region} from "../models/region.mjs";
 import {Department} from "../models/department.mjs";
 import {TypeVote} from "../models/type-vote.mjs";
 import {Election} from "../models/election.mjs";
+import {ResponseApi} from "../models/response-api.mjs";
 
 const EnumTypeVote = Object.freeze({
     Presidential: 1,
@@ -60,26 +61,28 @@ function CheckTypeVote(vote) {
 const AddVote = (voteJson, id_election) => {
     return new Promise((resolve, _) => {
         if (!voteJson) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else if (!voteJson.name || id_election || !voteJson.nb_voter) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             if (!CheckTypeVote(voteJson)) {
-                resolve({status: 400, data: "Missing parameters about the type of vote selected."})
+                resolve(new ResponseApi().InitBadRequest("Missing parameters about the type of vote selected."))
             } else {
                 let vote = new Vote()
                 Object.assign(vote, voteJson)
                 vote.id_election = id_election
                 vote.Add().then((res) => {
                     if (res) {
-                        resolve({status: 201, data: "Vote has been created."})
+                        resolve(new ResponseApi().InitCreated("Vote has been created."))
                     } else {
-                        resolve({status: 400, data: "This vote already existed."})
+                        resolve(new ResponseApi().InitBadRequest("This vote already existed."))
                     }
                 }).catch((e) => {
-                    console.error(e)
-                    if (e.code === '23503') resolve({status: 400, data: e.message})
-                    resolve({status: 500, data: e})
+                    if(e.code === '23503') {
+                        resolve(new ResponseApi().InitBadRequest(e.message))
+                        return
+                    }
+                    resolve(new ResponseApi().InitInternalServer(e))
                 })
             }
         }
@@ -98,7 +101,6 @@ const AddVote = (voteJson, id_election) => {
 const GetVote = (nir, idElection, includeFinish = false, includeFuture = true) => {
     return new Promise((resolve, _) => {
         new Vote().Get(nir, idElection, includeFinish, includeFuture).then(async (res) => {
-            const code = (res.length > 0) ? 200 : 204;
             for (let i = 0; i < res.length; i++) {
                 if (res[i].town_code_insee) {
                     res[i].town = await new Town().GetById(res[i].town_code_insee)
@@ -111,10 +113,13 @@ const GetVote = (nir, idElection, includeFinish = false, includeFuture = true) =
                 }
                 res[i].rounds = await new Round().Get(nir, res[i].id)
             }
-            resolve({status: code, data: res})
+            resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            if (e.code === '23503') resolve({status: 400, data: e.message})
-            resolve({status: 500, data: e})
+            if(e.code === '23503') {
+                resolve(new ResponseApi().InitBadRequest(e.message))
+                return
+            }
+            resolve(new ResponseApi().InitInternalServer(e))
         })
     });
 }
@@ -128,9 +133,9 @@ const GetVote = (nir, idElection, includeFinish = false, includeFuture = true) =
 const AddElection = (electionJson) => {
     return new Promise((resolve, _) => {
         if (!electionJson) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else if (!electionJson.name || !electionJson.id_type_vote || !electionJson.date_start || !electionJson.date_end) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             let election = new Election()
             Object.assign(election, electionJson)
@@ -138,14 +143,17 @@ const AddElection = (electionJson) => {
             election.date_end = new Date(election.date_end)
             election.Add().then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "Vote has been created."})
+                    resolve(new ResponseApi().InitCreated("Vote has been created."))
                 } else {
-                    resolve({status: 400, data: "This vote already existed."})
+                    resolve(new ResponseApi().InitBadRequest("This vote already existed."))
                 }
             }).catch((e) => {
                 console.error(e)
-                if (e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -163,16 +171,18 @@ const AddElection = (electionJson) => {
 const GetElection = (nir, idElection = null, includeFinish = false, includeFuture = true) => {
     return new Promise((resolve, _) => {
         new Election().Get(nir, idElection, includeFinish, includeFuture).then(async (res) => {
-            const code = (res.length > 0) ? 200 : 204;
             for (let i = 0; i < res.length; i++) {
                 let listTypes = await new TypeVote().Get()
                 res[i].type_vote = listTypes.filter(e => e.id === res[i].id_type_vote)[0]
                 res[i].votes = await new Vote().Get(nir, res[i].id, true, true)
             }
-            resolve({status: code, data: res})
+            resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            if (e.code === '23503') resolve({status: 400, data: e.message})
-            resolve({status: 500, data: e})
+            if(e.code === '23503') {
+                resolve(new ResponseApi().InitBadRequest(e.message))
+                return
+            }
+            resolve(new ResponseApi().InitInternalServer(e))
         })
     });
 }
@@ -187,18 +197,20 @@ const GetElection = (nir, idElection = null, includeFinish = false, includeFutur
 const GetRound = (nir, idVote) => {
     return new Promise((resolve, _) => {
         if (!idVote) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
             return
         }
         new Round().Get(nir, idVote).then((res) => {
-            const code = (res.length > 0) ? 200 : 204;
             for (let i = 0; i < res.length; i++) {
                 res[i].choices = new Choice().Get(nir, res[i].num_round, idVote)
             }
-            resolve({status: code, data: res})
+            resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            if (e.code === '23503') resolve({status: 400, data: e.message})
-            resolve({status: 500, data: e})
+            if(e.code === '23503') {
+                resolve(new ResponseApi().InitBadRequest(e.message))
+                return
+            }
+            resolve(new ResponseApi().InitInternalServer(e))
         })
     });
 }
@@ -213,11 +225,11 @@ const GetRound = (nir, idVote) => {
 const AddRound = (roundJson, idVote) => {
     return new Promise((resolve, _) => {
         if (!roundJson) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else if (!roundJson.num || !idVote || !roundJson.name) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else if (!roundJson.date_start || !roundJson.date_end) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             let round = new Round()
             Object.assign(round, roundJson)
@@ -226,13 +238,16 @@ const AddRound = (roundJson, idVote) => {
             round.date_end = new Date(round.date_end)
             round.Add().then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "Round has been created."})
+                    resolve(new ResponseApi().InitCreated("Round has been created."))
                 } else {
-                    resolve({status: 400, data: "This round already existed."})
+                    resolve(new ResponseApi().InitBadRequest("This round already existed."))
                 }
             }).catch((e) => {
-                if (e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -249,11 +264,13 @@ const AddRound = (roundJson, idVote) => {
 const GetChoice = (nir, numRound, idVote) => {
     return new Promise((resolve, _) => {
         new Choice().Get(nir, numRound, idVote).then((res) => {
-            const code = (res) ? 200 : 204;
-            resolve({status: code, data: res})
+            resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            if (e.code === '23503') resolve({status: 400, data: e.message})
-            resolve({status: 500, data: e})
+            if(e.code === '23503') {
+                resolve(new ResponseApi().InitBadRequest(e.message))
+                return
+            }
+            resolve(new ResponseApi().InitInternalServer(e))
         })
     });
 }
@@ -269,11 +286,11 @@ const GetChoice = (nir, numRound, idVote) => {
 const AddChoice = (choiceJson, idVote, numRound) => {
     return new Promise((resolve, _) => {
         if (!choiceJson) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else if (!choiceJson.name || !choiceJson.choice_order) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else if (!numRound || !idVote) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             let choice = new Choice()
             Object.assign(choice, choiceJson)
@@ -281,13 +298,16 @@ const AddChoice = (choiceJson, idVote, numRound) => {
             choice.num_round = numRound
             choice.Add().then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "Choice has been created."})
+                    resolve(new ResponseApi().InitCreated("Choice has been created."))
                 } else {
-                    resolve({status: 400, data: "This choice already existed."})
+                    resolve(new ResponseApi().InitBadRequest("This choice already existed."))
                 }
             }).catch((e) => {
-                if (e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -305,21 +325,25 @@ const AddChoice = (choiceJson, idVote, numRound) => {
 const ToVote = (nir, numRound, idVote, idChoice) => {
     return new Promise(async (resolve, _) => {
         if (!idChoice || !numRound || !idVote) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             const isExisted = await linkMod.IfExists(idVote, numRound, nir)
             if (isExisted) {
-                return resolve({status: 400, data: "You have already voted for this round."})
+                resolve(new ResponseApi().InitBadRequest("You have already voted for this round."))
+                return
             }
             let choice = new Choice()
             choice.id_vote = idVote
             choice.num_round = numRound
             choice.id = idChoice
             choice.AddVoter(nir).then((res) => {
-                resolve({status: 201, data: "Your vote has been take into account."})
+                resolve(new ResponseApi().InitCreated("Your vote has been take into account."))
             }).catch((e) => {
-                if (e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });

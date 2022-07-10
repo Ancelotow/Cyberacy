@@ -1,29 +1,30 @@
 import Stripe from 'stripe';
 import {Payment} from "../models/payment.mjs"
+import {ResponseApi} from "../models/response-api.mjs";
 
 const GetPaymentSheet = (paymentJson) => {
     return new Promise(async (resolve, reject) => {
         if (paymentJson === null) {
-            resolve({status: 400, data: "Missing parameters"})
+            resolve(new ResponseApi().InitMissingParameters())
             return
         }
         let payment = new Payment()
         Object.assign(payment, paymentJson)
         if (payment.vat_rate === null || payment.amount_including_tax === null ) {
-            resolve({status: 400, data: "Missing parameters"})
+            resolve(new ResponseApi().InitMissingParameters())
             return
         } else if (payment.libelle === null || payment.amount_excl === null || payment.email === null ) {
-            resolve({status: 400, data: "Missing parameters"})
+            resolve(new ResponseApi().InitMissingParameters())
             return
         }  else if (payment.amount_including_tax < 1) {
-            resolve({status: 400, data: "The amount must be above 1 EUR"})
+            resolve(new ResponseApi().InitBadRequest("The amount must be above 1 EUR"))
             return
         }
 
         let vatRate = payment.vat_rate / 100
         let recalculate_amount_excl = payment.amount_excl + (payment.amount_excl * vatRate)
         if(recalculate_amount_excl !== payment.amount_including_tax) {
-            resolve({status: 400, data: "The amount including associate with VAT not corresponding with excl. tax amount"})
+            resolve(new ResponseApi().InitBadRequest("The amount including associate with VAT not corresponding with excl. tax amount"))
             return
         }
 
@@ -52,7 +53,7 @@ const GetPaymentSheet = (paymentJson) => {
             customer: customer.id,
             publishableKey: public_key
         }
-        resolve({status: 200, data})
+        resolve(new ResponseApi().InitData(data))
     })
 }
 

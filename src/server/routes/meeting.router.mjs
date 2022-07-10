@@ -14,7 +14,7 @@ routerMee.post("/meeting", async (req, res) => {
     } */
 
     const response = await meetingCtrl.AddMeeting(req.body)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerMee.patch("/meeting/aborted", async (req, res) => {
@@ -28,7 +28,7 @@ routerMee.patch("/meeting/aborted", async (req, res) => {
     } */
 
     const response = await meetingCtrl.AbortedMeeting(req.body.id, req.body.reason)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerMee.get("/meeting", async (req, res) => {
@@ -72,7 +72,7 @@ routerMee.get("/meeting", async (req, res) => {
    }*/
 
     const response = await meetingCtrl.GetMeeting(req.query.town, req.query.idPoliticalParty, req.data.nir, req.query.includeAborted, req.query.includeCompleted, req.query.includeFinished, req.query.id, req.query.onlyMine)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerMee.post("/meeting/participate/:id", async (req, res) => {
@@ -97,7 +97,7 @@ routerMee.delete("/meeting/participate/:id", async (req, res) => {
 
     const nir = req.data.nir
     const response = await meetingCtrl.AbortedParticipant(nir, req.params.id, req.query.reason)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 export {routerMee}
