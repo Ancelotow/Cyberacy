@@ -29,7 +29,7 @@ routerStats.get("/statistics/political_party/adherent", async (req, res) => {
     } else if (req.query.sort === "month") {
         const year = (req.query.year == null) ? new Date().getFullYear() : req.query.year
         const response = await statsCtrl.GetNbAdherentByMonth(req.data.nir, year)
-        res.status(response.status).send(response.data)
+        res.status(response.status).send({data: response.data})
     } else {
         res.status(400).send("The parameters \"sort\" is required")
     }
@@ -60,7 +60,7 @@ routerStats.get("/statistics/political_party/meeting", async (req, res) => {
     } else if (req.query.sort === "month") {
         const year = (req.query.year == null) ? new Date().getFullYear() : req.query.year
         const response = await statsCtrl.GetNbMeetingByMonth(req.data.nir, year)
-        res.status(response.status).send(response.data)
+        res.status(response.status).send({data: response.data})
     } else {
         res.status(400).send("The parameters \"sort\" is required")
     }
@@ -98,7 +98,7 @@ routerStats.get("/statistics/political_party/messages", async (req, res) => {
     } else {
         response = {status: 400, data: "The parameters \"sort\" is required"}
     }
-    res.status(response.status).send(response.data)
+    res.status(response.status).send({data: response.data})
 });
 
 routerStats.get("/statistics/vote/abstention", async (req, res) => {
@@ -122,7 +122,7 @@ routerStats.get("/statistics/vote/participation", async (req, res) => {
 
     const numRound = (req.query.numRound == null) ? 1 : req.query.numRound
     const response = await statsCtrl.GetVoteParticipation(numRound, req.query.typeVote)
-    res.status(response.status).send(response.data)
+    res.status(response.status).send({data: response.data})
 });
 
 routerStats.get("/statistics/vote/:id/results", async (req, res) => {
@@ -131,7 +131,7 @@ routerStats.get("/statistics/vote/:id/results", async (req, res) => {
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await statsCtrl.GetVoteResults(req.params.vote)
-    res.status(response.status).send(response.data)
+    res.status(response.status).send({data: response.data})
 });
 
 export {routerStats}
