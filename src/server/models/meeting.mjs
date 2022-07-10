@@ -177,9 +177,9 @@ Meeting.prototype.GetById = function (nir, id) {
                 reject(error)
             } else {
                 if(result.rows.length > 0) {
-                    Object.assign(new Meeting(), result.rows[0])
+                    resolve(Object.assign(new Meeting(), result.rows[0]))
                 } else {
-                    return null
+                    resolve(null)
                 }
             }
         });

@@ -82,7 +82,7 @@ routerMee.get("/meeting/:id", async (req, res) => {
 
     const nir = req.data.nir
     const response = await meetingCtrl.GetMeetingById(nir, req.params.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerMee.post("/meeting/participate/:id", async (req, res) => {
@@ -92,7 +92,7 @@ routerMee.post("/meeting/participate/:id", async (req, res) => {
 
     const nir = req.data.nir
     const response = await meetingCtrl.AddParticipant(nir, req.params.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerMee.delete("/meeting/participate/:id", async (req, res) => {

@@ -114,6 +114,7 @@ const GetMeetingById = (nir, id) => {
             return
         }
         new Meeting().GetById(nir, id).then(async (res) => {
+            console.log(res)
             if(res != null) {
                 res.town = await new Town().GetById(res.town_code_insee)
             }
