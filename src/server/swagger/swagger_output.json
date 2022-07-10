@@ -999,12 +999,6 @@
         "description": "Récupération des meetings.",
         "parameters": [
           {
-            "name": "mine",
-            "in": "query",
-            "description": "Voir uniquement les meetings auxquelles je participe.",
-            "type": "boolean"
-          },
-          {
             "name": "town",
             "in": "query",
             "description": "Code INSEE d'une ville.",

@@ -40,11 +40,6 @@ routerMee.get("/meeting", async (req, res) => {
            description: 'Inclure les meetings annulés.',
            type: 'boolean'
     }
-   #swagger.parameters['mine'] = {
-          in: 'query',
-          description: 'Voir uniquement les meetings auxquelles je participe.',
-          type: 'boolean'
-   }
    #swagger.parameters['town'] = {
           in: 'query',
           description: 'Code INSEE d\'une ville.',
@@ -76,8 +71,7 @@ routerMee.get("/meeting", async (req, res) => {
           type: 'boolean'
    }*/
 
-    const nir = (req.query.mine && req.query.mine === 'true') ? req.data.nir : null
-    const response = await meetingCtrl.GetMeeting(req.query.town, req.query.idPoliticalParty, nir, req.query.includeAborted, req.query.includeCompleted, req.query.includeFinished, req.query.id, req.query.onlyMine)
+    const response = await meetingCtrl.GetMeeting(req.query.town, req.query.idPoliticalParty, req.data.nir, req.query.includeAborted, req.query.includeCompleted, req.query.includeFinished, req.query.id, req.query.onlyMine)
     res.status(response.status).send(response.data)
 });
 
