@@ -110,7 +110,7 @@ routerStats.get("/statistics/vote/abstention", async (req, res) => {
 
     const numRound = (req.query.numRound == null) ? 1 : req.query.numRound
     const response = await statsCtrl.GetVoteAbstention(numRound, req.query.typeVote)
-    res.status(response.status).send(response.data)
+    res.status(response.status).send({data: response.data})
 });
 
 routerStats.get("/statistics/vote/participation", async (req, res) => {
