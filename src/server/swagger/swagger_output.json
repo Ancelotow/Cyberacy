@@ -1039,6 +1039,12 @@
             "in": "query",
             "description": "L'id du meeting",
             "type": "number"
+          },
+          {
+            "name": "onlyMine",
+            "in": "query",
+            "description": "Récupérer uniquement les meeting auxquels je participe",
+            "type": "boolean"
           }
         ],
         "responses": {},

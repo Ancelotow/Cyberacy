@@ -160,13 +160,14 @@ $filter$
 
 
 -- Filtre pour la table meeting
-create or replace function filter_meeting(_town meeting.twn_code_insee%type default null,
+create or replace function filter_meeting(_nir person.prs_nir%type,
+                                          _town meeting.twn_code_insee%type default null,
                                           _pop_id meeting.pop_id%type default null,
-                                          _nir person.prs_nir%type default null,
                                           _include_aborted meeting.mee_is_aborted%type default false,
                                           _include_completed boolean default true,
                                           _include_finished boolean default false,
-                                          _id meeting.mee_id%type default null)
+                                          _id meeting.mee_id%type default null,
+                                          _only_mine boolean default false)
     returns table
             (
                 id                 meeting.mee_id%type,
@@ -187,7 +188,8 @@ create or replace function filter_meeting(_town meeting.twn_code_insee%type defa
                 vta_rate           meeting.mee_vta_rate%type,
                 price_excl         meeting.mee_price_excl%type,
                 latitude           meeting.mee_lat%type,
-                longitude          meeting.mee_lng%type
+                longitude          meeting.mee_lng%type,
+                is_participate     boolean
             )
 as
 $filter$
@@ -211,16 +213,21 @@ begin
                mee_vta_rate                    as vta_rate,
                mee_price_excl                  as price_excl,
                mee_lat                         as latitude,
-               mee_lng                         as longitude
+               mee_lng                         as longitude,
+               case
+                   when ptcMine.prs_nir is not null then true
+                   else false
+                   end                         as is_participate
         from meeting mee
                  left join participant ptc on mee.mee_id = ptc.mee_id
+                 left join participant ptcMine on mee.mee_id = ptcMine.mee_id and ptcMine.prs_nir = _nir
         where (_include_aborted = true or mee_is_aborted = false)
-          and (_nir is null or ptc.prs_nir = _nir)
           and (_pop_id is null or mee.pop_id = _pop_id)
           and (_town is null or mee.twn_code_insee = _town)
           and (_include_completed = true or nb_place_vacant > 0)
           and (_include_finished = true or mee_date_start > now())
           and (_id is null or mee.mee_id = _id)
+          and (_only_mine = false or ptcMine.prs_nir is not null)
         order by mee_date_start, mee_name;
 
 end;

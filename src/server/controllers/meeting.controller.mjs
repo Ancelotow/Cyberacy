@@ -75,12 +75,13 @@ const AbortedMeeting = (id, reason = null) => {
  * @param includeCompleted Inclus les meetings complet
  * @param includeFinished
  * @param id
+ * @param onlyMine
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetMeeting = (town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true, includeFinished = false, id = null) => {
+const GetMeeting = (town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true, includeFinished = false, id = null, onlyMine = false) => {
     return new Promise((resolve, _) => {
-        new Meeting().Get(town, idPoliticalParty, nir, includeAborted, includeCompleted, includeFinished, id).then(async (res) => {
+        new Meeting().Get(town, idPoliticalParty, nir, includeAborted, includeCompleted, includeFinished, id, onlyMine).then(async (res) => {
             const code = (res.length > 0) ? 200 : 204;
             for(let i = 0; i < res.length; i++) {
                 if(res[i].town_code_insee != null) {

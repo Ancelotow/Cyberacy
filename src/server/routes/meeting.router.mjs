@@ -69,10 +69,15 @@ routerMee.get("/meeting", async (req, res) => {
           in: 'query',
           description: 'L\'id du meeting',
           type: 'number'
+   }
+   #swagger.parameters['onlyMine'] = {
+          in: 'query',
+          description: 'Récupérer uniquement les meeting auxquels je participe',
+          type: 'boolean'
    }*/
 
     const nir = (req.query.mine && req.query.mine === 'true') ? req.data.nir : null
-    const response = await meetingCtrl.GetMeeting(req.query.town, req.query.idPoliticalParty, nir, req.query.includeAborted, req.query.includeCompleted, req.query.includeFinished, req.query.id)
+    const response = await meetingCtrl.GetMeeting(req.query.town, req.query.idPoliticalParty, nir, req.query.includeAborted, req.query.includeCompleted, req.query.includeFinished, req.query.id, req.query.onlyMine)
     res.status(response.status).send(response.data)
 });
 
