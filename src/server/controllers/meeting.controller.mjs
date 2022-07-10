@@ -89,10 +89,33 @@ const AbortedMeeting = (id, reason = null) => {
 const GetMeeting = (town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true, includeFinished = false, id = null, onlyMine = false) => {
     return new Promise((resolve, _) => {
         new Meeting().Get(town, idPoliticalParty, nir, includeAborted, includeCompleted, includeFinished, id, onlyMine).then(async (res) => {
-            for(let i = 0; i < res.length; i++) {
-                if(res[i].town_code_insee != null) {
-                    res[i].town = await new Town().GetById(res[i].town_code_insee)
-                }
+            resolve(new ResponseApi().InitData(res))
+        }).catch((e) => {
+            if(e.code === '23503') {
+                resolve(new ResponseApi().InitBadRequest(e.message))
+                return
+            }
+            resolve(new ResponseApi().InitInternalServer(e))
+        })
+    });
+}
+
+/**
+ * Récupère un meeting par son ID
+ * @param nir Le NIR de l'utilisateur
+ * @param id L'ID du meeting
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetMeetingById = (nir, id) => {
+    return new Promise((resolve, _) => {
+        if(id === null) {
+            resolve(new ResponseApi().InitMissingParameters())
+            return
+        }
+        new Meeting().GetById(nir, id).then(async (res) => {
+            if(res != null) {
+                res.town = await new Town().GetById(res.town_code_insee)
             }
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
@@ -164,4 +187,4 @@ const AbortedParticipant = (nir, idMeeting, reason = null) => {
     });
 }
 
-export default {AddParticipant, AddMeeting, AbortedMeeting, GetMeeting, AbortedParticipant}
+export default {AddParticipant, AddMeeting, AbortedMeeting, GetMeeting, AbortedParticipant, GetMeetingById}

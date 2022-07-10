@@ -30,7 +30,7 @@ class Meeting {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Meeting.prototype.Add = function() {
+Meeting.prototype.Add = function () {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'INSERT INTO meeting (mee_name, mee_object, mee_description, mee_date_start, mee_nb_time, mee_nb_place, mee_address_street, mee_link_twitch, mee_link_youtube, pop_id, twn_code_insee, mee_vta_rate, mee_price_excl, mee_lat, mee_lng) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)',
@@ -52,7 +52,7 @@ Meeting.prototype.Add = function() {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Meeting.prototype.IfExists = function(id) {
+Meeting.prototype.IfExists = function (id) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT COUNT(*) FROM meeting WHERE mee_id = $1',
@@ -80,7 +80,7 @@ Meeting.prototype.IfExists = function(id) {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Meeting.prototype.Aborted = function(id, reason) {
+Meeting.prototype.Aborted = function (id, reason) {
     return new Promise((resolve, reject) => {
         this.IfExists(id).then((result) => {
             if (result) {
@@ -117,19 +117,70 @@ Meeting.prototype.Aborted = function(id, reason) {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Meeting.prototype.Get = function(town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true, includeFinished = false, id = null, onlyMine = false) {
+Meeting.prototype.Get = function (town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true, includeFinished = false, id = null, onlyMine = false) {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'SELECT * FROM filter_meeting($1, $2, $3, $4, $5, $6, $7, $8)',
+            text: `select * from filter_meeting($1, $2, $3, $4, $5, $6, $7, $8)`,
             values: [nir, town, idPoliticalParty, includeAborted, includeCompleted, includeFinished, id, onlyMine],
         }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
             } else {
-                let listMeetings = []
-                result.rows.forEach(e => listMeetings.push(Object.assign(new Meeting(), e)));
-                resolve(listMeetings)
+                resolve(result.rows)
+            }
+        });
+    });
+}
+
+/**
+ * Rétourne un meeting par son ID
+ * @param nir Le NIR de l'utilisateur
+ * @param id L'ID du meeting
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+Meeting.prototype.GetById = function (nir, id) {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: `select mee.mee_id                      as id,
+                          mee_name                        as name,
+                          mee_object                      as object,
+                          mee_description                 as description,
+                          mee_date_start                  as date_start,
+                          mee_nb_time                     as nb_time,
+                          mee_is_aborted                  as is_aborted,
+                          mee_reason_aborted              as reason_aborted,
+                          mee_nb_place                    as nb_place,
+                          get_nb_place_vacant(mee.mee_id) as nb_place_vacant,
+                          mee_address_street              as address_street,
+                          mee_link_twitch                 as link_twitch,
+                          mee_link_youtube                as link_youtube,
+                          mee.pop_id                      as id_political_party,
+                          mee.twn_code_insee              as town_code_insee,
+                          mee_vta_rate                    as vta_rate,
+                          mee_price_excl                  as price_excl,
+                          mee_lat                         as latitude,
+                          mee_lng                         as longitude,
+                          case
+                              when ptc.prs_nir is not null then true
+                              else false
+                              end                         as is_participate
+                   from meeting mee
+                            left join participant ptc on mee.mee_id = ptc.mee_id and ptc.prs_nir = $1
+                   where mee.mee_id = $2
+                   limit 1`,
+            values: [nir, id],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                if(result.rows.length > 0) {
+                    Object.assign(new Meeting(), result.rows[0])
+                } else {
+                    return null
+                }
             }
         });
     });

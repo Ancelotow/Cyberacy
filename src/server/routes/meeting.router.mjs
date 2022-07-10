@@ -75,6 +75,16 @@ routerMee.get("/meeting", async (req, res) => {
     res.status(response.code).send(response)
 });
 
+routerMee.post("/meeting/:id", async (req, res) => {
+    // #swagger.tags = ['Meeting']
+    // #swagger.description = 'Récupère le détail d\'un meeting'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const nir = req.data.nir
+    const response = await meetingCtrl.GetMeetingById(nir, req.params.id)
+    res.status(response.status).send(response.data)
+});
+
 routerMee.post("/meeting/participate/:id", async (req, res) => {
     // #swagger.tags = ['Meeting']
     // #swagger.description = 'Participer à un meeting.'

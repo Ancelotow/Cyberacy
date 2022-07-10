@@ -1073,6 +1073,28 @@
         ]
       }
     },
+    "/meeting/{id}": {
+      "post": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Récupère le détail d\\'un meeting",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/meeting/participate/{id}": {
       "post": {
         "tags": [
@@ -1439,15 +1461,15 @@
             }
           },
           {
-            "name": "year",
-            "in": "query",
-            "description": "L'année pour le tri",
-            "type": "int"
-          },
-          {
             "name": "idPoliticalParty",
             "in": "query",
             "description": "L'id d'un parti politique, NULL récupérant tout (à NULL par défault)",
+            "type": "int"
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "L'année pour le tri",
             "type": "int"
           }
         ],

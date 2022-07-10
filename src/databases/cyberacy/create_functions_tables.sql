@@ -172,23 +172,15 @@ create or replace function filter_meeting(_nir person.prs_nir%type,
             (
                 id                 meeting.mee_id%type,
                 name               meeting.mee_name%type,
-                object             meeting.mee_object%type,
-                description        meeting.mee_description%type,
                 date_start         meeting.mee_date_start%type,
                 nb_time            meeting.mee_nb_time%type,
                 is_aborted         meeting.mee_is_aborted%type,
-                reason_aborted     meeting.mee_reason_aborted%type,
-                nb_place           meeting.mee_nb_place%type,
                 nb_place_vacant    int,
-                address_street     meeting.mee_address_street%type,
-                link_twitch        meeting.mee_link_twitch%type,
-                link_youtube       meeting.mee_link_youtube%type,
                 id_political_party meeting.pop_id%type,
                 town_code_insee    meeting.twn_code_insee%type,
                 vta_rate           meeting.mee_vta_rate%type,
                 price_excl         meeting.mee_price_excl%type,
-                latitude           meeting.mee_lat%type,
-                longitude          meeting.mee_lng%type,
+                town_name          town.twn_name%type,
                 is_participate     boolean
             )
 as
@@ -197,23 +189,16 @@ begin
     return query
         select mee.mee_id                      as id,
                mee_name                        as name,
-               mee_object                      as object,
-               mee_description                 as description,
                mee_date_start                  as date_start,
                mee_nb_time                     as nb_time,
                mee_is_aborted                  as is_aborted,
-               mee_reason_aborted              as reason_aborted,
-               mee_nb_place                    as nb_place,
                get_nb_place_vacant(mee.mee_id) as nb_place_vacant,
                mee_address_street              as address_street,
-               mee_link_twitch                 as link_twitch,
-               mee_link_youtube                as link_youtube,
                mee.pop_id                      as id_political_party,
                mee.twn_code_insee              as town_code_insee,
                mee_vta_rate                    as vta_rate,
                mee_price_excl                  as price_excl,
-               mee_lat                         as latitude,
-               mee_lng                         as longitude,
+               twn_name                        as town_name,
                case
                    when ptcMine.prs_nir is not null then true
                    else false
@@ -221,6 +206,7 @@ begin
         from meeting mee
                  left join participant ptc on mee.mee_id = ptc.mee_id
                  left join participant ptcMine on mee.mee_id = ptcMine.mee_id and ptcMine.prs_nir = _nir
+                 left join town t on t.twn_code_insee = mee.twn_code_insee
         where (_include_aborted = true or mee_is_aborted = false)
           and (_pop_id is null or mee.pop_id = _pop_id)
           and (_town is null or mee.twn_code_insee = _town)

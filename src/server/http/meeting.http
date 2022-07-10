@@ -6,7 +6,7 @@ Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get all meeting (without aborted)
-GET http://localhost:3000{{url}}/meeting
+GET {{url}}/meeting
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 
