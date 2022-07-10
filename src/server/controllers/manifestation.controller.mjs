@@ -3,6 +3,7 @@ import manifestant from "../models/manifestant.mjs";
 import option from "../models/option-manifestation.mjs"
 import geoCtrl from "./geography.controller.mjs"
 import {Step} from "../models/step.mjs"
+import {ResponseApi} from "../models/response-api.mjs";
 
 /**
  * Ajoute une nouvelle manifestation
@@ -190,6 +191,7 @@ const DeleteOption = (id) => {
  * @constructor
  */
 const AddStep = (stp) => {
+    let response = new ResponseApi()
     return new Promise(async (resolve, _) => {
         if (stp === null) {
             resolve({status: 400, data: "Missing parameter."})
@@ -211,14 +213,17 @@ const AddStep = (stp) => {
             }
             step.Add(stp).then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "Step has been created."})
+                    response.message = "Step has been created."
+                    resolve({status: 201, data: response})
                 } else {
-                    resolve({status: 400, data: "This step already existed."})
+                    response.message = "This step already existed."
+                    response.status = "KO"
+                    resolve({status: 400, data: response})
                 }
             }).catch((e) => {
-                console.error(e)
-                if (e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                response.InitError(e)
+                if (e.code === '23503') resolve({status: 400, data: response})
+                resolve({status: 500, data: response})
             })
         }
     })
@@ -231,6 +236,7 @@ const AddStep = (stp) => {
  * @constructor
  */
 const DeleteStep = (id) => {
+    let response = new ResponseApi()
     return new Promise((resolve, _) => {
         if (!id) {
             resolve({status: 400, data: "Missing parameters."})
@@ -239,13 +245,17 @@ const DeleteStep = (id) => {
             step.id = id
             step.Delete().then((res) => {
                 if (res) {
-                    resolve({status: 200, data: "The step has been deleted."})
+                    response.message = "The step has been deleted."
+                    resolve({status: 200, data: response})
                 } else {
-                    resolve({status: 400, data: "This step does not existed."})
+                    response.message = "This step does not existed"
+                    response.status = "KO"
+                    resolve({status: 400, data: response})
                 }
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                response.InitError(e)
+                if(e.code === '23503') resolve({status: 400, data: response})
+                resolve({status: 500, data: response})
             })
         }
     });
@@ -258,16 +268,19 @@ const DeleteStep = (id) => {
  * @constructor
  */
 const GetSteps = (id_manifestation) => {
+    let response = new ResponseApi()
     return new Promise((resolve, _) => {
         if (!id_manifestation) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
             new Step().GetAll(id_manifestation).then((res) => {
                 const code = (res) ? 200 : 204;
-                resolve({status: code, data: res})
+                response.data = res
+                resolve({status: code, data: response})
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                response.InitError(e)
+                if(e.code === '23503') resolve({status: 400, data: response})
+                resolve({status: 500, data: response})
             })
         }
     });

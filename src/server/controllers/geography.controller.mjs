@@ -4,6 +4,7 @@ import {Town} from "../models/town.mjs";
 import axios from "axios";
 import {config} from "dotenv";
 import {Color} from "../models/color.mjs";
+import {ResponseApi} from "../models/response-api.mjs";
 
 class Coordinates {
 
@@ -67,6 +68,7 @@ function GetLocationFromAddress(address, zip_code) {
  * @constructor
  */
 const GetRegions = () => {
+    let response = new ResponseApi()
     return new Promise((resolve, _) => {
         new Region().GetAll().then(async (res) => {
             const code = (res.length > 0) ? 200 : 204;
@@ -75,9 +77,11 @@ const GetRegions = () => {
                     res[i].color = await new Color().GetById(res[i].id_color)
                 }
             }
+            response.data = res
             resolve({status: code, data: res})
         }).catch((e) => {
-            resolve({status: 500, data: e})
+            response.InitError(e)
+            resolve({status: 500, data: response})
         })
     });
 }
@@ -88,6 +92,7 @@ const GetRegions = () => {
  * @constructor
  */
 const GetDepartments = () => {
+    let response = new ResponseApi()
     return new Promise((resolve, _) => {
         new Department().GetAll().then(async (res) => {
             const code = (res.length > 0) ? 200 : 204;
@@ -96,8 +101,10 @@ const GetDepartments = () => {
                     res[i].color = await new Color().GetById(res[i].id_color)
                 }
             }
+            response.data = res
             resolve({status: code, data: res})
         }).catch((e) => {
+            response.InitError(e)
             resolve({status: 500, data: e})
         })
     });
@@ -109,11 +116,14 @@ const GetDepartments = () => {
  * @constructor
  */
 const GetTowns = () => {
+    let response = new ResponseApi()
     return new Promise((resolve, _) => {
         new Town().GetAll().then((res) => {
             const code = (res) ? 200 : 204;
+            response.data = res
             resolve({status: code, data: res})
         }).catch((e) => {
+            response.InitError(e)
             resolve({status: 500, data: e})
         })
     });
@@ -126,14 +136,17 @@ const GetTowns = () => {
  * @constructor
  */
 const GetTownsByDepartment = (code) => {
+    let response = new ResponseApi()
     return new Promise((resolve, _) => {
         if(!code) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
             new Town().GetByDepartment(code).then((res) => {
                 const code = (res) ? 200 : 204;
+                response.data = res
                 resolve({status: code, data: res})
             }).catch((e) => {
+                response.InitError(e)
                 resolve({status: 500, data: e})
             })
         }
@@ -147,6 +160,7 @@ const GetTownsByDepartment = (code) => {
  * @constructor
  */
 const GetDepartmentByRegion = (code_insee) => {
+    let response = new ResponseApi()
     return new Promise((resolve, _) => {
         if(!code_insee) {
             resolve({status: 400, data: "Missing parameters."})
@@ -158,8 +172,10 @@ const GetDepartmentByRegion = (code_insee) => {
                         res[i].color = await new Color().GetById(res[i].id_color)
                     }
                 }
+                response.data = res
                 resolve({status: code, data: res})
             }).catch((e) => {
+                response.InitError(e)
                 resolve({status: 500, data: e})
             })
         }
@@ -174,14 +190,17 @@ const GetDepartmentByRegion = (code_insee) => {
  * @constructor
  */
 const GetCoordinates = (address_street, zip_code) => {
+    let response = new ResponseApi()
     return new Promise((resolve, _) => {
         if(address_street == null || zip_code == null) {
             resolve({status: 400, data: "Missing parameters."})
         } else {
             GetLocationFromAddress(address_street, zip_code).then((res) => {
                 const code = (res) ? 200 : 204;
+                response.data = res
                 resolve({status: code, data: res})
             }).catch((e) => {
+                response.InitError(e)
                 resolve({status: 500, data: e})
             })
         }

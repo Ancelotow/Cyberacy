@@ -1,5 +1,4 @@
 import statsCtrl from "../controllers/stats.controller.mjs";
-import voteCtrl from "../controllers/vote.controller.mjs";
 import express from "express"
 
 const routerStats = express.Router()
