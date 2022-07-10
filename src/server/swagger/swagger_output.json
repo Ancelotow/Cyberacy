@@ -1441,7 +1441,13 @@
           {
             "name": "year",
             "in": "query",
-            "description": "L année pour le tri",
+            "description": "L'année pour le tri",
+            "type": "int"
+          },
+          {
+            "name": "idPoliticalParty",
+            "in": "query",
+            "description": "L'id d'un parti politique, NULL récupérant tout (à NULL par défault)",
             "type": "int"
           }
         ],
