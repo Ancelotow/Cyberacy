@@ -75,7 +75,7 @@ routerMee.get("/meeting", async (req, res) => {
     res.status(response.code).send(response)
 });
 
-routerMee.post("/meeting/:id", async (req, res) => {
+routerMee.get("/meeting/:id", async (req, res) => {
     // #swagger.tags = ['Meeting']
     // #swagger.description = 'Récupère le détail d\'un meeting'
     // #swagger.security = [{ "Bearer": [] }]

@@ -1074,7 +1074,7 @@
       }
     },
     "/meeting/{id}": {
-      "post": {
+      "get": {
         "tags": [
           "Meeting"
         ],
