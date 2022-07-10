@@ -62,7 +62,7 @@ OptionManifestation.prototype.Delete = () => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-OptionManifestation.prototype.GetAll = (id_manifestation = null) => {
+OptionManifestation.prototype.GetAll = (id_manifestation) => {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * FROM filter_options($1)',

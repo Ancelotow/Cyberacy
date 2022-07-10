@@ -81,7 +81,7 @@ const GetAllManifestations = (includeAborted = false, nir = null) => {
         new Manifestation().Get(includeAborted, nir).then(async (res) => {
             for (let i = 0; i < res.length; i++) {
                 res[i].steps = await new Step().GetAll(res[i].id)
-                res[i].options = await new OptionManifestation().GetAll(res[i])
+                res[i].options = await new OptionManifestation().GetAll(res[i].id)
             }
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
