@@ -123,16 +123,18 @@ const GetNbMeetingByYear = (nir, idPoliticalParty = null) => {
         }
         for (year; year <= new Date().getFullYear(); year++) {
             result = await partyMod.GetNbMeeting(nir, year, idPoliticalParty)
-            for(let i = 0; i < allPartys.length; i++) {
-                let resultMonth  = result.filter(s => s.id_political_party === allPartys[i].id)
-                if(resultMonth.length > 0) {
-                    let total_participant = 0
-                    let total_meeting = 0
-                    for(let j = 0; j < resultMonth.length; j++) {
-                        total_participant += resultMonth[j].nb_participant
-                        total_meeting += resultMonth[j].nb_meeting
+            if(result) {
+                for(let i = 0; i < allPartys.length; i++) {
+                    let resultMonth  = result.filter(s => s.id_political_party === allPartys[i].id)
+                    if(resultMonth.length > 0) {
+                        let total_participant = 0
+                        let total_meeting = 0
+                        for(let j = 0; j < resultMonth.length; j++) {
+                            total_participant += resultMonth[j].nb_participant
+                            total_meeting += resultMonth[j].nb_meeting
+                        }
+                        allPartys[i].stats.push({year, total_participant, total_meeting})
                     }
-                    allPartys[i].stats.push({year, total_participant, total_meeting})
                 }
             }
         }
