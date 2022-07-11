@@ -57,13 +57,13 @@ routerParty.get("/political_party", async (req, res) => {
     res.status(response.code).send(response)
 });
 
-routerParty.get("/political_party/:id/mine", async (req, res) => {
+routerParty.get("/political_party/mine", async (req, res) => {
     // #swagger.tags = ['Political party']
     // #swagger.description = 'Récupère en détail le parti politique auquel j\'adhère'
     // #swagger.security = [{ "Bearer": [] }]
 
     const nir = req.data.nir
-    const response = await partyCtrl.GetPoliticalPartyDetail(nir, req.params.id)
+    const response = await partyCtrl.GetPoliticalPartyMine(nir)
     res.status(response.code).send(response)
 });
 

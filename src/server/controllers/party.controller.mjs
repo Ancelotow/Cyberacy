@@ -106,9 +106,9 @@ const GetPoliticalParty = (siren = null, nir = null, includeLeft = false, idPoli
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetPoliticalPartyDetail = (nir, id) => {
+const GetPoliticalPartyMine = (nir) => {
     return new Promise((resolve, _) => {
-        partyMod.GetById(id, nir).then(async (res) => {
+        partyMod.GetMine(nir).then(async (res) => {
             const code = (res) ? 200 : 204;
             if(code === 200) {
                 let listMeeting = await new Meeting().Get(null, res.id, nir, false, true)
@@ -341,5 +341,5 @@ export default {
     UploadLogo,
     UploadChart,
     UploadBankDetails,
-    GetPoliticalPartyDetail
+    GetPoliticalPartyMine
 }

@@ -116,7 +116,7 @@ const GetAll = () => {
     });
 }
 
-const GetById = (id, nir) => {
+const GetMine = (nir) => {
     return new Promise((resolve, reject) => {
         const request = {
             text: `select distinct pop.pop_id           as id,
@@ -138,9 +138,8 @@ const GetById = (id, nir) => {
                                    twn_code_insee       as town_code_insee
                    from political_party pop
                             join adherent adh on pop.pop_id = adh.pop_id and adh.prs_nir = $1 and adh.adh_is_left = false
-                   where pop.pop_id = $2
                    limit 1`,
-            values: [nir, id],
+            values: [nir],
         }
         pool.query(request, (error, result) => {
             if (error) {
@@ -477,5 +476,5 @@ export default {
     GetNbMessageByDay,
     GetNbMessageByWeeks,
     GetAllPartyForStats,
-    GetById
+    GetMine
 }
