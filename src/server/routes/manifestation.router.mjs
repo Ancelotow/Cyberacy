@@ -51,6 +51,15 @@ routerMan.get("/manifestation", async (req, res) => {
     res.status(response.code).send(response)
 });
 
+routerMan.get("/manifestation/:id/details", async (req, res) => {
+    // #swagger.tags = ['Manifestation']
+    // #swagger.description = 'Récupérer le détail d\'une manifestation'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await manifestationCtrl.GetManifestationDetails(req.data.nir, req.params.id)
+    res.status(response.code).send(response)
+});
+
 routerMan.post("/manifestation/:id/participate", async (req, res) => {
     // #swagger.tags = ['Manifestation']
     // #swagger.description = 'Participer à une manifestations.'

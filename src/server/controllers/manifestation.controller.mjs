@@ -81,7 +81,31 @@ const GetAllManifestations = (includeAborted = false, nir = null) => {
         new Manifestation().Get(includeAborted, nir).then(async (res) => {
             for (let i = 0; i < res.length; i++) {
                 res[i].steps = await new Step().GetAll(res[i].id)
-                res[i].options = await new OptionManifestation().GetAll(res[i].id)
+            }
+            resolve(new ResponseApi().InitData(res))
+        }).catch((e) => {
+            if(e.code === '23503') {
+                resolve(new ResponseApi().InitBadRequest(e.message))
+                return
+            }
+            resolve(new ResponseApi().InitInternalServer(e))
+        })
+    })
+}
+
+/**
+ * Récupération du détail d'une manifestation
+ * @param nir Le NIR l'utilisateur
+ * @param id L'ID de la manifestation
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetManifestationDetails = (nir, id) => {
+    return new Promise((resolve, _) => {
+        new Manifestation().GetById(id, nir).then(async (res) => {
+            if(res) {
+                res.steps = await new Step().GetAll(res.id)
+                res.options = await new OptionManifestation().GetAll(res.id)
             }
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
@@ -313,7 +337,8 @@ export default {
     DeleteOption,
     AddStep,
     DeleteStep,
-    GetSteps
+    GetSteps,
+    GetManifestationDetails
 }
 
 

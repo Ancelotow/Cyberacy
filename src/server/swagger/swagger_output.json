@@ -96,6 +96,28 @@
         ]
       }
     },
+    "/manifestation/{id}/details": {
+      "get": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Récupérer le détail d\\'une manifestation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/manifestation/{id}/participate": {
       "post": {
         "tags": [

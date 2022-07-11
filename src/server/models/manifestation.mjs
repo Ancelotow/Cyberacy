@@ -113,7 +113,7 @@ Manifestation.prototype.Aborted = function (id, reason) {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Manifestation.prototype.Get = function(includeAborted = false, nir = null, id = null) {
+Manifestation.prototype.Get = function (includeAborted = false, nir = null, id = null) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * FROM filter_manifestation($1, $2, $3)',
@@ -126,6 +126,53 @@ Manifestation.prototype.Get = function(includeAborted = false, nir = null, id = 
                 let listManifestation = []
                 result.rows.forEach(e => listManifestation.push(Object.assign(new Manifestation(), e)));
                 resolve(listManifestation)
+            }
+        });
+    });
+}
+
+/**
+ * Récupère le détail d'une manifestation
+ * @param id L'id de la manifestation
+ * @param nir Le NIR de l'utilisateur
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+Manifestation.prototype.GetById = function (id, nir) {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: `
+                select man.man_id               as id,
+                       man_name                 as name,
+                       man_date_start           as date_start,
+                       man_date_end             as date_end,
+                       man_is_aborted           as is_aborted,
+                       man_date_aborted         as date_aborted,
+                       man_date_create          as date_create,
+                       man_object               as object,
+                       man_security_description as security_description,
+                       man_nb_person_estimate   as nb_person_estimate,
+                       man_url_document_signed  as url_document_signed,
+                       man_reason_aborted       as reason_aborted,
+                       case 
+                           when mnf.man_id is null then false
+                           else true
+                        end as is_participated
+                from manifestation man
+                         left join manifestant mnf on man.man_id = mnf.man_id and mnf.prs_nir = $1
+                where man.man_id = $2
+                limit 1`,
+            values: [nir, id],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                if(result.rows.length <= 0) {
+                    resolve(null)
+                } else {
+                    resolve(Object.assign(new Manifestation(), result.rows[0]))
+                }
             }
         });
     });
