@@ -1,6 +1,5 @@
 package com.cyberacy.app.models.entities
 
-import android.util.Log
 import com.cyberacy.app.models.services.ApiConnection
 import com.google.gson.annotations.SerializedName
 import retrofit2.HttpException

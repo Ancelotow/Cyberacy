@@ -20,7 +20,7 @@ interface ApiService {
     @GET("political_party/mine")
     fun getMinePoliticalParty(
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
-    ): Call<ResponseAPI<PoliticalParty?>>
+    ): Call<ResponseAPI<PoliticalParty>?>
 
     @POST("political_party/{id}/join")
     fun joinParty(
@@ -58,6 +58,11 @@ interface ApiService {
         @Path("id") id: Int,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<ResponseAPI<String>>
+
+    @DELETE("political_party/left")
+    fun leaveParty(
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<ResponseAPI<Unit>>
 
     @GET("meeting")
     fun getMeeting(
