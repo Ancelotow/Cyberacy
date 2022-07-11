@@ -129,7 +129,7 @@ Meeting.prototype.GetParticipantInfo = function (nir, id) {
                               prs_birthday       as birthday,
                               sex_name           as civility
                        from meeting mee
-                                join participant ptc on mee.mee_id = ptc.mee_id and ptc.prs_nir = $1
+                                join participant ptc on mee.mee_id = ptc.mee_id and ptc.prs_nir = $1 and ptc.ptc_is_aborted = false
                                 join person prs on ptc.prs_nir = prs.prs_nir
                                 join sex s on prs.sex_id = s.sex_id
                        where mee.mee_id = $2
