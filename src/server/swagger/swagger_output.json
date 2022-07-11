@@ -820,12 +820,12 @@
         ]
       }
     },
-    "/political_party/{id}/details": {
+    "/political_party/{id}/mine": {
       "get": {
         "tags": [
           "Political party"
         ],
-        "description": "Récupère en détail un parti politique",
+        "description": "Récupère en détail le parti politique auquel j\\'adhère",
         "parameters": [
           {
             "name": "id",
