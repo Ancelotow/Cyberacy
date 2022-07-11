@@ -35,12 +35,14 @@ class PartyFragment : Fragment() {
         val childView = view.findViewById<FragmentContainerView>(R.id.party_view)
         loader.visibility = View.VISIBLE
         childView.visibility = View.GONE
+
         viewModel.mineParty.observe(viewLifecycleOwner) {
             when (it) {
                 is PartyStateError -> {
                     loader.visibility = View.GONE
                 }
                 PartyStateLoading -> {
+                    Log.e("TEST", "load")
                     childView.visibility = View.GONE
                     loader.visibility = View.VISIBLE
                 }
@@ -48,8 +50,10 @@ class PartyFragment : Fragment() {
                     loader.visibility = View.GONE
                     childView.visibility = View.VISIBLE
                     if(it.party != null) {
+                        Log.e("TEST", "main")
                         changeView(MainPartyFragment())
                     } else {
+                        Log.e("TEST", "join")
                         changeView(JoinPartyFragment())
                     }
                 }
@@ -58,7 +62,11 @@ class PartyFragment : Fragment() {
         }
     }
 
-    fun changeView(view: Fragment) {
+    fun refresh() {
+        viewModel.getMineParty()
+    }
+
+    private fun changeView(view: Fragment) {
         childFragmentManager.beginTransaction()
             .replace(R.id.party_view, view)
             .commit()

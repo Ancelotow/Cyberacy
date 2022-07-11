@@ -18,7 +18,7 @@ class PartyViewModel : ViewModel() {
         getMineParty()
     }
 
-    private fun getMineParty() {
+    fun getMineParty() {
         viewModelScope.launch {
             PoliticalPartyRepository.fetchMineParty().collect {
                 _party.value = it

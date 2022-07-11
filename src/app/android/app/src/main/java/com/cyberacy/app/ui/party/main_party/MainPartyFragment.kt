@@ -27,6 +27,7 @@ import com.cyberacy.app.models.services.ApiConnection
 import com.cyberacy.app.ui.meeting.ListMeetingActivity
 import com.cyberacy.app.ui.meeting.meeting_detail.MeetingDetailActivity
 import com.cyberacy.app.ui.meeting.meeting_ticket.MeetingTicketActivity
+import com.cyberacy.app.ui.party.PartyFragment
 import com.cyberacy.app.ui.party.join_party.JoinPartyFragment
 import com.cyberacy.app.ui.party.messaging.MessagingActivity
 import com.google.android.material.button.MaterialButton
@@ -77,6 +78,7 @@ class MainPartyFragment : Fragment() {
                     loader.visibility = View.VISIBLE
                 }
                 is PartyStateSuccessMine -> {
+
                     loader.visibility = View.GONE
                     if(it.party == null) {
                         errorBody.visibility = View.VISIBLE
@@ -154,7 +156,9 @@ class MainPartyFragment : Fragment() {
                 loader.visibility = View.VISIBLE
                 try {
                     ApiConnection.connection().leaveParty().await()
-                    this@MainPartyFragment.activity?.recreate()
+                    loader.visibility = View.GONE
+                    activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                    (parentFragment!! as PartyFragment).refresh()
                 } catch (e: HttpException) {
                     if (e.code() == 401) {
                         Log.e("Erreur 401", e.message())

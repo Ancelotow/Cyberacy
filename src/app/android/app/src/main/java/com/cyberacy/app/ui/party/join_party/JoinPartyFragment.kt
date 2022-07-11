@@ -25,6 +25,8 @@ import com.cyberacy.app.models.entities.Session
 import com.cyberacy.app.models.repositories.*
 import com.cyberacy.app.models.services.ApiConnection
 import com.cyberacy.app.ui.navigation.NavigationActivity
+import com.cyberacy.app.ui.party.PartyFragment
+import com.cyberacy.app.ui.party.main_party.MainPartyFragment
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
@@ -81,7 +83,7 @@ class JoinPartyFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 ApiConnection.connection().joinParty(party.id).await()
-                activity?.recreate()
+                (parentFragment!! as PartyFragment).refresh()
             } catch (e: HttpException) {
                 Log.e("Erreur HTTP", e.message())
             } finally {
