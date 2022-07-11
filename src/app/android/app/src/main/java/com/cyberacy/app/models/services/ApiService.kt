@@ -77,6 +77,12 @@ interface ApiService {
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<ResponseAPI<Unit>>
 
+    @GET("meeting/participate/{id}/details-qrcode")
+    fun meetingGetInfoQRCode(
+        @Path("id") id: Int? = null,
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<ResponseAPI<MeetingQrCode?>>
+
     @POST("payment-sheet")
     fun paymentSheetStripe(
         @Body payment: Payment,

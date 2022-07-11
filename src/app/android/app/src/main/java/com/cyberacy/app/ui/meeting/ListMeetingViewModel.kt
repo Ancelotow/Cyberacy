@@ -25,7 +25,7 @@ class ListMeetingViewModel(private val idParty: Int) : ViewModel() {
         getAllMeetings()
     }
 
-    fun getAllMeetings() {
+    private fun getAllMeetings() {
         viewModelScope.launch {
             MeetingRepository.fetchMeetings(idParty).collect {
                 _meetings.value = it

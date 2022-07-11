@@ -1,6 +1,7 @@
 package com.cyberacy.app.models.repositories
 
 import com.cyberacy.app.models.entities.Meeting
+import com.cyberacy.app.models.entities.MeetingQrCode
 import com.cyberacy.app.models.entities.PoliticalParty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -43,6 +44,17 @@ object MeetingRepository {
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun fetchMeetingQRCode(id: Int): Flow<MeetingQRCodeState> {
+        return flow {
+            emit(MeetingQRCodeStateLoading)
+            try {
+                emit(MeetingQRCodeStateSuccess(MeetingQrCode.getMeetingsQRCode(id)))
+            } catch (e: HttpException) {
+                emit(MeetingQRCodeStateError(e))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
 }
 
 // List of Meeting
@@ -62,3 +74,9 @@ sealed class MeetingParticipateState
 object MeetingParticipateStateLoading: MeetingParticipateState()
 data class MeetingParticipateStateSuccess(val response: Unit): MeetingParticipateState()
 data class MeetingParticipateStateError(val ex: HttpException): MeetingParticipateState()
+
+// QR-Code of a Meeting
+sealed class MeetingQRCodeState
+object MeetingQRCodeStateLoading: MeetingQRCodeState()
+data class MeetingQRCodeStateSuccess(val meetingQrcode: MeetingQrCode?): MeetingQRCodeState()
+data class MeetingQRCodeStateError(val ex: HttpException): MeetingQRCodeState()

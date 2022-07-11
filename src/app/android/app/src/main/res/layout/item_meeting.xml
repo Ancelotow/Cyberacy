@@ -93,13 +93,14 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_qrcode"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:visibility="gone"
         app:cornerRadius="70dp"
         app:icon="@drawable/ic_qrcode"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
+        app:iconSize="40dp"
         app:backgroundTint="@color/yellow"
         app:iconTint="@color/black"
         app:layout_constraintRight_toRightOf="parent"
