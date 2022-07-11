@@ -137,10 +137,10 @@ const GetById = (id, nir) => {
                                    pop.prs_nir          as nir,
                                    twn_code_insee       as town_code_insee
                    from political_party pop
-                            join adherent adh on pop.pop_id = adh.pop_id and adh.prs_nir = $1
+                            join adherent adh on pop.pop_id = adh.pop_id and adh.prs_nir = $1 and adh.adh_is_left = false
                    where pop.pop_id = $2
                    limit 1`,
-            values: [id, nir],
+            values: [nir, id],
         }
         pool.query(request, (error, result) => {
             if (error) {
