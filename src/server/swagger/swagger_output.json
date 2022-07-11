@@ -1143,6 +1143,28 @@
         ]
       }
     },
+    "/meeting/participate/{id}/details-qrcode": {
+      "get": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Récupérer les informations afin de générer un QR-Code",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/thread": {
       "get": {
         "tags": [
