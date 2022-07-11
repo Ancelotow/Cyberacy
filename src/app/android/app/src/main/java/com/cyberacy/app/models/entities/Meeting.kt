@@ -5,6 +5,8 @@ import com.cyberacy.app.models.services.ApiConnection
 import com.google.gson.annotations.SerializedName
 import retrofit2.HttpException
 import retrofit2.await
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -75,6 +77,10 @@ class Meeting(
     val town: Town?,
 ) {
 
+    fun isFree(): Boolean {
+        return (priceExcl <= 0)
+    }
+
     fun getMonthPrefix(): String {
         val listMonthPrefix = listOf(
             "JANV",
@@ -97,7 +103,10 @@ class Meeting(
         return if (priceExcl <= 0.00) {
             "gratuit"
         } else {
-            val price = priceExcl + (priceExcl * (rateVTA / 100))
+            val df = DecimalFormat("#.##")
+            df.roundingMode = RoundingMode.FLOOR
+            var price = priceExcl + (priceExcl * (rateVTA / 100))
+            price = df.format(price).toDouble()
             "$price €"
         }
     }

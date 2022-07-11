@@ -156,11 +156,16 @@ class MeetingDetailActivity : AppCompatActivity() {
     }
 
     private fun goToCheckout() {
-        val intent = Intent(this, PaymentCyberacyActivity::class.java)
-        intent.putExtra("libelle", "Réservation meeting : ${meeting?.name}")
-        intent.putExtra("amountExcl", meeting?.priceExcl)
-        intent.putExtra("rateVAT", meeting?.rateVTA)
-        resultLauncher.launch(intent)
+        val isFree = meeting?.isFree() ?: true
+        if(isFree) {
+            actionPaymentSuccessful()
+        } else {
+            val intent = Intent(this, PaymentCyberacyActivity::class.java)
+            intent.putExtra("libelle", "Réservation meeting : ${meeting?.name}")
+            intent.putExtra("amountExcl", meeting?.priceExcl)
+            intent.putExtra("rateVAT", meeting?.rateVTA)
+            resultLauncher.launch(intent)
+        }
     }
 
     private fun openGoogleCalendar() {
