@@ -252,6 +252,7 @@ create table meeting
     mee_vta_rate       decimal default (20.00) not null,
     mee_lat            decimal null,
     mee_lng            decimal null,
+    mee_uuid           uuid default(gen_random_uuid()) unique not null,
     pop_id             int                     not null,
     twn_code_insee     varchar(15) null,
     constraint pk_meeting primary key (mee_id),

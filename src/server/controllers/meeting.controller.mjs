@@ -23,7 +23,7 @@ const AddMeeting = (meetingJson) => {
             let meeting = new Meeting()
             Object.assign(meeting, meetingJson)
             let coordinates = await geoCtrl.GetLocationFromAddress(meeting.street_address, meeting.town_code_insee)
-            if(coordinates !== null) {
+            if (coordinates !== null) {
                 meeting.latitude = coordinates.latitude
                 meeting.longitude = coordinates.longitude
             }
@@ -34,7 +34,7 @@ const AddMeeting = (meetingJson) => {
                     resolve(new ResponseApi().InitBadRequest("This meeting already existed."))
                 }
             }).catch((e) => {
-                if(e.code === '23503') {
+                if (e.code === '23503') {
                     resolve(new ResponseApi().InitBadRequest(e.message))
                     return
                 }
@@ -63,7 +63,7 @@ const AbortedMeeting = (id, reason = null) => {
                     resolve(new ResponseApi().InitBadRequest("This meeting not existed or already aborted."))
                 }
             }).catch((e) => {
-                if(e.code === '23503') {
+                if (e.code === '23503') {
                     resolve(new ResponseApi().InitBadRequest(e.message))
                     return
                 }
@@ -91,7 +91,7 @@ const GetMeeting = (town = null, idPoliticalParty = null, nir = null, includeAbo
         new Meeting().Get(town, idPoliticalParty, nir, includeAborted, includeCompleted, includeFinished, id, onlyMine).then(async (res) => {
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            if(e.code === '23503') {
+            if (e.code === '23503') {
                 resolve(new ResponseApi().InitBadRequest(e.message))
                 return
             }
@@ -109,17 +109,17 @@ const GetMeeting = (town = null, idPoliticalParty = null, nir = null, includeAbo
  */
 const GetMeetingById = (nir, id) => {
     return new Promise((resolve, _) => {
-        if(id === null) {
+        if (id === null) {
             resolve(new ResponseApi().InitMissingParameters())
             return
         }
         new Meeting().GetById(nir, id).then(async (res) => {
-            if(res != null) {
+            if (res != null) {
                 res.town = await new Town().GetById(res.town_code_insee)
             }
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            if(e.code === '23503') {
+            if (e.code === '23503') {
                 resolve(new ResponseApi().InitBadRequest(e.message))
                 return
             }
@@ -147,7 +147,7 @@ const AddParticipant = (nir, idMeeting) => {
                     resolve(new ResponseApi().InitBadRequest("This participant not existed."))
                 }
             }).catch((e) => {
-                if(e.code === '23503') {
+                if (e.code === '23503') {
                     resolve(new ResponseApi().InitBadRequest(e.message))
                     return
                 }
@@ -177,7 +177,7 @@ const AbortedParticipant = (nir, idMeeting, reason = null) => {
                     resolve(new ResponseApi().InitBadRequest("This participant not existed or already aborted."))
                 }
             }).catch((e) => {
-                if(e.code === '23503') {
+                if (e.code === '23503') {
                     resolve(new ResponseApi().InitBadRequest(e.message))
                     return
                 }
@@ -187,4 +187,30 @@ const AbortedParticipant = (nir, idMeeting, reason = null) => {
     });
 }
 
-export default {AddParticipant, AddMeeting, AbortedMeeting, GetMeeting, AbortedParticipant, GetMeetingById}
+const GetInfoParticipant = (nir, idMeeting) => {
+    return new Promise((resolve, _) => {
+        if (!nir || !idMeeting) {
+            resolve(new ResponseApi().InitMissingParameters())
+        } else {
+            new Meeting().GetParticipantInfo(nir, idMeeting).then((res) => {
+                if (res) {
+                    resolve(new ResponseApi().InitOK(res))
+                } else {
+                    resolve(new ResponseApi().InitBadRequest("This participant not existed."))
+                }
+            }).catch((e) => {
+                resolve(new ResponseApi().InitInternalServer(e))
+            })
+        }
+    });
+}
+
+export default {
+    AddParticipant,
+    AddMeeting,
+    AbortedMeeting,
+    GetMeeting,
+    AbortedParticipant,
+    GetMeetingById,
+    GetInfoParticipant
+}

@@ -21,6 +21,7 @@ class Meeting {
     price_excl
     latitude
     longitude
+    uuid
     is_participate
     town = null
 }
@@ -105,6 +106,54 @@ Meeting.prototype.Aborted = function (id, reason) {
 }
 
 /**
+ * Récupère les informations d'un participant pour générer un QR-Code
+ * @param nir Le NIR du participant
+ * @param id L'ID du meeting
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+Meeting.prototype.GetParticipantInfo = function (nir, id) {
+    return new Promise((resolve, reject) => {
+        this.IfExists(id).then((isExists) => {
+            if (!isExists) {
+                resolve(null)
+                return
+            }
+            const request = {
+                text: `select mee.mee_id         as id,
+                              mee.mee_name       as name,
+                              mee.mee_date_start as date_start,
+                              mee.mee_uuid       as uuid,
+                              prs_firstname      as firstname,
+                              prs_lastname       as lastname,
+                              prs_birthday       as birthday,
+                              sex_name           as civility
+                       from meeting mee
+                                join participant ptc on mee.mee_id = ptc.mee_id and ptc.prs_nir = $1
+                                join person prs on ptc.prs_nir = prs.prs_nir
+                                join sex s on prs.sex_id = s.sex_id
+                       where mee.mee_id = $2
+                       limit 1`,
+                values: [nir, id],
+            }
+            pool.query(request, (error, result) => {
+                if (error) {
+                    reject(error)
+                } else {
+                    if (result.rows.length <= 0) {
+                        resolve(null)
+                    } else {
+                        resolve(result.rows[0])
+                    }
+                }
+            });
+        }).catch((e) => {
+            reject(e)
+        })
+    });
+}
+
+/**
  * Récupère la liste des meetings
  * @param town La ville
  * @param idPoliticalParty L'id du parti politique
@@ -120,7 +169,8 @@ Meeting.prototype.Aborted = function (id, reason) {
 Meeting.prototype.Get = function (town = null, idPoliticalParty = null, nir = null, includeAborted = false, includeCompleted = true, includeFinished = false, id = null, onlyMine = false) {
     return new Promise((resolve, reject) => {
         const request = {
-            text: `select * from filter_meeting($1, $2, $3, $4, $5, $6, $7, $8)`,
+            text: `select *
+                   from filter_meeting($1, $2, $3, $4, $5, $6, $7, $8)`,
             values: [nir, town, idPoliticalParty, includeAborted, includeCompleted, includeFinished, id, onlyMine],
         }
         pool.query(request, (error, result) => {
@@ -160,6 +210,7 @@ Meeting.prototype.GetById = function (nir, id) {
                           mee.twn_code_insee              as town_code_insee,
                           mee_vta_rate                    as vta_rate,
                           mee_price_excl                  as price_excl,
+                          mee_uuid                        as uuid,
                           mee_lat                         as latitude,
                           mee_lng                         as longitude,
                           case
@@ -176,7 +227,7 @@ Meeting.prototype.GetById = function (nir, id) {
             if (error) {
                 reject(error)
             } else {
-                if(result.rows.length > 0) {
+                if (result.rows.length > 0) {
                     resolve(Object.assign(new Meeting(), result.rows[0]))
                 } else {
                     resolve(null)

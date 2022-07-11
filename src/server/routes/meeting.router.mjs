@@ -110,4 +110,14 @@ routerMee.delete("/meeting/participate/:id", async (req, res) => {
     res.status(response.code).send(response)
 });
 
+routerMee.get("/meeting/participate/:id/details-qrcode", async (req, res) => {
+    // #swagger.tags = ['Meeting']
+    // #swagger.description = 'Récupérer les informations afin de générer un QR-Code'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const nir = req.data.nir
+    const response = await meetingCtrl.GetInfoParticipant(nir, req.params.id)
+    res.status(response.code).send(response)
+});
+
 export {routerMee}
