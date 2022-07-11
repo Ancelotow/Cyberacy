@@ -38,7 +38,7 @@ const GetPaymentSheet = (paymentJson) => {
             {apiVersion: '2020-08-27'}
         );
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: payment.amount_including_tax * 100,
+            amount: parseInt((payment.amount_including_tax * 100), 10),
             description: payment.libelle,
             receipt_email: payment.email,
             currency: 'eur',
