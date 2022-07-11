@@ -39,12 +39,9 @@ class PoliticalParty(
 
         suspend fun getMinePoliticalParty(): PoliticalParty? {
             try {
-                val response: ResponseAPI<List<PoliticalParty>?> =
-                    ApiConnection.connection().getPoliticalParty(true).await()
-                if (response.data == null || response.data.isEmpty()) {
-                    return null
-                }
-                return response.data[0]
+                val response: ResponseAPI<PoliticalParty?> =
+                    ApiConnection.connection().getMinePoliticalParty().await()
+                return response.data
             } catch (e: HttpException) {
                 throw e
             }

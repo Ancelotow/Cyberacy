@@ -48,7 +48,7 @@ class PartyFragment : Fragment() {
                     loader.visibility = View.GONE
                     childView.visibility = View.VISIBLE
                     if(it.party != null) {
-                        changeView(MainPartyFragment.newInstance(it.party.id))
+                        changeView(MainPartyFragment())
                     } else {
                         changeView(JoinPartyFragment())
                     }

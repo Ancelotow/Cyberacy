@@ -103,7 +103,7 @@ class Meeting(
         return if (priceExcl <= 0.00) {
             "gratuit"
         } else {
-            val df = DecimalFormat("#.##")
+            val df = DecimalFormat("#,##")
             df.roundingMode = RoundingMode.FLOOR
             var price = priceExcl + (priceExcl * (rateVTA / 100))
             price = df.format(price).toDouble()

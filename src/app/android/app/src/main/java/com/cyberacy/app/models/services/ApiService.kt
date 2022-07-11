@@ -17,6 +17,11 @@ interface ApiService {
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<ResponseAPI<List<PoliticalParty>?>>
 
+    @GET("political_party/mine")
+    fun getMinePoliticalParty(
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<ResponseAPI<PoliticalParty?>>
+
     @POST("political_party/{id}/join")
     fun joinParty(
         @Path("id") id: Int,
@@ -65,7 +70,7 @@ interface ApiService {
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<ResponseAPI<List<Meeting>?>>
 
-    @GET("meeting/{id}")
+    @GET("meeting/{id}/details")
     fun getMeetingById(
         @Path("id") id: Int? = null,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"

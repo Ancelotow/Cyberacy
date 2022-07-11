@@ -16,28 +16,25 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.cyberacy.app.R
 import com.cyberacy.app.models.entities.Meeting
+import com.cyberacy.app.models.entities.PoliticalParty
+import com.cyberacy.app.models.repositories.PartyStateError
+import com.cyberacy.app.models.repositories.PartyStateLoading
+import com.cyberacy.app.models.repositories.PartyStateSuccessMine
 import com.cyberacy.app.models.services.ApiConnection
 import com.cyberacy.app.ui.meeting.ListMeetingActivity
 import com.cyberacy.app.ui.meeting.meeting_detail.MeetingDetailActivity
+import com.cyberacy.app.ui.meeting.meeting_ticket.MeetingTicketActivity
+import com.cyberacy.app.ui.party.join_party.JoinPartyFragment
 import com.cyberacy.app.ui.party.messaging.MessagingActivity
 import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import retrofit2.await
 
-private const val ARG_PARAM = "id_party"
-
 class MainPartyFragment : Fragment() {
 
     private val viewModel: MainPartyViewModel by viewModels()
-    private var idParty: Int? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            idParty = it.getInt(ARG_PARAM)
-        }
-    }
+    private var party: PoliticalParty? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,44 +43,55 @@ class MainPartyFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_main_party, container, false)
     }
 
-    companion object {
-        fun newInstance(id: Int) = MainPartyFragment().apply {
-            arguments = Bundle().apply {
-                putInt(ARG_PARAM, id)
-            }
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val body = view.findViewById<ConstraintLayout>(R.id.body_main_party)
-        val loader = view.findViewById<ProgressBar>(R.id.loader_main_party)
-        val name = view.findViewById<TextView>(R.id.title)
-        val logo = view.findViewById<ImageView>(R.id.logo)
-        val cardMsg = view.findViewById<CardView>(R.id.card_messagerie)
+        initParty()
+    }
+
+    private fun initParty() {
+        val body = view!!.findViewById<ConstraintLayout>(R.id.body_main_party)
+        val errorBody = view!!.findViewById<ConstraintLayout>(R.id.error_party)
+        val loader = view!!.findViewById<ProgressBar>(R.id.loader_main_party)
+        val txtError = view!!.findViewById<TextView>(R.id.txt_error)
+        val name = view!!.findViewById<TextView>(R.id.title)
+        val logo = view!!.findViewById<ImageView>(R.id.logo)
+        val cardMsg = view!!.findViewById<CardView>(R.id.card_messagerie)
         loader.visibility = View.VISIBLE
         body.visibility = View.GONE
-        lifecycleScope.launch {
-            val responseApi = ApiConnection.connection().getPoliticalParty(false, idParty).await()
-            val listsParties = responseApi.data
-            if(listsParties == null || listsParties.isEmpty()) {
-                Log.v("Party", "None")
-            } else {
-                val party = listsParties[0]
-                name.text = party.name
-                Picasso.get().load(party.urlLogo).into(logo)
-                initNextMeeting(party.nextMeeting)
+        viewModel.party.observe(viewLifecycleOwner) {
+            when (it) {
+                is PartyStateError -> {
+                    loader.visibility = View.GONE
+                    errorBody.visibility = View.VISIBLE
+                    txtError.text = "Une erreure est survenue...\n${it.ex.message()}"
+                }
+                PartyStateLoading -> {
+                    body.visibility = View.GONE
+                    loader.visibility = View.VISIBLE
+                }
+                is PartyStateSuccessMine -> {
+                    loader.visibility = View.GONE
+                    if(it.party == null) {
+                        errorBody.visibility = View.VISIBLE
+                        txtError.text = "Nous n'avons pas trouvé votre parti politique"
+                    } else {
+                        this.party = it.party
+                        body.visibility = View.VISIBLE
+                        name.text = this.party!!.name
+                        Picasso.get().load(this.party!!.urlLogo).into(logo)
+                        initNextMeeting(this.party!!.nextMeeting)
+                        cardMsg.setOnClickListener {
+                            val intent = Intent(view!!.context, MessagingActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                }
+                else -> {}
             }
-            loader.visibility = View.GONE
-            body.visibility = View.VISIBLE
-        }
-        cardMsg.setOnClickListener {
-            val intent = Intent(view.context, MessagingActivity::class.java)
-            startActivity(intent)
         }
     }
 
-    fun initNextMeeting(meeting: Meeting?) {
+    private fun initNextMeeting(meeting: Meeting?) {
         val infoNoMeeting = view?.findViewById<TextView>(R.id.info_no_meeting)
         val btnMoreMeeting = view?.findViewById<MaterialButton>(R.id.btn_more_meeting)
         val nextMeeting = view?.findViewById<ConstraintLayout>(R.id.next_meeting)
@@ -103,6 +111,11 @@ class MainPartyFragment : Fragment() {
             val btnQrcode = view?.findViewById<MaterialButton>(R.id.btn_qrcode)
             if(meeting.isParticipated) {
                 btnQrcode?.visibility = View.VISIBLE
+                btnQrcode?.setOnClickListener {
+                    val intent = Intent(context, MeetingTicketActivity::class.java)
+                    intent.putExtra("idMeeting", meeting.id)
+                    context?.startActivity(intent)
+                }
             }
             nextMeeting?.isClickable = true
             nextMeeting?.setOnClickListener {
@@ -113,7 +126,7 @@ class MainPartyFragment : Fragment() {
             }
             btnMoreMeeting?.setOnClickListener {
                 val intent = Intent(view?.context, ListMeetingActivity::class.java)
-                intent.putExtra("idParty", idParty)
+                intent.putExtra("idParty", party?.id)
                 startActivity(intent)
             }
         }
