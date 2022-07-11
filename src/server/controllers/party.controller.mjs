@@ -91,7 +91,7 @@ const GetPoliticalParty = (siren = null, nir = null, includeLeft = false, idPoli
             const code = (res) ? 200 : 204;
             if(code === 200) {
                 for(let i = 0; i < res.length; i++) {
-                    let listMeeting = await new Meeting().Get(null, res[i].id, null, false, true)
+                    let listMeeting = await new Meeting().Get(nir, res[i].id, null, false, true)
                     if(listMeeting.length > 0) {
                         res[i].next_meeting = listMeeting[0]
                     }
