@@ -820,6 +820,28 @@
         ]
       }
     },
+    "/political_party/{id}/details": {
+      "get": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Récupère en détail un parti politique",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/political_party/{id}/join": {
       "post": {
         "tags": [
@@ -1073,7 +1095,7 @@
         ]
       }
     },
-    "/meeting/{id}": {
+    "/meeting/{id}/details": {
       "get": {
         "tags": [
           "Meeting"
