@@ -1,36 +1,28 @@
-import 'package:bo_cyberacy/pages/election/add_election.dart';
-import 'package:bo_cyberacy/widgets/cards/card_state_progress.dart';
+import 'package:bo_cyberacy/models/entities/meeting.dart';
+import 'package:bo_cyberacy/models/services/meeting_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/entities/election.dart';
-import '../models/notifications/navigation_notification.dart';
-import '../models/services/vote_service.dart';
+
 import '../widgets/buttons/button_card.dart';
 import '../widgets/cards/card_shimmer.dart';
+import '../widgets/cards/card_state_progress.dart';
 import '../widgets/info_error.dart';
 
-class VotePage extends StatefulWidget {
-  VotePage({Key? key}) : super(key: key);
+class MeetingsPage extends StatelessWidget {
+  List<Meeting> meetings = [];
 
-  @override
-  State<VotePage> createState() => _VotePageState();
-}
-
-class _VotePageState extends State<VotePage> {
-  List<Election> elections = [];
-  bool _sortAsc_colId = true;
+  MeetingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: FutureBuilder(
-        future: VoteService().getAllElection(),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<Election>> snapshot) {
+        future: MeetingService().getAllMeetings(),
+        builder: (BuildContext context, AsyncSnapshot<List<Meeting>> snapshot) {
           if (snapshot.hasData) {
-            if (elections.isEmpty) {
-              elections = snapshot.data!;
+            if (meetings.isEmpty) {
+              meetings = snapshot.data!;
             }
             return _getTable(context);
           } else if (snapshot.hasError) {
@@ -105,16 +97,16 @@ class _VotePageState extends State<VotePage> {
   }
 
   List<DataRow> _getRows(BuildContext context) {
-    return elections
+    return meetings
         .map(
           (e) => DataRow(
             cells: [
               DataCell(Text(e.id.toString())),
               DataCell(Text(e.name.toString())),
-              DataCell(Text(e.getTypeName())),
               DataCell(
                   Text(DateFormat("dd/MM/yyyy HH:mm").format(e.dateStart))),
-              DataCell(Text(DateFormat("dd/MM/yyyy HH:mm").format(e.dateEnd))),
+              DataCell(Text(e.getFullAddress())),
+              DataCell(Text("${e.priceExcl.toString()} €")),
               DataCell(CardStateProgress(stateProgress: e.getStateProgress())),
             ],
           ),
@@ -124,24 +116,17 @@ class _VotePageState extends State<VotePage> {
 
   List<DataColumn> _getColumns(BuildContext context) {
     return [
-      DataColumn(
+      const DataColumn(
         label: Text("id"),
         numeric: true,
-        onSort: (columnIndex, sortAscending) {
-          setState(() {
-            _sortAsc_colId = !_sortAsc_colId;
-            if (_sortAsc_colId) {
-              elections.sort((a, b) => a.id.compareTo(b.id));
-            } else {
-              elections.sort((a, b) => b.id.compareTo(a.id));
-            }
-          });
-        },
       ),
       const DataColumn(label: Text("nom")),
-      const DataColumn(label: Text("type")),
-      const DataColumn(label: Text("date debut")),
-      const DataColumn(label: Text("date fin")),
+      const DataColumn(label: Text("date")),
+      const DataColumn(label: Text("adresse (complète)")),
+      const DataColumn(
+        label: Text("prix HT"),
+        numeric: true,
+      ),
       const DataColumn(label: Text("état")),
     ];
   }
@@ -149,11 +134,11 @@ class _VotePageState extends State<VotePage> {
   Widget _getButtonAdd(BuildContext context) {
     return ButtonCard(
       icon: Icons.add_circle_outline,
-      label: "Ajouter une élection",
+      label: "Ajouter un meeting",
       width: 300,
       height: 100,
       color: Theme.of(context).highlightColor,
-      onTap: () => NavigationNotification(AddElectionPage()).dispatch(context),
+      onTap: () => {},
     );
   }
 }

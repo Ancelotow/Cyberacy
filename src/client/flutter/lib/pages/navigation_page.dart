@@ -1,5 +1,6 @@
 import 'package:bo_cyberacy/models/entities/political_party.dart';
 import 'package:bo_cyberacy/pages/manifestion_page.dart';
+import 'package:bo_cyberacy/pages/meetings_page.dart';
 import 'package:bo_cyberacy/pages/party_page.dart';
 import 'package:bo_cyberacy/pages/screen_404.dart';
 import 'package:bo_cyberacy/pages/vote_page.dart';
@@ -55,6 +56,11 @@ class _NavigationPageState extends State<NavigationPage> {
                   onTap: click,
                 ),
                 NavBarItem(
+                  icon: Icons.handshake,
+                  label: "Meetings",
+                  onTap: click,
+                ),
+                NavBarItem(
                   icon: Icons.how_to_vote,
                   label: "Elections",
                   onTap: click,
@@ -87,6 +93,10 @@ class _NavigationPageState extends State<NavigationPage> {
         break;
 
       case 2:
+        newPage = MeetingsPage();
+        break;
+
+      case 3:
         newPage = VotePage();
         break;
 
