@@ -57,6 +57,16 @@ routerParty.get("/political_party", async (req, res) => {
     res.status(response.code).send(response)
 });
 
+routerParty.get("/political_party/:id/details", async (req, res) => {
+    // #swagger.tags = ['Political party']
+    // #swagger.description = 'Récupère en détail un parti politique'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const nir = req.data.nir
+    const response = await partyCtrl.GetPoliticalPartyDetail(nir, req.params.id)
+    res.status(response.code).send(response)
+});
+
 routerParty.post("/political_party/:id/join", async (req, res) => {
     // #swagger.tags = ['Political party']
     // #swagger.description = 'Adhérer à un parti politique.'

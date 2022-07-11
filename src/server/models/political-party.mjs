@@ -116,6 +116,43 @@ const GetAll = () => {
     });
 }
 
+const GetById = (id, nir) => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: `select distinct pop.pop_id           as id,
+                                   pop_name             as name,
+                                   pop_url_logo         as url_logo,
+                                   pop_date_create      as date_create,
+                                   pop_description      as description,
+                                   pop_is_delete        as is_delete,
+                                   pop_date_delete      as date_delete,
+                                   pop_object           as object,
+                                   pop_address_street   as address_street,
+                                   pop_siren            as siren,
+                                   pop_chart            as chart,
+                                   pop_iban             as iban,
+                                   pop_url_bank_details as url_bank_details,
+                                   pop_url_chart        as url_chart,
+                                   poe_id               as id_political_edge,
+                                   pop.prs_nir          as nir,
+                                   twn_code_insee       as town_code_insee
+                   from political_party pop
+                            join adherent adh on pop.pop_id = adh.pop_id and adh.prs_nir = $1
+                   where pop.pop_id = $2
+                   limit 1`,
+            values: [id, nir],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows[0] : null
+                resolve(res)
+            }
+        });
+    });
+}
+
 /**
  * Récupère tout les partie politique pour les statistiques
  * @returns {Promise<unknown>}
@@ -439,5 +476,6 @@ export default {
     GetAnnualFee,
     GetNbMessageByDay,
     GetNbMessageByWeeks,
-    GetAllPartyForStats
+    GetAllPartyForStats,
+    GetById
 }

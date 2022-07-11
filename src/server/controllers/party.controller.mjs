@@ -88,13 +88,32 @@ const AddParty = (party) => {
 const GetPoliticalParty = (siren = null, nir = null, includeLeft = false, idPoliticalParty = null) => {
     return new Promise((resolve, _) => {
         partyMod.Get(nir, includeLeft, siren, idPoliticalParty).then(async (res) => {
+            resolve(new ResponseApi().InitData(res))
+        }).catch((e) => {
+            if(e.code === '23503') {
+                resolve(new ResponseApi().InitBadRequest(e.message))
+                return
+            }
+            resolve(new ResponseApi().InitInternalServer(e))
+        })
+    })
+}
+
+/**
+ * Récupère en détail un parti politique
+ * @param nir Le NIR de l'utilisateur
+ * @param id L'ID du parti politique
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetPoliticalPartyDetail = (nir, id) => {
+    return new Promise((resolve, _) => {
+        partyMod.GetById(id, nir).then(async (res) => {
             const code = (res) ? 200 : 204;
             if(code === 200) {
-                for(let i = 0; i < res.length; i++) {
-                    let listMeeting = await new Meeting().Get(nir, res[i].id, null, false, true)
-                    if(listMeeting.length > 0) {
-                        res[i].next_meeting = listMeeting[0]
-                    }
+                let listMeeting = await new Meeting().Get(null, res.id, nir, false, true)
+                if(listMeeting.length > 0) {
+                    res.next_meeting = listMeeting[0]
                 }
             }
             resolve(new ResponseApi().InitData(res))
@@ -321,5 +340,6 @@ export default {
     GetAnnualFeeByParty,
     UploadLogo,
     UploadChart,
-    UploadBankDetails
+    UploadBankDetails,
+    GetPoliticalPartyDetail
 }
