@@ -292,7 +292,7 @@ const AddChoice = (choiceJson, idVote) => {
     return new Promise((resolve, _) => {
         if (!choiceJson) {
             resolve(new ResponseApi().InitMissingParameters())
-        } else if (!choiceJson.name || !choiceJson.choice_order || !idVote) {
+        } else if (!choiceJson.name || !idVote) {
             resolve(new ResponseApi().InitMissingParameters())
         } else {
             let choice = new Choice()
