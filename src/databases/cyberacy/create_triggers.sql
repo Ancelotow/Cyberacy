@@ -199,6 +199,31 @@ create trigger trg_add_choice
 execute procedure add_choice();
 
 
+-- Trigger BEFORE INSERT pour la table "choice"
+create or replace function add_choice_into_first_round()
+    returns trigger
+as
+$trigger$
+begin
+
+    if exists(select * from round where vte_id = new.vte_id and rnd_num = 1) then
+        insert into link_round_choice(cho_id, vte_id, rnd_num, lrc_nb_vote)
+        values(new.cho_id, new.vte_id, 1, 0);
+    end if;
+
+    return new;
+end
+$trigger$
+    language plpgsql;
+
+create trigger trg_add_choice_into_first_round
+    after insert
+    on choice
+    for each row
+execute procedure add_choice_into_first_round();
+
+
+
 -- Trigger BEFORE UPDATE pour la table "choice"
 create or replace function add_vote_for_choice()
     returns trigger
