@@ -15,6 +15,7 @@ class Manifestation {
     nb_person_estimate
     url_document_signed
     reason_aborted
+    fcm_topic
 
     steps = []
     options = []

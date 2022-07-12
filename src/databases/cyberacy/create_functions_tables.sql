@@ -64,7 +64,8 @@ create or replace function filter_manifestation(_nir adherent.prs_nir%type defau
                 security_description manifestation.man_security_description%type,
                 nb_person_estimate   manifestation.man_nb_person_estimate%type,
                 url_document_signed  manifestation.man_url_document_signed%type,
-                reason_aborted       manifestation.man_reason_aborted%type
+                reason_aborted       manifestation.man_reason_aborted%type,
+                fcm_topic            manifestation.man_fcm_topic%type
             )
 as
 $filter$
@@ -81,7 +82,8 @@ begin
                man_security_description as security_description,
                man_nb_person_estimate   as nb_person_estimate,
                man_url_document_signed  as url_document_signed,
-               man_reason_aborted       as reason_aborted
+               man_reason_aborted       as reason_aborted,
+               fcm_topic                as fcm_topic
         from manifestation man
                  left join manifestant mnf on man.man_id = mnf.man_id
         where (_nir is null or mnf.prs_nir = _nir)

@@ -134,6 +134,7 @@ create table manifestation
     man_is_aborted           boolean   default (false) not null,
     man_date_aborted         timestamp                 null,
     man_date_create          timestamp default now()   not null,
+    man_fcm_topic            varchar(75)               null,
     constraint pk_manifestation primary key (man_id)
 );
 

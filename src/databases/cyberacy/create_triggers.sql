@@ -325,3 +325,25 @@ create trigger trg_insert_thread
     for each row
 execute procedure add_thread();
 
+
+-- Trigger AFTER INSERT pour la table "manifestation"
+create or replace function add_manifestation()
+    returns trigger
+as
+$trigger$
+begin
+    update manifestation
+    set man_fcm_topic = concat('manifestation_', new.man_id)
+    where man_id = new.man_id;
+
+    return new;
+end
+$trigger$
+    language plpgsql;
+
+create trigger trg_insert_manifestation
+    after insert
+    on manifestation
+    for each row
+execute procedure add_manifestation();
+
