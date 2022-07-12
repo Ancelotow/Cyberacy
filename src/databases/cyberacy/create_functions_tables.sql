@@ -83,7 +83,7 @@ begin
                man_nb_person_estimate   as nb_person_estimate,
                man_url_document_signed  as url_document_signed,
                man_reason_aborted       as reason_aborted,
-               fcm_topic                as fcm_topic
+               man_fcm_topic            as fcm_topic
         from manifestation man
                  left join manifestant mnf on man.man_id = mnf.man_id
         where (_nir is null or mnf.prs_nir = _nir)
