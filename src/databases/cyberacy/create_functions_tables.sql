@@ -493,9 +493,6 @@ create or replace function filter_choice(_nir person.prs_nir%type, _vte_id round
             (
                 id           choice.cho_id%type,
                 name         choice.cho_name%type,
-                choice_order choice.cho_order%type,
-                nb_vote      choice.cho_nb_vote%type,
-                num_round    choice.rnd_num%type,
                 id_vote      choice.vte_id%type,
                 description  choice.cho_description%type,
                 candidat_nir choice.prs_nir%type,
@@ -505,19 +502,19 @@ as
 $filter$
 begin
     return query
-        select cho.cho_id                               as id,
-               cho_name                                 as name,
-               cho_order                                as choice_order,
-               cho_nb_vote                              as nb_vote,
-               cho.rnd_num                              as num_round,
-               cho.vte_id                               as id_vote,
-               cho_description                          as description,
-               cho.prs_nir                              as candidat_nir,
-               concat(prs_lastname, ' ', prs_firstname) as candidat
+        select distinct cho.cho_id                               as id,
+                        cho_name                                 as name,
+                        cho.vte_id                               as id_vote,
+                        cho_description                          as description,
+                        cho.prs_nir                              as candidat_nir,
+                        concat(prs_lastname, ' ', prs_firstname) as candidat
         from choice cho
-                 join filter_round(_nir, true, true, null, _vte_id) rnd on rnd.num = _rnd_num
+                 left join link_round_choice lrc on cho.cho_id = lrc.cho_id
+                 left join filter_round(_nir, true, true, null, _vte_id) rnd
+                           on rnd.num = _rnd_num and rnd.num = lrc.rnd_num and rnd.id_vote = lrc.vte_id
                  left join person prs on cho.prs_nir = prs.prs_nir
-        order by cho_order, cho_name;
+        where cho.vte_id = _vte_id
+        order by cho_name;
 end;
 $filter$
     language plpgsql;
@@ -768,12 +765,12 @@ $filter$
 
 
 -- Résultats de vote
-create or replace function vote_get_results(_vte_id vote.vte_id%type)
+create or replace function vote_get_results(_vte_id vote.vte_id%type, _rnd_num round.rnd_num%type)
     returns table
             (
                 id_choice               choice.cho_id%type,
                 libelle_choice          choice.cho_name%type,
-                nb_voice                choice.cho_nb_vote%type,
+                nb_voice                link_round_choice.lrc_nb_vote%type,
                 perc_with_abstention    decimal,
                 perc_without_abstention decimal,
                 id_vote                 vote.vte_id%type,
@@ -785,20 +782,22 @@ as
 $filter$
 begin
     return query
-        select cho_id                                      as id_choice,
+        select lrc.cho_id                                  as id_choice,
                cho_name                                    as libelle_choice,
-               cho_nb_vote                                 as nb_voice,
-               (cho_nb_vote::decimal / vte_nb_voter) * 100 as perc_with_abstention,
-               (cho_nb_vote::decimal / get_nb_voter_to_one_vote(rnd.vte_id, rnd.rnd_num)) *
+               lrc_nb_vote                                 as nb_voice,
+               (lrc_nb_vote::decimal / vte_nb_voter) * 100 as perc_with_abstention,
+               (lrc_nb_vote::decimal / get_nb_voter_to_one_vote(rnd.vte_id, rnd.rnd_num)) *
                100                                         as perc_without_abstention,
                rnd.vte_id                                  as id_vote,
                vte_name                                    as name_vote,
                rnd.rnd_num                                 as num_round,
                rnd_name                                    as name_round
-        from choice cho
-                 join round rnd on cho.rnd_num = rnd.rnd_num
+        from link_round_choice lrc
+                 join choice cho on lrc.cho_id = cho.cho_id
+                 join round rnd on lrc.rnd_num = rnd.rnd_num
                  join vote vte on rnd.vte_id = vte.vte_id
         where rnd.vte_id = _vte_id
+        and rnd.rnd_num = _rnd_num
         order by rnd_date_start desc, perc_without_abstention desc;
 end;
 $filter$

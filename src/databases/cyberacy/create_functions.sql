@@ -118,9 +118,9 @@ declare
     nb_vote int;
 begin
 
-    select cho_nb_vote
+    select lrc_nb_vote
     into nb_vote
-    from choice
+    from link_round_choice
     where cho_id = id_choice
       and vte_id = _vte_id
       and rnd_num = _rnd_num;
@@ -133,8 +133,8 @@ begin
 
     insert into link_person_round (rnd_num, vte_id, prs_nir) values (_rnd_num, _vte_id, nir);
 
-    update choice
-    set cho_nb_vote = nb_vote
+    update link_round_choice
+    set lrc_nb_vote = nb_vote
     where cho_id = id_choice
       and vte_id = _vte_id
       and rnd_num = _rnd_num;

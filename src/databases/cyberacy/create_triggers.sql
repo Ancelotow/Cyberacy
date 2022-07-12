@@ -125,15 +125,14 @@ create trigger trg_add_round
     for each row
 execute procedure add_round();
 
--- Trigger AFTER INSERT pour la table "round"
+-- Trigger AFTER INSERT pour la table "vote"
 create or replace function add_choice_blank()
     returns trigger
 as
 $trigger$
 begin
-    insert into choice(cho_name, cho_order, cho_description, rnd_num, vte_id)
-    values ('vote blanc', 1, 'Vous pouvez voter blanc si aucune des proposition ne vous conviens.', new.rnd_num,
-            new.vte_id);
+    insert into choice(cho_name, cho_description, vte_id)
+    values ('Vote blanc', 'Vous pouvez voter blanc si aucune des propositions ne vous conviens.', new.vte_id);
 
     return new;
 end
@@ -142,9 +141,31 @@ $trigger$
 
 create trigger trg_add_choice_blank
     after insert
-    on round
+    on vote
     for each row
 execute procedure add_choice_blank();
+
+-- Trigger AFTER INSERT pour la table "vote"
+create or replace function add_first_round()
+    returns trigger
+as
+$trigger$
+begin
+    insert into round(rnd_num, rnd_name, rnd_date_start, rnd_date_end, vte_id)
+    select 1, 'Premier Tour', elc_date_start, elc_date_start + interval '12' HOUR, new.vte_id
+    from election
+    where elc_id = new.elc_id;
+
+    return new;
+end
+$trigger$
+    language plpgsql;
+
+create trigger trg_add_first_round
+    after insert
+    on vote
+    for each row
+execute procedure add_first_round();
 
 
 -- Trigger BEFORE INSERT pour la table "choice"
@@ -153,16 +174,17 @@ create or replace function add_choice()
 as
 $trigger$
 declare
-    date_vote timestamp;
+    date_election timestamp;
 begin
-    select rnd_date_start
-    into date_vote
-    from round
-    where rnd_num = new.rnd_num
-      and vte_id = new.vte_id;
+    select elc_date_start
+    into date_election
+    from vote vte
+             join election elc on elc.elc_id = vte.elc_id
+    where vte.vte_id = new.vte_id;
 
-    if date_vote <= now() then
-        raise 'You cannot add a new choice when vote has started.' using errcode = '23503';
+
+    if date_election <= now() then
+        raise 'You cannot add a new choice when election has started.' using errcode = '23503';
     end if;
 
     return new;
@@ -203,7 +225,7 @@ $trigger$
 
 create trigger trg_add_add_vote_for_choice
     before update
-    on choice
+    on link_round_choice
     for each row
 execute procedure add_vote_for_choice();
 
@@ -222,7 +244,7 @@ begin
         from town
         group by new.elc_name, new.elc_id;
 
-    -- Régionale
+        -- Régionale
     elsif new.tvo_id = 2 then
         insert into vote (vte_name, elc_id, vte_nb_voter, reg_code_insee)
         select concat(new.elc_name, ' : ', reg_name), new.elc_id, sum(twn_nb_resident), reg.reg_code_insee
@@ -231,7 +253,7 @@ begin
                  join town twn on dpt.dpt_code = twn.dpt_code
         group by reg_name, new.elc_name, new.elc_id, reg.reg_code_insee;
 
-    -- Départementale
+        -- Départementale
     elsif new.tvo_id = 3 then
         insert into vote (vte_name, elc_id, vte_nb_voter, dpt_code)
         select concat(new.elc_name, ' : ', dpt_name), new.elc_id, sum(twn_nb_resident), dpt.dpt_code
@@ -239,7 +261,7 @@ begin
                  join town twn on dpt.dpt_code = twn.dpt_code
         group by dpt_name, new.elc_name, new.elc_id, dpt.dpt_code;
 
-    -- Municipale
+        -- Municipale
     elsif new.tvo_id = 4 then
         insert into vote (vte_name, elc_id, vte_nb_voter, twn_code_insee)
         select concat(new.elc_name, ' : ', twn_name), new.elc_id, twn_nb_resident, twn_code_insee
