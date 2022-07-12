@@ -1690,6 +1690,21 @@
           }
         ]
       }
+    },
+    "/fcm-topics": {
+      "get": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Récupère tout les topics FCM (Notification PUSH) de l\\'utilisateur",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   },
   "definitions": {

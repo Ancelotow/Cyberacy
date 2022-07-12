@@ -88,6 +88,33 @@ Thread.prototype.GetById = function (nir, id) {
 }
 
 /**
+ * Récupère les topic de l'utilisateur sur les thread pour les Notifications PUSH
+ * @param nir Le NIR de l'utilisateur
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+Thread.prototype.GetMyFCMTopic = function (nir) {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: `
+                select thr_fcm_topic as fcm_topic
+                from thread thr
+                         join member mem on thr.thr_id = mem.thr_id and mem_mute_thread = false and mem_is_left = false
+                         join adherent adh on mem.adh_id = adh.adh_id and prs_nir = $1 and adh_is_left = false
+            `,
+            values: [nir],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(result.rows)
+            }
+        });
+    });
+}
+
+/**
  * Vérifie si un thread éxiste ou non selon l'id
  * @returns {Promise<unknown>}
  * @constructor

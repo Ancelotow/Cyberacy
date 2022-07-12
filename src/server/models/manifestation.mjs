@@ -1,6 +1,7 @@
 import {pool} from "../middlewares/postgres.mjs";
 import {FormaterDate} from "../middlewares/formatter.mjs";
 import {Vote} from "./vote.mjs";
+import {Thread} from "./thread.mjs";
 
 class Manifestation {
     id
@@ -64,6 +65,34 @@ Manifestation.prototype.Add = function () {
                 reject(error)
             } else {
                 resolve(true)
+            }
+        });
+    });
+}
+
+/**
+ * Récupère les topic de l'utilisateur sur les manifesations pour les Notifications PUSH
+ * @param nir Le NIR de l'utilisateur
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+Manifestation.prototype.GetMyFCMTopic = function (nir) {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: `
+                select man_fcm_topic as fcm_topic
+                from manifestation man
+                         join manifestant mnf on man.man_id = mnf.man_id and prs_nir = $1
+                where man_is_aborted = false
+                  and man_date_start > now()
+            `,
+            values: [nir],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(result.rows)
             }
         });
     });
@@ -155,10 +184,10 @@ Manifestation.prototype.GetById = function (id, nir) {
                        man_nb_person_estimate   as nb_person_estimate,
                        man_url_document_signed  as url_document_signed,
                        man_reason_aborted       as reason_aborted,
-                       case 
+                       case
                            when mnf.man_id is null then false
                            else true
-                        end as is_participated
+                           end                  as is_participated
                 from manifestation man
                          left join manifestant mnf on man.man_id = mnf.man_id and mnf.prs_nir = $1
                 where man.man_id = $2
@@ -169,7 +198,7 @@ Manifestation.prototype.GetById = function (id, nir) {
             if (error) {
                 reject(error)
             } else {
-                if(result.rows.length <= 0) {
+                if (result.rows.length <= 0) {
                     resolve(null)
                 } else {
                     resolve(Object.assign(new Manifestation(), result.rows[0]))

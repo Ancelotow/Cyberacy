@@ -34,7 +34,8 @@ const endpointsFiles = [
     './routes/meeting.router.mjs',
     './routes/messaging.router.mjs',
     './routes/stats.router.mjs',
-    './routes/payment.router.mjs'
+    './routes/payment.router.mjs',
+    './routes/notification-push.router.mjs'
 ]
 
 autogen(outputFile, endpointsFiles, doc)
