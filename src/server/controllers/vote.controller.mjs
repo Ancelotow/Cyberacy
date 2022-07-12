@@ -174,7 +174,7 @@ const GetElection = (nir, idElection = null, includeFinish = false, includeFutur
             for (let i = 0; i < res.length; i++) {
                 let listTypes = await new TypeVote().Get()
                 res[i].type_vote = listTypes.filter(e => e.id === res[i].id_type_vote)[0]
-                res[i].votes = await new Vote().Get(nir, res[i].id, true, true)
+                //res[i].votes = await new Vote().Get(nir, res[i].id, true, true)
             }
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
