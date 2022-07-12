@@ -8,6 +8,8 @@ import '../models/services/vote_service.dart';
 import '../widgets/buttons/button_card.dart';
 import '../widgets/cards/card_shimmer.dart';
 import '../widgets/info_error.dart';
+import '../widgets/table/grid_controle.dart';
+import 'election/list_vote.dart';
 
 class VotePage extends StatefulWidget {
   VotePage({Key? key}) : super(key: key);
@@ -32,7 +34,11 @@ class _VotePageState extends State<VotePage> {
             if (elections.isEmpty) {
               elections = snapshot.data!;
             }
-            return _getTable(context);
+            return GridControl(
+              columns: _getColumns(context),
+              rows: _getRows(context),
+              button: _getButtonAdd(context),
+            );
           } else if (snapshot.hasError) {
             return InfoError(error: snapshot.error as Error);
           } else {
@@ -61,49 +67,6 @@ class _VotePageState extends State<VotePage> {
     );
   }
 
-  Widget _getTable(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: _getButtonAdd(context),
-        ),
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black,
-                blurRadius: 6,
-                offset: Offset(1, 1), // Shadow position
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            child: DataTable(
-              headingRowColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                if (states.contains(MaterialState.hovered))
-                  return Theme.of(context).accentColor.withOpacity(0.08);
-                return Theme.of(context)
-                    .highlightColor
-                    .withOpacity(0.5); // Use the default value.
-              }),
-              columnSpacing: 100.0,
-              columns: _getColumns(context),
-              rows: _getRows(context),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   List<DataRow> _getRows(BuildContext context) {
     return elections
         .map(
@@ -117,6 +80,9 @@ class _VotePageState extends State<VotePage> {
               DataCell(Text(DateFormat("dd/MM/yyyy HH:mm").format(e.dateEnd))),
               DataCell(CardStateProgress(stateProgress: e.getStateProgress())),
             ],
+            onSelectChanged: (val) {
+              NavigationNotification(ListVotePage(idElection: e.id)).dispatch(context);
+            },
           ),
         )
         .toList();
@@ -146,7 +112,7 @@ class _VotePageState extends State<VotePage> {
     ];
   }
 
-  Widget _getButtonAdd(BuildContext context) {
+  ButtonCard _getButtonAdd(BuildContext context) {
     return ButtonCard(
       icon: Icons.add_circle_outline,
       label: "Ajouter une élection",

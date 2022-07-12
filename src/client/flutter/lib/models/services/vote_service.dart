@@ -9,11 +9,11 @@ import 'package:http/http.dart' as http;
 class VoteService extends ApiService {
   VoteService();
 
-  Future<List<Vote>> getAllVote() async {
+  Future<List<Vote>> getAllVote(int idElection) async {
     try {
       List<Vote> votes = [];
       var response = await http.get(
-        getUrl("vote", {"includeFinish": "true", "includeFuture": "true"}),
+        getUrl("election/$idElection/vote", {"includeFinish": "true", "includeFuture": "true"}),
         headers: await getHeaders(auth: true),
       );
       if (response.statusCode == 200) {

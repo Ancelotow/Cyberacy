@@ -1,5 +1,6 @@
 import 'package:bo_cyberacy/models/entities/meeting.dart';
 import 'package:bo_cyberacy/models/services/meeting_service.dart';
+import 'package:bo_cyberacy/pages/election/list_vote.dart';
 import 'package:bo_cyberacy/pages/meeting/add_meeting.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,7 @@ import '../widgets/buttons/button_card.dart';
 import '../widgets/cards/card_shimmer.dart';
 import '../widgets/cards/card_state_progress.dart';
 import '../widgets/info_error.dart';
+import '../widgets/table/grid_controle.dart';
 
 class MeetingsPage extends StatelessWidget {
   List<Meeting> meetings = [];
@@ -26,7 +28,11 @@ class MeetingsPage extends StatelessWidget {
             if (meetings.isEmpty) {
               meetings = snapshot.data!;
             }
-            return _getTable(context);
+            return GridControl(
+              columns: _getColumns(context),
+              rows: _getRows(context),
+              button: _getButtonAdd(context),
+            );
           } else if (snapshot.hasError) {
             return InfoError(error: snapshot.error as Error);
           } else {
@@ -52,49 +58,6 @@ class MeetingsPage extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.center,
         children: cardLoad,
       ),
-    );
-  }
-
-  Widget _getTable(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: _getButtonAdd(context),
-        ),
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black,
-                blurRadius: 6,
-                offset: Offset(1, 1), // Shadow position
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            child: DataTable(
-              headingRowColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                if (states.contains(MaterialState.hovered))
-                  return Theme.of(context).accentColor.withOpacity(0.08);
-                return Theme.of(context)
-                    .highlightColor
-                    .withOpacity(0.5); // Use the default value.
-              }),
-              columnSpacing: 100.0,
-              columns: _getColumns(context),
-              rows: _getRows(context),
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -133,7 +96,7 @@ class MeetingsPage extends StatelessWidget {
     ];
   }
 
-  Widget _getButtonAdd(BuildContext context) {
+  ButtonCard _getButtonAdd(BuildContext context) {
     return ButtonCard(
       icon: Icons.add_circle_outline,
       label: "Ajouter un meeting",
