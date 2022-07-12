@@ -97,4 +97,30 @@ class Vote {
     }
   }
 
+  String getLocalisationCode() {
+    if (idType == null) {
+      return "";
+    }
+    switch (idType) {
+      case 1:
+      case 6:
+        return "France";
+
+      case 2:
+        if (region != null) return region!.name;
+        return "";
+
+      case 3:
+        if (department != null) return department!.name;
+        return "";
+
+      case 4:
+        if (town != null) return town!.name;
+        return "";
+
+      default:
+        return "";
+    }
+  }
+
 }

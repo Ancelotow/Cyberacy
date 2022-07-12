@@ -41,10 +41,8 @@ class GridControl extends StatelessWidget {
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: SingleChildScrollView(
-
               scrollDirection: Axis.vertical,
               child: PaginatedDataTable(
-
                 columnSpacing: 100.0,
                 columns: columns,
                 source: GridSource(

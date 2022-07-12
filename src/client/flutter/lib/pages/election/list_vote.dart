@@ -1,4 +1,5 @@
 import 'package:bo_cyberacy/models/services/vote_service.dart';
+import 'package:bo_cyberacy/widgets/interactive_map.dart';
 import 'package:flutter/material.dart';
 import '../../models/entities/vote.dart';
 import 'package:intl/intl.dart';
@@ -23,10 +24,7 @@ class ListVotePage extends StatelessWidget {
             if (votes.isEmpty) {
               votes = snapshot.data!;
             }
-            return GridControl(
-              columns: _getColumns(context),
-              rows: _getRows(context),
-            );
+            return _getBody(context);
           } else if (snapshot.hasError) {
             return InfoError(error: snapshot.error as Error);
           } else {
@@ -35,6 +33,30 @@ class ListVotePage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Widget _getBody(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: GridControl(
+            columns: _getColumns(context),
+            rows: _getRows(context),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: InteractiveMap(
+            datas: _getDataForMap(context),
+            modelPath: _modelPath(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _modelPath() {
+    return "assets/maps/france_reg.json";
   }
 
   Widget _getTableLoader(BuildContext context) {
@@ -67,6 +89,17 @@ class ListVotePage extends StatelessWidget {
           ),
         )
         .toList();
+  }
+
+  List<ModelInterativeMap> _getDataForMap(BuildContext context) {
+    return votes
+        .map(
+          (e) => ModelInterativeMap(
+        name: e.getLocalite(),
+        code: e.getLocalisationCode(),
+        color: Colors.black,
+      ),
+    ).toList();
   }
 
   List<DataColumn> _getColumns(BuildContext context) {
