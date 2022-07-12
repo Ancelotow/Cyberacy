@@ -496,21 +496,21 @@ create or replace function filter_choice(_nir person.prs_nir%type, _vte_id round
                 id_vote      choice.vte_id%type,
                 description  choice.cho_description%type,
                 candidat_nir choice.prs_nir%type,
-                candidat     varchar(150)
+                candidat     varchar
             )
 as
 $filter$
 begin
     return query
-        select distinct cho.cho_id                               as id,
-                        cho_name                                 as name,
-                        cho.vte_id                               as id_vote,
-                        cho_description                          as description,
-                        cho.prs_nir                              as candidat_nir,
-                        concat(prs_lastname, ' ', prs_firstname) as candidat
+        select distinct cho.cho_id                                        as id,
+                        cho_name                                          as name,
+                        cho.vte_id                                        as id_vote,
+                        cho_description                                   as description,
+                        cho.prs_nir                                       as candidat_nir,
+                        concat(prs_lastname, ' ', prs_firstname)::varchar as candidat
         from choice cho
                  left join link_round_choice lrc on cho.cho_id = lrc.cho_id
-                 left join filter_round(_nir, true, true, null, _vte_id) rnd
+                 left join filter_round(_nir, _vte_id) rnd
                            on rnd.num = _rnd_num and rnd.num = lrc.rnd_num and rnd.id_vote = lrc.vte_id
                  left join person prs on cho.prs_nir = prs.prs_nir
         where cho.vte_id = _vte_id
@@ -797,7 +797,7 @@ begin
                  join round rnd on lrc.rnd_num = rnd.rnd_num
                  join vote vte on rnd.vte_id = vte.vte_id
         where rnd.vte_id = _vte_id
-        and rnd.rnd_num = _rnd_num
+          and rnd.rnd_num = _rnd_num
         order by rnd_date_start desc, perc_without_abstention desc;
 end;
 $filter$
