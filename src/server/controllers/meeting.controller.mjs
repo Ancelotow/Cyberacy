@@ -22,10 +22,14 @@ const AddMeeting = (meetingJson) => {
         } else {
             let meeting = new Meeting()
             Object.assign(meeting, meetingJson)
-            let coordinates = await geoCtrl.GetLocationFromAddress(meeting.street_address, meeting.town_code_insee)
-            if (coordinates !== null) {
-                meeting.latitude = coordinates.latitude
-                meeting.longitude = coordinates.longitude
+            try {
+                let coordinates = await geoCtrl.GetLocationFromAddress(meeting.street_address, meeting.town_code_insee)
+                if (coordinates !== null) {
+                    meeting.latitude = coordinates.latitude
+                    meeting.longitude = coordinates.longitude
+                }
+            } catch (e) {
+                console.error("Error coordinates", e)
             }
             meeting.Add().then((res) => {
                 if (res) {
