@@ -237,12 +237,14 @@ class _AddMeetingState extends State<AddMeeting> {
                   placeholder: "Lien Twitch",
                   icon: Icons.ondemand_video_outlined,
                   controller: ctrlLinkTwitch,
+                  validator: _validatorUriTwitch,
                   width: width,
                 ),
                 InputText(
                   placeholder: "Lien Youtube",
                   icon: Icons.ondemand_video_outlined,
                   controller: ctrlLinkYoutube,
+                  validator: _validatorUriYoutube,
                   width: width,
                 ),
                 const SizedBox(height: 10),
@@ -311,6 +313,40 @@ class _AddMeetingState extends State<AddMeeting> {
   String? _validatorInputFieldNullOrEmpty(dynamic value) {
     if (value == null) {
       return "Champs obligatoire";
+    } else {
+      return null;
+    }
+  }
+
+  String? _validatorUriTwitch(String? value) {
+    if(value != null && value.isNotEmpty) {
+      const twitchUri = "https://www.twitch.tv";
+      try{
+        if(value.substring(0, twitchUri.length) != twitchUri) {
+          return "L'URL de Twitch doit commencer par \"$twitchUri\"";
+        } else {
+          return null;
+        }
+      } on RangeError catch(e) {
+        return "L'URL de Twitch doit commencer par \"$twitchUri\"";
+      }
+    } else {
+      return null;
+    }
+  }
+
+  String? _validatorUriYoutube(String? value) {
+    if(value != null && value.isNotEmpty) {
+      const youtubeUri = "https://www.youtube.com";
+      try{
+        if(value.substring(0, youtubeUri.length) != youtubeUri) {
+          return "L'URL de Youtube doit commencer par \"$youtubeUri\"";
+        } else {
+          return null;
+        }
+      } on RangeError catch(e) {
+        return "L'URL de Youtube doit commencer par \"$youtubeUri\"";
+      }
     } else {
       return null;
     }
