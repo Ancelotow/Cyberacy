@@ -424,7 +424,8 @@ create or replace function filter_vote(_nir person.prs_nir%type, _elc_id vote.el
                 department_code    vote.dpt_code%type,
                 reg_code_insee     vote.reg_code_insee%type,
                 id_political_party vote.pop_id%type,
-                id_election        vote.elc_id%type
+                id_election        vote.elc_id%type,
+                id_type            election.tvo_id%type
             )
 as
 $filter$
@@ -441,15 +442,18 @@ begin
                vte.dpt_code       as department_code,
                vte.reg_code_insee as reg_code_insee,
                vte.pop_id         as id_political_party,
-               vte.elc_id         as id_election
+               vte.elc_id         as id_election,
+               e.tvo_id           as id_type
         from vote vte
+                 join election e on e.elc_id = vte.elc_id
                  left join round rnd on vte.vte_id = rnd.vte_id
                  left join adherent adh on vte.pop_id = adh.pop_id and adh_is_left = false and adh.prs_nir = _nir
         where (is_granted = true or is_granted_all = true)
           and vte.elc_id = _elc_id
           and ((_include_finish = false and rnd.rnd_date_end >= today) or _include_finish = true)
           and ((_include_future = false and rnd.rnd_date_start <= today) or _include_future = true)
-        order by rnd_date_start desc;
+        order by rnd_date_start desc
+        limit 100;
 end;
 $filter$
     language plpgsql;

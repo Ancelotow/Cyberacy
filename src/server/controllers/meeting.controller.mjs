@@ -1,6 +1,5 @@
 import {Meeting} from "../models/meeting.mjs";
 import participantMod from "../models/participant.mjs";
-import {Vote} from "../models/vote.mjs";
 import geoCtrl from "./geography.controller.mjs";
 import {Town} from "../models/town.mjs";
 import {ResponseApi} from "../models/response-api.mjs";
