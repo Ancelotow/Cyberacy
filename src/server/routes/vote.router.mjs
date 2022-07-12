@@ -81,6 +81,7 @@ routerVote.get("/election/:id/vote", async (req, res) => {
     const includeFinish = (req.query.includeFinish == null) ? false : req.query.includeFinish
     const includeFuture = (req.query.includeFuture == null) ? true : req.query.includeFuture
     const response = await voteCtrl.GetVote(req.data.nir, req.params.id, includeFinish, includeFuture)
+    console.log("finish get vote")
     res.status(response.code).send(response)
 });
 

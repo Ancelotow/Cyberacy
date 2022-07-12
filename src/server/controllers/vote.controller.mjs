@@ -101,18 +101,24 @@ const AddVote = (voteJson, id_election) => {
 const GetVote = (nir, idElection, includeFinish = false, includeFuture = true) => {
     return new Promise((resolve, _) => {
         new Vote().Get(nir, idElection, includeFinish, includeFuture).then(async (res) => {
+            let tabPromise = []
             for (let i = 0; i < res.length; i++) {
-                if (res[i].town_code_insee) {
-                    res[i].town = await new Town().GetById(res[i].town_code_insee)
-                }
-                if (res[i].reg_code_insee) {
-                    res[i].region = await new Region().GetById(res[i].reg_code_insee)
-                }
-                if (res[i].department_code) {
-                    res[i].department = await new Department().GetById(res[i].department_code)
-                }
-                res[i].rounds = await new Round().Get(nir, res[i].id)
+                tabPromise.push(new Promise(async (resolveVote, _) => {
+                    if (res[i].town_code_insee) {
+                        res[i].town = await new Town().GetById(res[i].town_code_insee)
+                    }
+                    if (res[i].reg_code_insee) {
+                        res[i].region = await new Region().GetById(res[i].reg_code_insee)
+                    }
+                    if (res[i].department_code) {
+                        res[i].department = await new Department().GetById(res[i].department_code)
+                    }
+                    resolveVote()
+                }));
+                //res[i].rounds = await new Round().Get(nir, res[i].id)
             }
+            await Promise.all(tabPromise)
+            console.log("finish vote")
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
             if(e.code === '23503') {
