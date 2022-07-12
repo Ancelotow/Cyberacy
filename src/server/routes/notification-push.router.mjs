@@ -4,7 +4,7 @@ import notificationCtrl from "../controllers/notification-push.controller.mjs";
 const routerNotifs = express.Router()
 
 routerNotifs.get("/fcm-topics", async (req, res) => {
-    // #swagger.tags = ['Messaging']
+    // #swagger.tags = ['Notification PUSH']
     // #swagger.description = 'Récupère tout les topics FCM (Notification PUSH) de l\'utilisateur'
     // #swagger.security = [{ "Bearer": [] }]
 

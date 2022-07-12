@@ -1694,7 +1694,7 @@
     "/fcm-topics": {
       "get": {
         "tags": [
-          "Messaging"
+          "Notification PUSH"
         ],
         "description": "Récupère tout les topics FCM (Notification PUSH) de l\\'utilisateur",
         "parameters": [],
