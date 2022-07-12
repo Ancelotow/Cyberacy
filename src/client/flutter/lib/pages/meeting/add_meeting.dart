@@ -46,7 +46,6 @@ class _AddMeetingState extends State<AddMeeting> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width / 3;
     if (width < 300) width = 300;
-
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
