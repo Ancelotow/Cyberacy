@@ -209,6 +209,13 @@ class MyApp extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(8.00),
       ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: const Color.fromARGB(255, 227, 2, 2),
+          width: 2.0,
+        ),
+        borderRadius: BorderRadius.circular(8.00),
+      ),
       filled: true,
       contentPadding: EdgeInsets.all(8.00),
       hoverColor: Colors.transparent,
@@ -227,6 +234,13 @@ class MyApp extends StatelessWidget {
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: const Color.fromARGB(255, 132, 0, 255),
+          width: 2.0,
+        ),
+        borderRadius: BorderRadius.circular(8.00),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: const Color.fromARGB(255, 227, 2, 2),
           width: 2.0,
         ),
         borderRadius: BorderRadius.circular(8.00),

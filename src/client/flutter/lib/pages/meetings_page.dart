@@ -1,8 +1,10 @@
 import 'package:bo_cyberacy/models/entities/meeting.dart';
 import 'package:bo_cyberacy/models/services/meeting_service.dart';
+import 'package:bo_cyberacy/pages/meeting/add_meeting.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../models/notifications/navigation_notification.dart';
 import '../widgets/buttons/button_card.dart';
 import '../widgets/cards/card_shimmer.dart';
 import '../widgets/cards/card_state_progress.dart';
@@ -138,7 +140,7 @@ class MeetingsPage extends StatelessWidget {
       width: 300,
       height: 100,
       color: Theme.of(context).highlightColor,
-      onTap: () => {},
+      onTap: () => NavigationNotification(AddMeeting()).dispatch(context),
     );
   }
 }

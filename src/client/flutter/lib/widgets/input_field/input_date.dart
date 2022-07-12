@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../models/enums/position_input.dart';
 import 'package:intl/intl.dart';
 
 class InputDate extends StatefulWidget {
@@ -10,6 +9,7 @@ class InputDate extends StatefulWidget {
   final double? width;
   final TextEditingController? controller;
   final IconData? icon;
+  final String? Function(String?)? validator;
 
   InputDate({
     Key? key,
@@ -20,6 +20,7 @@ class InputDate extends StatefulWidget {
     this.width,
     this.height,
     this.icon,
+    this.validator
   }) : super(key: key);
 
   @override
@@ -43,7 +44,8 @@ class _InputDateState extends State<InputDate> {
         width: widget.width,
         child: Padding(
           padding: const EdgeInsets.only(top: 10.0),
-          child: TextField(
+          child: TextFormField(
+            validator: widget.validator,
             onTap: () => openCalendar(context),
             controller: widget.controller,
             readOnly: true,

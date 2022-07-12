@@ -11,6 +11,8 @@ class InputText extends StatefulWidget {
   final double? width;
   final TextEditingController? controller;
   final IconData? icon;
+  final String? Function(String?)? validator;
+  final Function(String?)? onSaved;
 
   const InputText({
     Key? key,
@@ -23,6 +25,8 @@ class InputText extends StatefulWidget {
     this.height,
     this.type = TextInputType.text,
     this.icon,
+    this.validator,
+    this.onSaved,
   }) : super(key: key);
 
   @override
@@ -44,7 +48,9 @@ class _InputTextState extends State<InputText> {
         width: widget.width,
         child: Padding(
           padding: const EdgeInsets.only(top: 10.0),
-          child: TextField(
+          child: TextFormField(
+            onFieldSubmitted: widget.onSaved,
+            validator: widget.validator,
             keyboardType: widget.type,
             controller: widget.controller,
             readOnly: widget.isReadOnly,

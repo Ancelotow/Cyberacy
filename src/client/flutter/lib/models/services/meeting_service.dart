@@ -46,4 +46,17 @@ class MeetingService extends ApiService {
     }
   }
 
+  Future<void> addMeeting(Meeting meeting) async {
+    var response = await http.post(
+      getUrl("meeting", null),
+      headers: await getHeaders(auth: true),
+      body: meeting.toJson(),
+    );
+    if (response.statusCode == 201) {
+      return;
+    } else {
+      throw ApiServiceError(response);
+    }
+  }
+
 }

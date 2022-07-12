@@ -11,6 +11,7 @@ class Meeting {
   double nbTime;
   bool isAborted;
   int nbPlaceVacant;
+  int nbPlace;
   String? addressStreet;
   int idPoliticalParty;
   String townCodeInsee;
@@ -31,6 +32,7 @@ class Meeting {
     required this.nbTime,
     this.isAborted = false,
     this.nbPlaceVacant = 0,
+    this.nbPlace = -1,
     this.addressStreet,
     required this.idPoliticalParty,
     required this.townCodeInsee,
@@ -54,6 +56,7 @@ class Meeting {
         nbTime = double.parse(json["nb_time"] ?? "0.0"),
         isAborted = json["is_aborted"],
         nbPlaceVacant = json["nb_place_vacant"] ?? -1,
+        nbPlace = json["nb_place"] ?? -1,
         addressStreet = json["address_street"],
         idPoliticalParty = json["id_political_party"],
         townCodeInsee = json["town_code_insee"],
@@ -71,6 +74,24 @@ class Meeting {
       Map<String, dynamic> townJson = json["town"];
       town = Town.fromJson(townJson);
     }
+  }
+
+  Object toJson() {
+    return {
+      "name": name,
+      "date_start": dateStart.toString(),
+      "nb_time": nbTime.toString(),
+      "nb_place": nbPlace.toString(),
+      "street_address": addressStreet,
+      "id_political_party": idPoliticalParty.toString(),
+      "town_code_insee": townCodeInsee,
+      "vta_rate": rateVAT.toString(),
+      "price_excl": priceExcl.toString(),
+      "link_twitch": linkTwitch,
+      "link_youtube": linkYoutube,
+      "description": description,
+      "object": object
+    };
   }
 
   String getFullAddress() {
