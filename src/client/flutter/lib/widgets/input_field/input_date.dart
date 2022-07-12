@@ -84,8 +84,12 @@ class _InputDateState extends State<InputDate> {
       firstDate: DateTime(1900, 1, 1, 0, 0),
       lastDate: DateTime(2050, 1, 1, 0, 0),
     );
-    if (picked != null) {
-      widget.value = picked;
+    final TimeOfDay? selectedTime = await showTimePicker(
+      initialTime: TimeOfDay.now(),
+      context: context,
+    );
+    if (picked != null && selectedTime != null) {
+      widget.value = DateTime(picked.year, picked.month, picked.day, selectedTime.hour, selectedTime.minute);
       widget.controller?.text =
           DateFormat("dd/MM/yyyy HH:mm").format(widget.value!);
     }
