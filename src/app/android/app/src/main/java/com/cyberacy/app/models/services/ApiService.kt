@@ -99,4 +99,9 @@ interface ApiService {
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<ResponseAPI<ResultStripe>>
 
+    @GET("fcm-topics")
+    fun getAllFCMTopics(
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<ResponseAPI<List<FCMTopic>>>
+
 }

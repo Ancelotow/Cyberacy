@@ -12,12 +12,14 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.cyberacy.app.R
+import com.cyberacy.app.models.entities.FCMTopic
 import com.cyberacy.app.models.entities.Meeting
 import com.cyberacy.app.models.entities.PoliticalParty
 import com.cyberacy.app.models.repositories.PartyStateError
@@ -32,6 +34,7 @@ import com.cyberacy.app.ui.party.join_party.JoinPartyFragment
 import com.cyberacy.app.ui.party.messaging.MessagingActivity
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
@@ -53,6 +56,9 @@ class MainPartyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initParty()
+        if(activity != null && activity is AppCompatActivity) {
+            FCMTopic.subscribeAllTopic(activity!! as AppCompatActivity)
+        }
     }
 
     private fun initParty() {
@@ -158,6 +164,12 @@ class MainPartyFragment : Fragment() {
                     ApiConnection.connection().leaveParty().await()
                     loader.visibility = View.GONE
                     activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
+                    FirebaseMessaging.getInstance().deleteToken()
+                    if(activity != null && activity is AppCompatActivity) {
+                        FCMTopic.subscribeAllTopic(activity!! as AppCompatActivity)
+                    }
+
                     (parentFragment!! as PartyFragment).refresh()
                 } catch (e: HttpException) {
                     if (e.code() == 401) {

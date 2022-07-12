@@ -1,11 +1,11 @@
 package com.cyberacy.app
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.cyberacy.app.models.entities.Connection
 import com.cyberacy.app.models.entities.Session
@@ -15,9 +15,11 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.await
+import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
     
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val actionBar: ActionBar? = supportActionBar
         actionBar?.hide()
+        unsubscribeAllTopic()
         login = findViewById(R.id.login)
         password = findViewById(R.id.password)
         layoutLogin = findViewById(R.id.layout_login)
@@ -77,6 +80,10 @@ class MainActivity : AppCompatActivity() {
                 btnConnection.visibility = View.VISIBLE
             }
         }
+    }
+
+    private fun unsubscribeAllTopic() {
+        FirebaseMessaging.getInstance().deleteToken()
     }
 
 }
