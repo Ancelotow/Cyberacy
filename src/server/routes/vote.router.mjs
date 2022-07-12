@@ -108,9 +108,9 @@ routerVote.get("/vote/:id/round", async (req, res) => {
     res.status(response.code).send(response)
 });
 
-routerVote.post("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
+routerVote.post("/vote/:id_vote/choice", async (req, res) => {
     // #swagger.tags = ['Election']
-    // #swagger.description = 'Ajout de un nouveau choix.'
+    // #swagger.description = 'Ajout d\'un nouveau choix pour un vote.'
     // #swagger.security = [{ "Bearer": [] }]
     /*  #swagger.parameters['choice'] = {
                                in: 'body',
@@ -119,7 +119,7 @@ routerVote.post("/vote/:id_vote/round/:num_round/choice", async (req, res) => {
     } */
 
 
-    const response = await voteCtrl.AddChoice(req.body, req.params.id_vote, req.params.num_round)
+    const response = await voteCtrl.AddChoice(req.body, req.params.id_vote)
     res.status(response.code).send(response)
 });
 

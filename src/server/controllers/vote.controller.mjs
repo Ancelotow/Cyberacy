@@ -284,24 +284,20 @@ const GetChoice = (nir, numRound, idVote) => {
 /**
  * Ajoute un nouveau choix sur un tour de vote
  * @param choiceJson
- * @param numRound Le numéro du tour de vote
  * @param idVote L'id du vote
  * @returns {Promise<unknown>}
  * @constructor
  */
-const AddChoice = (choiceJson, idVote, numRound) => {
+const AddChoice = (choiceJson, idVote) => {
     return new Promise((resolve, _) => {
         if (!choiceJson) {
             resolve(new ResponseApi().InitMissingParameters())
-        } else if (!choiceJson.name || !choiceJson.choice_order) {
-            resolve(new ResponseApi().InitMissingParameters())
-        } else if (!numRound || !idVote) {
+        } else if (!choiceJson.name || !choiceJson.choice_order || !idVote) {
             resolve(new ResponseApi().InitMissingParameters())
         } else {
             let choice = new Choice()
             Object.assign(choice, choiceJson)
             choice.id_vote = idVote
-            choice.num_round = numRound
             choice.Add().then((res) => {
                 if (res) {
                     resolve(new ResponseApi().InitCreated("Choice has been created."))
@@ -340,9 +336,8 @@ const ToVote = (nir, numRound, idVote, idChoice) => {
             }
             let choice = new Choice()
             choice.id_vote = idVote
-            choice.num_round = numRound
             choice.id = idChoice
-            choice.AddVoter(nir).then((res) => {
+            choice.AddVoter(nir, numRound).then((res) => {
                 resolve(new ResponseApi().InitCreated("Your vote has been take into account."))
             }).catch((e) => {
                 if(e.code === '23503') {

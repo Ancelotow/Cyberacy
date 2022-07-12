@@ -687,21 +687,15 @@
         ]
       }
     },
-    "/vote/{id_vote}/round/{num_round}/choice": {
+    "/vote/{id_vote}/choice": {
       "post": {
         "tags": [
           "Election"
         ],
-        "description": "Ajout de un nouveau choix.",
+        "description": "Ajout d\\'un nouveau choix pour un vote.",
         "parameters": [
           {
             "name": "id_vote",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "num_round",
             "in": "path",
             "required": true,
             "type": "string"
@@ -721,7 +715,9 @@
             "Bearer": []
           }
         ]
-      },
+      }
+    },
+    "/vote/{id_vote}/round/{num_round}/choice": {
       "get": {
         "tags": [
           "Election"
