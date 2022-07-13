@@ -1,4 +1,5 @@
 import 'package:bo_cyberacy/widgets/cards/card_choice.dart';
+import 'package:bo_cyberacy/widgets/cards/card_round.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/entities/vote.dart';
@@ -59,7 +60,8 @@ class VoteDetailsPage extends StatelessWidget {
             style: Theme.of(context).textTheme.headline1,
           ),
         ),
-        _getChoices(context)
+        Expanded(child: _getChoices(context)),
+        Expanded(child: _getRounds(context)),
       ],
     );
   }
@@ -86,6 +88,36 @@ class VoteDetailsPage extends StatelessWidget {
           spacing: 10.0,
           runSpacing: 10.0,
           children: cards,
+        ),
+      ],
+    );
+  }
+
+  Widget _getRounds(BuildContext context) {
+    List<Widget> cards = [];
+    cards.add(_getButtonAdd(context));
+    cards.addAll(vote!.choices
+        .map((e) => CardChoice(
+      choice: e,
+      width: _widthCard,
+      height: _heightCard,
+    )).toList());
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Liste des tours :",
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.headline3,
+        ),
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: 10.0,
+          runSpacing: 10.0,
+          children: vote!.rounds
+              .map((e) => CardRound(
+            round: e
+          )).toList(),
         ),
       ],
     );

@@ -97,53 +97,60 @@ class MyApp extends StatelessWidget {
 
   TextTheme _getTextThemeDark(BuildContext context) {
     return TextTheme(
-        headline1: TextStyle(
-          color: Colors.white,
-          fontFamily: "HK-Nova",
-          fontSize: 35,
-          fontWeight: FontWeight.bold,
-        ),
-        headline2: TextStyle(
-          color: Theme.of(context).accentColor,
-          fontFamily: "HK-Nova",
-          fontSize: 28,
-        ),
-        headline3: TextStyle(
-          color: Colors.white,
-          fontFamily: "HK-Nova",
-          fontSize: 20,
-          fontWeight: FontWeight.w100,
-        ),
-        headline4: TextStyle(
-          color: Colors.white,
-          fontFamily: "HK-Nova",
-          fontSize: 20,
-        ),
-        bodyText1: TextStyle(
-          color: Colors.white,
-          fontFamily: "HK-Nova",
-          fontSize: 14,
-        ),
-        bodyText2: TextStyle(
-          color: Colors.white,
-          fontFamily: "HK-Nova",
-          fontSize: 14,
-        ),
-        caption: TextStyle(
-          color: Colors.grey,
-          fontFamily: "HK-Nova",
-          fontSize: 12,
-        ),
-        button: TextStyle(
-          color: Colors.white,
-          fontFamily: "HK-Nova",
-          fontSize: 14,
-        ),
-        labelMedium: TextStyle(
-          color: Colors.white,
-          fontFamily: "HK-Nova",
-          fontSize: 14,
-        ));
+      headline1: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 35,
+        fontWeight: FontWeight.bold,
+      ),
+      headline2: TextStyle(
+        color: Theme.of(context).accentColor,
+        fontFamily: "HK-Nova",
+        fontSize: 28,
+      ),
+      headline3: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 20,
+        fontWeight: FontWeight.w100,
+      ),
+      headline4: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 20,
+      ),
+      bodyText1: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 14,
+      ),
+      bodyText2: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 14,
+      ),
+      caption: TextStyle(
+        color: Colors.grey,
+        fontFamily: "HK-Nova",
+        fontSize: 12,
+      ),
+      button: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 14,
+      ),
+      labelMedium: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 14,
+      ),
+      subtitle1: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 25,
+        fontWeight: FontWeight.bold,
+      ),
+    );
   }
 
   TextTheme _getTextThemeLight(BuildContext context) {
@@ -189,6 +196,12 @@ class MyApp extends StatelessWidget {
         color: Colors.white,
         fontFamily: "HK-Nova",
         fontSize: 14,
+      ),
+      subtitle1: TextStyle(
+        color: Colors.black,
+        fontFamily: "HK-Nova",
+        fontSize: 25,
+        fontWeight: FontWeight.bold,
       ),
     );
   }
@@ -250,7 +263,6 @@ class MyApp extends StatelessWidget {
       hoverColor: Colors.transparent,
     );
   }
-
 }
 
 class HomePage extends StatelessWidget {

@@ -65,8 +65,8 @@ class Vote {
     if(rounds.isEmpty) {
       return "-- inconnue --";
     }
-    rounds.sort((a, b) => a.dateStart!.compareTo(b.dateStart!));
-    return DateFormat("dd/MM/yyyy HH:mm").format(rounds[0].dateStart!);
+    rounds.sort((a, b) => a.dateStart.compareTo(b.dateStart));
+    return DateFormat("dd/MM/yyyy HH:mm").format(rounds[0].dateStart);
   }
 
   String getLocalite() {

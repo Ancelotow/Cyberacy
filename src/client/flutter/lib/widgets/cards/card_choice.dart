@@ -44,7 +44,7 @@ class CardChoice extends StatelessWidget {
                     choice.name,
                     maxLines: 2,
                     overflow: TextOverflow.clip,
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
                 Text(
