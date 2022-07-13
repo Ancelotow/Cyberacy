@@ -150,6 +150,9 @@ const GetVoteDetails = (nir, id) => {
                 }
                 res.rounds = await new Round().Get(nir, res.id)
                 res.choices = await new Choice().Get(nir, null, res.id)
+                for(let i = 0; i < res.rounds.length; i++){
+                    res.rounds[i].choices = await new Choice().Get(nir, res.rounds[i].num, res.id)
+                }
             }
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
