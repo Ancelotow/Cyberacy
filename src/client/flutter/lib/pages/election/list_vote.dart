@@ -1,24 +1,27 @@
+import 'package:bo_cyberacy/models/entities/election.dart';
 import 'package:bo_cyberacy/models/services/vote_service.dart';
+import 'package:bo_cyberacy/pages/election/vote_details.dart';
 import 'package:bo_cyberacy/widgets/interactive_map.dart';
 import 'package:flutter/material.dart';
 import '../../models/entities/vote.dart';
 import 'package:intl/intl.dart';
+import '../../models/notifications/navigation_notification.dart';
 import '../../widgets/cards/card_shimmer.dart';
 import '../../widgets/info_error.dart';
 import '../../widgets/table/grid_controle.dart';
 
 class ListVotePage extends StatelessWidget {
   List<Vote> votes = [];
-  final int idElection;
+  final Election election;
 
-  ListVotePage({Key? key, required this.idElection}) : super(key: key);
+  ListVotePage({Key? key, required this.election}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: FutureBuilder(
-        future: VoteService().getAllVote(idElection),
+        future: VoteService().getAllVote(election.id),
         builder: (BuildContext context, AsyncSnapshot<List<Vote>> snapshot) {
           if (snapshot.hasData) {
             if (votes.isEmpty) {
@@ -36,19 +39,30 @@ class ListVotePage extends StatelessWidget {
   }
 
   Widget _getBody(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        Expanded(
-          child: GridControl(
-            columns: _getColumns(context),
-            rows: _getRows(context),
-          ),
+        Text(
+          election.name,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.headline1,
         ),
-        const SizedBox(width: 10),
         Expanded(
-          child: InteractiveMap(
-            datas: _getDataForMap(context),
-            modelPath: _modelPath(),
+          child: Row(
+            children: [
+              Expanded(
+                child: GridControl(
+                  columns: _getColumns(context),
+                  rows: _getRows(context),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: InteractiveMap(
+                  datas: _getDataForMap(context),
+                  modelPath: _modelPath(),
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -86,6 +100,10 @@ class ListVotePage extends StatelessWidget {
               DataCell(Text(e.nbVoter.toString())),
               DataCell(Text(e.getLocalite())),
             ],
+            onSelectChanged: (val) {
+              NavigationNotification(VoteDetailsPage(idVote: e.id))
+                  .dispatch(context);
+            },
           ),
         )
         .toList();
@@ -95,11 +113,12 @@ class ListVotePage extends StatelessWidget {
     return votes
         .map(
           (e) => ModelInterativeMap(
-        name: e.getLocalite(),
-        code: e.getLocalisationCode(),
-        color: Colors.black,
-      ),
-    ).toList();
+            name: e.getLocalite(),
+            code: e.getLocalisationCode(),
+            color: Colors.black,
+          ),
+        )
+        .toList();
   }
 
   List<DataColumn> _getColumns(BuildContext context) {

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:bo_cyberacy/models/entities/region.dart';
 import 'package:bo_cyberacy/models/entities/round.dart';
 import 'package:bo_cyberacy/models/entities/town.dart';
+import 'choice.dart';
 import 'department.dart';
 
 class Vote {
@@ -18,6 +19,7 @@ class Vote {
   Region? region;
   Department? department;
   List<Round> rounds = [];
+  List<Choice> choices = [];
   int? idType;
 
   Vote({
@@ -53,6 +55,9 @@ class Vote {
     }
     if(json["rounds"] != null) {
       rounds = (json["rounds"] as List).map((dynamic json) => Round.fromJson(json)).toList();
+    }
+    if(json["choices"] != null) {
+      choices = (json["choices"] as List).map((dynamic json) => Choice.fromJson(json)).toList();
     }
   }
 

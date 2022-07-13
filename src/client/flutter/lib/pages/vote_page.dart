@@ -81,7 +81,7 @@ class _VotePageState extends State<VotePage> {
               DataCell(CardStateProgress(stateProgress: e.getStateProgress())),
             ],
             onSelectChanged: (val) {
-              NavigationNotification(ListVotePage(idElection: e.id)).dispatch(context);
+              NavigationNotification(ListVotePage(election: e)).dispatch(context);
             },
           ),
         )

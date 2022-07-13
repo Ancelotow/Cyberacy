@@ -58,4 +58,21 @@ class VoteService extends ApiService {
     }
   }
 
+  Future<Vote> getVoteById(int id) async {
+    try {
+      var response = await http.get(
+        getUrl("vote/$id/details", null),
+        headers: await getHeaders(auth: true),
+      );
+      if (response.statusCode == 200) {
+        ResponseAPI responseApi = ResponseAPI.fromJson(jsonDecode(response.body));
+        return Vote.fromJson(responseApi.data);
+      } else {
+        throw ApiServiceError(response);
+      }
+    } on ApiServiceError catch(e) {
+      rethrow;
+    }
+  }
+
 }
