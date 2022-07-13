@@ -637,6 +637,28 @@
         ]
       }
     },
+    "/vote/{id}/details": {
+      "get": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Récupère les choix pour un tour de vote donné.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/vote/{id}/round": {
       "post": {
         "tags": [

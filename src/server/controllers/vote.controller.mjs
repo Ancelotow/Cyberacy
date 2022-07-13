@@ -78,7 +78,7 @@ const AddVote = (voteJson, id_election) => {
                         resolve(new ResponseApi().InitBadRequest("This vote already existed."))
                     }
                 }).catch((e) => {
-                    if(e.code === '23503') {
+                    if (e.code === '23503') {
                         resolve(new ResponseApi().InitBadRequest(e.message))
                         return
                     }
@@ -115,13 +115,45 @@ const GetVote = (nir, idElection, includeFinish = false, includeFuture = true) =
                     }
                     resolveVote()
                 }));
-                //res[i].rounds = await new Round().Get(nir, res[i].id)
             }
             await Promise.all(tabPromise)
-            console.log("finish vote")
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            if(e.code === '23503') {
+            if (e.code === '23503') {
+                resolve(new ResponseApi().InitBadRequest(e.message))
+                return
+            }
+            resolve(new ResponseApi().InitInternalServer(e))
+        })
+    });
+}
+
+/**
+ * Récupère le détail d'un vote
+ * @param nir Le NIR de l'utilisateur
+ * @param id L'ID du vote
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetVoteDetails = (nir, id) => {
+    return new Promise((resolve, _) => {
+        new Vote().GetById(id).then(async (res) => {
+            if (res != null) {
+                if (res.town_code_insee) {
+                    res.town = await new Town().GetById(res.town_code_insee)
+                }
+                if (res.reg_code_insee) {
+                    res.region = await new Region().GetById(res.reg_code_insee)
+                }
+                if (res.department_code) {
+                    res.department = await new Department().GetById(res.department_code)
+                }
+                res.rounds = await new Round().Get(nir, res.id)
+                res.choices = await new Choice().Get(nir, null, res.id)
+            }
+            resolve(new ResponseApi().InitData(res))
+        }).catch((e) => {
+            if (e.code === '23503') {
                 resolve(new ResponseApi().InitBadRequest(e.message))
                 return
             }
@@ -155,7 +187,7 @@ const AddElection = (electionJson) => {
                 }
             }).catch((e) => {
                 console.error(e)
-                if(e.code === '23503') {
+                if (e.code === '23503') {
                     resolve(new ResponseApi().InitBadRequest(e.message))
                     return
                 }
@@ -184,7 +216,7 @@ const GetElection = (nir, idElection = null, includeFinish = false, includeFutur
             }
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            if(e.code === '23503') {
+            if (e.code === '23503') {
                 resolve(new ResponseApi().InitBadRequest(e.message))
                 return
             }
@@ -212,7 +244,7 @@ const GetRound = (nir, idVote) => {
             }
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            if(e.code === '23503') {
+            if (e.code === '23503') {
                 resolve(new ResponseApi().InitBadRequest(e.message))
                 return
             }
@@ -249,7 +281,7 @@ const AddRound = (roundJson, idVote) => {
                     resolve(new ResponseApi().InitBadRequest("This round already existed."))
                 }
             }).catch((e) => {
-                if(e.code === '23503') {
+                if (e.code === '23503') {
                     resolve(new ResponseApi().InitBadRequest(e.message))
                     return
                 }
@@ -272,7 +304,7 @@ const GetChoice = (nir, numRound, idVote) => {
         new Choice().Get(nir, numRound, idVote).then((res) => {
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            if(e.code === '23503') {
+            if (e.code === '23503') {
                 resolve(new ResponseApi().InitBadRequest(e.message))
                 return
             }
@@ -305,7 +337,7 @@ const AddChoice = (choiceJson, idVote) => {
                     resolve(new ResponseApi().InitBadRequest("This choice already existed."))
                 }
             }).catch((e) => {
-                if(e.code === '23503') {
+                if (e.code === '23503') {
                     resolve(new ResponseApi().InitBadRequest(e.message))
                     return
                 }
@@ -340,7 +372,7 @@ const ToVote = (nir, numRound, idVote, idChoice) => {
             choice.AddVoter(nir, numRound).then((res) => {
                 resolve(new ResponseApi().InitCreated("Your vote has been take into account."))
             }).catch((e) => {
-                if(e.code === '23503') {
+                if (e.code === '23503') {
                     resolve(new ResponseApi().InitBadRequest(e.message))
                     return
                 }
@@ -350,4 +382,16 @@ const ToVote = (nir, numRound, idVote, idChoice) => {
     });
 }
 
-export default {EnumTypeVote, AddVote, GetVote, GetRound, AddRound, GetChoice, AddChoice, ToVote, GetElection, AddElection}
+export default {
+    EnumTypeVote,
+    AddVote,
+    GetVote,
+    GetRound,
+    AddRound,
+    GetChoice,
+    AddChoice,
+    ToVote,
+    GetElection,
+    AddElection,
+    GetVoteDetails
+}

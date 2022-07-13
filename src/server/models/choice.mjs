@@ -38,7 +38,7 @@ Choice.prototype.Add = function() {
  * @returns {Promise<unknown>}
  * @constructor
  */
-Choice.prototype.Get = function(nir, numRound, idVote) {
+Choice.prototype.Get = function(nir, numRound = null, idVote) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * FROM filter_choice($1, $2, $3)',

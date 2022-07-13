@@ -490,7 +490,7 @@ $filter$
 
 -- Filtre pour la table choice
 create or replace function filter_choice(_nir person.prs_nir%type, _vte_id round.vte_id%type,
-                                         _rnd_num round.rnd_num%type)
+                                         _rnd_num round.rnd_num%type default null)
     returns table
             (
                 id           choice.cho_id%type,
@@ -513,9 +513,10 @@ begin
         from choice cho
                  left join link_round_choice lrc on cho.cho_id = lrc.cho_id
                  left join filter_round(_nir, _vte_id) rnd
-                           on rnd.num = _rnd_num and rnd.num = lrc.rnd_num and rnd.id_vote = lrc.vte_id
+                           on rnd.num = lrc.rnd_num and rnd.id_vote = lrc.vte_id
                  left join person prs on cho.prs_nir = prs.prs_nir
         where cho.vte_id = _vte_id
+        and (rnd.num = _rnd_num or _rnd_num is null)
         order by cho_name;
 end;
 $filter$

@@ -85,6 +85,15 @@ routerVote.get("/election/:id/vote", async (req, res) => {
     res.status(response.code).send(response)
 });
 
+routerVote.get("/vote/:id/details", async (req, res) => {
+    // #swagger.tags = ['Election']
+    // #swagger.description = 'Récupère les choix pour un tour de vote donné.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await voteCtrl.GetVoteDetails(req.data.nir, req.params.id)
+    res.status(response.code).send(response)
+});
+
 routerVote.post("/vote/:id/round", async (req, res) => {
     // #swagger.tags = ['Election']
     // #swagger.description = 'Ajout de un nouveau tour de vote.'
