@@ -36,24 +36,31 @@ class CardRound extends StatelessWidget {
               round.name,
               maxLines: 2,
               overflow: TextOverflow.clip,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: const TextStyle(
+                color: Colors.white,
+                fontFamily: "HK-Nova",
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
             ),
+            const SizedBox(height: 20),
             Row(
               children: [
                 const Icon(Icons.calendar_today),
                 Text(
-                  DateFormat("dd/MM/yyyy HH:mm").format(round.dateStart),
+                  "Début : ${DateFormat("dd/MM/yyyy HH:mm").format(round.dateStart)}",
                   maxLines: 2,
                   overflow: TextOverflow.clip,
                   style: Theme.of(context).textTheme.bodyText1,
                 )
               ],
             ),
+            const SizedBox(height: 10),
             Row(
               children: [
                 const Icon(Icons.calendar_today),
                 Text(
-                  DateFormat("dd/MM/yyyy HH:mm").format(round.dateEnd),
+                  "Fin : ${DateFormat("dd/MM/yyyy HH:mm").format(round.dateEnd)}",
                   maxLines: 2,
                   overflow: TextOverflow.clip,
                   style: Theme.of(context).textTheme.bodyText1,

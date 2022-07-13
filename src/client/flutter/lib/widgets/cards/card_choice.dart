@@ -44,7 +44,12 @@ class CardChoice extends StatelessWidget {
                     choice.name,
                     maxLines: 2,
                     overflow: TextOverflow.clip,
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontFamily: "HK-Nova",
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 Text(

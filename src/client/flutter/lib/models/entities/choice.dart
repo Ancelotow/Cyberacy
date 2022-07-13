@@ -23,4 +23,14 @@ class Choice {
         candidateNIR = json["candidat_nir"],
         candidate = json["candidat"];
 
+  Object toJson() {
+    Map<String, dynamic> object = {
+      "name": name,
+      "description": description,
+    };
+    if (candidateNIR != null) {
+      object["candidat_nir"] = candidateNIR;
+    }
+    return object;
+  }
 }

@@ -61,12 +61,20 @@ class Vote {
     }
   }
 
-  String getDateStartStr() {
+  DateTime? getDateStart() {
     if(rounds.isEmpty) {
-      return "-- inconnue --";
+     return null;
     }
     rounds.sort((a, b) => a.dateStart.compareTo(b.dateStart));
-    return DateFormat("dd/MM/yyyy HH:mm").format(rounds[0].dateStart);
+    return rounds[0].dateStart;
+  }
+
+  String getDateStartStr() {
+    DateTime? dateStart = getDateStart();
+    if(dateStart == null) {
+      return "-- inconnue --";
+    }
+    return DateFormat("dd/MM/yyyy HH:mm").format(dateStart);
   }
 
   String getLocalite() {

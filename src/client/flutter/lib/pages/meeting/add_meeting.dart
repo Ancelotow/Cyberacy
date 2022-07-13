@@ -166,13 +166,14 @@ class _AddMeetingState extends State<AddMeeting> {
                                 return "Champs obligatoire";
                               }
                               try {
-                                int valueInt = int.parse(value);
+                                int.parse(value);
+                                return null;
                               } on FormatException catch (e) {
                                 return "La valeur doit être un nombre non décimale";
                               }
                             }),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: InputText(
                           placeholder: "Prix HT*",
@@ -286,8 +287,8 @@ class _AddMeetingState extends State<AddMeeting> {
             priceExcl: double.parse(ctrlPriceExcl.text),
             rateVAT: double.parse(ctrlVAT.text),
             idPoliticalParty: currentParty!.id!,
-            linkTwitch: ctrlLinkTwitch.text,
-            linkYoutube: ctrlLinkYoutube.text
+            linkTwitch: ctrlLinkTwitch.text.isEmpty ? null : ctrlLinkTwitch.text,
+            linkYoutube: ctrlLinkYoutube.text.isEmpty ? null : ctrlLinkYoutube.text,
         );
         await MeetingService().addMeeting(meeting);
         NavigationNotification(MeetingsPage()).dispatch(context);

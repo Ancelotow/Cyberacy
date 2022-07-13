@@ -1,3 +1,4 @@
+import 'package:bo_cyberacy/pages/election/add_choice.dart';
 import 'package:bo_cyberacy/widgets/cards/card_choice.dart';
 import 'package:bo_cyberacy/widgets/cards/card_round.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import '../party/add_party_page.dart';
 class VoteDetailsPage extends StatelessWidget {
   final int idVote;
   Vote? vote;
+  bool canEdit = false;
 
   final double _widthCard = 500;
   final double _heightCard = 120;
@@ -30,6 +32,12 @@ class VoteDetailsPage extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<Vote> snapshot) {
           if (snapshot.hasData) {
             vote = snapshot.data;
+            DateTime? dateStart = vote?.getDateStart();
+            if(dateStart == null) {
+              canEdit = true;
+            } else if(dateStart.isAfter(DateTime.now())) {
+              canEdit = true;
+            }
             return _getBody(context);
           } else if (snapshot.hasError) {
             return InfoError(error: snapshot.error as Error);
@@ -68,40 +76,36 @@ class VoteDetailsPage extends StatelessWidget {
 
   Widget _getChoices(BuildContext context) {
     List<Widget> cards = [];
-    cards.add(_getButtonAdd(context));
+    if(canEdit) {
+      cards.add(_getButtonAdd(context));
+    }
     cards.addAll(vote!.choices
         .map((e) => CardChoice(
       choice: e,
       width: _widthCard,
       height: _heightCard,
     )).toList());
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Liste des choix :",
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline3,
-        ),
-        const SizedBox(height: 10),
-        Wrap(
-          spacing: 10.0,
-          runSpacing: 10.0,
-          children: cards,
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Liste des choix :",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline3,
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 10.0,
+            runSpacing: 10.0,
+            children: cards,
+          ),
+        ],
+      ),
     );
   }
 
   Widget _getRounds(BuildContext context) {
-    List<Widget> cards = [];
-    cards.add(_getButtonAdd(context));
-    cards.addAll(vote!.choices
-        .map((e) => CardChoice(
-      choice: e,
-      width: _widthCard,
-      height: _heightCard,
-    )).toList());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -130,7 +134,7 @@ class VoteDetailsPage extends StatelessWidget {
       height: _heightCard,
       width: _widthCard,
       color: Theme.of(context).highlightColor,
-      onTap: () => NavigationNotification(AddPartyPage()).dispatch(context),
+      onTap: () => NavigationNotification(AddChoice(vote: vote!,)).dispatch(context),
     );
   }
 }

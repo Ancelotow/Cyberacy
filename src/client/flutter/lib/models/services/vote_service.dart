@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../entities/choice.dart';
 import '../entities/election.dart';
 import '../entities/response_api.dart';
 import '../entities/vote.dart';
@@ -72,6 +73,19 @@ class VoteService extends ApiService {
       }
     } on ApiServiceError catch(e) {
       rethrow;
+    }
+  }
+
+  Future<void> addChoice(Choice choice, int idVote) async {
+    var response = await http.post(
+      getUrl("vote/$idVote/choice", null),
+      headers: await getHeaders(auth: true),
+      body: choice.toJson(),
+    );
+    if (response.statusCode == 201) {
+      return;
+    } else {
+      throw ApiServiceError(response);
     }
   }
 

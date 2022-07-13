@@ -144,12 +144,6 @@ class MyApp extends StatelessWidget {
         fontFamily: "HK-Nova",
         fontSize: 14,
       ),
-      subtitle1: TextStyle(
-        color: Colors.white,
-        fontFamily: "HK-Nova",
-        fontSize: 25,
-        fontWeight: FontWeight.bold,
-      ),
     );
   }
 
@@ -196,12 +190,6 @@ class MyApp extends StatelessWidget {
         color: Colors.white,
         fontFamily: "HK-Nova",
         fontSize: 14,
-      ),
-      subtitle1: TextStyle(
-        color: Colors.black,
-        fontFamily: "HK-Nova",
-        fontSize: 25,
-        fontWeight: FontWeight.bold,
       ),
     );
   }

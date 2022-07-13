@@ -14,8 +14,9 @@ import '../../widgets/input_field/input_date.dart';
 import '../../widgets/input_field/input_selected.dart';
 import '../../widgets/input_field/input_text.dart';
 
-
 class AddElectionPage extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
+
   AddElectionPage({Key? key}) : super(key: key);
 
   final TextEditingController ctrlName = TextEditingController();
@@ -31,73 +32,108 @@ class AddElectionPage extends StatelessWidget {
       backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Nouvelle élection",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline1,
-              ),
-              SizedBox(height: 50),
-              InputText(
-                placeholder: "Nom",
-                icon: Icons.abc,
-                width: width,
-                controller: ctrlName,
-              ),
-              SizedBox(
-                width: width,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: InputDate(
-                        placeholder: "Date de début",
-                        icon: Icons.calendar_today,
-                        controller: ctrlDtStart,
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: InputDate(
-                        placeholder: "Date de fin",
-                        icon: Icons.calendar_today,
-                        controller: ctrlDtEnd,
-                      ),
-                    ),
-                  ],
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Nouvelle élection",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline1,
                 ),
-              ),
-              InputSelected<TypeVote>(
-                future: RefService().getAllTypeVote(),
-                items: [],
-                value: currentType,
-                placeholder: "Type d'élection",
-                icon: Icons.how_to_vote_sharp,
-                width: width,
-                onChanged: (value) {
-                  currentType = value;
-                },
-              ),
-              SizedBox(height: 10),
-              Button(
-                label: "Sauvegarder",
-                width: width,
-                pressedColor: Colors.lightBlue,
-                click: () => _saveElection(context),
-              ),
-              SizedBox(height: 10),
-              Button(
-                label: "Annuler",
-                width: width,
-                color: Colors.red,
-                pressedColor: Colors.redAccent,
-                click: () => NavigationNotification(VotePage()).dispatch(context),
-              ),
-            ],
+                SizedBox(height: 50),
+                InputText(
+                  placeholder: "Nom*",
+                  icon: Icons.abc,
+                  width: width,
+                  controller: ctrlName,
+                  validator: _validatorFieldNullOrEmpty,
+                ),
+                SizedBox(
+                  width: width,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: InputDate(
+                          placeholder: "Date de début*",
+                          icon: Icons.calendar_today,
+                          controller: ctrlDtStart,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Champs obligatoire";
+                            }
+                            DateTime date =
+                                DateFormat("dd/MM/yyyy HH:mm").parse(value);
+                            if (date.isBefore(DateTime.now())) {
+                              return "La date doit être supérieure à celle d'aujourd'hui";
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: InputDate(
+                          placeholder: "Date de fin*",
+                          icon: Icons.calendar_today,
+                          controller: ctrlDtEnd,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Champs obligatoire";
+                            }
+                            if (ctrlDtStart.text.isNotEmpty) {
+                              DateTime date =
+                                  DateFormat("dd/MM/yyyy HH:mm").parse(value);
+                              DateTime dateStart =
+                                  DateFormat("dd/MM/yyyy HH:mm")
+                                      .parse(ctrlDtStart.text);
+                              if (date.isBefore(dateStart)) {
+                                return "La date de fin doit être supérieure à la date de début";
+                              } else {
+                                return null;
+                              }
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                InputSelected<TypeVote>(
+                  future: RefService().getAllTypeVote(),
+                  items: [],
+                  value: currentType,
+                  placeholder: "Type d'élection*",
+                  icon: Icons.how_to_vote_sharp,
+                  validator: _validatorInputFieldNullOrEmpty,
+                  width: width,
+                  onChanged: (value) {
+                    currentType = value;
+                  },
+                ),
+                const SizedBox(height: 10),
+                Button(
+                  label: "Sauvegarder",
+                  width: width,
+                  pressedColor: Colors.lightBlue,
+                  click: () => _saveElection(context),
+                ),
+                const SizedBox(height: 10),
+                Button(
+                  label: "Annuler",
+                  width: width,
+                  color: Colors.red,
+                  pressedColor: Colors.redAccent,
+                  click: () =>
+                      NavigationNotification(VotePage()).dispatch(context),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -105,44 +141,41 @@ class AddElectionPage extends StatelessWidget {
   }
 
   Future<void> _saveElection(BuildContext context) async {
-    try {
-      _formIsValid();
-      Election election = Election(
-        id: -1,
-        name: ctrlName.text,
-        dateStart: DateFormat("dd/MM/yyyy HH:mm").parse(ctrlDtStart.text),
-        dateEnd: DateFormat("dd/MM/yyyy HH:mm").parse(ctrlDtEnd.text),
-        idTypeVote: currentType!.id,
-      );
-      await VoteService().addElection(election);
-      NavigationNotification(VotePage()).dispatch(context);
-    } on InvalidFormError catch (e) {
-      AlertNormal(
-        context: context,
-        title: "Formulaire incomplet",
-        message: e.message,
-        labelButton: "Continuer",
-      ).show();
-    } on ApiServiceError catch (e) {
-      AlertNormal(
-        title: "Erreur ajout",
-        message: e.responseHttp.body,
-        labelButton: "Continuer",
-        context: context,
-      ).show();
+    if (_formKey.currentState!.validate()) {
+      try {
+        Election election = Election(
+          id: -1,
+          name: ctrlName.text,
+          dateStart: DateFormat("dd/MM/yyyy HH:mm").parse(ctrlDtStart.text),
+          dateEnd: DateFormat("dd/MM/yyyy HH:mm").parse(ctrlDtEnd.text),
+          idTypeVote: currentType!.id,
+        );
+        await VoteService().addElection(election);
+        NavigationNotification(VotePage()).dispatch(context);
+      } on ApiServiceError catch (e) {
+        AlertNormal(
+          title: "Erreur ajout",
+          message: e.responseHttp.body,
+          labelButton: "Continuer",
+          context: context,
+        ).show();
+      }
     }
   }
 
-  void _formIsValid() {
-    if (ctrlName.text.isEmpty) {
-      throw InvalidFormError("Le champ \"Nom\" est obligatoire");
-    } else if (ctrlDtStart.text.isEmpty) {
-      throw InvalidFormError("Le champ \"Date de début\" est obligatoire");
-    } else if (ctrlDtEnd.text.isEmpty) {
-      throw InvalidFormError("Le champ \"Date de fin\" est obligatoire");
-    } else if (currentType == null) {
-      throw InvalidFormError("Le champ \"Type d'élection\" est obligatoire");
+  String? _validatorFieldNullOrEmpty(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Champ obligatoire";
+    } else {
+      return null;
     }
   }
 
+  String? _validatorInputFieldNullOrEmpty(dynamic value) {
+    if (value == null) {
+      return "Champ obligatoire";
+    } else {
+      return null;
+    }
+  }
 }
