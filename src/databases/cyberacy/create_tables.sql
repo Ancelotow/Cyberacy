@@ -195,7 +195,7 @@ create table manifestant
 create table political_party
 (
     pop_id               serial                    not null,
-    pop_name             varchar(50)               not null,
+    pop_name             varchar(100)               not null,
     pop_url_logo         varchar(100)              not null,
     pop_date_create      timestamp default (now()) not null,
     pop_description      varchar(250)              null,
@@ -293,7 +293,7 @@ create table thread
 (
     thr_id          serial                    not null,
     thr_main        boolean   default (false) not null,
-    thr_name        varchar(50)               not null,
+    thr_name        varchar(100)               not null,
     thr_description varchar(250)              null,
     thr_date_create timestamp default (now()) not null,
     thr_is_delete   boolean   default (false) not null,
