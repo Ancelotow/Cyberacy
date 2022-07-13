@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../../models/entities/choice.dart';
 import '../../models/entities/round.dart';
 
 class CardRound extends StatelessWidget {
@@ -30,17 +31,19 @@ class CardRound extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              round.name,
-              maxLines: 2,
-              overflow: TextOverflow.clip,
-              style: const TextStyle(
-                color: Colors.white,
-                fontFamily: "HK-Nova",
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
+            Center(
+              child: Text(
+                round.name,
+                maxLines: 2,
+                overflow: TextOverflow.clip,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontFamily: "HK-Nova",
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -48,7 +51,7 @@ class CardRound extends StatelessWidget {
               children: [
                 const Icon(Icons.calendar_today),
                 Text(
-                  "Début : ${DateFormat("dd/MM/yyyy HH:mm").format(round.dateStart)}",
+                  " Début : ${DateFormat("dd/MM/yyyy HH:mm").format(round.dateStart)} - Fin : ${DateFormat("dd/MM/yyyy HH:mm").format(round.dateEnd)}",
                   maxLines: 2,
                   overflow: TextOverflow.clip,
                   style: Theme.of(context).textTheme.bodyText1,
@@ -56,17 +59,42 @@ class CardRound extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-            Row(
-              children: [
-                const Icon(Icons.calendar_today),
-                Text(
-                  "Fin : ${DateFormat("dd/MM/yyyy HH:mm").format(round.dateEnd)}",
-                  maxLines: 2,
-                  overflow: TextOverflow.clip,
-                  style: Theme.of(context).textTheme.bodyText1,
-                )
-              ],
-            )
+            Expanded(child: _getListChoices(context))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _getListChoices(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: round.choices.map((e) => _getCardResult(context, e)).toList(),
+      ),
+    );
+  }
+
+  Widget _getCardResult(BuildContext context, Choice choice) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: Colors.grey,
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                choice.name,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontFamily: "HK-Nova",
+                ),
+              ),
+            ),
           ],
         ),
       ),

@@ -69,6 +69,7 @@ class VoteDetailsPage extends StatelessWidget {
           ),
         ),
         Expanded(child: _getChoices(context)),
+        const SizedBox(height: 20),
         Expanded(child: _getRounds(context)),
       ],
     );

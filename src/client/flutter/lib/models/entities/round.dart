@@ -1,3 +1,5 @@
+import 'choice.dart';
+
 class Round {
   int num;
   String name;
@@ -5,6 +7,7 @@ class Round {
   DateTime dateEnd;
   int nbVoter;
   int idVote;
+  List<Choice> choices = [];
 
   Round({
     required this.num,
@@ -21,6 +24,10 @@ class Round {
         dateStart = DateTime.parse(json["date_start"]),
         dateEnd = DateTime.parse(json["date_end"]),
         nbVoter = json["nb_voter"] ?? 0,
-        idVote = json["id_vote"];
+        idVote = json["id_vote"] {
+    if(json["choices"] != null) {
+      choices = (json["choices"] as List).map((dynamic json) => Choice.fromJson(json)).toList();
+    }
+  }
 
 }
