@@ -125,25 +125,6 @@ create trigger trg_add_round
     for each row
 execute procedure add_round();
 
--- Trigger AFTER INSERT pour la table "vote"
-create or replace function add_choice_blank()
-    returns trigger
-as
-$trigger$
-begin
-    insert into choice(cho_name, cho_description, vte_id)
-    values ('Vote blanc', 'Vous pouvez voter blanc si aucune des propositions ne vous conviens.', new.vte_id);
-
-    return new;
-end
-$trigger$
-    language plpgsql;
-
-create trigger trg_add_choice_blank
-    after insert
-    on vote
-    for each row
-execute procedure add_choice_blank();
 
 -- Trigger AFTER INSERT pour la table "vote"
 create or replace function add_first_round()
@@ -155,6 +136,10 @@ begin
     select 1, 'Premier Tour', elc_date_start, elc_date_start + interval '12' HOUR, new.vte_id
     from election
     where elc_id = new.elc_id;
+
+    insert into choice(cho_name, cho_description, vte_id)
+    values ('Vote blanc', 'Vous pouvez voter blanc si aucune des propositions ne vous conviens.', new.vte_id);
+
 
     return new;
 end
