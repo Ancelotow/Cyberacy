@@ -8,20 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.vote.round_vote.RoundActivity">
 
-    <com.google.android.material.button.MaterialButton
-        style="?android:attr/borderlessButtonStyle"
-        android:id="@+id/btn_back"
-        android:layout_width="30dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        app:backgroundTint="@color/transparent"
-        app:cornerRadius="50dp"
-        app:icon="@drawable/ic_back"
-        app:iconGravity="textStart"
-        app:iconTint="@color/black"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/title"
@@ -30,11 +16,25 @@
         android:fontFamily="@font/hk_nova"
         android:gravity="center"
         android:lines="2"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintLeft_toRightOf="@id/btn_back"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/consign"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hk_nova"
+        android:gravity="center"
+        android:text="@string/txt_choose_choice"
+        android:padding="5dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
@@ -43,7 +43,24 @@
         android:orientation="vertical"
         android:layout_marginTop="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title"/>
+        app:layout_constraintTop_toBottomOf="@id/consign"
+        app:layout_constraintBottom_toTopOf="@+id/btn_to_vote"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_to_vote"
+        android:text="@string/btn_to_vote"
+        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/hk_nova"
+        android:textColor="@color/black"
+        app:cornerRadius="5dp"
+        app:iconTint="@color/black"
+        app:icon="@drawable/ic_vote"
+        app:backgroundTint="@color/success"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_layout"
@@ -63,9 +80,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/item_party_shimmer" />
-            <include layout="@layout/item_party_shimmer" />
-            <include layout="@layout/item_party_shimmer" />
+            <include layout="@layout/item_choice_shimmer" />
+            <include layout="@layout/item_choice_shimmer" />
+            <include layout="@layout/item_choice_shimmer" />
+            <include layout="@layout/item_choice_shimmer" />
+            <include layout="@layout/item_choice_shimmer" />
+            <include layout="@layout/item_choice_shimmer" />
 
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>

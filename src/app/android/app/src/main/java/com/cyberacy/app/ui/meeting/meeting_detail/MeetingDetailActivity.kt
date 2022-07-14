@@ -41,7 +41,7 @@ class MeetingDetailActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 actionPaymentSuccessful()
             } else if (result.resultCode == RESULT_CANCELED) {
-                val popup = PopUpWindow("Vous avez annulé le paiement de votre réservation", R.drawable.ic_canceled)
+                val popup = PopUpWindow("Vous avez annulé le paiement de votre réservation", R.drawable.ic_canceled, R.id.layout_meeting_details)
                 popup.showPopUp(this)
             }
         }
@@ -223,7 +223,7 @@ class MeetingDetailActivity : AppCompatActivity() {
             when (it) {
                 is MeetingParticipateStateError -> {
                     Log.e("error", it.ex.message())
-                    val popup = PopUpWindow("Une erreur est survenue lors de la réservation", R.drawable.ic_error)
+                    val popup = PopUpWindow("Une erreur est survenue lors de la réservation", R.drawable.ic_error, R.id.layout_meeting_details)
                     popup.showPopUp(this)
                     loader.visibility = View.GONE
                 }
@@ -236,7 +236,7 @@ class MeetingDetailActivity : AppCompatActivity() {
                     btnPayment.visibility = View.GONE
                     txtParticipated.visibility = View.VISIBLE
                     loader.visibility = View.GONE
-                    val popup = PopUpWindow("Votre réservation à été effectuée avec succès !", R.drawable.ic_success)
+                    val popup = PopUpWindow("Votre réservation à été effectuée avec succès !", R.drawable.ic_success, R.id.layout_meeting_details)
                     popup.showPopUp(this)
                 }
             }

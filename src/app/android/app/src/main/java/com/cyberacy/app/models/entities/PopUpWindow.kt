@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.cyberacy.app.R
 import com.google.android.material.button.MaterialButton
 
-class PopUpWindow(val message: String, private val iconResource: Int) {
+class PopUpWindow(val message: String, private val iconResource: Int, val idLayout: Int) {
 
     fun showPopUp(activity: AppCompatActivity) {
         val inflater =
@@ -31,7 +31,7 @@ class PopUpWindow(val message: String, private val iconResource: Int) {
             .setOnClickListener { popup.dismiss() }
         popup.elevation = 5.0F
         popup.showAtLocation(
-            activity.findViewById(R.id.layout_meeting_details),
+            activity.findViewById(idLayout),
             Gravity.CENTER,
             0,
             0

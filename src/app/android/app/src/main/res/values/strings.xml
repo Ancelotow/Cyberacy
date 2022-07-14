@@ -21,6 +21,7 @@
     <string name="title_activity_navigation">NavigationActivity</string>
     <string name="btn_yes">Oui</string>
     <string name="btn_no">Non</string>
+    <string name="btn_to_vote">A voter !</string>
 
     <!-- navigation bottom bar-->
     <string name="nav_party">Parti politique</string>
@@ -56,6 +57,8 @@
     <string name="txt_cdv">J\'ai lu et j\'accepte les <a href="https://www.geeksforgeeks.org">conditions de ventes</a></string>
     <string name="txt_my_ticket">Mon ticket</string>
     <string name="txt_vote_inprogress">Les votes en cours</string>
+    <string name="txt_choose_choice">Sélectionnez un des choix ci-dessous et appuyez sur le bouton \"A voter !\" pour valider votre choix</string>
+
 
     <!-- Tab bar -->
     <string name="tb_conversation">Mes conversations</string>

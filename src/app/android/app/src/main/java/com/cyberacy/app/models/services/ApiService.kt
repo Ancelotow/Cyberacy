@@ -115,4 +115,11 @@ interface ApiService {
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<ResponseAPI<List<Round>?>>
 
+    @GET("vote/{id_vote}/round/{id_round}/choice")
+    fun getChoicesFromRound(
+        @Path("id_vote") idVote: Int,
+        @Path("id_round") idRound: Int,
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<ResponseAPI<List<Choice>?>>
+
 }
