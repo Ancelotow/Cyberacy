@@ -10,6 +10,7 @@ import '../../models/entities/choice.dart';
 import '../../models/entities/vote.dart';
 import '../../models/errors/api_service_error.dart';
 import '../../models/notifications/navigation_notification.dart';
+import '../../models/notifications/save_notification.dart';
 import '../../models/services/vote_service.dart';
 import '../../widgets/buttons/button_card.dart';
 import '../../widgets/info_error.dart';
@@ -29,11 +30,8 @@ class VoteDetailsPage extends StatefulWidget {
 
 class _VoteDetailsPageState extends State<VoteDetailsPage> {
   Vote? vote;
-
   bool canEdit = false;
-
   final double _widthCard = 500;
-
   final double _heightCard = 120;
 
   @override
@@ -141,9 +139,31 @@ class _VoteDetailsPageState extends State<VoteDetailsPage> {
       height: _heightCard,
       width: _widthCard,
       color: Theme.of(context).highlightColor,
-      onTap: () => NavigationNotification(AddChoice(
-        vote: vote!,
-      )).dispatch(context),
+      onTap: () => showDialog(
+        builder: (_) {
+          return NotificationListener<SaveNotification<Choice>>(
+            onNotification: (value) {
+              setState(() => { });
+              return true;
+            },
+            child: AlertDialog(
+              title: Text(
+                "Nouveau choix pour le vote\n${vote!.name}",
+                style: Theme.of(context).textTheme.headline1,
+              ),
+              backgroundColor: Theme.of(context).backgroundColor,
+              content: SizedBox(
+                width: 700,
+                height: 600,
+                child: AddChoice(
+                  vote: vote!,
+                ),
+              ),
+            ),
+          );
+        },
+        context: context,
+      ),
     );
   }
 

@@ -6,6 +6,7 @@ import '../../models/entities/my_color.dart';
 import '../../models/entities/vote.dart';
 import '../../models/errors/api_service_error.dart';
 import '../../models/notifications/navigation_notification.dart';
+import '../../models/notifications/save_notification.dart';
 import '../../models/services/ref_service.dart';
 import '../../models/services/vote_service.dart';
 import '../../widgets/buttons/button.dart';
@@ -40,12 +41,6 @@ class AddChoice extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "Nouveau choix pour le vote\n${vote.name}",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-                const SizedBox(height: 50),
                 InputText(
                   placeholder: "Nom*",
                   icon: Icons.abc,
@@ -90,9 +85,7 @@ class AddChoice extends StatelessWidget {
                   width: width,
                   color: Colors.red,
                   pressedColor: Colors.redAccent,
-                  click: () =>
-                      NavigationNotification(VoteDetailsPage(idVote: vote.id))
-                          .dispatch(context),
+                  click: () => Navigator.of(context).pop(),
                 ),
               ],
             ),
@@ -116,8 +109,8 @@ class AddChoice extends StatelessWidget {
           choice.idColor = colorSelected!.id;
         }
         await VoteService().addChoice(choice, vote.id);
-        NavigationNotification(VoteDetailsPage(idVote: vote.id))
-            .dispatch(context);
+        SaveNotification(choice).dispatch(context);
+        Navigator.of(context).pop();
       } on ApiServiceError catch (e) {
         AlertNormal(
           title: "Erreur ajout",
