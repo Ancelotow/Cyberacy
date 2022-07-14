@@ -158,7 +158,7 @@ const GetVoteDetails = (nir, id) => {
                         res.rounds[i].choices[j].color = colors.find(clr => clr.id === res.rounds[i].choices[j].id_color)
                     }
                 }
-                for(let j = 0; j < res.choices; j++) {
+                for(let j = 0; j < res.choices.length; j++) {
                     res.choices[j].color = colors.find(clr => clr.id === res.choices[j].id_color)
                 }
             }
