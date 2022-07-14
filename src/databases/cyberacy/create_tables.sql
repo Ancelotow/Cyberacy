@@ -379,8 +379,10 @@ create table choice
     cho_description varchar(250) null,
     vte_id          int          not null,
     prs_nir         varchar(20)  null,
+    clr_id          int          null,
     constraint pk_choice primary key (cho_id),
     constraint fk_choice_vote foreign key (vte_id) references vote (vte_id),
+    constraint fk_choice_color foreign key (clr_id) references color (clr_id),
     constraint fk_choice_person foreign key (prs_nir) references person (prs_nir)
 );
 

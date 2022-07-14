@@ -38,6 +38,7 @@ routerRef.get("/political_edge", async (req, res) => {
 routerRef.get("/colors", async (req, res) => {
     // #swagger.tags = ['References']
     // #swagger.description = 'Récupération des couleurs.'
+    // #swagger.security = [{ "Bearer": [] }]
 
     const response = await referencesCtrl.GetColors()
     res.status(response.code).send(response)

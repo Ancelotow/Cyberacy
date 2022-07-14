@@ -498,7 +498,8 @@ create or replace function filter_choice(_nir person.prs_nir%type, _vte_id round
                 id_vote      choice.vte_id%type,
                 description  choice.cho_description%type,
                 candidat_nir choice.prs_nir%type,
-                candidat     varchar
+                candidat     varchar,
+                id_color     choice.clr_id%type
             )
 as
 $filter$
@@ -509,7 +510,8 @@ begin
                         cho.vte_id                                        as id_vote,
                         cho_description                                   as description,
                         cho.prs_nir                                       as candidat_nir,
-                        concat(prs_lastname, ' ', prs_firstname)::varchar as candidat
+                        concat(prs_lastname, ' ', prs_firstname)::varchar as candidat,
+                        cho.clr_id                                        as id_color
         from choice cho
                  left join link_round_choice lrc on cho.cho_id = lrc.cho_id
                  left join filter_round(_nir, _vte_id) rnd

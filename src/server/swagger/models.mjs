@@ -120,7 +120,8 @@ export default  {
         name: "Edouard PHILLIPE",
         choice_order: 1,
         description: "Elections aux législatives : Edouard PHILLIPE",
-        candidat_nir: "012457832032045"
+        candidat_nir: "012457832032045",
+        id_color: 1
     },
 
     AddElection: {

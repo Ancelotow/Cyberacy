@@ -8,6 +8,7 @@ import {Department} from "../models/department.mjs";
 import {TypeVote} from "../models/type-vote.mjs";
 import {Election} from "../models/election.mjs";
 import {ResponseApi} from "../models/response-api.mjs";
+import {Color} from "../models/color.mjs";
 
 const EnumTypeVote = Object.freeze({
     Presidential: 1,
@@ -139,6 +140,7 @@ const GetVoteDetails = (nir, id) => {
     return new Promise((resolve, _) => {
         new Vote().GetById(id).then(async (res) => {
             if (res != null) {
+                let colors = await new Color().Get()
                 if (res.town_code_insee) {
                     res.town = await new Town().GetById(res.town_code_insee)
                 }
@@ -152,6 +154,12 @@ const GetVoteDetails = (nir, id) => {
                 res.choices = await new Choice().Get(nir, null, res.id)
                 for(let i = 0; i < res.rounds.length; i++){
                     res.rounds[i].choices = await new Choice().Get(nir, res.rounds[i].num, res.id)
+                    for(let j = 0; j < res.rounds[i].choices.length; j++) {
+                        res.rounds[i].choices[j].color = colors.find(clr => clr.id === res.rounds[i].choices[j].id_color)
+                    }
+                }
+                for(let j = 0; j < res.choices; j++) {
+                    res.choices[j].color = colors.find(clr => clr.id === res.choices[j].id_color)
                 }
             }
             resolve(new ResponseApi().InitData(res))
@@ -241,9 +249,13 @@ const GetRound = (nir, idVote) => {
             resolve(new ResponseApi().InitMissingParameters())
             return
         }
-        new Round().Get(nir, idVote).then((res) => {
+        new Round().Get(nir, idVote).then(async (res) => {
+            let colors = await new Color().Get()
             for (let i = 0; i < res.length; i++) {
                 res[i].choices = new Choice().Get(nir, res[i].num_round, idVote)
+                for(let j = 0; j < res[i].choices.length; j++) {
+                    res[i].choices[j].color = colors.find(clr => clr.id === res.choices[j].id_color)
+                }
             }
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
@@ -304,7 +316,11 @@ const AddRound = (roundJson, idVote) => {
  */
 const GetChoice = (nir, numRound, idVote) => {
     return new Promise((resolve, _) => {
-        new Choice().Get(nir, numRound, idVote).then((res) => {
+        new Choice().Get(nir, numRound, idVote).then(async (res) => {
+            let colors = await new Color().Get()
+            for(let j = 0; j < res.length; j++) {
+                res[j].color = colors.find(clr => clr.id === res[j].id_color)
+            }
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
             if (e.code === '23503') {

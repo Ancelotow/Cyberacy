@@ -423,7 +423,12 @@
         ],
         "description": "Récupération des couleurs.",
         "parameters": [],
-        "responses": {}
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/region": {
@@ -2153,6 +2158,10 @@
         "candidat_nir": {
           "type": "string",
           "example": "012457832032045"
+        },
+        "id_color": {
+          "type": "number",
+          "example": 1
         }
       }
     },
