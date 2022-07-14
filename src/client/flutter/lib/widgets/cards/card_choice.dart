@@ -8,12 +8,14 @@ class CardChoice extends StatelessWidget {
   final Choice choice;
   final double width;
   final double height;
+  final bool canEdit;
 
   const CardChoice({
     Key? key,
     required this.choice,
     required this.width,
     required this.height,
+    this.canEdit = false
   }) : super(key: key);
 
   @override
@@ -50,18 +52,7 @@ class CardChoice extends StatelessWidget {
                     ),
                   ),
                 ),
-                PopupMenuButton(
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (BuildContext contextPopup) {
-                    return [
-                      PopupMenuItem<String>(
-                        value: "Supprimer",
-                        child: const Text("Supprimer"),
-                        onTap: () => RemoveNotification(choice).dispatch(context),
-                      )
-                    ];
-                  },
-                )
+                _getPopupMenu(context),
               ],
             ),
             Text(
@@ -73,4 +64,24 @@ class CardChoice extends StatelessWidget {
       ),
     );
   }
+
+  Widget _getPopupMenu(BuildContext context) {
+    if(canEdit) {
+      return PopupMenuButton(
+        padding: EdgeInsets.zero,
+        itemBuilder: (BuildContext contextPopup) {
+          return [
+            PopupMenuItem<String>(
+              value: "Supprimer",
+              child: const Text("Supprimer"),
+              onTap: () => RemoveNotification(choice).dispatch(context),
+            )
+          ];
+        },
+      );
+    } else {
+      return Container();
+    }
+  }
+
 }

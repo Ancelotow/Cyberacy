@@ -180,6 +180,7 @@ class _VoteDetailsPageState extends State<VoteDetailsPage> {
       },
       child: CardChoice(
         choice: choice,
+        canEdit: canEdit,
         width: _widthCard,
         height: _heightCard,
       ),
