@@ -489,7 +489,7 @@ begin
                  left join link_person_round lpr
                            on rnd.vte_id = lpr.vte_id and rnd.rnd_num = lpr.rnd_num and lpr.prs_nir = _nir
         where rnd.vte_id = _vte_id
-        order by rnd_date_start, rnd_num;
+        order by rnd_date_start, num;
 end;
 $filter$
     language plpgsql;
