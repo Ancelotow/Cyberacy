@@ -224,7 +224,7 @@ begin
     where rnd_num = new.rnd_num
       and vte_id = new.vte_id;
 
-    if date_vote_started <= now() or date_vote_ended >= now() then
+    if date_vote_started > now() or date_vote_ended < now() then
         raise 'You cannot vote before or after the vote.' using errcode = '23503';
     end if;
 
