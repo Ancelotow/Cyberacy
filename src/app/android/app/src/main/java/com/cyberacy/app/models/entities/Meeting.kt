@@ -163,7 +163,7 @@ class Meeting(
         val nbTotalMinutes = nbTime * 60
         val nbHour = nbTime.toInt()
         val nbMinutes = (nbTotalMinutes - (nbHour * 60)).toInt()
-        return "${nbHour}h$nbMinutes"
+        return "${nbHour}h${nbMinutes.toString().padStart(2, '0')}"
     }
 
     fun getTimeEnd(): LocalDateTime{

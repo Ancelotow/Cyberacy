@@ -1,5 +1,6 @@
 package com.cyberacy.app.ui.vote
 
+import android.content.res.Configuration
 import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
@@ -23,12 +24,25 @@ class VoteViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val round = item.getCurrentRound()?.name ?: "Tour"
         val durationLeft: Duration = item.getDurationLeft() ?: Duration.ZERO
         voteCurrentRound.text = "$round : ${item.getTimeLeftStr()}"
-        if(durationLeft.toMinutes() <= 15) {
-            voteCurrentRound.setTextColor(ContextCompat.getColor(itemView.context, R.color.red));
-            logoTime.setColorFilter(ContextCompat.getColor(itemView.context, R.color.red), android.graphics.PorterDuff.Mode.SRC_IN)
+
+        val colorTimeLeft: Int = if(durationLeft.toMinutes() <= 0) {
+            when (itemView.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+                Configuration.UI_MODE_NIGHT_YES -> {
+                    android.R.color.white
+                }
+                else -> {
+                    android.R.color.black
+                }
+            }
+        } else if(durationLeft.toMinutes() <= 15) {
+            R.color.red
         } else if(durationLeft.toMinutes() <= 60) {
-            voteCurrentRound.setTextColor(ContextCompat.getColor(itemView.context, R.color.orange));
-            logoTime.setColorFilter(ContextCompat.getColor(itemView.context, R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN)
+            R.color.orange
+        } else {
+            R.color.success
         }
+        voteCurrentRound.setTextColor(ContextCompat.getColor(itemView.context,colorTimeLeft));
+        logoTime.setColorFilter(ContextCompat.getColor(itemView.context, colorTimeLeft), android.graphics.PorterDuff.Mode.SRC_IN)
+
     }
 }

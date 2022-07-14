@@ -77,19 +77,19 @@ interface ApiService {
 
     @GET("meeting/{id}/details")
     fun getMeetingById(
-        @Path("id") id: Int? = null,
+        @Path("id") id: Int,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<ResponseAPI<Meeting?>>
 
     @POST("meeting/participate/{id}")
     fun participateToMeeting(
-        @Path("id") id: Int? = null,
+        @Path("id") id: Int,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<ResponseAPI<Unit>>
 
     @GET("meeting/participate/{id}/details-qrcode")
     fun meetingGetInfoQRCode(
-        @Path("id") id: Int? = null,
+        @Path("id") id: Int,
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<ResponseAPI<MeetingQrCode?>>
 
@@ -108,5 +108,11 @@ interface ApiService {
     fun getVoteInProgress(
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<ResponseAPI<List<Vote>?>>
+
+    @GET("vote/{id}/round")
+    fun getRoundsFromVote(
+        @Path("id") id: Int,
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<ResponseAPI<List<Round>?>>
 
 }

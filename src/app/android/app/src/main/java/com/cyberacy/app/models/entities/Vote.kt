@@ -58,16 +58,12 @@ class Vote(
 
     fun getDurationLeft(): Duration? {
         val round = getCurrentRound() ?: return null
-        return Duration.between(LocalDateTime.now(), round.dateEnd)
+        return round.getDurationLeft()
     }
 
     fun getTimeLeftStr(): String {
-        val duration = getDurationLeft() ?: return "Terminé"
-        if(duration.toHoursPart() <= 0) {
-            return "Se termine dans ${duration.toMinutes()} minutes"
-        }
-        val nbMinutes = (duration.toMinutes() - (duration.toHoursPart() * 60)).toInt()
-        return "Se termine dans ${duration.toHoursPart()}h${nbMinutes}min"
+        val round = getCurrentRound() ?: return "Aucun tour"
+        return round.getTimeLeftStr()
     }
 
     companion object Service {

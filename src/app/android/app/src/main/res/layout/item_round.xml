@@ -27,12 +27,13 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/vote_name"
+            android:id="@+id/round_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/hk_nova"
             android:textSize="25sp"
             android:maxLines="2"
+            android:text="Premier Tour"
             android:layout_marginEnd="15dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
@@ -41,36 +42,63 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-            android:id="@+id/vote_type"
+            android:id="@+id/round_num"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/hk_nova"
             android:textColor="@color/grey"
             android:textSize="14sp"
             android:maxLines="2"
-            app:layout_constraintRight_toRightOf="@+id/vote_name"
-            app:layout_constraintLeft_toLeftOf="@+id/vote_name"
-            app:layout_constraintTop_toBottomOf="@+id/vote_name"/>
+            android:text="1er tour"
+            app:layout_constraintRight_toRightOf="@+id/round_name"
+            app:layout_constraintLeft_toLeftOf="@+id/round_name"
+            app:layout_constraintTop_toBottomOf="@+id/round_name"/>
+
+
 
 
         <ImageView
-            android:id="@+id/logo_time"
+            android:id="@+id/logo_is_vote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:src="@drawable/ic_nb_time"
-            app:layout_constraintLeft_toLeftOf="@+id/vote_name"
-            app:layout_constraintTop_toBottomOf="@+id/vote_type"
+            android:src="@drawable/ic_canceled"
+            app:layout_constraintLeft_toLeftOf="@+id/round_name"
+            app:layout_constraintTop_toBottomOf="@+id/round_num"
             app:tint="@color/black" />
 
         <TextView
-            android:id="@+id/current_round"
+            android:id="@+id/txt_is_vote"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/hk_nova"
             android:textSize="14sp"
             android:maxLines="1"
             android:layout_marginStart="5dp"
+            android:text="A voter"
+            app:layout_constraintLeft_toRightOf="@+id/logo_is_vote"
+            app:layout_constraintTop_toTopOf="@+id/logo_is_vote"
+            app:layout_constraintBottom_toBottomOf="@+id/logo_is_vote"/>
+
+        <ImageView
+            android:id="@+id/logo_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_nb_time"
+            app:layout_constraintLeft_toLeftOf="@+id/round_name"
+            app:layout_constraintTop_toBottomOf="@+id/logo_is_vote"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/round_left_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hk_nova"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:layout_marginStart="5dp"
+            android:text="Se termine dans 25h30min"
             app:layout_constraintLeft_toRightOf="@+id/logo_time"
             app:layout_constraintTop_toTopOf="@+id/logo_time"
             app:layout_constraintBottom_toBottomOf="@+id/logo_time"/>

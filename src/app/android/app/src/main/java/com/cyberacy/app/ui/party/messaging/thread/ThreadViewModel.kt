@@ -26,7 +26,7 @@ class ThreadViewModel(private val id: Int) : ViewModel() {
         getMessages()
     }
 
-    fun getMessages() {
+    private fun getMessages() {
         viewModelScope.launch {
             MessageRepository.fetchMessages(id).collect {
                 _messages.value = it
