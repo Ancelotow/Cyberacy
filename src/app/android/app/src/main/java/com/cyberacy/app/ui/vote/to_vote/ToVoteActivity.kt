@@ -16,7 +16,6 @@ import com.cyberacy.app.models.repositories.ChoiceStateError
 import com.cyberacy.app.models.repositories.ChoiceStateLoading
 import com.cyberacy.app.models.repositories.ChoiceStateSuccess
 import com.facebook.shimmer.ShimmerFrameLayout
-import com.google.android.material.button.MaterialButton
 import kotlin.properties.Delegates
 
 class ToVoteActivity : AppCompatActivity() {
