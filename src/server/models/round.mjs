@@ -1,5 +1,4 @@
 import {pool} from "../middlewares/postgres.mjs";
-import {Department} from "./department.mjs";
 
 class Round {
     num
@@ -7,6 +6,8 @@ class Round {
     name
     date_start
     date_end
+    is_voted = false
+
     choices = []
 }
 

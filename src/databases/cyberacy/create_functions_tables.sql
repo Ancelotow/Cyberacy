@@ -469,18 +469,25 @@ create or replace function filter_round(_nir person.prs_nir%type, _vte_id round.
                 name       round.rnd_name%type,
                 date_start round.rnd_date_start%type,
                 date_end   round.rnd_date_end%type,
-                id_vote    round.vte_id%type
+                id_vote    round.vte_id%type,
+                is_voted   boolean
             )
 as
 $filter$
 begin
     return query
-        select rnd_num        as num,
+        select rnd.rnd_num    as num,
                rnd_name       as name,
                rnd_date_start as date_start,
                rnd_date_end   as date_end,
-               vte_id         as id_vote
+               rnd.vte_id     as id_vote,
+               case
+                   when lpr.vte_id is null then false
+                   else true
+                   end        as is_voted
         from round rnd
+                 left join link_person_round lpr
+                           on rnd.vte_id = lpr.vte_id and rnd.rnd_num = lpr.rnd_num and lpr.prs_nir = _nir
         where rnd.vte_id = _vte_id
         order by rnd_date_start, rnd_num;
 end;
