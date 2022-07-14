@@ -1,3 +1,5 @@
+import 'package:bo_cyberacy/models/notifications/remove_notification.dart';
+import 'package:bo_cyberacy/widgets/buttons/button_card.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/entities/choice.dart';
@@ -32,27 +34,40 @@ class CardChoice extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
               children: [
-                SizedBox(
-                  width: width - 16,
-                  child: Text(
-                    choice.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.clip,
-                    style: Theme.of(context).textTheme.headline2,
+                Expanded(
+                  child: SizedBox(
+                    child: Text(
+                      choice.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.clip,
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
                   ),
                 ),
-                Text(
-                  choice.candidate,
-                  style: Theme.of(context).textTheme.headline3,
+                PopupMenuButton(
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (BuildContext contextPopup) {
+                    return [
+                      PopupMenuItem<String>(
+                        value: "Supprimer",
+                        child: const Text("Supprimer"),
+                        onTap: () => RemoveNotification(choice).dispatch(context),
+                      )
+                    ];
+                  },
                 )
               ],
             ),
+            Text(
+              choice.candidate,
+              style: Theme.of(context).textTheme.headline3,
+            )
           ],
         ),
       ),

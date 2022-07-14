@@ -89,4 +89,17 @@ class VoteService extends ApiService {
     }
   }
 
+  Future<void> deleteChoice(int idChoice) async {
+    var response = await http.delete(
+      getUrl("vote/choice/$idChoice", null),
+      headers: await getHeaders(auth: true),
+      body: null,
+    );
+    if (response.statusCode == 201) {
+      return;
+    } else {
+      throw ApiServiceError(response);
+    }
+  }
+
 }

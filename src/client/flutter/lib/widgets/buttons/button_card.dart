@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class ButtonCard extends StatefulWidget {
   Color? color;
-  final String label;
+  final String? label;
   final IconData icon;
   final Function()? onTap;
   final double height;
@@ -62,14 +62,7 @@ class _ButtonCardState extends State<ButtonCard> {
                   widget.icon,
                   color: widget.colorText,
                 ),
-                Text(
-                  widget.label,
-                  style: TextStyle(
-                    color: widget.colorText,
-                    fontFamily: "HK-Nova",
-                    fontSize: 14,
-                  ),
-                )
+                _getLabel(context)
               ],
             ),
           ),
@@ -91,4 +84,20 @@ class _ButtonCardState extends State<ButtonCard> {
       widget.colorText = widget.color;
     });
   }
+  
+  Widget _getLabel(BuildContext context) {
+    if(widget.label != null) {
+      return Text(
+        widget.label!,
+        style: TextStyle(
+          color: widget.colorText,
+          fontFamily: "HK-Nova",
+          fontSize: 14,
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+  
 }
