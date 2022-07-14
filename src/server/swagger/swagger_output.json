@@ -416,6 +416,16 @@
         "responses": {}
       }
     },
+    "/colors": {
+      "get": {
+        "tags": [
+          "References"
+        ],
+        "description": "Récupération des couleurs.",
+        "parameters": [],
+        "responses": {}
+      }
+    },
     "/region": {
       "get": {
         "tags": [

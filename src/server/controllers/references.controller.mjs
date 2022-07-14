@@ -3,6 +3,7 @@ import sex from "../models/sexe.mjs";
 import {TypeVote} from "../models/type-vote.mjs";
 import political_edge from "../models/political-edge.mjs";
 import {ResponseApi} from "../models/response-api.mjs";
+import {Color} from "../models/color.mjs";
 
 /**
  * Récupère la liste des types d'étapes
@@ -64,4 +65,19 @@ const GetPoliticalEdge = () => {
     });
 }
 
-export default {GetTypeStep, GetSex, GetTypeVote, GetPoliticalEdge}
+/**
+ * Récupère toutes les couleurs
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetColors = () => {
+    return new Promise((resolve, _) => {
+        new Color().Get().then((res) => {
+            resolve(new ResponseApi().InitData(res))
+        }).catch((e) => {
+            resolve(new ResponseApi().InitInternalServer(e))
+        })
+    });
+}
+
+export default {GetTypeStep, GetSex, GetTypeVote, GetPoliticalEdge, GetColors}
