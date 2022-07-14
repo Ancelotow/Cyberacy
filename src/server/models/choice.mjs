@@ -21,7 +21,7 @@ class Choice{
 Choice.prototype.Add = function() {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'INSERT INTO choice (cho_name, vte_id, cho_description, prs_nir, clr_id) VALUES ($1, $2, $3, $4)',
+            text: 'INSERT INTO choice (cho_name, vte_id, cho_description, prs_nir, clr_id) VALUES ($1, $2, $3, $4, $5)',
             values: [this.name, this.id_vote, this.description, this.candidat_nir, this.id_color],
         }
         pool.query(request, (error, _) => {
