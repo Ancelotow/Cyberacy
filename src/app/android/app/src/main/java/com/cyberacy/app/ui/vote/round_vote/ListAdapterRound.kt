@@ -14,7 +14,8 @@ import java.time.LocalDateTime
 
 class ListAdapterRound(
     val rounds: MutableList<Round>,
-    val activity: Activity?
+    val activity: Activity?,
+    private val itemClick: (item: Round) -> Unit
 ) : RecyclerView.Adapter<RoundViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoundViewHolder {
@@ -30,11 +31,7 @@ class ListAdapterRound(
             } else if(item.isVoted) {
                 PopUpWindow("Vous avez déjà voté ", R.drawable.ic_success, R.id.layout_list_round).showPopUp(activity as AppCompatActivity)
             } else {
-                val intent = Intent(view?.context, ToVoteActivity::class.java)
-                intent.putExtra("idVote", item.idVote)
-                intent.putExtra("idRound", item.num)
-                intent.putExtra("nameRound", item.name)
-                activity?.startActivity(intent)
+                itemClick.invoke(item)
             }
         }
     }

@@ -25,7 +25,7 @@ class RoundViewModel(private val id: Int) : ViewModel() {
         getRounds()
     }
 
-    private fun getRounds() {
+    fun getRounds() {
         viewModelScope.launch {
             RoundRepository.fetchRound(id).collect {
                 _rounds.value = it

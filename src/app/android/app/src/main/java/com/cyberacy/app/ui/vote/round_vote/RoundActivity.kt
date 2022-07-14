@@ -1,18 +1,24 @@
 package com.cyberacy.app.ui.vote.round_vote
 
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cyberacy.app.R
+import com.cyberacy.app.models.entities.PopUpWindow
 import com.cyberacy.app.models.entities.Round
 import com.cyberacy.app.models.repositories.*
+import com.cyberacy.app.ui.vote.to_vote.ToVoteActivity
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.button.MaterialButton
 import kotlin.properties.Delegates
@@ -22,6 +28,16 @@ class RoundActivity : AppCompatActivity() {
     private lateinit var viewModel: RoundViewModel
     private var idVote by Delegates.notNull<Int>()
     private lateinit var nameVote: String
+
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                toVoteSuccessful()
+            } else if (result.resultCode == RESULT_CANCELED) {
+                val popup = PopUpWindow("Vous n'avez pas voté", R.drawable.ic_canceled, R.id.layout_list_round)
+                popup.showPopUp(this)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +66,9 @@ class RoundActivity : AppCompatActivity() {
                 is RoundStateSuccess -> {
                     shimmerLayout.visibility = View.GONE
                     recyclerView.visibility = View.VISIBLE
-                    recyclerView.adapter = ListAdapterRound(it.rounds as MutableList<Round>, this)
+                    recyclerView.adapter = ListAdapterRound(it.rounds as MutableList<Round>, this) { round ->
+                        selectRound(round)
+                    }
                     recyclerView.layoutManager = GridLayoutManager(baseContext, 1)
                 }
                 else -> {}
@@ -63,7 +81,7 @@ class RoundActivity : AppCompatActivity() {
         actionBar?.hide()
         val buttonBack = findViewById<MaterialButton>(R.id.btn_back)
         findViewById<TextView>(R.id.title).text = nameVote
-        var colorIcon = android.R.color.black
+        val colorIcon: Int
         colorIcon = when (resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
             Configuration.UI_MODE_NIGHT_YES -> {
                 android.R.color.white
@@ -74,6 +92,20 @@ class RoundActivity : AppCompatActivity() {
         }
         buttonBack.iconTint = ContextCompat.getColorStateList(this, colorIcon)
         buttonBack.setOnClickListener { finish() }
+    }
+
+    private fun toVoteSuccessful() {
+        val popup = PopUpWindow("Merci !\nVotre voix à été prise en compte", R.drawable.ic_success, R.id.layout_list_round)
+        popup.showPopUp(this)
+        viewModel.getRounds()
+    }
+
+    private fun selectRound(item: Round) {
+        val intent = Intent(this, ToVoteActivity::class.java)
+        intent.putExtra("idVote", item.idVote)
+        intent.putExtra("idRound", item.num)
+        intent.putExtra("nameRound", item.name)
+        resultLauncher.launch(intent)
     }
 
 }

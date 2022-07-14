@@ -23,6 +23,7 @@
     card_view:cardPreventCornerOverlap="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_item_choice"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -42,7 +43,6 @@
             android:fontFamily="@font/hk_nova"
             android:textSize="18sp"
             android:maxLines="1"
-            android:text="Edouard PHILLIPE (HORIZON)"
             android:layout_marginEnd="15dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
@@ -58,7 +58,6 @@
             android:textSize="11sp"
             android:maxLines="3"
             android:textColor="@color/grey"
-            android:text="Edouarsssssssssssssssssssssssssssssssss ssssssssssssssssssss ssssssssssssssssssssssss sssssd PHILLIPE (HORIZON)"
             app:layout_constraintRight_toRightOf="@+id/choice_text"
             app:layout_constraintTop_toBottomOf="@+id/choice_text"
             app:layout_constraintLeft_toLeftOf="@+id/choice_text"/>

@@ -58,6 +58,7 @@
     <string name="txt_my_ticket">Mon ticket</string>
     <string name="txt_vote_inprogress">Les votes en cours</string>
     <string name="txt_choose_choice">Sélectionnez un des choix ci-dessous et appuyez sur le bouton \"A voter !\" pour valider votre choix</string>
+    <string name="txt_to_vote_confirmation">Confirmation du vote</string>
 
 
     <!-- Tab bar -->
