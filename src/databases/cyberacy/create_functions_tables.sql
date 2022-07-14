@@ -518,7 +518,7 @@ begin
                            on rnd.num = lrc.rnd_num and rnd.id_vote = lrc.vte_id
                  left join person prs on cho.prs_nir = prs.prs_nir
         where cho.vte_id = _vte_id
-        and (rnd.num = _rnd_num or _rnd_num is null)
+          and (rnd.num = _rnd_num or _rnd_num is null)
         order by cho_name;
 end;
 $filter$
@@ -1063,5 +1063,55 @@ begin
           and omn_is_delete = false
         order by omn_name;
 end;
+$filter$
+    language plpgsql;
+
+-- Récupère la liste des votes "en cours" d'un utilisateur
+create or replace function get_in_progress_vote(_nir person.prs_nir%type)
+    returns table
+            (
+                id                 vote.vte_id%type,
+                name               vote.vte_name%type,
+                nb_voter           vote.vte_nb_voter%type,
+                town_code_insee    vote.twn_code_insee%type,
+                department_code    vote.dpt_code%type,
+                reg_code_insee     vote.reg_code_insee%type,
+                id_political_party vote.pop_id%type,
+                id_election        vote.elc_id%type,
+                id_type            election.tvo_id%type
+            )
+as
+$filter$
+declare
+    today    timestamp := now();
+    mine_dpt department.dpt_code%type;
+    mine_twn town.twn_code_insee%type;
+    mine_reg region.reg_code_insee%type;
+begin
+    select twn.twn_code_insee, dpt.dpt_code, dpt.reg_code_insee
+    into mine_twn, mine_dpt, mine_reg
+    from person prs
+             join town twn on prs.twn_code_insee = twn.twn_code_insee
+             join department dpt on twn.dpt_code = dpt.dpt_code
+    where prs_nir = _nir;
+
+    return query
+        select vte.vte_id         as id,
+               vte_name           as name,
+               vte.vte_nb_voter   as nb_voter,
+               vte.twn_code_insee as town_code_insee,
+               vte.dpt_code       as department_code,
+               vte.reg_code_insee as reg_code_insee,
+               vte.pop_id         as id_political_party,
+               vte.elc_id         as id_election,
+               e.tvo_id           as id_type
+        from vote vte
+                 join election e on e.elc_id = vte.elc_id
+        where elc_date_start <= today
+          and elc_date_end >= today
+          and (vte.twn_code_insee = mine_twn or vte.twn_code_insee is null)
+          and (vte.dpt_code = mine_dpt or vte.dpt_code is null)
+          and (vte.reg_code_insee = mine_reg or vte.reg_code_insee is null);
+end ;
 $filter$
     language plpgsql;

@@ -140,6 +140,26 @@ $role$
             values (17, 'PARTI POLITIQUE : Inviter dans un thread', 'Pouvoir inviter une personne dans un thread',
                     'THREAD$$$INVITED');
         end if;
+        if not exists(select * from role where rle_id = 18) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (18, 'PERSONNES : Lecture', 'Pouvoir voir la liste des personnes', 'PERSON$$$READ');
+        end if;
+        if not exists(select * from role where rle_id = 19) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (19, 'Accès au module UTILISATEUR', 'Accéder au module UTILISATEUR sur le Back-Office', 'USER$$$ACCESS');
+        end if;
+        if not exists(select * from role where rle_id = 20) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (20, 'PROFILE : Lecture', 'Pouvoir voir la liste des profiles', 'PROFIL$$$READ');
+        end if;
+        if not exists(select * from role where rle_id = 21) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (21, 'Accès au module PROFILE', 'Accéder au module PROFILE sur le Back-Office', 'PROFIL$$$ACCESS');
+        end if;
+        if not exists(select * from role where rle_id = 22) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (22, 'DROITS : Lecture', 'Pouvoir voir la liste des droits', 'ROLE$$$READ');
+        end if;
     end;
 $role$;
 

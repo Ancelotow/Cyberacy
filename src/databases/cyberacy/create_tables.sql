@@ -45,7 +45,7 @@ create table type_vote
 
 create table profile
 (
-    prf_id          int                       not null,
+    prf_id          serial                    not null,
     prf_name        varchar(75)               not null,
     prf_description varchar(250)              null,
     prf_date_create timestamp default (now()) not null,

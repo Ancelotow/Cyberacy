@@ -30,7 +30,6 @@ class StatsAbsention {
 
 /**
  * Ajoute un nouveau vote
- * @param vote Le nouveau vote
  * @returns {Promise<unknown>}
  * @constructor
  */
@@ -64,6 +63,24 @@ Vote.prototype.Get = function (nir, idElection, includeFinish = false, includeFu
         const request = {
             text: 'SELECT * FROM filter_vote($1, $2, $3, $4)',
             values: [nir, idElection, includeFinish, includeFuture],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let listVote = []
+                result.rows.forEach(e => listVote.push(Object.assign(new Vote(), e)));
+                resolve(listVote)
+            }
+        });
+    });
+}
+
+Vote.prototype.GetInProgress = function (nir) {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT * FROM get_in_progress_vote($1)',
+            values: [nir],
         }
         pool.query(request, (error, result) => {
             if (error) {

@@ -81,7 +81,15 @@ routerVote.get("/election/:id/vote", async (req, res) => {
     const includeFinish = (req.query.includeFinish == null) ? false : req.query.includeFinish
     const includeFuture = (req.query.includeFuture == null) ? true : req.query.includeFuture
     const response = await voteCtrl.GetVote(req.data.nir, req.params.id, includeFinish, includeFuture)
-    console.log("finish get vote")
+    res.status(response.code).send(response)
+});
+
+routerVote.get("/vote/in_progress", async (req, res) => {
+    // #swagger.tags = ['Election']
+    // #swagger.description = 'Récupère les votes en cours d\'un utilisateur.'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const response = await voteCtrl.GetVoteInProgress(req.data.nir)
     res.status(response.code).send(response)
 });
 

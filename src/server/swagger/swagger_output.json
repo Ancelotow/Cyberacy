@@ -652,6 +652,21 @@
         ]
       }
     },
+    "/vote/in_progress": {
+      "get": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Récupère les votes en cours d\\'un utilisateur.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/vote/{id}/details": {
       "get": {
         "tags": [

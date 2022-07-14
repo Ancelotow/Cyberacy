@@ -120,10 +120,39 @@ const GetVote = (nir, idElection, includeFinish = false, includeFuture = true) =
             await Promise.all(tabPromise)
             resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            if (e.code === '23503') {
-                resolve(new ResponseApi().InitBadRequest(e.message))
-                return
+            resolve(new ResponseApi().InitInternalServer(e))
+        })
+    });
+}
+
+
+/**
+ * Récupère la liste des votes selon les filtres
+ * @param nir Le NIR de l'utilisateur
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetVoteInProgress = (nir) => {
+    return new Promise((resolve, _) => {
+        new Vote().GetInProgress(nir).then(async (res) => {
+            let tabPromise = []
+            for (let i = 0; i < res.length; i++) {
+                tabPromise.push(new Promise(async (resolveVote, _) => {
+                    if (res[i].town_code_insee) {
+                        res[i].town = await new Town().GetById(res[i].town_code_insee)
+                    }
+                    if (res[i].reg_code_insee) {
+                        res[i].region = await new Region().GetById(res[i].reg_code_insee)
+                    }
+                    if (res[i].department_code) {
+                        res[i].department = await new Department().GetById(res[i].department_code)
+                    }
+                    resolveVote()
+                }));
             }
+            await Promise.all(tabPromise)
+            resolve(new ResponseApi().InitData(res))
+        }).catch((e) => {
             resolve(new ResponseApi().InitInternalServer(e))
         })
     });
@@ -435,5 +464,6 @@ export default {
     GetElection,
     AddElection,
     GetVoteDetails,
-    DeleteChoice
+    DeleteChoice,
+    GetVoteInProgress
 }
