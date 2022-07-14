@@ -10,6 +10,7 @@ import com.cyberacy.app.R
 import com.cyberacy.app.models.entities.Round
 import com.cyberacy.app.models.enums.EVoteState
 import java.time.Duration
+import java.time.LocalDateTime
 
 class RoundViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
@@ -26,7 +27,7 @@ class RoundViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val durationLeft: Duration = item.getDurationLeft() ?: Duration.ZERO
         roundLeftTime.text = item.getTimeLeftStr()
 
-        val colorTimeLeft: Int = if(durationLeft.toMinutes() <= 0) {
+        val colorTimeLeft: Int = if(durationLeft.toMinutes() <= 0 || LocalDateTime.now().isBefore(item.dateStart)) {
             when (itemView.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
                 Configuration.UI_MODE_NIGHT_YES -> {
                     android.R.color.white

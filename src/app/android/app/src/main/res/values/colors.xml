@@ -16,6 +16,7 @@
     <color name="cardColor">#4DC8C8C8</color>
     <color name="cardBlue">#333BC3</color>
     <color name="grey">#969595</color>
+    <color name="popupColor">#00448C</color>
     <color name="red">#BF1B1B</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="success">#4CAF50</color>

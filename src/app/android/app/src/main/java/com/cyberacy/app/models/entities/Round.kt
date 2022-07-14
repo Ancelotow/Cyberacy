@@ -7,6 +7,7 @@ import retrofit2.HttpException
 import retrofit2.await
 import java.time.Duration
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class Round(
 
@@ -56,6 +57,10 @@ class Round(
     }
 
     fun getTimeLeftStr(): String {
+        if(LocalDateTime.now().isBefore(this.dateStart)) {
+            val formatterDate: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+            return "Commence le ${formatterDate.format(dateStart)}"
+        }
         val duration = getDurationLeft()
         if(duration.isNegative || duration.isZero) {
             return "Terminé"
