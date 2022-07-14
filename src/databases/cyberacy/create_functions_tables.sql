@@ -1078,7 +1078,8 @@ create or replace function get_in_progress_vote(_nir person.prs_nir%type)
                 reg_code_insee     vote.reg_code_insee%type,
                 id_political_party vote.pop_id%type,
                 id_election        vote.elc_id%type,
-                id_type            election.tvo_id%type
+                id_type            election.tvo_id%type,
+                name_type          type_vote.tvo_name%type
             )
 as
 $filter$
@@ -1104,9 +1105,11 @@ begin
                vte.reg_code_insee as reg_code_insee,
                vte.pop_id         as id_political_party,
                vte.elc_id         as id_election,
-               e.tvo_id           as id_type
+               e.tvo_id           as id_type,
+               tv.tvo_name        as name_type
         from vote vte
                  join election e on e.elc_id = vte.elc_id
+                 join type_vote tv on e.tvo_id = tv.tvo_id
         where elc_date_start <= today
           and elc_date_end >= today
           and (vte.twn_code_insee = mine_twn or vte.twn_code_insee is null)

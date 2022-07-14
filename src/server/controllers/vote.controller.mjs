@@ -138,6 +138,7 @@ const GetVoteInProgress = (nir) => {
             let tabPromise = []
             for (let i = 0; i < res.length; i++) {
                 tabPromise.push(new Promise(async (resolveVote, _) => {
+                    res[i].rounds = await new Round().Get(nir, res[i].id)
                     if (res[i].town_code_insee) {
                         res[i].town = await new Town().GetById(res[i].town_code_insee)
                     }

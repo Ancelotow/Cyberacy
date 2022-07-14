@@ -13,7 +13,9 @@ class Vote {
     department = null
     town = null
     id_type
+    name_type
     id_election
+
     rounds = []
 }
 
