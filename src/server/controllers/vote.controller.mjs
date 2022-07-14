@@ -385,6 +385,28 @@ const ToVote = (nir, numRound, idVote, idChoice) => {
     });
 }
 
+/**
+ * Supprime un choix de vote
+ * @param id L'id du choix à supprimer
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const DeleteChoice = (id) => {
+    return new Promise((resolve, _) => {
+        let choice = new Choice()
+        choice.id = id
+        choice.Delete().then((res) => {
+            if (res) {
+                resolve(new ResponseApi().InitCreated("Choice has been created."))
+            } else {
+                resolve(new ResponseApi().InitBadRequest("This choice does not existed or the election has started."))
+            }
+        }).catch((e) => {
+            resolve(new ResponseApi().InitInternalServer(e))
+        })
+    });
+}
+
 export default {
     EnumTypeVote,
     AddVote,
@@ -396,5 +418,6 @@ export default {
     ToVote,
     GetElection,
     AddElection,
-    GetVoteDetails
+    GetVoteDetails,
+    DeleteChoice
 }

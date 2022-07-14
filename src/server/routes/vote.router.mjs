@@ -87,7 +87,7 @@ routerVote.get("/election/:id/vote", async (req, res) => {
 
 routerVote.get("/vote/:id/details", async (req, res) => {
     // #swagger.tags = ['Election']
-    // #swagger.description = 'Récupère les choix pour un tour de vote donné.'
+    // #swagger.description = 'Récupère un vote en détail.'
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await voteCtrl.GetVoteDetails(req.data.nir, req.params.id)
@@ -129,6 +129,16 @@ routerVote.post("/vote/:id_vote/choice", async (req, res) => {
 
 
     const response = await voteCtrl.AddChoice(req.body, req.params.id_vote)
+    res.status(response.code).send(response)
+});
+
+routerVote.delete("/vote/choice/:id_choice", async (req, res) => {
+    // #swagger.tags = ['Election']
+    // #swagger.description = 'Supprime un choix de vote existant'
+    // #swagger.security = [{ "Bearer": [] }]
+
+
+    const response = await voteCtrl.DeleteChoice(req.params.id_choice)
     res.status(response.code).send(response)
 });
 

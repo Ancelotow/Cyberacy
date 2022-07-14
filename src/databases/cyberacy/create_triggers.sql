@@ -332,3 +332,37 @@ create trigger trg_insert_manifestation
     for each row
 execute procedure add_manifestation();
 
+
+-- Trigger BEFORE DELETE pour la table "choice"
+create or replace function remove_choice()
+    returns trigger
+as
+$trigger$
+declare
+    date_election timestamp;
+begin
+    select elc_date_start
+    into date_election
+    from vote vte
+             join election elc on elc.elc_id = vte.elc_id
+    where vte.vte_id = old.vte_id;
+
+
+    if date_election <= now() then
+        raise 'You cannot delete a choice when election has started.' using errcode = '23503';
+    end if;
+
+    delete from link_round_choice
+        where cho_id = old.cho_id;
+
+    return old;
+end
+$trigger$
+    language plpgsql;
+
+create trigger trg_remove_choice
+    before delete
+    on choice
+    for each row
+execute procedure remove_choice();
+

@@ -1,4 +1,5 @@
 import {pool} from "../middlewares/postgres.mjs";
+import {Meeting} from "./meeting.mjs";
 
 class Choice{
     id
@@ -50,6 +51,59 @@ Choice.prototype.Get = function(nir, numRound = null, idVote) {
             } else {
                 let res = (result.rows.length > 0) ? result.rows : null
                 resolve(res)
+            }
+        });
+    });
+}
+
+/**
+ * Supprime un choix de vote
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+Choice.prototype.Delete = function() {
+    return new Promise(async (resolve, reject) => {
+        let isExist = await this.IfExists(this.id)
+        if(!isExist) {
+            resolve(false);
+            return;
+        }
+        const request = {
+            text: 'DELETE FROM choice WHERE cho_id = $1',
+            values: [this.id],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(true)
+            }
+        });
+    });
+}
+
+/**
+ * Récupère si un choix de vote existe ou non
+ * @param id L'id du choix de vote
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+Choice.prototype.IfExists = function (id) {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT COUNT(*) FROM choice WHERE cho_id = $1',
+            values: [id],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows[0] : null
+                if (res && res.count > 0) {
+                    resolve(true)
+                } else {
+                    resolve(false)
+                }
             }
         });
     });

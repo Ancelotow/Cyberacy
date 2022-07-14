@@ -642,7 +642,7 @@
         "tags": [
           "Election"
         ],
-        "description": "Récupère les choix pour un tour de vote donné.",
+        "description": "Récupère un vote en détail.",
         "parameters": [
           {
             "name": "id",
@@ -729,6 +729,28 @@
             "schema": {
               "$ref": "#/definitions/AddChoice"
             }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/vote/choice/{id_choice}": {
+      "delete": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Supprime un choix de vote existant",
+        "parameters": [
+          {
+            "name": "id_choice",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {},
