@@ -164,13 +164,8 @@ routerVote.post("/vote/:id_vote/round/:num_round", async (req, res) => {
     // #swagger.description = 'Voter pour un tour de vote donné'
     // #swagger.security = [{ "Bearer": [] }]
 
-    let idChoice;
-    try{
-        idChoice = parseInt(req.body)
-    } catch (e) {
-        res.status(400).send(new ResponseApi().InitBadRequest(e.message))
-    }
-    const response = await voteCtrl.ToVote(req.data.nir, req.params.num_round, req.params.id_vote, idChoice)
+
+    const response = await voteCtrl.ToVote(req.data.nir, req.params.num_round, req.params.id_vote, req.body)
     res.status(response.code).send(response)
 });
 

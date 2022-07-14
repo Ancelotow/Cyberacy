@@ -401,13 +401,13 @@ const AddChoice = (choiceJson, idVote) => {
  * @param nir Le NIR du votant
  * @param numRound Le numéro du tour de vote
  * @param idVote L'id du vote
- * @param idChoice L'id du chois
+ * @param idChoiceJson
  * @returns {Promise<unknown>}
  * @constructor
  */
-const ToVote = (nir, numRound, idVote, idChoice) => {
+const ToVote = (nir, numRound, idVote, idChoiceJson) => {
     return new Promise(async (resolve, _) => {
-        if (!idChoice || !numRound || !idVote) {
+        if (!idChoiceJson || !numRound || !idVote || !idChoiceJson.id_choice) {
             resolve(new ResponseApi().InitMissingParameters())
         } else {
             const isExisted = await linkMod.IfExists(idVote, numRound, nir)
@@ -417,7 +417,7 @@ const ToVote = (nir, numRound, idVote, idChoice) => {
             }
             let choice = new Choice()
             choice.id_vote = idVote
-            choice.id = idChoice
+            choice.id = idChoiceJson.id_choice
             choice.AddVoter(nir, numRound).then((res) => {
                 resolve(new ResponseApi().InitCreated("Your vote has been take into account."))
             }).catch((e) => {
