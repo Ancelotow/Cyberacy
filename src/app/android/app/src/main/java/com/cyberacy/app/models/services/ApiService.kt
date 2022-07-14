@@ -104,4 +104,9 @@ interface ApiService {
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<ResponseAPI<List<FCMTopic>>>
 
+    @GET("vote/in_progress")
+    fun getVoteInProgress(
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<ResponseAPI<List<Vote>?>>
+
 }

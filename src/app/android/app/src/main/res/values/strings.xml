@@ -55,6 +55,7 @@
     <string name="txt_participate_meeting">Je participe au meeting !</string>
     <string name="txt_cdv">J\'ai lu et j\'accepte les <a href="https://www.geeksforgeeks.org">conditions de ventes</a></string>
     <string name="txt_my_ticket">Mon ticket</string>
+    <string name="txt_vote_inprogress">Les votes en cours</string>
 
     <!-- Tab bar -->
     <string name="tb_conversation">Mes conversations</string>
