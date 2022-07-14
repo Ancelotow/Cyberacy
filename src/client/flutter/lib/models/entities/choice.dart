@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'my_color.dart';
+
 class Choice {
   int id;
   String name;
@@ -5,6 +9,8 @@ class Choice {
   String? description;
   String? candidateNIR;
   String candidate;
+  int? idColor;
+  MyColor? color;
 
   Choice({
     required this.id,
@@ -13,6 +19,7 @@ class Choice {
     this.description,
     this.candidateNIR,
     this.candidate = "",
+    this.idColor
   });
 
   Choice.fromJson(Map<String, dynamic> json)
@@ -21,7 +28,12 @@ class Choice {
         idVote = json["id_vote"],
         description = json["description"],
         candidateNIR = json["candidat_nir"],
-        candidate = json["candidat"];
+        idColor = json["idColor"],
+        candidate = json["candidat"] {
+    if(json["color"] != null) {
+      color = MyColor.fromJson(json["color"] as Map<String, dynamic>);
+    }
+  }
 
   Object toJson() {
     Map<String, dynamic> object = {
@@ -31,6 +43,18 @@ class Choice {
     if (candidateNIR != null) {
       object["candidat_nir"] = candidateNIR;
     }
+    if (idColor != null) {
+      object["id_color"] = idColor.toString();
+    }
     return object;
   }
+
+  Color getColor() {
+    if(color == null) {
+      return Colors.grey;
+    } else {
+      return color!.toColor();
+    }
+  }
+
 }

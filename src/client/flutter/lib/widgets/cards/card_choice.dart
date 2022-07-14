@@ -10,13 +10,13 @@ class CardChoice extends StatelessWidget {
   final double height;
   final bool canEdit;
 
-  const CardChoice({
-    Key? key,
-    required this.choice,
-    required this.width,
-    required this.height,
-    this.canEdit = false
-  }) : super(key: key);
+  const CardChoice(
+      {Key? key,
+      required this.choice,
+      required this.width,
+      required this.height,
+      this.canEdit = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +42,17 @@ class CardChoice extends StatelessWidget {
           children: [
             Row(
               children: [
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Container(
+                      width: 15,
+                      height: 15,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8.0)),
+                        color: choice.getColor(),
+                      ),),
+                ),
                 Expanded(
                   child: SizedBox(
                     child: Text(
@@ -66,7 +77,7 @@ class CardChoice extends StatelessWidget {
   }
 
   Widget _getPopupMenu(BuildContext context) {
-    if(canEdit) {
+    if (canEdit) {
       return PopupMenuButton(
         padding: EdgeInsets.zero,
         itemBuilder: (BuildContext contextPopup) {
@@ -83,5 +94,4 @@ class CardChoice extends StatelessWidget {
       return Container();
     }
   }
-
 }

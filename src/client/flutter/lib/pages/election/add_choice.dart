@@ -2,16 +2,20 @@ import 'package:bo_cyberacy/pages/election/vote_details.dart';
 import 'package:flutter/material.dart';
 import '../../models/dialog/alert_normal.dart';
 import '../../models/entities/choice.dart';
+import '../../models/entities/my_color.dart';
 import '../../models/entities/vote.dart';
 import '../../models/errors/api_service_error.dart';
 import '../../models/notifications/navigation_notification.dart';
+import '../../models/services/ref_service.dart';
 import '../../models/services/vote_service.dart';
 import '../../widgets/buttons/button.dart';
+import '../../widgets/input_field/input_selected.dart';
 import '../../widgets/input_field/input_text.dart';
 
 class AddChoice extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final Vote vote;
+  MyColor? colorSelected;
 
   AddChoice({
     Key? key,
@@ -62,6 +66,17 @@ class AddChoice extends StatelessWidget {
                   width: width,
                   controller: ctrlNIR,
                 ),
+                InputSelected<MyColor>(
+                  future: RefService().getAllColors(),
+                  items: [],
+                  value: colorSelected,
+                  placeholder: "Couleur",
+                  icon: Icons.color_lens,
+                  width: width,
+                  onChanged: (value) {
+                    colorSelected = value;
+                  },
+                ),
                 const SizedBox(height: 10),
                 Button(
                   label: "Sauvegarder",
@@ -97,6 +112,9 @@ class AddChoice extends StatelessWidget {
           candidateNIR: ctrlNIR.text.isEmpty ? null : ctrlNIR.text,
           idVote: vote.id,
         );
+        if(colorSelected != null) {
+          choice.idColor = colorSelected!.id;
+        }
         await VoteService().addChoice(choice, vote.id);
         NavigationNotification(VoteDetailsPage(idVote: vote.id))
             .dispatch(context);

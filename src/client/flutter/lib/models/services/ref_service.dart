@@ -1,3 +1,4 @@
+import 'package:bo_cyberacy/models/entities/my_color.dart';
 import 'package:bo_cyberacy/models/entities/political_edge.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -63,4 +64,23 @@ class RefService extends ApiService {
       rethrow;
     }
   }
+
+  Future<List<MyColor>> getAllColors() async {
+    try {
+      List<MyColor> colors = [];
+      var response = await http.get(
+        getUrl("colors", null),
+        headers: await getHeaders(auth: true),
+      );
+      if (response.statusCode == 200) {
+        ResponseAPI responseApi = ResponseAPI.fromJson(jsonDecode(response.body));
+        List<dynamic> listObject = responseApi.data;
+        colors = listObject.map((json) => MyColor.fromJson(json)).toList();
+      }
+      return colors;
+    } on ApiServiceError {
+      rethrow;
+    }
+  }
+
 }
