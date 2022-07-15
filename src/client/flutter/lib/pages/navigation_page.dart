@@ -65,11 +65,11 @@ class _NavigationPageState extends State<NavigationPage> {
                   label: "Elections",
                   onTap: click,
                 ),
-                NavBarItem(
+                /*NavBarItem(
                   icon: Icons.person,
                   label: "Utilisateurs",
                   onTap: click,
-                ),
+                ),*/
               ],
             ),
           ),
