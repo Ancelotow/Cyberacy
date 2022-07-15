@@ -455,7 +455,7 @@ begin
           and ((_include_finish = false and rnd.rnd_date_end >= today) or _include_finish = true)
           and ((_include_future = false and rnd.rnd_date_start <= today) or _include_future = true)
         --order by rnd_date_start desc
-        limit 2000;
+        limit 500;
 end;
 $filter$
     language plpgsql;
