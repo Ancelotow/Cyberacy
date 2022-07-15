@@ -437,7 +437,7 @@ declare
     today          timestamp := now();
 begin
     return query
-        select vte.vte_id         as id,
+        select distinct vte.vte_id         as id,
                vte_name           as name,
                vte.vte_nb_voter   as nb_voter,
                vte.twn_code_insee as town_code_insee,
@@ -454,7 +454,7 @@ begin
           and vte.elc_id = _elc_id
           and ((_include_finish = false and rnd.rnd_date_end >= today) or _include_finish = true)
           and ((_include_future = false and rnd.rnd_date_start <= today) or _include_future = true)
-        order by rnd_date_start desc
+        --order by rnd_date_start desc
         limit 2000;
 end;
 $filter$

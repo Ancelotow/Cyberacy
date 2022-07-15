@@ -389,7 +389,7 @@ $body$
 
 
 -- Créé un second tour de vote automatiquement
-create or replace function create_second_round(_rnd_num round.rnd_num%type, _vte_id round.vte_id%type)
+create or replace function create_second_round(_vte_id round.vte_id%type)
     returns void
 as
 $body$
@@ -398,8 +398,9 @@ declare
 begin
 
     if not exists(select *
-                  from vote_get_results(_vte_id, _rnd_num)
-                  where perc_without_abstention > 50) then
+                  from vote_get_results(_vte_id, 1)
+                  where perc_without_abstention > 50) and  not exists(select *
+                                                                      from round where rnd_num = 2 and vte_id = _vte_id) then
         select elc_date_end
         into date_election_end
         from vote vte
@@ -407,11 +408,11 @@ begin
         where vte_id = _vte_id;
 
         insert into round(rnd_num, rnd_name, rnd_date_start, rnd_date_end, vte_id)
-        values (_rnd_num + 1, 'Second tour', date_election_end - interval '12' HOUR, date_election_end, _vte_id);
+        values (2, 'Second tour', date_election_end - interval '12' HOUR, date_election_end, _vte_id);
 
         insert into link_round_choice(cho_id, vte_id, rnd_num)
-        select id_choice, _vte_id, _rnd_num + 1
-        from vote_get_results(_vte_id, _rnd_num)
+        select id_choice, _vte_id, 2
+        from vote_get_results(_vte_id, 1)
         order by perc_without_abstention desc
         limit 2;
     end if;
