@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +33,18 @@ public class Project {
                 String request = "SELECT * FROM project";
                 PreparedStatement query = conn.prepareStatement(request);
                 try(ResultSet result = query.executeQuery()) {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
                     while(result.next()) {
                         int resId = result.getInt("prj_id");
                         String resName = result.getString("prj_name");
                         String resDescription = result.getString("prj_description");
                         String resDateCreate = result.getString("prj_datecreate");
-                        LocalDateTime dateCreate = LocalDateTime.parse(resDateCreate, formatter);
+                        LocalDateTime dateCreate = null;
+                        try{
+                            dateCreate = LocalDateTime.parse(resDateCreate, formatter);
+                        } catch (DateTimeParseException e) {
+                            System.err.println(e.getMessage());
+                        }
                         Project project = new Project(resId, resName, dateCreate, resDescription);
                         projects.add(project);
                     }

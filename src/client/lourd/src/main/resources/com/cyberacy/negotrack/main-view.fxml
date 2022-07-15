@@ -11,11 +11,7 @@
 
     <VBox styleClass="primary" prefWidth="250" minWidth="250" maxWidth="250">
         <MenuBar styleClass="hamburger-header" prefWidth="250" minWidth="250" maxWidth="250">
-            <Menu text="Projets courant">
-                <MenuItem text="Cyberacy"/>
-                <MenuItem text="Toutes les copropriétés"/>
-                <SeparatorMenuItem/>
-                <MenuItem text="Ajouter un projet" onAction="#addProject" />
+            <Menu fx:id="menu" text="Aucun projet sélectionné">
             </Menu>
         </MenuBar>
         <Separator/>
