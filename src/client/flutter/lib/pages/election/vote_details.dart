@@ -81,7 +81,7 @@ class _VoteDetailsPageState extends State<VoteDetailsPage> {
         ),
         Expanded(child: _getChoices(context)),
         const SizedBox(height: 20),
-        Expanded(child: _getRounds(context)),
+        Expanded(flex: 2, child: _getRounds(context)),
       ],
     );
   }
@@ -114,21 +114,24 @@ class _VoteDetailsPageState extends State<VoteDetailsPage> {
   }
 
   Widget _getRounds(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Liste des tours :",
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline3,
-        ),
-        const SizedBox(height: 10),
-        Wrap(
-          spacing: 10.0,
-          runSpacing: 10.0,
-          children: vote!.rounds.map((e) => CardRound(round: e)).toList(),
-        ),
-      ],
+    return SingleChildScrollView(
+      controller: ScrollController(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Liste des tours :",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline3,
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 10.0,
+            runSpacing: 10.0,
+            children: vote!.rounds.map((e) => CardRound(round: e)).toList(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -143,7 +146,7 @@ class _VoteDetailsPageState extends State<VoteDetailsPage> {
         builder: (_) {
           return NotificationListener<SaveNotification<Choice>>(
             onNotification: (value) {
-              setState(() => { });
+              setState(() => {});
               return true;
             },
             child: AlertDialog(

@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:bo_cyberacy/models/entities/result_vote.dart';
+
 import '../entities/choice.dart';
 import '../entities/election.dart';
 import '../entities/response_api.dart';
@@ -99,6 +101,24 @@ class VoteService extends ApiService {
       return;
     } else {
       throw ApiServiceError(response);
+    }
+  }
+
+  Future<List<ResultVote>> getResultRound(int idVote, int numRound) async {
+    try {
+      List<ResultVote> resultsVote = [];
+      var response = await http.get(
+        getUrl("vote/$idVote/round/$numRound/results", null),
+        headers: await getHeaders(auth: true),
+      );
+      if (response.statusCode == 200) {
+        ResponseAPI responseApi = ResponseAPI.fromJson(jsonDecode(response.body));
+        List<dynamic> listObject = responseApi.data;
+        resultsVote = listObject.map((json) => ResultVote.fromJson(json)).toList();
+      }
+      return resultsVote;
+    } on ApiServiceError catch(e) {
+      rethrow;
     }
   }
 

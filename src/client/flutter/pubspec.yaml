@@ -22,6 +22,7 @@ dependencies:
   path_provider: ^2.0.11
   shimmer: ^2.0.0
   syncfusion_flutter_maps: ^20.1.61
+  percent_indicator: ^4.2.2
 
 
 
