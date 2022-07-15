@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:ui';
+import 'package:bo_cyberacy/models/entities/result_vote.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:bo_cyberacy/models/entities/region.dart';
 import 'package:bo_cyberacy/models/entities/round.dart';
@@ -20,6 +23,7 @@ class Vote {
   Department? department;
   List<Round> rounds = [];
   List<Choice> choices = [];
+  ResultVote? choiceWin;
   int? idType;
 
   Vote({
@@ -58,6 +62,9 @@ class Vote {
     }
     if(json["choices"] != null) {
       choices = (json["choices"] as List).map((dynamic json) => Choice.fromJson(json)).toList();
+    }
+    if (json["choice_win"] != null) {
+      choiceWin = ResultVote.fromJson(json["choice_win"]);
     }
   }
 
@@ -129,11 +136,25 @@ class Vote {
 
       case 4:
         if (town != null) return town!.name;
-        return "";
+        return "France";
 
       default:
-        return "";
+        return "France";
     }
+  }
+
+  Color getColorResult() {
+    if(choiceWin == null) {
+      return Colors.grey;
+    }
+    return choiceWin!.getColor();
+  }
+
+  String getLibelleResult() {
+    if(choiceWin == null) {
+      return "-- Inconnu --";
+    }
+    return choiceWin!.nameChoice;
   }
 
 }

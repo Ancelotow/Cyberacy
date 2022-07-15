@@ -70,7 +70,16 @@ class ListVotePage extends StatelessWidget {
   }
 
   String _modelPath() {
-    return "assets/maps/france_reg.json";
+    switch (election.idTypeVote) {
+      case 2:
+        return "assets/maps/france_reg.json";
+
+      case 3:
+        return "assets/maps/france_dept.json";
+
+      default:
+        return "assets/maps/france_metropole.json";
+    }
   }
 
   Widget _getTableLoader(BuildContext context) {
@@ -113,9 +122,9 @@ class ListVotePage extends StatelessWidget {
     return votes
         .map(
           (e) => ModelInterativeMap(
-            name: e.getLocalite(),
-            code: e.getLocalisationCode(),
-            color: Colors.black,
+            name: e.getLocalisationCode(),
+            code: "",
+            color: e.getColorResult(),
           ),
         )
         .toList();

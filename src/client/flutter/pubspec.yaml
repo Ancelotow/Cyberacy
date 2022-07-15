@@ -46,3 +46,4 @@ flutter:
     - assets/maps/france_dept.json
     - assets/maps/france_towns.json
     - assets/maps/france_reg.json
+    - assets/maps/france_metropole.json
