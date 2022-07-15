@@ -103,6 +103,7 @@ const GetVote = (nir, idElection, includeFinish = false, includeFuture = true) =
     return new Promise((resolve, _) => {
         new Vote().Get(nir, idElection, includeFinish, includeFuture).then(async (res) => {
             let tabPromise = []
+            let colors = await new Color().Get()
             for (let i = 0; i < res.length; i++) {
                 tabPromise.push(new Promise(async (resolveVote, _) => {
                     if (res[i].town_code_insee) {
@@ -113,6 +114,14 @@ const GetVote = (nir, idElection, includeFinish = false, includeFuture = true) =
                     }
                     if (res[i].department_code) {
                         res[i].department = await new Department().GetById(res[i].department_code)
+                    }
+                    let stats = await GetResults(res[i].id, 2);
+                    if(stats.length <= 0) {
+                        stats = await GetResults(res[i].id, 1);
+                    }
+                    if(stats.length > 0) {
+                        stats[0].color = colors.find(clr => clr.id === stats[0].id_color)
+                        res[i].choice_win = stats[0]
                     }
                     resolveVote()
                 }));
