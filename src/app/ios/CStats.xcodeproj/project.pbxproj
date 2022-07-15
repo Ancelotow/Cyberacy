@@ -12,8 +12,6 @@
 		C03E4F072855C6280041E380 /* MeetingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03E4F052855C6280041E380 /* MeetingViewController.xib */; };
 		C03E4F0A286256150041E380 /* GraphMeetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F08286256150041E380 /* GraphMeetViewController.swift */; };
 		C03E4F0B286256150041E380 /* GraphMeetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03E4F09286256150041E380 /* GraphMeetViewController.xib */; };
-		C03E4F0D2862600A0041E380 /* Meet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F0C2862600A0041E380 /* Meet.swift */; };
-		C03E4F1028626ACD0041E380 /* PartyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F0F28626ACD0041E380 /* PartyFactory.swift */; };
 		C03E4F13286273CE0041E380 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F11286273CE0041E380 /* MessageViewController.swift */; };
 		C03E4F14286273CE0041E380 /* MessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03E4F12286273CE0041E380 /* MessageViewController.xib */; };
 		C03E4F18286274930041E380 /* GraphMessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F16286274930041E380 /* GraphMessViewController.swift */; };
@@ -27,6 +25,32 @@
 		C03E4F282862780A0041E380 /* GraphCotisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F262862780A0041E380 /* GraphCotisationViewController.swift */; };
 		C03E4F292862780A0041E380 /* GraphCotisationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C03E4F272862780A0041E380 /* GraphCotisationViewController.xib */; };
 		C03E4F2B286291AE0041E380 /* ItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E4F2A286291AE0041E380 /* ItemList.swift */; };
+		C0A8CBE62880ABEC005CE156 /* ChartStringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A8CBE52880ABEC005CE156 /* ChartStringFormatter.swift */; };
+		C0D3F8C328685F1E00C1159A /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D3F8C228685F1E00C1159A /* UserSession.swift */; };
+		C0D3F8CA287714BC00C1159A /* GraphStatesVoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D3F8C8287714BC00C1159A /* GraphStatesVoteViewController.swift */; };
+		C0D3F8CB287714BC00C1159A /* GraphStatesVoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0D3F8C9287714BC00C1159A /* GraphStatesVoteViewController.xib */; };
+		C0D3F8D328771E9900C1159A /* GraphAbstentionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D3F8D128771E9900C1159A /* GraphAbstentionViewController.swift */; };
+		C0D3F8D428771E9900C1159A /* GraphAbstentionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0D3F8D228771E9900C1159A /* GraphAbstentionViewController.xib */; };
+		C0D3F8D828771FDC00C1159A /* AbstentionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D3F8D628771FDC00C1159A /* AbstentionViewController.swift */; };
+		C0D3F8D928771FDC00C1159A /* AbstentionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0D3F8D728771FDC00C1159A /* AbstentionViewController.xib */; };
+		C0D3F8DC2877241C00C1159A /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D3F8DA2877241C00C1159A /* ResultViewController.swift */; };
+		C0D3F8DD2877241C00C1159A /* ResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0D3F8DB2877241C00C1159A /* ResultViewController.xib */; };
+		C0D3F8E02877243000C1159A /* GraphResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D3F8DE2877243000C1159A /* GraphResultViewController.swift */; };
+		C0D3F8E12877243000C1159A /* GraphResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0D3F8DF2877243000C1159A /* GraphResultViewController.xib */; };
+		C0D3F8E4287778E600C1159A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0D3F8E3287778E500C1159A /* GoogleService-Info.plist */; };
+		C0D3F8E828777D6000C1159A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C0D3F8E728777D6000C1159A /* FirebaseAnalytics */; };
+		C0D3F8EA28777D6000C1159A /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C0D3F8E928777D6000C1159A /* FirebaseAnalyticsSwift */; };
+		C0D3F8EC28777D6000C1159A /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = C0D3F8EB28777D6000C1159A /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		C0D3F8EE28777D6000C1159A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C0D3F8ED28777D6000C1159A /* FirebaseAuth */; };
+		C0D3F8F028777D6000C1159A /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = C0D3F8EF28777D6000C1159A /* FirebaseAuthCombine-Community */; };
+		C0D3F8F228777D6000C1159A /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = C0D3F8F128777D6000C1159A /* FirebaseCrashlytics */; };
+		C0D3F8F428777D6000C1159A /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = C0D3F8F328777D6000C1159A /* FirebaseDatabase */; };
+		C0D3F8F628777D6000C1159A /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C0D3F8F528777D6000C1159A /* FirebaseDatabaseSwift */; };
+		C0D3F8F828777D6000C1159A /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = C0D3F8F728777D6000C1159A /* FirebaseRemoteConfig */; };
+		C0D3F8FA28777D6000C1159A /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C0D3F8F928777D6000C1159A /* FirebaseRemoteConfigSwift */; };
+		C0D3F8FC287AEFC200C1159A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D3F8FB287AEFC200C1159A /* User.swift */; };
+		C0D3F8FF287B4FDD00C1159A /* ItemMeetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D3F8FD287B4FDD00C1159A /* ItemMeetViewController.swift */; };
+		C0D3F900287B4FDD00C1159A /* ItemMeetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0D3F8FE287B4FDD00C1159A /* ItemMeetViewController.xib */; };
 		C0E51417282C629000C8AF23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E51416282C629000C8AF23 /* AppDelegate.swift */; };
 		C0E51420282C629100C8AF23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0E5141F282C629100C8AF23 /* Assets.xcassets */; };
 		C0E51423282C629100C8AF23 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0E51421282C629100C8AF23 /* LaunchScreen.storyboard */; };
@@ -62,8 +86,6 @@
 		C03E4F052855C6280041E380 /* MeetingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MeetingViewController.xib; sourceTree = "<group>"; };
 		C03E4F08286256150041E380 /* GraphMeetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMeetViewController.swift; sourceTree = "<group>"; };
 		C03E4F09286256150041E380 /* GraphMeetViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GraphMeetViewController.xib; sourceTree = "<group>"; };
-		C03E4F0C2862600A0041E380 /* Meet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meet.swift; sourceTree = "<group>"; };
-		C03E4F0F28626ACD0041E380 /* PartyFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyFactory.swift; sourceTree = "<group>"; };
 		C03E4F11286273CE0041E380 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		C03E4F12286273CE0041E380 /* MessageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageViewController.xib; sourceTree = "<group>"; };
 		C03E4F16286274930041E380 /* GraphMessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMessViewController.swift; sourceTree = "<group>"; };
@@ -77,6 +99,22 @@
 		C03E4F262862780A0041E380 /* GraphCotisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCotisationViewController.swift; sourceTree = "<group>"; };
 		C03E4F272862780A0041E380 /* GraphCotisationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GraphCotisationViewController.xib; sourceTree = "<group>"; };
 		C03E4F2A286291AE0041E380 /* ItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemList.swift; sourceTree = "<group>"; };
+		C0A8CBE52880ABEC005CE156 /* ChartStringFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartStringFormatter.swift; sourceTree = "<group>"; };
+		C0D3F8C228685F1E00C1159A /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
+		C0D3F8C8287714BC00C1159A /* GraphStatesVoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphStatesVoteViewController.swift; sourceTree = "<group>"; };
+		C0D3F8C9287714BC00C1159A /* GraphStatesVoteViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GraphStatesVoteViewController.xib; sourceTree = "<group>"; };
+		C0D3F8D128771E9900C1159A /* GraphAbstentionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphAbstentionViewController.swift; sourceTree = "<group>"; };
+		C0D3F8D228771E9900C1159A /* GraphAbstentionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GraphAbstentionViewController.xib; sourceTree = "<group>"; };
+		C0D3F8D628771FDC00C1159A /* AbstentionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstentionViewController.swift; sourceTree = "<group>"; };
+		C0D3F8D728771FDC00C1159A /* AbstentionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AbstentionViewController.xib; sourceTree = "<group>"; };
+		C0D3F8DA2877241C00C1159A /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
+		C0D3F8DB2877241C00C1159A /* ResultViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResultViewController.xib; sourceTree = "<group>"; };
+		C0D3F8DE2877243000C1159A /* GraphResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphResultViewController.swift; sourceTree = "<group>"; };
+		C0D3F8DF2877243000C1159A /* GraphResultViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GraphResultViewController.xib; sourceTree = "<group>"; };
+		C0D3F8E3287778E500C1159A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C0D3F8FB287AEFC200C1159A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C0D3F8FD287B4FDD00C1159A /* ItemMeetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemMeetViewController.swift; sourceTree = "<group>"; };
+		C0D3F8FE287B4FDD00C1159A /* ItemMeetViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemMeetViewController.xib; sourceTree = "<group>"; };
 		C0E51413282C629000C8AF23 /* CStats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CStats.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0E51416282C629000C8AF23 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0E5141F282C629100C8AF23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -113,7 +151,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0D3F8EA28777D6000C1159A /* FirebaseAnalyticsSwift in Frameworks */,
+				C0D3F8F028777D6000C1159A /* FirebaseAuthCombine-Community in Frameworks */,
+				C0D3F8EE28777D6000C1159A /* FirebaseAuth in Frameworks */,
+				C0D3F8F628777D6000C1159A /* FirebaseDatabaseSwift in Frameworks */,
+				C0D3F8F228777D6000C1159A /* FirebaseCrashlytics in Frameworks */,
+				C0D3F8FA28777D6000C1159A /* FirebaseRemoteConfigSwift in Frameworks */,
+				C0D3F8E828777D6000C1159A /* FirebaseAnalytics in Frameworks */,
 				82BADF098DA6246AEBC52B53 /* Pods_CStats.framework in Frameworks */,
+				C0D3F8F428777D6000C1159A /* FirebaseDatabase in Frameworks */,
+				C0D3F8EC28777D6000C1159A /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				C0D3F8F828777D6000C1159A /* FirebaseRemoteConfig in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,9 +179,8 @@
 		C03E4F0E286260140041E380 /* Object */ = {
 			isa = PBXGroup;
 			children = (
-				C03E4F0C2862600A0041E380 /* Meet.swift */,
 				C03E4F2A286291AE0041E380 /* ItemList.swift */,
-				C03E4F0F28626ACD0041E380 /* PartyFactory.swift */,
+				C0D3F8FB287AEFC200C1159A /* User.swift */,
 			);
 			path = Object;
 			sourceTree = "<group>";
@@ -141,6 +188,7 @@
 		C03E4F15286273DD0041E380 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
+				C0D3F8E228772A5000C1159A /* Adherents */,
 				C03E4F08286256150041E380 /* GraphMeetViewController.swift */,
 				C03E4F09286256150041E380 /* GraphMeetViewController.xib */,
 				C03E4F16286274930041E380 /* GraphMessViewController.swift */,
@@ -151,6 +199,31 @@
 				C03E4F272862780A0041E380 /* GraphCotisationViewController.xib */,
 			);
 			path = Graph;
+			sourceTree = "<group>";
+		};
+		C0D3F8C72877138B00C1159A /* Graph */ = {
+			isa = PBXGroup;
+			children = (
+				C0A8CBE52880ABEC005CE156 /* ChartStringFormatter.swift */,
+				C0D3F8C8287714BC00C1159A /* GraphStatesVoteViewController.swift */,
+				C0D3F8C9287714BC00C1159A /* GraphStatesVoteViewController.xib */,
+				C0D3F8D128771E9900C1159A /* GraphAbstentionViewController.swift */,
+				C0D3F8D228771E9900C1159A /* GraphAbstentionViewController.xib */,
+				C0D3F8DE2877243000C1159A /* GraphResultViewController.swift */,
+				C0D3F8DF2877243000C1159A /* GraphResultViewController.xib */,
+			);
+			path = Graph;
+			sourceTree = "<group>";
+		};
+		C0D3F8E228772A5000C1159A /* Adherents */ = {
+			isa = PBXGroup;
+			children = (
+				C0E514542835572300C8AF23 /* StatesPoliticPartyViewController.swift */,
+				C0E514552835572300C8AF23 /* StatesPoliticPartyViewController.xib */,
+				C0FCBFAC28452DC000FF3E3F /* SuppAdherentViewController.swift */,
+				C0FCBFAD28452DC000FF3E3F /* SuppAdherentViewController.xib */,
+			);
+			path = Adherents;
 			sourceTree = "<group>";
 		};
 		C0E5140A282C629000C8AF23 = {
@@ -175,8 +248,8 @@
 			isa = PBXGroup;
 			children = (
 				C0E51442282E9CD100C8AF23 /* CstatesWebServices.swift */,
+				C0D3F8C228685F1E00C1159A /* UserSession.swift */,
 				C03E4F0E286260140041E380 /* Object */,
-				C0E51444282E9CDD00C8AF23 /* Connexion */,
 				C0E5143A282DB05C00C8AF23 /* HomePageViewController.swift */,
 				C0E5143B282DB05C00C8AF23 /* HomePageViewController.xib */,
 				C0E51449283531FB00C8AF23 /* PoliticParty */,
@@ -186,6 +259,7 @@
 				C0E5141F282C629100C8AF23 /* Assets.xcassets */,
 				C0E51421282C629100C8AF23 /* LaunchScreen.storyboard */,
 				C0E51424282C629100C8AF23 /* Info.plist */,
+				C0D3F8E3287778E500C1159A /* GoogleService-Info.plist */,
 			);
 			path = CStats;
 			sourceTree = "<group>";
@@ -206,15 +280,14 @@
 		C0E51449283531FB00C8AF23 /* PoliticParty */ = {
 			isa = PBXGroup;
 			children = (
-				C03E4F15286273DD0041E380 /* Graph */,
+				C0E51444282E9CDD00C8AF23 /* Connexion */,
 				C0E51445283531F400C8AF23 /* PoliticPartyViewController.swift */,
 				C0E51446283531F400C8AF23 /* PoliticPartyViewController.xib */,
-				C0E514542835572300C8AF23 /* StatesPoliticPartyViewController.swift */,
-				C0E514552835572300C8AF23 /* StatesPoliticPartyViewController.xib */,
-				C0FCBFAC28452DC000FF3E3F /* SuppAdherentViewController.swift */,
-				C0FCBFAD28452DC000FF3E3F /* SuppAdherentViewController.xib */,
+				C03E4F15286273DD0041E380 /* Graph */,
 				C03E4F042855C6280041E380 /* MeetingViewController.swift */,
 				C03E4F052855C6280041E380 /* MeetingViewController.xib */,
+				C0D3F8FD287B4FDD00C1159A /* ItemMeetViewController.swift */,
+				C0D3F8FE287B4FDD00C1159A /* ItemMeetViewController.xib */,
 				C03E4F11286273CE0041E380 /* MessageViewController.swift */,
 				C03E4F12286273CE0041E380 /* MessageViewController.xib */,
 				C03E4F1A286275D00041E380 /* SondageViewController.swift */,
@@ -241,8 +314,13 @@
 			children = (
 				C0E5144F2835341800C8AF23 /* VoteViewController.swift */,
 				C0E514502835341800C8AF23 /* VoteViewController.xib */,
+				C0D3F8C72877138B00C1159A /* Graph */,
 				C0E514582835605C00C8AF23 /* StatesVoteViewController.swift */,
 				C0E514592835605C00C8AF23 /* StatesVoteViewController.xib */,
+				C0D3F8D628771FDC00C1159A /* AbstentionViewController.swift */,
+				C0D3F8D728771FDC00C1159A /* AbstentionViewController.xib */,
+				C0D3F8DA2877241C00C1159A /* ResultViewController.swift */,
+				C0D3F8DB2877241C00C1159A /* ResultViewController.xib */,
 			);
 			path = Vote;
 			sourceTree = "<group>";
@@ -274,6 +352,18 @@
 			dependencies = (
 			);
 			name = CStats;
+			packageProductDependencies = (
+				C0D3F8E728777D6000C1159A /* FirebaseAnalytics */,
+				C0D3F8E928777D6000C1159A /* FirebaseAnalyticsSwift */,
+				C0D3F8EB28777D6000C1159A /* FirebaseAnalyticsWithoutAdIdSupport */,
+				C0D3F8ED28777D6000C1159A /* FirebaseAuth */,
+				C0D3F8EF28777D6000C1159A /* FirebaseAuthCombine-Community */,
+				C0D3F8F128777D6000C1159A /* FirebaseCrashlytics */,
+				C0D3F8F328777D6000C1159A /* FirebaseDatabase */,
+				C0D3F8F528777D6000C1159A /* FirebaseDatabaseSwift */,
+				C0D3F8F728777D6000C1159A /* FirebaseRemoteConfig */,
+				C0D3F8F928777D6000C1159A /* FirebaseRemoteConfigSwift */,
+			);
 			productName = CStats;
 			productReference = C0E51413282C629000C8AF23 /* CStats.app */;
 			productType = "com.apple.product-type.application";
@@ -302,6 +392,9 @@
 				Base,
 			);
 			mainGroup = C0E5140A282C629000C8AF23;
+			packageReferences = (
+				C0D3F8E628777D6000C1159A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = C0E51414282C629000C8AF23 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -319,8 +412,11 @@
 				C0E514572835572300C8AF23 /* StatesPoliticPartyViewController.xib in Resources */,
 				C03E4F21286276B40041E380 /* GraphSondageViewController.xib in Resources */,
 				C0E51423282C629100C8AF23 /* LaunchScreen.storyboard in Resources */,
+				C0D3F8CB287714BC00C1159A /* GraphStatesVoteViewController.xib in Resources */,
 				C0E514522835341800C8AF23 /* VoteViewController.xib in Resources */,
 				C03E4F292862780A0041E380 /* GraphCotisationViewController.xib in Resources */,
+				C0D3F8E12877243000C1159A /* GraphResultViewController.xib in Resources */,
+				C0D3F8D428771E9900C1159A /* GraphAbstentionViewController.xib in Resources */,
 				C0E514612835622800C8AF23 /* StatesManifestationViewController.xib in Resources */,
 				C0E5144D283533AC00C8AF23 /* ManifestationViewController.xib in Resources */,
 				C0E5145B2835605C00C8AF23 /* StatesVoteViewController.xib in Resources */,
@@ -333,10 +429,14 @@
 				C03E4F072855C6280041E380 /* MeetingViewController.xib in Resources */,
 				C0FCBFAF28452DC000FF3E3F /* SuppAdherentViewController.xib in Resources */,
 				C0E51441282DB39300C8AF23 /* ConnexionViewController.xib in Resources */,
+				C0D3F8D928771FDC00C1159A /* AbstentionViewController.xib in Resources */,
 				C03E4F19286274930041E380 /* GraphMessViewController.xib in Resources */,
 				C03E4F25286277400041E380 /* CotisationViewController.xib in Resources */,
 				C03E4F14286273CE0041E380 /* MessageViewController.xib in Resources */,
+				C0D3F900287B4FDD00C1159A /* ItemMeetViewController.xib in Resources */,
+				C0D3F8DD2877241C00C1159A /* ResultViewController.xib in Resources */,
 				C0E51439282DADA700C8AF23 /* InscriptionMessViewController.xib in Resources */,
+				C0D3F8E4287778E600C1159A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,16 +490,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				C03E4F282862780A0041E380 /* GraphCotisationViewController.swift in Sources */,
-				C03E4F0D2862600A0041E380 /* Meet.swift in Sources */,
+				C0D3F8DC2877241C00C1159A /* ResultViewController.swift in Sources */,
 				C0E514562835572300C8AF23 /* StatesPoliticPartyViewController.swift in Sources */,
+				C0A8CBE62880ABEC005CE156 /* ChartStringFormatter.swift in Sources */,
 				C03E4F1C286275D00041E380 /* SondageViewController.swift in Sources */,
 				C03E4F2B286291AE0041E380 /* ItemList.swift in Sources */,
+				C0D3F8CA287714BC00C1159A /* GraphStatesVoteViewController.swift in Sources */,
 				C0E51440282DB39300C8AF23 /* ConnexionViewController.swift in Sources */,
-				C03E4F1028626ACD0041E380 /* PartyFactory.swift in Sources */,
+				C0D3F8D828771FDC00C1159A /* AbstentionViewController.swift in Sources */,
+				C0D3F8FC287AEFC200C1159A /* User.swift in Sources */,
 				C03E4F062855C6280041E380 /* MeetingViewController.swift in Sources */,
 				C0E51447283531F400C8AF23 /* PoliticPartyViewController.swift in Sources */,
 				C0E514602835622800C8AF23 /* StatesManifestationViewController.swift in Sources */,
+				C0D3F8C328685F1E00C1159A /* UserSession.swift in Sources */,
 				C0E51417282C629000C8AF23 /* AppDelegate.swift in Sources */,
+				C0D3F8D328771E9900C1159A /* GraphAbstentionViewController.swift in Sources */,
+				C0D3F8E02877243000C1159A /* GraphResultViewController.swift in Sources */,
 				C0E51434282DAAFB00C8AF23 /* InscriptionViewController.swift in Sources */,
 				C0E5145A2835605C00C8AF23 /* StatesVoteViewController.swift in Sources */,
 				C03E4F13286273CE0041E380 /* MessageViewController.swift in Sources */,
@@ -412,6 +518,7 @@
 				C0FCBFAE28452DC000FF3E3F /* SuppAdherentViewController.swift in Sources */,
 				C0E51438282DADA700C8AF23 /* InscriptionMessViewController.swift in Sources */,
 				C03E4F20286276B40041E380 /* GraphSondageViewController.swift in Sources */,
+				C0D3F8FF287B4FDD00C1159A /* ItemMeetViewController.swift in Sources */,
 				C0E5144C283533AC00C8AF23 /* ManifestationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -565,7 +672,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.gab.CStats;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cyberacy.stats;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -592,7 +699,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.gab.CStats;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cyberacy.stats;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -622,6 +729,70 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C0D3F8E628777D6000C1159A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C0D3F8E728777D6000C1159A /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0D3F8E628777D6000C1159A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		C0D3F8E928777D6000C1159A /* FirebaseAnalyticsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0D3F8E628777D6000C1159A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsSwift;
+		};
+		C0D3F8EB28777D6000C1159A /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0D3F8E628777D6000C1159A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		C0D3F8ED28777D6000C1159A /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0D3F8E628777D6000C1159A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		C0D3F8EF28777D6000C1159A /* FirebaseAuthCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0D3F8E628777D6000C1159A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAuthCombine-Community";
+		};
+		C0D3F8F128777D6000C1159A /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0D3F8E628777D6000C1159A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		C0D3F8F328777D6000C1159A /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0D3F8E628777D6000C1159A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		C0D3F8F528777D6000C1159A /* FirebaseDatabaseSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0D3F8E628777D6000C1159A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabaseSwift;
+		};
+		C0D3F8F728777D6000C1159A /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0D3F8E628777D6000C1159A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+		C0D3F8F928777D6000C1159A /* FirebaseRemoteConfigSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0D3F8E628777D6000C1159A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfigSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C0E5140B282C629000C8AF23 /* Project object */;
 }
