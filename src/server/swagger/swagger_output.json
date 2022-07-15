@@ -819,6 +819,34 @@
         ]
       }
     },
+    "/vote/{id_vote}/round/{num_round}/results": {
+      "get": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Récupère les résultats pour un tour de vote donné.",
+        "parameters": [
+          {
+            "name": "id_vote",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "num_round",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/vote/{id_vote}/round/{num_round}": {
       "post": {
         "tags": [
@@ -839,11 +867,7 @@
             "type": "string"
           }
         ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          }
-        },
+        "responses": {},
         "security": [
           {
             "Bearer": []
@@ -1709,28 +1733,6 @@
             "in": "query",
             "description": "Trié par type de vote (NULL pour tout inclure)",
             "type": "number"
-          }
-        ],
-        "responses": {},
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      }
-    },
-    "/statistics/vote/{id}/results": {
-      "get": {
-        "tags": [
-          "Statistiques"
-        ],
-        "description": "Récupération des résultats aux votes.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
           }
         ],
         "responses": {},

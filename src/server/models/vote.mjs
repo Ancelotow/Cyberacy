@@ -30,6 +30,20 @@ class StatsAbsention {
     name_type_vote
 }
 
+class ResultVote {
+    id_choice
+    libelle_choice
+    nb_voice
+    perc_with_abstention
+    perc_without_abstention
+    id_vote
+    name_vote
+    num_round
+    name_round
+    id_color
+    color = null
+}
+
 /**
  * Ajoute un nouveau vote
  * @returns {Promise<unknown>}
@@ -196,28 +210,24 @@ const GetStatsParticipations = (num_round, id_type_vote = null) => {
 
 /**
  * Récupère les résultats des votes
- * @param id_vote Filtre sur un vote
  * @returns {Promise<unknown>}
  * @constructor
+ * @param idVote
+ * @param numRound
  */
-const GetResults = (id_vote) => {
+const GetResults = (idVote, numRound) => {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'SELECT * FROM vote_get_results($1)',
-            values: [id_vote],
+            text: 'SELECT * FROM vote_get_results($1, $2)',
+            values: [idVote, numRound],
         }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows : null
-                if (res != null) {
-                    for (let i = 0; i < res.length; i++) {
-                        res[i].perc_without_abstention = parseFloat(res[i].perc_without_abstention)
-                        res[i].perc_with_abstention = parseFloat(res[i].perc_with_abstention)
-                    }
-                }
-                resolve(res)
+                let listResult = []
+                result.rows.forEach(e => listResult.push(Object.assign(new ResultVote(), e)));
+                resolve(listResult)
             }
         });
     });

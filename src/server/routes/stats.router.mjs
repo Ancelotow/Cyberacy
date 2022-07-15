@@ -131,13 +131,4 @@ routerStats.get("/statistics/vote/participation", async (req, res) => {
     res.status(response.code).send(response)
 });
 
-routerStats.get("/statistics/vote/:id/results", async (req, res) => {
-    // #swagger.tags = ['Statistiques']
-    // #swagger.description = 'Récupération des résultats aux votes.'
-    // #swagger.security = [{ "Bearer": [] }]
-
-    const response = await statsCtrl.GetVoteResults(req.params.vote)
-    res.status(response.code).send(response)
-});
-
 export {routerStats}

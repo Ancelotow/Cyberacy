@@ -788,7 +788,8 @@ create or replace function vote_get_results(_vte_id vote.vte_id%type, _rnd_num r
                 id_vote                 vote.vte_id%type,
                 name_vote               vote.vte_name%type,
                 num_round               round.rnd_num%type,
-                name_round              round.rnd_name%type
+                name_round              round.rnd_name%type,
+                id_color                choice.clr_id%type
             )
 as
 $filter$
@@ -807,7 +808,8 @@ begin
                rnd.vte_id                                  as id_vote,
                vte_name                                    as name_vote,
                rnd.rnd_num                                 as num_round,
-               rnd_name                                    as name_round
+               rnd_name                                    as name_round,
+               cho.clr_id                                  as id_color
         from link_round_choice lrc
                  join choice cho on lrc.cho_id = cho.cho_id
                  join round rnd on lrc.rnd_num = rnd.rnd_num and lrc.vte_id = rnd.vte_id

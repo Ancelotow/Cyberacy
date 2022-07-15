@@ -273,27 +273,6 @@ const GetVoteParticipation = (num_round = 1, id_type_vote = null) => {
     });
 }
 
-/**
- * Récupère les résultats des votes
- * @param id_vote Filtre sur un vote
- * @returns {Promise<unknown>}
- * @constructor
- */
-const GetVoteResults = (id_vote) => {
-    return new Promise(async (resolve, _) => {
-        try {
-            let stats = await GetResults(id_vote);
-            if (stats == null) {
-                resolve(new ResponseApi().InitNoContent())
-                return;
-            }
-            resolve(new ResponseApi().InitData(TransformResultVote(stats)))
-        } catch (e) {
-            resolve(new ResponseApi().InitInternalServer(e))
-        }
-    });
-}
-
 function TransformResultThread(result) {
     if (!result) {
         return null;
@@ -319,49 +298,6 @@ function TransformResultThread(result) {
     return statsFilterThread;
 }
 
-function TransformResultVote(result) {
-    if (!result) {
-        return null;
-    }
-    const listVote = []
-
-    let vote;
-    let indexVote;
-    let indexRound;
-    for (let i = 0; i < result.length; i++) {
-        vote = {
-            id: result[i].id_vote,
-            vote: result[i].name_vote,
-            type_vote: result[i].name_type_vote,
-            id_type_vote: result[i].id_type_vote
-        };
-        indexVote = listVote.findIndex(e => e.id === vote.id);
-        if (indexVote < 0) {
-            listVote.push(vote);
-            indexVote = listVote.findIndex(e => e.id === vote.id);
-        }
-        if(listVote[indexVote].rounds == null) listVote[indexVote].rounds = []
-        delete result[i].name_vote;
-        delete result[i].id_vote;
-        delete result[i].name_type_vote;
-        delete result[i].id_type_vote;
-        indexRound = listVote[indexVote].rounds.findIndex(e => e.num_round === result[i].num_round);
-        if (indexRound < 0) {
-            listVote[indexVote].rounds.push({
-                num_round: result[i].num_round,
-                name_round: result[i].name_round
-            });
-            indexRound = listVote[indexVote].rounds.findIndex(e => e.num_round === result[i].num_round);
-        }
-
-        if(listVote[indexVote].rounds[indexRound].results == null) listVote[indexVote].rounds[indexRound].results = []
-        delete result[i].name_round;
-        delete result[i].num_round;
-        listVote[indexVote].rounds[indexRound].results.push(result[i])
-    }
-    return listVote;
-}
-
 export default {
     GetNbAdherentByMonth,
     GetNbAdherentByYear,
@@ -371,6 +307,5 @@ export default {
     GetMessagesByDate,
     GetMessagesByWeeks,
     GetVoteAbstention,
-    GetVoteParticipation,
-    GetVoteResults
+    GetVoteParticipation
 }

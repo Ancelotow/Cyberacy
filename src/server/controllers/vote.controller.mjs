@@ -1,4 +1,4 @@
-import {Vote} from "../models/vote.mjs";
+import {GetResults, Vote} from "../models/vote.mjs";
 import {Round} from "../models/round.mjs";
 import linkMod from "../models/link-person-round.mjs";
 import {Choice} from "../models/choice.mjs";
@@ -453,6 +453,29 @@ const DeleteChoice = (id) => {
     });
 }
 
+/**
+ * Récupère les résultats d'un vote selon un tour de vote
+ * @returns {Promise<unknown>}
+ * @constructor
+ * @param nir
+ * @param idVote
+ * @param numRound
+ */
+const GetVoteResults = (nir, idVote, numRound) => {
+    return new Promise(async (resolve, _) => {
+        try {
+            let stats = await GetResults(idVote, numRound);
+            let colors = await new Color().Get()
+            for(let i = 0; i < stats.length; i++) {
+                stats[i].color = colors.find(clr => clr.id === stats[i].id_color)
+            }
+            resolve(new ResponseApi().InitData(stats))
+        } catch (e) {
+            resolve(new ResponseApi().InitInternalServer(e))
+        }
+    });
+}
+
 export default {
     EnumTypeVote,
     AddVote,
@@ -466,5 +489,6 @@ export default {
     AddElection,
     GetVoteDetails,
     DeleteChoice,
-    GetVoteInProgress
+    GetVoteInProgress,
+    GetVoteResults
 }
