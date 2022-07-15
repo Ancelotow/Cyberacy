@@ -28,12 +28,12 @@ public class MainController implements Initializable {
                 new ModalMessage("Identifians invalide", "Votre identifiant et/ou mot de passe sont invalides.").showAlert();
             }
         } else {
-            goToRegister();
             new ModalMessage("Formulaire incomplet", "Tout les champs sont obligatoires").showAlert();
         }
     }
 
-    public void goToRegister(){
+    @FXML
+    protected void register(){
         try{
             form.getChildren().remove(1);
             FXMLLoader userLoader = new FXMLLoader(

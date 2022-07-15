@@ -40,7 +40,8 @@
             <RowConstraints percentHeight="30.0" prefHeight="50.0" />
             <RowConstraints percentHeight="20.0" prefHeight="10.0" />
             <RowConstraints percentHeight="20.0" prefHeight="50.0" />
-            <RowConstraints percentHeight="20.0" prefHeight="10.0" />
+            <RowConstraints percentHeight="10.0" prefHeight="10.0" />
+            <RowConstraints percentHeight="10.0" prefHeight="10.0" />
         </rowConstraints>
 
         <Label styleClass="txt-title-H1"
@@ -81,6 +82,13 @@
                 onAction="#connection"
                 GridPane.halignment="CENTER"
                 GridPane.rowIndex="4" />
+
+        <Button prefWidth="150"
+                styleClass="btn-primary-outline"
+                text="S'inscrire"
+                onAction="#register"
+                GridPane.halignment="CENTER"
+                GridPane.rowIndex="5" />
 
         <columnConstraints>
             <ColumnConstraints percentWidth="100.0" />

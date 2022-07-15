@@ -1,6 +1,7 @@
 package com.cyberacy.negotrack.models.entities;
 
 import com.cyberacy.negotrack.models.ConnectDB;
+import com.cyberacy.negotrack.models.exceptions.UniqueException;
 
 import java.sql.*;
 
@@ -38,6 +39,26 @@ public class Account {
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
             return null;
+        }
+    }
+
+    public static void createAccount(String pseudo, String password, String email) throws UniqueException {
+        try {
+            try (Connection conn = new ConnectDB().connect()) {
+                if(ifExistsPseudo(pseudo)) {
+                    throw new UniqueException(String.format("Le pseudo \"%s\" éxiste déjà", pseudo));
+                }
+                String request = "INSERT INTO account(acc_pseudo, acc_email, acc_password) VALUES(?, ?, sha256(?::bytea))";
+                PreparedStatement query = conn.prepareStatement(request);
+                query.setString(1, pseudo);
+                query.setString(2, email);
+                query.setString(3, password);
+                try(ResultSet result = query.executeQuery()) {
+                    query.close();
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
         }
     }
 
