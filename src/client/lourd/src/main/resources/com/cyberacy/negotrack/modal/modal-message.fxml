@@ -9,7 +9,7 @@
 <?import java.net.URL?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.cyberacy.negotrack.views.modals.ModalMessageControl"
+            fx:controller="com.cyberacy.negotrack.views.modals.modal_message.ModalMessageController"
             prefHeight="400.0" prefWidth="600.0">
 
     <Label text="${controller.titre}"

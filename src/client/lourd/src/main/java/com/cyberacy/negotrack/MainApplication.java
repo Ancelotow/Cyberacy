@@ -7,6 +7,7 @@ import com.cyberacy.negotrack.views.MainController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -20,8 +21,11 @@ import java.util.Objects;
 
 public class MainApplication extends Application {
 
+    Stage primaryStage;
+
     @Override
     public void start(Stage stage) throws IOException {
+        primaryStage = stage;
         SingletonApp.openSession(this);
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login-view.fxml"));
         Image ico = new Image(Objects.requireNonNull(MainApplication.class.getResource("/images/negotrack_icone.png")).toString());
@@ -32,9 +36,9 @@ public class MainApplication extends Application {
         stage.show();
     }
 
-    public void startMain(){
-        try{
-            Stage primaryStage = new Stage();
+    public void startMain() {
+        try {
+            primaryStage = new Stage();
             FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("main-view.fxml"));
             HBox root = mainLoader.load();
             MainController controller = (MainController) mainLoader.getController();
@@ -44,10 +48,15 @@ public class MainApplication extends Application {
             Scene scene = new Scene(root, 1500, 800);
             primaryStage.setScene(scene);
             primaryStage.show();
-        }
-        catch(Exception err){
+        } catch (Exception err) {
             System.err.println(err.getMessage());
         }
+    }
+
+    public void changeScene(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
+        Scene newScene = new Scene(fxmlLoader.load(), primaryStage.getScene().getWidth(), primaryStage.getScene().getHeight());
+        primaryStage.setScene(newScene);
     }
 
     public static void main(String[] args) {

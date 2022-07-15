@@ -1,18 +1,15 @@
-package com.cyberacy.negotrack.views.modals;
+package com.cyberacy.negotrack.views.modals.modal_message;
 
-import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ModalMessageControl implements Initializable {
+public class ModalMessageController implements Initializable {
 
     private String message = "MESSAGE";
     private String titre = "TITRE";
