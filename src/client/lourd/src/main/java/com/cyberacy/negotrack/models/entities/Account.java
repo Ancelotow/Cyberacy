@@ -25,7 +25,6 @@ public class Account {
                 query.setString(1, pseudo);
                 query.setString(2, password);
                 try(ResultSet result = query.executeQuery()) {
-                    System.out.println(result.next());
                     if(result.next()) {
                         int resId = result.getInt("acc_id");
                         String resPseudo = result.getString("acc_pseudo");
@@ -39,6 +38,25 @@ public class Account {
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
             return null;
+        }
+    }
+
+    public static Boolean ifExistsPseudo(String pseudo) {
+        try {
+            boolean isExists = false;
+            try (Connection conn = new ConnectDB().connect()) {
+                String request = "SELECT * FROM account WHERE acc_pseudo = ?";
+                PreparedStatement query = conn.prepareStatement(request);
+                query.setString(1, pseudo);
+                try(ResultSet result = query.executeQuery()) {
+                    isExists = result.next();
+                    query.close();
+                }
+            }
+            return isExists;
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            return false;
         }
     }
 

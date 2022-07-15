@@ -1,7 +1,6 @@
 package com.cyberacy.negotrack.views.modals;
 
-import com.cyberacy.negotrack.LoginApplication;
-import javafx.application.Application;
+import com.cyberacy.negotrack.MainApplication;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -22,10 +21,10 @@ public class ModalMessage {
 
     public void showAlert() throws Exception {
         FXMLLoader alertLoader = new FXMLLoader(
-                LoginApplication.class.getResource("modal/modal-message.fxml")
+                MainApplication.class.getResource("modal/modal-message.fxml")
         );
         Stage alert = new Stage();
-        Image ico = new Image(LoginApplication.class.getResource("/images/negotrack_icone.png").toString());
+        Image ico = new Image(MainApplication.class.getResource("/images/negotrack_icone.png").toString());
         alert.initStyle(StageStyle.UNDECORATED);
         alert.getIcons().add(ico);
         alert.setTitle(title);

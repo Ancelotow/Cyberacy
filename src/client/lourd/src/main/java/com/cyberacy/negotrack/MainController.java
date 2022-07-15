@@ -3,24 +3,22 @@ package com.cyberacy.negotrack;
 import com.cyberacy.negotrack.models.entities.Account;
 import com.cyberacy.negotrack.views.modals.ModalMessage;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.text.Text;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LoginController implements Initializable {
+public class MainController implements Initializable {
 
     @FXML
     public TextField login;
     @FXML
     public TextField password;
+    public GridPane form;
 
     @FXML
     protected void connection() throws Exception {
@@ -30,7 +28,22 @@ public class LoginController implements Initializable {
                 new ModalMessage("Identifians invalide", "Votre identifiant et/ou mot de passe sont invalides.").showAlert();
             }
         } else {
+            goToRegister();
             new ModalMessage("Formulaire incomplet", "Tout les champs sont obligatoires").showAlert();
+        }
+    }
+
+    public void goToRegister(){
+        try{
+            form.getChildren().remove(1);
+            FXMLLoader userLoader = new FXMLLoader(
+                    MainController.class.getResource("register-view.fxml")
+            );
+            GridPane userRoot = userLoader.load();
+            form.getChildren().add(1, userRoot);
+        }
+        catch(Exception err){
+            System.err.println(err.getMessage());
         }
     }
 

@@ -14,5 +14,6 @@ module com.cyberacy.negotrack {
 
     opens com.cyberacy.negotrack to javafx.fxml;
     exports com.cyberacy.negotrack;
+    exports com.cyberacy.negotrack.views;
     exports com.cyberacy.negotrack.views.modals;
 }

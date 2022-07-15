@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import java.net.URL?>
+<GridPane alignment="TOP_CENTER" hgap="10" prefHeight="600" prefWidth="1000" vgap="20"
+          xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.cyberacy.negotrack.views.RegisterController"
+          GridPane.columnIndex="1"
+          fx:id="form">
+
+        <rowConstraints>
+            <RowConstraints percentHeight="10.0" prefHeight="100.0"/>
+            <RowConstraints percentHeight="30.0" prefHeight="10.0"/>
+            <RowConstraints percentHeight="20.0" prefHeight="100.0"/>
+            <RowConstraints percentHeight="20.0" prefHeight="10.0"/>
+            <RowConstraints percentHeight="20.0" prefHeight="50.0"/>
+        </rowConstraints>
+
+        <Label styleClass="txt-title-H1"
+               text="INSCRIPTION"
+               GridPane.halignment="CENTER"
+               GridPane.rowIndex="1"
+               GridPane.valignment="CENTER"/>
+
+        <TextField fx:id="login"
+                   promptText="Identifiant"
+                   styleClass="input-text"
+                   GridPane.halignment="CENTER"
+                   GridPane.rowIndex="2">
+            <GridPane.margin>
+                <Insets>
+                    <right>20</right>
+                    <left>10</left>
+                </Insets>
+            </GridPane.margin>
+        </TextField>
+
+        <PasswordField fx:id="password"
+                       promptText="Mot de passe"
+                       styleClass="input-text"
+                       GridPane.halignment="RIGHT"
+                       GridPane.rowIndex="3">
+            <GridPane.margin>
+                <Insets>
+                    <right>20</right>
+                    <left>10</left>
+                </Insets>
+            </GridPane.margin>
+        </PasswordField>
+
+        <stylesheets>
+            <URL value="@../../../css/stylesheet.css"/>
+        </stylesheets>
+
+</GridPane>
+
