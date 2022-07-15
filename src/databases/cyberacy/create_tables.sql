@@ -108,7 +108,7 @@ create table person
     prs_firstname      varchar(50)  not null,
     prs_lastname       varchar(50)  not null,
     prs_email          varchar(50)  null,
-    prs_password       varchar(250) null,
+    prs_password       bytea        null,
     prs_birthday       date         null,
     prs_address_street varchar(250) null,
     twn_code_insee     varchar(15)  not null,
@@ -195,7 +195,7 @@ create table manifestant
 create table political_party
 (
     pop_id               serial                    not null,
-    pop_name             varchar(100)               not null,
+    pop_name             varchar(100)              not null,
     pop_url_logo         varchar(100)              not null,
     pop_date_create      timestamp default (now()) not null,
     pop_description      varchar(250)              null,
@@ -293,7 +293,7 @@ create table thread
 (
     thr_id          serial                    not null,
     thr_main        boolean   default (false) not null,
-    thr_name        varchar(100)               not null,
+    thr_name        varchar(100)              not null,
     thr_description varchar(250)              null,
     thr_date_create timestamp default (now()) not null,
     thr_is_delete   boolean   default (false) not null,
