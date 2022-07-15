@@ -1,5 +1,6 @@
 import {pool} from "../middlewares/postgres.mjs";
 import {Meeting} from "./meeting.mjs";
+import {Round} from "./round.mjs";
 
 class Choice{
     id
@@ -52,8 +53,9 @@ Choice.prototype.Get = function(nir, numRound = null, idVote) {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows : null
-                resolve(res)
+                let listChoices = []
+                result.rows.forEach(e => listChoices.push(Object.assign(new Choice(), e)));
+                resolve(listChoices)
             }
         });
     });
