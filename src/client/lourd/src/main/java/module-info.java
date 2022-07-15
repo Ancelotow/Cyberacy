@@ -1,4 +1,4 @@
-module com.cyberacy.negotrack.negotrack {
+module com.cyberacy.negotrack {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -9,7 +9,9 @@ module com.cyberacy.negotrack.negotrack {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires javax.persistence;
+    requires java.sql;
 
-    opens com.cyberacy.negotrack.negotrack to javafx.fxml;
-    exports com.cyberacy.negotrack.negotrack;
+    opens com.cyberacy.negotrack to javafx.fxml;
+    exports com.cyberacy.negotrack;
 }

@@ -16,6 +16,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.3.6</version>
+        </dependency>
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>11.0.2</version>
@@ -113,7 +118,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.cyberacy.negotrack.negotrack/com.cyberacy.negotrack.negotrack.HelloApplication
+                                com.cyberacy.negotrack/com.cyberacy.negotrack.LoginApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
