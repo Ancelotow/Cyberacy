@@ -181,22 +181,22 @@ as
 $filter$
 begin
     return query
-        select mee.mee_id                      as id,
-               mee_name                        as name,
-               mee_date_start                  as date_start,
-               mee_nb_time                     as nb_time,
-               mee_is_aborted                  as is_aborted,
-               get_nb_place_vacant(mee.mee_id) as nb_place_vacant,
-               mee_address_street              as address_street,
-               mee.pop_id                      as id_political_party,
-               mee.twn_code_insee              as town_code_insee,
-               mee_vta_rate                    as vta_rate,
-               mee_price_excl                  as price_excl,
-               twn_name                        as town_name,
-               case
-                   when ptcMine.prs_nir is not null then true
-                   else false
-                   end                         as is_participate
+        select distinct mee.mee_id                      as id,
+                        mee_name                        as name,
+                        mee_date_start                  as date_start,
+                        mee_nb_time                     as nb_time,
+                        mee_is_aborted                  as is_aborted,
+                        get_nb_place_vacant(mee.mee_id) as nb_place_vacant,
+                        mee_address_street              as address_street,
+                        mee.pop_id                      as id_political_party,
+                        mee.twn_code_insee              as town_code_insee,
+                        mee_vta_rate                    as vta_rate,
+                        mee_price_excl                  as price_excl,
+                        twn_name                        as town_name,
+                        case
+                            when ptcMine.prs_nir is not null then true
+                            else false
+                            end                         as is_participate
         from meeting mee
                  left join participant ptc on mee.mee_id = ptc.mee_id
                  left join participant ptcMine on mee.mee_id = ptcMine.mee_id and ptcMine.prs_nir = _nir
