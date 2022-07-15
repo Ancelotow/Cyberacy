@@ -39,7 +39,7 @@ create table account (
     acc_id          serial not null,
     acc_pseudo      varchar(50) unique not null,
     acc_email       varchar(50) unique null,
-    acc_password    varchar(250) not null,
+    acc_password    bytea not null,
     constraint  pk_account primary key (acc_id)
 );
 
