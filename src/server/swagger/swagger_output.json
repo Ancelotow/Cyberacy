@@ -1,0 +1,1982 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Cyberacy API",
+    "description": "Documentation for Cyberacy API."
+  },
+  "host": "cyberacy.herokuapp.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Rentrez un token valide dans le format **Bearer &lt;token>**"
+    }
+  },
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/manifestation": {
+      "post": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Ajouter une nouvelle manifestation.",
+        "parameters": [
+          {
+            "name": "manifestation",
+            "in": "body",
+            "description": "La nouvelle manifestation",
+            "schema": {
+              "$ref": "#/definitions/AddManifestation"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Récupération des manifestations.",
+        "parameters": [
+          {
+            "name": "mine",
+            "in": "query",
+            "description": "Voir uniquement les manifestation auxquelles je participe.",
+            "type": "boolean"
+          },
+          {
+            "name": "includeAborted",
+            "in": "query",
+            "description": "Inclure les manifestation annuler.",
+            "type": "boolean"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/manifestation/aborted": {
+      "patch": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Annuler une manifestation existante.",
+        "parameters": [
+          {
+            "name": "manifestation",
+            "in": "body",
+            "description": "Raison de l annulation de la manifestation",
+            "schema": {
+              "$ref": "#/definitions/Aborted"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/manifestation/{id}/participate": {
+      "post": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Participer à une manifestations.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/manifestation/option": {
+      "post": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Ajouter une option à une manifestation.",
+        "parameters": [
+          {
+            "name": "option",
+            "in": "body",
+            "description": "La nouvelle option de manifestation",
+            "schema": {
+              "$ref": "#/definitions/AddOptionManifestation"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/manifestation/{id}/option": {
+      "get": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Récupérer les options de une manifestation.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/manifestation/option/{id}": {
+      "delete": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Supprimer une option de une manifestation.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/manifestation/step": {
+      "post": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Ajouter une étape à une manifestation.",
+        "parameters": [
+          {
+            "name": "step",
+            "in": "body",
+            "description": "La nouvelle étape de manifestation",
+            "schema": {
+              "$ref": "#/definitions/AddStepManifestation"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/manifestation/{id}/step": {
+      "get": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Récupérer les étapes d\\'une manifestation.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/manifestation/step/{id}": {
+      "delete": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Supprimer une étape de une manifestation.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": [
+          "Authentification"
+        ],
+        "description": "Créer un compte basé sur le NIR (numéro de sécurité sociale).",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "person",
+            "in": "body",
+            "description": "La nouvelle personne",
+            "schema": {
+              "$ref": "#/definitions/Person"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/login_app": {
+      "post": {
+        "tags": [
+          "Authentification"
+        ],
+        "description": "Connexion et retourne le Bearer token (pour application Android).",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "connection",
+            "in": "body",
+            "description": "Informations de connexion",
+            "schema": {
+              "$ref": "#/definitions/Connection"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/login_stats": {
+      "post": {
+        "tags": [
+          "Authentification"
+        ],
+        "description": "Connexion et retourne le Bearer token (pour application de statistiques IOS).",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "connection",
+            "in": "body",
+            "description": "Informations de connexion",
+            "schema": {
+              "$ref": "#/definitions/Connection"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/login_bo": {
+      "post": {
+        "tags": [
+          "Authentification"
+        ],
+        "description": "Connexion et retourne le Bearer token (pour le back-office Flutter).",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "connection",
+            "in": "body",
+            "description": "Informations de connexion",
+            "schema": {
+              "$ref": "#/definitions/Connection"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/type_step": {
+      "get": {
+        "tags": [
+          "References"
+        ],
+        "description": "Récupération des types d",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/sex": {
+      "get": {
+        "tags": [
+          "References"
+        ],
+        "description": "Récupération des civilités.",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/type_vote": {
+      "get": {
+        "tags": [
+          "References"
+        ],
+        "description": "Récupération des types de vote.",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/political_edge": {
+      "get": {
+        "tags": [
+          "References"
+        ],
+        "description": "Récupération des bords politiques.",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/region": {
+      "get": {
+        "tags": [
+          "Geography"
+        ],
+        "description": "Récupération des régions.",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/region/{code_insee}/department": {
+      "get": {
+        "tags": [
+          "Geography"
+        ],
+        "description": "Récupération des départements par régions.",
+        "parameters": [
+          {
+            "name": "code_insee",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/department": {
+      "get": {
+        "tags": [
+          "Geography"
+        ],
+        "description": "Récupération des départements.",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/department/{code}/town": {
+      "get": {
+        "tags": [
+          "Geography"
+        ],
+        "description": "Récupération des communes par département.",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/town": {
+      "get": {
+        "tags": [
+          "Geography"
+        ],
+        "description": "Récupération des communes.",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/coordinates": {
+      "get": {
+        "tags": [
+          "Geography"
+        ],
+        "description": "Récupération des coordonnées géographique d\\'une adresse.",
+        "parameters": [
+          {
+            "name": "address_street",
+            "in": "query",
+            "description": "L'adresse (rue).",
+            "type": "boolean"
+          },
+          {
+            "name": "zip_code",
+            "in": "query",
+            "description": "Le code postale",
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/election": {
+      "post": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Ajout de une nouvelle élection.",
+        "parameters": [
+          {
+            "name": "election",
+            "in": "body",
+            "description": "La nouvelle élection",
+            "schema": {
+              "$ref": "#/definitions/AddElection"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Récupère la liste des élections.",
+        "parameters": [
+          {
+            "name": "includeFinish",
+            "in": "query",
+            "description": "Inclure les votes passés (exclus par défaut)",
+            "type": "boolean"
+          },
+          {
+            "name": "includeFuture",
+            "in": "query",
+            "description": "Inclure les futures votes (include pas défaut)",
+            "type": "boolean"
+          },
+          {
+            "name": "idElection",
+            "in": "query",
+            "description": "L'id d'une élection recherchée",
+            "type": "number"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/election/{id}/vote": {
+      "post": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Ajout de un nouveau vote.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "vote",
+            "in": "body",
+            "description": "Le nouveau vote",
+            "schema": {
+              "$ref": "#/definitions/AddVote"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Récupère les votes d",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "includeFinish",
+            "in": "query",
+            "description": "Inclure les votes passés (exclus par défaut)",
+            "type": "boolean"
+          },
+          {
+            "name": "includeFuture",
+            "in": "query",
+            "description": "Inclure les futures votes (include pas défaut)",
+            "type": "boolean"
+          },
+          {
+            "name": "idTypeVote",
+            "in": "query",
+            "description": "Le type de votes",
+            "type": "int"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/vote/{id}/round": {
+      "post": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Ajout de un nouveau tour de vote.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "round",
+            "in": "body",
+            "description": "Le nouveau tour de vote",
+            "schema": {
+              "$ref": "#/definitions/AddRoundVote"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Récupère les tours de vote.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/vote/{id_vote}/round/{num_round}/choice": {
+      "post": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Ajout de un nouveau choix.",
+        "parameters": [
+          {
+            "name": "id_vote",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "num_round",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "choice",
+            "in": "body",
+            "description": "Le nouveau tour de vote",
+            "schema": {
+              "$ref": "#/definitions/AddChoice"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Récupère les choix pour un tour de vote donné.",
+        "parameters": [
+          {
+            "name": "id_vote",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "num_round",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/vote/{id_vote}/round/{num_round}": {
+      "post": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Voter pour un tour de vote donné",
+        "parameters": [
+          {
+            "name": "id_vote",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "num_round",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party": {
+      "post": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Ajout de un nouveau parti politique si il éxiste dans la BDD de INSEE.",
+        "parameters": [
+          {
+            "name": "political_party",
+            "in": "body",
+            "description": "Le nouveau parti politique",
+            "schema": {
+              "$ref": "#/definitions/AddPoliticalParty"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Récupération des partis politiques.",
+        "parameters": [
+          {
+            "name": "siren",
+            "in": "query",
+            "description": "Recherher par le SIREN.",
+            "type": "string"
+          },
+          {
+            "name": "mine",
+            "in": "query",
+            "description": "Recherher les partie auxquel on a adhéré.",
+            "type": "boolean"
+          },
+          {
+            "name": "includeLeft",
+            "in": "query",
+            "description": "Inclure les partis que l on a quitté.",
+            "type": "boolean"
+          },
+          {
+            "name": "idPoliticalParty",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party/{id}/join": {
+      "post": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Adhérer à un parti politique.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party/left": {
+      "delete": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Partir d'un parti politique.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party/annual_fee": {
+      "post": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Ajoute une cotisation annuelle.",
+        "parameters": [
+          {
+            "name": "political_party",
+            "in": "body",
+            "description": "Les nouvelles cotisations annuelles de un parti politique",
+            "schema": {
+              "$ref": "#/definitions/AddAnnualFee"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party/{id}/annual_fee": {
+      "get": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Récupère les cotisations annuelles d",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party/{id}/upload_logo": {
+      "post": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Upload le logo du parti politique.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party/{id}/upload_chart": {
+      "post": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Upload la charte du parti politique.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party/{id}/upload_bank_details": {
+      "post": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Upload les détails bancaires du parti politique.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/meeting": {
+      "post": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Ajoute un nouveau meeting.",
+        "parameters": [
+          {
+            "name": "meeting",
+            "in": "body",
+            "description": "Le nouveau meeting",
+            "schema": {
+              "$ref": "#/definitions/AddMeeting"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Récupération des meetings.",
+        "parameters": [
+          {
+            "name": "mine",
+            "in": "query",
+            "description": "Voir uniquement les meetings auxquelles je participe.",
+            "type": "boolean"
+          },
+          {
+            "name": "town",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "idPoliticalParty",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "includeAborted",
+            "in": "query",
+            "description": "Inclure les meetings annuler.",
+            "type": "boolean"
+          },
+          {
+            "name": "includeCompleted",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/meeting/aborted": {
+      "patch": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Annuler un meeting existant.",
+        "parameters": [
+          {
+            "name": "aborted",
+            "in": "body",
+            "description": "Annulation du meeting",
+            "schema": {
+              "$ref": "#/definitions/Aborted"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/meeting/participate/{id}": {
+      "post": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Participer à un meeting.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Annuler sa participation à un meeting.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reason",
+            "in": "query",
+            "description": "La raison de l annulation",
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/thread": {
+      "get": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Récupère les thread",
+        "parameters": [
+          {
+            "name": "onlyMine",
+            "in": "query",
+            "description": "Uniquement les threads où je suis",
+            "type": "boolean"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Ajout d un nouveau Thread.",
+        "parameters": [
+          {
+            "name": "thread",
+            "in": "body",
+            "description": "Le nouveau thread",
+            "schema": {
+              "$ref": "#/definitions/AddThread"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Modifie un thread",
+        "parameters": [
+          {
+            "name": "thread",
+            "in": "body",
+            "description": "Le thread modifié",
+            "schema": {
+              "$ref": "#/definitions/UpdateThread"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/thread/{id}/main/{id_political_party}": {
+      "patch": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Modifie le thread principal d un parti politique",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id_political_party",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/thread/{id}": {
+      "delete": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Supprime un thread existant",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/thread/{id}/message": {
+      "get": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Récupère les messages un thread",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Publier un nouveau message sur un thread donné.",
+        "consumes": [
+          "text/plain"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": "Ceci est mon nouveau message. Super !!!!!"
+          }
+        }
+      }
+    },
+    "/thread/{id}/member": {
+      "get": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Voir les membres du thread",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/thread/{id}/join": {
+      "post": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Rejoindre le thread",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/thread/{id}/left": {
+      "delete": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Quitter le thread",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/thread/{id}/mute/{mute}": {
+      "patch": {
+        "tags": [
+          "Messaging"
+        ],
+        "description": "Mute/Unmute le thread",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "mute",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/statistics/political_party/adherent": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération du nombres d adhérents à un parti politique par mois sur une année.",
+        "parameters": [
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Trier par ans (year) ou par mois (month)",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "year",
+                "month"
+              ]
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "L année pour le tri",
+            "type": "int"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/statistics/political_party/meeting": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération du nombres de meeting et de pariticpation sur un parti politique par mois sur une année.",
+        "parameters": [
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Trier par ans (year) ou par mois (month)",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "year",
+                "month"
+              ]
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "L année pour le tri",
+            "type": "int"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/statistics/political_party/annual_fee": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération des cotisations annuelles sur un parti politique avec le total récolté.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/statistics/political_party/messages": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération du nombre de message.",
+        "parameters": [
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Trier par heure (hour), par semaine (week)",
+            "type": "string"
+          },
+          {
+            "name": "day",
+            "in": "query",
+            "description": "La date pour le tri",
+            "type": "date"
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "L'année pour le tri",
+            "type": "number"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/statistics/vote/abstention": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération des statistiques d\\'abstention aux votes.",
+        "parameters": [
+          {
+            "name": "numRound",
+            "in": "query",
+            "description": "Le numéro du tour de vote",
+            "type": "number"
+          },
+          {
+            "name": "typeVote",
+            "in": "query",
+            "description": "Trié par type de vote (NULL pour tout inclure)",
+            "type": "number"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/statistics/vote/participation": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération des statistiques de participation aux votes.",
+        "parameters": [
+          {
+            "name": "numRound",
+            "in": "query",
+            "description": "Le numéro du tour de vote",
+            "type": "number"
+          },
+          {
+            "name": "typeVote",
+            "in": "query",
+            "description": "Trié par type de vote (NULL pour tout inclure)",
+            "type": "number"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/statistics/vote/{id}/results": {
+      "get": {
+        "tags": [
+          "Statistiques"
+        ],
+        "description": "Récupération des résultats aux votes.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Connection": {
+      "type": "object",
+      "properties": {
+        "nir": {
+          "type": "string",
+          "example": "012457832032045"
+        },
+        "password": {
+          "type": "string",
+          "example": "azerty1234!"
+        }
+      }
+    },
+    "Person": {
+      "type": "object",
+      "properties": {
+        "nir": {
+          "type": "string",
+          "example": "012457832032045"
+        },
+        "firstname": {
+          "type": "string",
+          "example": "Ronald"
+        },
+        "lastname": {
+          "type": "string",
+          "example": "TOLKIEN"
+        },
+        "email": {
+          "type": "string",
+          "example": "test@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "azerty1234!"
+        },
+        "birthday": {
+          "type": "string",
+          "example": "1998-05-23"
+        },
+        "address_street": {
+          "type": "string",
+          "example": "39 rue des rosiers"
+        },
+        "town_code_insee": {
+          "type": "string",
+          "example": "11003"
+        },
+        "sex": {
+          "type": "number",
+          "example": 1
+        },
+        "profile": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "AddManifestation": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Les gilets jaunes"
+        },
+        "date_start": {
+          "type": "string",
+          "example": "2019-10-02 08:00"
+        },
+        "date_end": {
+          "type": "string",
+          "example": "2019-10-02 20:00"
+        },
+        "object": {
+          "type": "string",
+          "example": "Gilets Jaunes"
+        },
+        "security_description": {
+          "type": "string",
+          "example": "Police"
+        },
+        "nb_person_estimate": {
+          "type": "number",
+          "example": 2000
+        }
+      }
+    },
+    "Aborted": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "reason": {
+          "type": "string",
+          "example": "Orage de prévu"
+        }
+      }
+    },
+    "AddOptionManifestation": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Hauts-parleurs"
+        },
+        "description": {
+          "type": "string",
+          "example": "Hauts-parleurs afin de diffuser de la musique et le discours des organisateurs"
+        },
+        "id_manifestation": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "AddStepManifestation": {
+      "type": "object",
+      "properties": {
+        "address_street": {
+          "type": "string",
+          "example": "6 parvis de Notre-Dame - Pl. Jean-Paul II"
+        },
+        "date_arrived": {
+          "type": "string",
+          "example": "2019-10-02 08:10"
+        },
+        "id_manifestation": {
+          "type": "number",
+          "example": 1
+        },
+        "id_step_type": {
+          "type": "number",
+          "example": 1
+        },
+        "town_code_insee": {
+          "type": "string",
+          "example": "75104"
+        },
+        "latitude": {
+          "type": "number",
+          "example": 48.8535738
+        },
+        "longitude": {
+          "type": "number",
+          "example": 2.3514893
+        }
+      }
+    },
+    "AddVote": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Présidentiel 2022"
+        },
+        "id_type_vote": {
+          "type": "number",
+          "example": 1
+        },
+        "town_code_insee": {
+          "type": "string",
+          "example": "11003"
+        },
+        "department_code": {
+          "type": "string",
+          "example": "94"
+        },
+        "reg_code_insee": {
+          "type": "string",
+          "example": "1"
+        },
+        "id_political_party": {
+          "type": "number",
+          "example": 1
+        },
+        "nb_voter": {
+          "type": "number",
+          "example": 58000000
+        }
+      }
+    },
+    "AddRoundVote": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Présidentiel 2022 : 29/04/2022"
+        },
+        "num": {
+          "type": "number",
+          "example": 1
+        },
+        "date_start": {
+          "type": "string",
+          "example": "2022-04-29 08:00"
+        },
+        "date_end": {
+          "type": "string",
+          "example": "2022-04-29 20:00"
+        }
+      }
+    },
+    "AddPoliticalParty": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Horizon"
+        },
+        "date_create": {
+          "type": "string",
+          "example": "2021-10-05"
+        },
+        "description": {
+          "type": "string",
+          "example": "Nouveau parti politique d'Edouard Philippe"
+        },
+        "object": {
+          "type": "string",
+          "example": "Partie polique Horizon"
+        },
+        "address_street": {
+          "type": "string",
+          "example": "23 avenu Jules Vernes"
+        },
+        "siren": {
+          "type": "string",
+          "example": "254587"
+        },
+        "chart": {
+          "type": "string",
+          "example": "Règle n°1: Il est interdit de parler du fight club.\n Règle n°2 : Il est interdit de parler du fight club"
+        },
+        "iban": {
+          "type": "string",
+          "example": "FR78778ADA"
+        },
+        "id_political_edge": {
+          "type": "number",
+          "example": 1
+        },
+        "nir": {
+          "type": "string",
+          "example": "012457832032045"
+        },
+        "town_code_insee": {
+          "type": "string",
+          "example": "11003"
+        }
+      }
+    },
+    "AddAnnualFee": {
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": "number",
+          "example": 2022
+        },
+        "id_political_party": {
+          "type": "number",
+          "example": 1
+        },
+        "fee": {
+          "type": "number",
+          "example": 20.99
+        }
+      }
+    },
+    "AddMeeting": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Présidentielle 2022 : Bercy !"
+        },
+        "object": {
+          "type": "string",
+          "example": "élections présidentielles 2022"
+        },
+        "description": {
+          "type": "string",
+          "example": "Meeting pour préparer les élections présidentielles 2022 à l'Accord Hotel Arena"
+        },
+        "date_start": {
+          "type": "string",
+          "example": "2022-01-20 17:45"
+        },
+        "nb_time": {
+          "type": "number",
+          "example": 2.75
+        },
+        "nb_place": {
+          "type": "number",
+          "example": 5000
+        },
+        "street_address": {
+          "type": "string",
+          "example": "Accord Hotel Arena"
+        },
+        "link_twitch": {
+          "type": "string",
+          "example": "https://www.twitch.tv/samueletienne"
+        },
+        "id_political_party": {
+          "type": "number",
+          "example": 1
+        },
+        "town_code_insee": {
+          "type": "string",
+          "example": "11003"
+        }
+      }
+    },
+    "AddThread": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Chat législative 2022"
+        },
+        "description": {
+          "type": "string",
+          "example": "Discussion concernant les législatives de Juin 2022"
+        },
+        "is_private": {
+          "type": "boolean",
+          "example": true
+        },
+        "id_political_party": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "UpdateThread": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Chat législative 2022"
+        },
+        "description": {
+          "type": "string",
+          "example": "Discussion concernant les législatives de Juin 2022"
+        },
+        "is_private": {
+          "type": "boolean",
+          "example": true
+        },
+        "id_political_party": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "AddChoice": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Edouard PHILLIPE"
+        },
+        "choice_order": {
+          "type": "number",
+          "example": 1
+        },
+        "description": {
+          "type": "string",
+          "example": "Elections aux législatives : Edouard PHILLIPE"
+        },
+        "candidat_nir": {
+          "type": "string",
+          "example": "012457832032045"
+        }
+      }
+    },
+    "AddElection": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Présidentielle 2022"
+        },
+        "date_start": {
+          "type": "string",
+          "example": "2022-04-10 08:00"
+        },
+        "date_end": {
+          "type": "string",
+          "example": "2022-04-24 20:00"
+        },
+        "id_type_vote": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    }
+  }
+}

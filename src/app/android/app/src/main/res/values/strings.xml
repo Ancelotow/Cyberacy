@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Cyberacy</string>
+
+    <!-- description -->
+    <string name="desc_logo">logo</string>
+
+    <!-- hint -->
+    <string name="hint_nir">Numéro de sécurité sociale</string>
+    <string name="hint_pwd">Mot de passe</string>
+
+    <!-- button -->
+    <string name="btn_login">Connection</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
+    <string name="btn_yes">Oui</string>
+    <string name="btn_no">Non</string>
+
+    <!-- navigation bottom bar-->
+    <string name="nav_party">Parti politique</string>
+    <string name="nav_manifestation">Manifestations</string>
+    <string name="nav_vote">Votes</string>
+
+    <!-- text -->
+    <string name="txt_no_party">Sélectionnez un parti politique à rejoindre</string>
+    <string name="txt_join_party">Rejoindre un parti</string>
+    <string name="txt_join_party_cancel">Annulation</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

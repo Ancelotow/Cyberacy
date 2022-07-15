@@ -1,0 +1,48 @@
+###
+# @name Add new vote
+POST {{url}}/vote
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+{
+  "name": "test 2",
+  "id_type_vote": 1
+}
+
+###
+# @name Add new round
+POST {{url}}/vote/1/round
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+{
+  "name": "tour 1",
+  "num": 1,
+  "date_start": "2022-05-12 08:00",
+  "date_end": "2022-05-12 20:00",
+  "nb_voter": 20000
+}
+
+###
+# @name Get vote
+GET {{url}}/election/5/vote?includeFinish=true&includeFuture=true
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Get round
+GET {{url}}/round
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Get election
+GET {{url}}/election?includeFinish=true&includeFuture=true
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+

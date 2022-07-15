@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_party">
+
+    <fragment
+        android:id="@+id/navigation_party"
+        android:name="com.cyberacy.app.ui.party.PartyFragment"
+        android:label="@string/nav_party"
+        tools:layout="@layout/fragment_party" />
+
+    <fragment
+        android:id="@+id/navigation_vote"
+        android:name="com.cyberacy.app.ui.vote.VoteFragment"
+        android:label="@string/nav_vote"
+        tools:layout="@layout/fragment_vote" />
+
+    <fragment
+        android:id="@+id/navigation_manifestation"
+        android:name="com.cyberacy.app.ui.manifestation.ManifestationFragment"
+        android:label="@string/nav_manifestation"
+        tools:layout="@layout/fragment_manifestation" />
+</navigation>

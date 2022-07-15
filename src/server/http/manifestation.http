@@ -1,0 +1,91 @@
+###
+# @name Get all manifestation
+GET {{url}}/manifestation?includeAborted=true
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get all manifestation (without aborted)
+GET {{url}}/manifestation
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get all manifestation (mine)
+GET {{url}}/manifestation?mine=true
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Aborted manifestation
+PATCH {{url}}/manifestation/aborted
+Accept: application/json
+Authorization: Bearer {{jwt_token}}{{jwt_token}}
+Content-Type: application/json
+
+{
+  "id": 7,
+  "reason": "Il pleut"
+}
+
+###
+# @name Participate to manifestation
+POST {{url}}/manifestation/participate/2
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Add new option to manifestation
+POST {{url}}/manifestation/option
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+{
+  "name": "Hauts-parleurs",
+  "id_manifestation": 2
+}
+
+###
+# @name Get options from manifestation
+GET {{url}}/manifestation/option/3
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Delete options of manifestation
+DELETE {{url}}/manifestation/option/2
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Add new step to manifestation
+POST{{url}}/manifestation/step
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+{
+  "address_street": "28 rzeue de QSQs",
+  "date_arrived": "2022-05-20",
+  "id_manifestation": 9,
+  "id_step_type": 2,
+  "town_code_insee": "94079"
+}
+
+###
+# @name Get steps from manifestation
+GET {{url}}/manifestation/9/step
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+###
+# @name Delete step of manifestation
+DELETE {{url}}/manifestation/9/step
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json

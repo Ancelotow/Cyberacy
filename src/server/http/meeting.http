@@ -1,0 +1,32 @@
+###
+# @name Get all meeting
+GET {{url}}/meeting?includeAborted=true
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get all meeting (without aborted)
+GET http://localhost:3000{{url}}/meeting
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Get all meeting (mine)
+GET {{url}}/meeting?mine=true
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+
+###
+# @name Add new meeting
+POST {{url}}/meeting
+Accept: application/json
+Authorization: Bearer {{jwt_token}}
+Content-Type: application/json
+
+{
+  "name": "Présidentiel 2022",
+  "object": "Présidentiel",
+  "date_start": "2022-05-12",
+  "nb_time": 2.20,
+  "id_political_party": 3
+}
