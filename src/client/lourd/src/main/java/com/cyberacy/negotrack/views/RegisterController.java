@@ -21,6 +21,7 @@ public class RegisterController {
         }
         try {
             Account.createAccount(login.getText(), password.getText(), email.getText());
+            new ModalMessage("Création du compte", "Votre compté à été créé avec succès").showAlert();
         } catch (UniqueException ex) {
             new ModalMessage("Formulaire invalide", ex.getMessage()).showAlert();
         }
