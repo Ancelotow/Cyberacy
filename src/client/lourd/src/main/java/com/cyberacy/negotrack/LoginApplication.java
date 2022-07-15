@@ -16,7 +16,7 @@ public class LoginApplication extends Application {
     public void start(Stage stage) throws IOException {
         new ConnectDB().connect();
         FXMLLoader fxmlLoader = new FXMLLoader(LoginApplication.class.getResource("login-view.fxml"));
-        Image ico = new Image(LoginApplication.class.getResource("images/negotrack_icone.png").toString());
+        Image ico = new Image(LoginApplication.class.getResource("/images/negotrack_icone.png").toString());
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.getIcons().add(ico);
         stage.setTitle("Negotrack : Connexion");
