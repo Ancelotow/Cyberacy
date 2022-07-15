@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -35,7 +36,7 @@ public class MainApplication extends Application {
         try{
             Stage primaryStage = new Stage();
             FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("main-view.fxml"));
-            AnchorPane root = mainLoader.load();
+            HBox root = mainLoader.load();
             MainController controller = (MainController) mainLoader.getController();
             Image ico = new Image(Objects.requireNonNull(MainApplication.class.getResource("/images/negotrack_icone.png")).toString());
             primaryStage.getIcons().add(ico);
