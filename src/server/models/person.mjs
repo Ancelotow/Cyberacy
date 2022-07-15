@@ -95,7 +95,7 @@ const Add = (person) => {
         GetById(person.nir).then((result) => {
             if (!result) {
                 const request = {
-                    text: 'INSERT INTO person (prs_nir, prs_firstname, prs_lastname, prs_email, prs_password, prs_birthday, prs_address_street, twn_code_insee, sex_id, prf_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
+                    text: 'INSERT INTO person (prs_nir, prs_firstname, prs_lastname, prs_email, prs_password, prs_birthday, prs_address_street, twn_code_insee, sex_id, prf_id) VALUES($1, $2, $3, $4, sha256($5::bytea), $6, $7, $8, $9, $10)',
                     values: [person.nir, person.firstname, person.lastname, person.email, person.password, person.birthday, person.address_street, person.town_code_insee, person.sex, person.profile],
                 }
                 pool.query(request, (error, _) => {
