@@ -15,7 +15,7 @@
             </Menu>
         </MenuBar>
         <Separator/>
-        <Button fx:id="btnInfo" text="KANBAN" alignment="BASELINE_LEFT"/>
+        <Button fx:id="btnKanban" text="KANBAN" onAction="#goToKanban" alignment="BASELINE_LEFT"/>
         <Region VBox.vgrow="ALWAYS"/>
     </VBox>
 

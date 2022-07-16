@@ -1,11 +1,14 @@
 package com.cyberacy.negotrack.views;
 
+import com.cyberacy.negotrack.MainApplication;
 import com.cyberacy.negotrack.models.Session;
 import com.cyberacy.negotrack.models.entities.Account;
 import com.cyberacy.negotrack.models.entities.Project;
 import com.cyberacy.negotrack.views.modals.add_project.AddProject;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
@@ -22,6 +25,7 @@ public class MainController implements Initializable {
 
     public HBox hbMain;
     public Menu menu;
+    public Button btnKanban;
 
     public void addProject(ActionEvent actionEvent) {
         try {
@@ -55,5 +59,18 @@ public class MainController implements Initializable {
         } catch(Exception e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    public void goToKanban(ActionEvent actionEvent) {
+        try{
+            hbMain.getChildren().remove(1);
+            FXMLLoader fxmlLoader = new FXMLLoader(
+                    MainApplication.class.getResource("kanban-view.fxml")
+            );
+            hbMain.getChildren().add(1, fxmlLoader.load());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
     }
 }
