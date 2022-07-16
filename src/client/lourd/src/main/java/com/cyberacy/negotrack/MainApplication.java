@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -40,7 +41,7 @@ public class MainApplication extends Application {
         try {
             primaryStage = new Stage();
             FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("main-view.fxml"));
-            HBox root = mainLoader.load();
+            GridPane root = mainLoader.load();
             MainController controller = (MainController) mainLoader.getController();
             Image ico = new Image(Objects.requireNonNull(MainApplication.class.getResource("/images/negotrack_icone.png")).toString());
             primaryStage.getIcons().add(ico);

@@ -50,12 +50,12 @@
             </GridPane.margin>
         </PasswordField>
 
-        <Button onAction="#connection" prefWidth="150" styleClass="btn-primary-outline" text="Connexion" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+        <Button onAction="#connection" styleClass="btn-primary-outline" text="Connexion" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
          <GridPane.margin>
             <Insets bottom="5.0" />
          </GridPane.margin></Button>
 
-        <Button onAction="#register" prefWidth="150" styleClass="btn-primary-outline" text="S'inscrire" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP">
+        <Button onAction="#register" styleClass="btn-primary-outline" text="S'inscrire" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets top="5.0" />
          </GridPane.margin></Button>

@@ -50,6 +50,14 @@
     -fx-padding: 10;
 }
 
+.txt-title-H3{
+    -fx-text-fill: #312783;
+    -fx-font-size: 15;
+    -fx-font-family: "HK Nova Medium";
+    -fx-font-weight: bold;
+    -fx-padding: 10;
+}
+
 .txt-title-H3-white{
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 15;
@@ -152,4 +160,9 @@
 .gridpane-kanban {
     -fx-border-radius: 50px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 10, 0, 0, 0);
+}
+
+.gridpane-workitem {
+    -fx-border-color: black;
+    -fx-border-width: 1px;
 }

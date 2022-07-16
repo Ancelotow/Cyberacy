@@ -4,25 +4,32 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<HBox xmlns="http://javafx.com/javafx"
+<GridPane xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.cyberacy.negotrack.views.MainController"
-      prefWidth="1500" fx:id="hbMain">
+      prefWidth="500" fx:id="gridMain">
 
-    <VBox styleClass="primary" prefWidth="250" minWidth="250" maxWidth="250">
-        <MenuBar styleClass="hamburger-header" prefWidth="250" minWidth="250" maxWidth="250">
+    <columnConstraints>
+        <ColumnConstraints percentWidth="20.0"/>
+        <ColumnConstraints percentWidth="80.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="ALWAYS" />
+    </rowConstraints>
+
+    <VBox GridPane.columnIndex="0" styleClass="primary">
+        <MenuBar styleClass="hamburger-header" >
             <Menu fx:id="menu" text="Aucun projet sélectionné">
             </Menu>
         </MenuBar>
         <Separator/>
+        <Button fx:id="btnWorkItem" text="Elements de travail" onAction="#goToWorkItem" alignment="BASELINE_LEFT"/>
         <Button fx:id="btnKanban" text="KANBAN" onAction="#goToKanban" alignment="BASELINE_LEFT"/>
-        <Region VBox.vgrow="ALWAYS"/>
     </VBox>
 
-    <HBox/>
 
     <stylesheets>
         <URL value="@../../../css/hamburger-menu.css"/>
     </stylesheets>
 
-</HBox>
+</GridPane>
