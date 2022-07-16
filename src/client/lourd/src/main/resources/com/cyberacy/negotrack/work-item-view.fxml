@@ -35,7 +35,7 @@
       </VBox>
       <VBox styleClass="gridpane-workitem" GridPane.columnIndex="1">
          <Label styleClass="txt-title-H3" text="User Story" />
-         <Button mnemonicParsing="false" styleClass="btn-primary-outline" text="+ User Story">
+         <Button onAction="#addUserStory" mnemonicParsing="false" styleClass="btn-primary-outline" text="+ User Story">
             <VBox.margin>
                <Insets left="5.0" />
             </VBox.margin>

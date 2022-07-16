@@ -5,6 +5,7 @@ import com.cyberacy.negotrack.models.Singleton;
 import com.cyberacy.negotrack.models.entities.Epic;
 import com.cyberacy.negotrack.models.entities.Project;
 import com.cyberacy.negotrack.views.modals.add_epic.AddEpic;
+import com.cyberacy.negotrack.views.modals.add_user_story.AddUserStory;
 import com.cyberacy.negotrack.views.modals.modal_message.ModalMessage;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -29,6 +30,15 @@ public class WorkItemController implements Initializable {
     public void addEpic(ActionEvent actionEvent) {
         try {
             new AddEpic().showModal();
+        } catch(Exception e){
+            e.printStackTrace();
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void addUserStory(ActionEvent actionEvent) {
+        try {
+            new AddUserStory().showModal();
         } catch(Exception e){
             e.printStackTrace();
             System.err.println(e.getMessage());
