@@ -190,3 +190,17 @@
     -fx-text-fill: #FFFFFF;
     -fx-opacity: 1;
 }
+
+.check-box .box {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color:#312783;
+    -fx-border-radius:3px;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #704ab0;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #FFFFFF;
+}

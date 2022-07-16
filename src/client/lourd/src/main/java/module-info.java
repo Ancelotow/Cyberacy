@@ -22,4 +22,5 @@ module com.cyberacy.negotrack {
     exports com.cyberacy.negotrack.views.modals.add_project;
     exports com.cyberacy.negotrack.views.modals.add_user_story;
     exports com.cyberacy.negotrack.views.modals.add_epic;
+    exports com.cyberacy.negotrack.views.modals.add_task;
 }

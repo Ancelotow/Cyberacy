@@ -47,7 +47,7 @@
       </VBox>
       <VBox styleClass="gridpane-workitem" GridPane.columnIndex="2">
          <Label styleClass="txt-title-H3" text="Tâches / Bug" />
-         <Button mnemonicParsing="false" styleClass="btn-primary-outline" text="+ Tâche / Bug">
+         <Button onAction="#addTask" mnemonicParsing="false" styleClass="btn-primary-outline" text="+ Tâche / Bug">
             <VBox.margin>
                <Insets left="5.0" />
             </VBox.margin>
