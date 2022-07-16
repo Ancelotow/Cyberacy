@@ -4,6 +4,7 @@ import com.cyberacy.negotrack.MainApplication;
 import com.cyberacy.negotrack.models.Singleton;
 import com.cyberacy.negotrack.models.entities.Epic;
 import com.cyberacy.negotrack.models.entities.Project;
+import com.cyberacy.negotrack.models.entities.UserStory;
 import com.cyberacy.negotrack.views.modals.add_epic.AddEpic;
 import com.cyberacy.negotrack.views.modals.add_user_story.AddUserStory;
 import com.cyberacy.negotrack.views.modals.modal_message.ModalMessage;
@@ -26,6 +27,8 @@ import java.util.ResourceBundle;
 public class WorkItemController implements Initializable {
     public ListView<Epic> listEpic;
     public List<Epic> epics;
+    public List<UserStory> userStories;
+    public ListView<UserStory> listUserStory;
 
     public void addEpic(ActionEvent actionEvent) {
         try {
@@ -47,8 +50,7 @@ public class WorkItemController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Project currentProject = Singleton.getInstance().getCurrentProject();
-        if(currentProject == null) {
+        if(Singleton.getInstance().getCurrentProject() == null) {
             try {
                 new ModalMessage("Projet courant inexistant", "Vous n'avez pas choisi de projet").showModal();
             } catch (Exception e) {
@@ -56,11 +58,24 @@ public class WorkItemController implements Initializable {
             }
             return;
         }
-        epics = Epic.getAllEpic(currentProject.getId());
+        initListEpic();
+        initListUserStory();
+    }
+
+    private void initListEpic(){
+        epics = Epic.getAllEpic(Singleton.getInstance().getCurrentProject().getId());
         listEpic.getItems().clear();
         epics.forEach(epic -> listEpic.getItems().add(epic));
-        listEpic.setEditable(true);
+        listEpic.setEditable(false);
         listEpic.setCellFactory(this::editEpic);
+    }
+
+    private void initListUserStory(){
+        userStories = UserStory.getAllUserStories(Singleton.getInstance().getCurrentProject().getId());
+        listUserStory.getItems().clear();
+        userStories.forEach(epic -> listUserStory.getItems().add(epic));
+        listUserStory.setEditable(false);
+        listUserStory.setCellFactory(this::editUserStory);
     }
 
     private ListCell<Epic> editEpic(ListView<Epic> epicListView) {
@@ -72,6 +87,26 @@ public class WorkItemController implements Initializable {
                 super.updateItem(item, empty);
                 if(!empty && item != null) {
                     Image icoEpic = new Image(MainApplication.class.getResource("/images/icons/ic_epic.png").toString());
+                    imageView.setImage(icoEpic);
+                    imageView.setFitWidth(20.00);
+                    imageView.setFitHeight(20.00);
+                    setText(item.getName());
+                    getStyleClass().add("txt-title-H3");
+                    setGraphic(imageView);
+                }
+            }
+        };
+    }
+
+    private ListCell<UserStory> editUserStory(ListView<UserStory> userStoryListView) {
+        return new ListCell<UserStory>() {
+            final private ImageView imageView = new ImageView();
+
+            @Override
+            public void updateItem(UserStory item, boolean empty) {
+                super.updateItem(item, empty);
+                if(!empty && item != null) {
+                    Image icoEpic = new Image(MainApplication.class.getResource("/images/icons/ic_user_story.png").toString());
                     imageView.setImage(icoEpic);
                     imageView.setFitWidth(20.00);
                     imageView.setFitHeight(20.00);
