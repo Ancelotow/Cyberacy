@@ -21,7 +21,7 @@ public class MainApplication extends Application {
         primaryStage = stage;
         Singleton.openSession(this);
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login-view.fxml"));
-        Image ico = new Image(Objects.requireNonNull(MainApplication.class.getResource("/images/negotrack_icone.png")).toString());
+        Image ico = new Image(Objects.requireNonNull(MainApplication.class.getResource("/images/icon.png")).toString());
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.getIcons().add(ico);
         stage.setTitle("Negotrack : Connexion");
@@ -35,7 +35,7 @@ public class MainApplication extends Application {
             FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("main-view.fxml"));
             GridPane root = mainLoader.load();
             MainController controller = (MainController) mainLoader.getController();
-            Image ico = new Image(Objects.requireNonNull(MainApplication.class.getResource("/images/negotrack_icone.png")).toString());
+            Image ico = new Image(Objects.requireNonNull(MainApplication.class.getResource("/images/icon.png")).toString());
             primaryStage.getIcons().add(ico);
             primaryStage.setTitle("Negotrack : " + Singleton.getInstance().getAccount().getPseudo());
             Scene scene = new Scene(root, 1500, 800);

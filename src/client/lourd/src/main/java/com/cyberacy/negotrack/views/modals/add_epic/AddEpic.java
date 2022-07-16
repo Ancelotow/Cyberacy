@@ -16,7 +16,7 @@ public class AddEpic extends AModal {
                 MainApplication.class.getResource("modal/add-epic.fxml")
         );
         Stage alert = new Stage();
-        Image ico = new Image(MainApplication.class.getResource("/images/negotrack_icone.png").toString());
+        Image ico = new Image(MainApplication.class.getResource("/images/icon.png").toString());
         alert.getIcons().add(ico);
         alert.setTitle("Negotrack : Nouvel epic");
         GridPane layout = alertLoader.load();

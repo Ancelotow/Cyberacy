@@ -16,7 +16,7 @@ public class AddTask extends AModal {
                 MainApplication.class.getResource("modal/add-task-view.fxml")
         );
         Stage alert = new Stage();
-        Image ico = new Image(MainApplication.class.getResource("/images/negotrack_icone.png").toString());
+        Image ico = new Image(MainApplication.class.getResource("/images/icon.png").toString());
         alert.getIcons().add(ico);
         alert.setTitle("Negotrack : Nouvelle tâche");
         GridPane layout = alertLoader.load();

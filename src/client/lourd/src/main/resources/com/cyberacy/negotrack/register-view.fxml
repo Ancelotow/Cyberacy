@@ -15,7 +15,7 @@
 
     <ImageView fitHeight="400" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
         <image>
-            <Image url="@../../../images/negotrack_icone.png" />
+            <Image url="@../../../images/title_logo.png" />
         </image>
     </ImageView>
 

@@ -26,7 +26,7 @@ public class ModalMessage extends AModal {
                 MainApplication.class.getResource("modal/modal-message.fxml")
         );
         Stage alert = new Stage();
-        Image ico = new Image(MainApplication.class.getResource("/images/negotrack_icone.png").toString());
+        Image ico = new Image(MainApplication.class.getResource("/images/icon.png").toString());
         //alert.initStyle(StageStyle.UNDECORATED);
         alert.getIcons().add(ico);
         alert.setTitle(title);
