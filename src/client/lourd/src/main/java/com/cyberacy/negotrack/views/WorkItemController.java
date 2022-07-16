@@ -4,6 +4,7 @@ import com.cyberacy.negotrack.MainApplication;
 import com.cyberacy.negotrack.models.Singleton;
 import com.cyberacy.negotrack.models.entities.Epic;
 import com.cyberacy.negotrack.models.entities.Project;
+import com.cyberacy.negotrack.models.entities.Task;
 import com.cyberacy.negotrack.models.entities.UserStory;
 import com.cyberacy.negotrack.views.modals.add_epic.AddEpic;
 import com.cyberacy.negotrack.views.modals.add_task.AddTask;
@@ -15,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,7 +31,9 @@ public class WorkItemController implements Initializable {
     public ListView<Epic> listEpic;
     public List<Epic> epics;
     public List<UserStory> userStories;
+    public List<Task> tasks;
     public ListView<UserStory> listUserStory;
+    public ListView<Task> listTask;
 
     public void addEpic(ActionEvent actionEvent) {
         try {
@@ -70,6 +74,7 @@ public class WorkItemController implements Initializable {
         }
         initListEpic();
         initListUserStory();
+        initListTask();
     }
 
     private void initListEpic(){
@@ -83,9 +88,17 @@ public class WorkItemController implements Initializable {
     private void initListUserStory(){
         userStories = UserStory.getAllUserStories(Singleton.getInstance().getCurrentProject().getId());
         listUserStory.getItems().clear();
-        userStories.forEach(epic -> listUserStory.getItems().add(epic));
+        userStories.forEach(userStory -> listUserStory.getItems().add(userStory));
         listUserStory.setEditable(false);
         listUserStory.setCellFactory(this::editUserStory);
+    }
+
+    private void initListTask(){
+        tasks = Task.getAllTasks(Singleton.getInstance().getCurrentProject().getId());
+        listTask.getItems().clear();
+        tasks.forEach(task -> listTask.getItems().add(task));
+        listTask.setEditable(false);
+        listTask.setCellFactory(this::editTask);
     }
 
     private ListCell<Epic> editEpic(ListView<Epic> epicListView) {
@@ -128,4 +141,24 @@ public class WorkItemController implements Initializable {
         };
     }
 
+    private ListCell<Task> editTask(ListView<Task> taskListView) {
+        return new ListCell<Task>() {
+            final private ImageView imageView = new ImageView();
+
+            @Override
+            public void updateItem(Task item, boolean empty) {
+                super.updateItem(item, empty);
+                if(!empty && item != null) {
+                    String pathIcon = (item.isBug()) ? "/images/icons/ic_bug.png" : "/images/icons/ic_task.png";
+                    Image icoEpic = new Image(MainApplication.class.getResource(pathIcon).toString());
+                    imageView.setImage(icoEpic);
+                    imageView.setFitWidth(20.00);
+                    imageView.setFitHeight(20.00);
+                    setText(item.getName());
+                    getStyleClass().add("txt-title-H3");
+                    setGraphic(imageView);
+                }
+            }
+        };
+    }
 }

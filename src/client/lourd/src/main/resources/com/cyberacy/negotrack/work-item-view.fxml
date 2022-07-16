@@ -43,7 +43,8 @@
          <ListView fx:id="listUserStory">
             <VBox.margin>
                <Insets top="5.0" />
-            </VBox.margin></ListView>
+            </VBox.margin>
+         </ListView>
       </VBox>
       <VBox styleClass="gridpane-workitem" GridPane.columnIndex="2">
          <Label styleClass="txt-title-H3" text="Tâches / Bug" />
@@ -52,10 +53,11 @@
                <Insets left="5.0" />
             </VBox.margin>
          </Button>
-         <ListView>
+         <ListView fx:id="listTask">
             <VBox.margin>
                <Insets top="5.0" />
-            </VBox.margin></ListView>
+            </VBox.margin>
+         </ListView>
       </VBox>
    </children>
 

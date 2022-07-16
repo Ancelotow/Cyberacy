@@ -58,6 +58,7 @@ public class Task {
             try (Connection conn = new ConnectDB().connect()) {
                 String request = "SELECT DISTINCT tsk.* FROM task tsk JOIN user_story ust ON ust.ust_id = tsk.ust_id JOIN epic epi on ust.epi_id = epi.epi_id AND epi.prj_id = ?";
                 PreparedStatement query = conn.prepareStatement(request);
+                query.setInt(1, idProject);
                 try (ResultSet result = query.executeQuery()) {
                     while (result.next()) {
                         int resId = result.getInt("tsk_id");
@@ -66,8 +67,8 @@ public class Task {
                         int resNbTimeForecast = result.getInt("tsk_nb_time_forecast");
                         int resNbTimeReal = result.getInt("tsk_nb_time_real");
                         boolean resIsBug = result.getBoolean("tsk_is_bug");
-                        boolean resIsDeleted = result.getBoolean("tsk_is_deleted");
-                        boolean resIsArchived = result.getBoolean("tsk_is_archived");
+                        boolean resIsDeleted = result.getBoolean("tsk_is_delete");
+                        boolean resIsArchived = result.getBoolean("tsk_is_archive");
                         int resIdUserStory = result.getInt("ust_id");
                         int resIdState = result.getInt("sta_id");
                         int resIdSprint = result.getInt("spr_id");
