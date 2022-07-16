@@ -27,10 +27,11 @@
                <Insets left="5.0" />
             </VBox.margin>
          </Button>
-         <ListView>
+         <ListView fx:id="listEpic">
             <VBox.margin>
                <Insets top="5.0" />
-            </VBox.margin></ListView>
+            </VBox.margin>
+         </ListView>
       </VBox>
       <VBox styleClass="gridpane-workitem" GridPane.columnIndex="1">
          <Label styleClass="txt-title-H3" text="User Story" />

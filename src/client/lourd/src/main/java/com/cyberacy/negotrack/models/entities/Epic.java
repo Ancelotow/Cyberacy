@@ -7,6 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Epic {
 
@@ -39,6 +43,34 @@ public class Epic {
         }
     }
 
+    public static List<Epic> getAllEpic(int idProject) {
+        List<Epic> epics = new ArrayList<>();
+        try {
+            try (Connection conn = new ConnectDB().connect()) {
+                String request = "SELECT * FROM epic where prj_id = ?";
+                PreparedStatement query = conn.prepareStatement(request);
+                query.setInt(1, idProject);
+                try(ResultSet result = query.executeQuery()) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                    while(result.next()) {
+                        int resIdProject = result.getInt("prj_id");
+                        int resId = result.getInt("epi_id");
+                        String resName = result.getString("epi_name");
+                        String resDescription = result.getString("epi_description");
+                        String resDateCreate = result.getString("epi_date_create");
+
+                        Epic epic = new Epic(resId, resName, resDescription, LocalDateTime.now(), resIdProject);
+                        epics.add(epic);
+                    }
+                    query.close();
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return epics;
+    }
+
     public int getId() {
         return id;
     }
@@ -57,5 +89,10 @@ public class Epic {
 
     public int getIdProject() {
         return idProject;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
