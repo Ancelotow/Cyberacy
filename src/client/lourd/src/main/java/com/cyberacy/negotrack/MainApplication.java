@@ -1,21 +1,13 @@
 package com.cyberacy.negotrack;
 
-import com.cyberacy.negotrack.models.ConnectDB;
-import com.cyberacy.negotrack.models.Session;
-import com.cyberacy.negotrack.models.SingletonApp;
+import com.cyberacy.negotrack.models.Singleton;
 import com.cyberacy.negotrack.views.MainController;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -27,7 +19,7 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
-        SingletonApp.openSession(this);
+        Singleton.openSession(this);
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login-view.fxml"));
         Image ico = new Image(Objects.requireNonNull(MainApplication.class.getResource("/images/negotrack_icone.png")).toString());
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
@@ -45,7 +37,7 @@ public class MainApplication extends Application {
             MainController controller = (MainController) mainLoader.getController();
             Image ico = new Image(Objects.requireNonNull(MainApplication.class.getResource("/images/negotrack_icone.png")).toString());
             primaryStage.getIcons().add(ico);
-            primaryStage.setTitle("Negotrack : " + Session.getInstance().getAccount().getPseudo());
+            primaryStage.setTitle("Negotrack : " + Singleton.getInstance().getAccount().getPseudo());
             Scene scene = new Scene(root, 1500, 800);
             primaryStage.setScene(scene);
             primaryStage.show();

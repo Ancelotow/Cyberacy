@@ -53,9 +53,7 @@ public class Account {
                 query.setString(1, pseudo);
                 query.setString(2, email);
                 query.setString(3, password);
-                try(ResultSet result = query.executeQuery()) {
-                    query.close();
-                }
+                query.executeUpdate();
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());

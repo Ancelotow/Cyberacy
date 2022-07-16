@@ -64,9 +64,7 @@ public class Project {
                 PreparedStatement query = conn.prepareStatement(request);
                 query.setString(1, name);
                 query.setString(2, description);
-                try(ResultSet result = query.executeQuery()) {
-                    query.close();
-                }
+                query.executeUpdate();
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());

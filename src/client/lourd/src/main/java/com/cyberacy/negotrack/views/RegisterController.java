@@ -1,6 +1,6 @@
 package com.cyberacy.negotrack.views;
 
-import com.cyberacy.negotrack.models.SingletonApp;
+import com.cyberacy.negotrack.models.Singleton;
 import com.cyberacy.negotrack.models.entities.Account;
 import com.cyberacy.negotrack.models.exceptions.UniqueException;
 import com.cyberacy.negotrack.views.modals.modal_message.ModalMessage;
@@ -31,7 +31,7 @@ public class RegisterController {
 
     public void goToConnexion(ActionEvent actionEvent) {
         try{
-            SingletonApp.getInstance().getApplication().changeScene("login-view.fxml");
+            Singleton.getInstance().getApplication().changeScene("login-view.fxml");
         }
         catch(Exception err){
             System.err.println(err.getMessage());

@@ -1,8 +1,7 @@
 package com.cyberacy.negotrack.views;
 
 import com.cyberacy.negotrack.MainApplication;
-import com.cyberacy.negotrack.models.Session;
-import com.cyberacy.negotrack.models.SingletonApp;
+import com.cyberacy.negotrack.models.Singleton;
 import com.cyberacy.negotrack.models.entities.Account;
 import com.cyberacy.negotrack.views.modals.modal_message.ModalMessage;
 import javafx.fxml.FXML;
@@ -30,10 +29,10 @@ public class LoginController implements Initializable {
             if(account == null) {
                 new ModalMessage("Identifians invalide", "Votre identifiant et/ou mot de passe sont invalides.").showModal();
             } else {
-                Session.openSession(account);
+                Singleton.getInstance().setAccount(account);
                 Scene scene = this.form.getScene();
                 ((Stage) scene.getWindow()).close();
-                ((MainApplication) SingletonApp.getInstance().getApplication()).startMain();
+                ((MainApplication) Singleton.getInstance().getApplication()).startMain();
             }
         } else {
             new ModalMessage("Formulaire incomplet", "Tout les champs sont obligatoires").showModal();
@@ -43,7 +42,7 @@ public class LoginController implements Initializable {
     @FXML
     protected void register(){
         try{
-            SingletonApp.getInstance().getApplication().changeScene("register-view.fxml");
+            Singleton.getInstance().getApplication().changeScene("register-view.fxml");
         }
         catch(Exception err){
             System.err.println(err.getMessage());

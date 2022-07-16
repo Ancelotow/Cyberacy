@@ -1,7 +1,7 @@
 package com.cyberacy.negotrack.views;
 
 import com.cyberacy.negotrack.MainApplication;
-import com.cyberacy.negotrack.models.Session;
+import com.cyberacy.negotrack.models.Singleton;
 import com.cyberacy.negotrack.models.entities.Account;
 import com.cyberacy.negotrack.models.entities.Project;
 import com.cyberacy.negotrack.views.modals.add_project.AddProject;
@@ -14,10 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,7 +23,7 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
-    public Account account = Session.getInstance().getAccount();
+    public Account account = Singleton.getInstance().getAccount();
 
     public Menu menu;
     public Button btnKanban;
@@ -43,6 +40,7 @@ public class MainController implements Initializable {
 
     public void selectProject(Project project) {
         try {
+            Singleton.getInstance().setCurrentProject(project);
             btnKanban.setVisible(true);
             btnWorkItem.setVisible(true);
             menu.setText(project.getName());
