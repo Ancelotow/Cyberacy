@@ -41,7 +41,7 @@ class MeetingDetailActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 actionPaymentSuccessful()
             } else if (result.resultCode == RESULT_CANCELED) {
-                val popup = PopUpWindow("Vous avez annulé le paiement de votre réservation", R.drawable.ic_canceled, R.id.layout_meeting_details)
+                val popup = PopUpWindow(getString(R.string.txt_cancel_book), R.drawable.ic_canceled, R.id.layout_meeting_details)
                 popup.showPopUp(this)
             }
         }
@@ -71,7 +71,7 @@ class MeetingDetailActivity : AppCompatActivity() {
                     Log.e("error", it.ex.message())
                     loader.visibility = View.GONE
                     textNoData.visibility = View.VISIBLE
-                    textNoData.text = "Une erreur est survenue...\n${it.ex.message()}"
+                    textNoData.text = getString(R.string.txt_error_happening, it.ex.message())
                 }
                 MeetingDetailStateLoading -> {
                     body.visibility = View.GONE
@@ -117,9 +117,9 @@ class MeetingDetailActivity : AppCompatActivity() {
         if (meeting != null) {
             findViewById<TextView>(R.id.nb_place).text = meeting!!.getNbPlaceStr()
             findViewById<TextView>(R.id.position).text = meeting!!.getAddressFull()
-            findViewById<TextView>(R.id.price).text = "Prix : ${meeting!!.getPriceStr()}"
+            findViewById<TextView>(R.id.price).text = getString(R.string.txt_meeting_price, meeting!!.getPriceStr())
             findViewById<TextView>(R.id.date).text = meeting!!.getDateMeeting()
-            findViewById<TextView>(R.id.time).text = "Durée : ${meeting!!.getTimeStr()}"
+            findViewById<TextView>(R.id.time).text = getString(R.string.txt_meeting_during, meeting!!.getTimeStr())
             findViewById<TextView>(R.id.description).text = meeting!!.getDescriptionStr()
 
             val btnTwitch = findViewById<MaterialButton>(R.id.btn_twitch)
@@ -161,7 +161,7 @@ class MeetingDetailActivity : AppCompatActivity() {
             actionPaymentSuccessful()
         } else {
             val intent = Intent(this, PaymentCyberacyActivity::class.java)
-            intent.putExtra("libelle", "Réservation meeting : ${meeting?.name}")
+            intent.putExtra("libelle",  getString(R.string.txt_meeting_title_payment, meeting?.name))
             intent.putExtra("amountExcl", meeting?.priceExcl)
             intent.putExtra("rateVAT", meeting?.rateVTA)
             resultLauncher.launch(intent)
@@ -223,7 +223,7 @@ class MeetingDetailActivity : AppCompatActivity() {
             when (it) {
                 is MeetingParticipateStateError -> {
                     Log.e("error", it.ex.message())
-                    val popup = PopUpWindow("Une erreur est survenue lors de la réservation", R.drawable.ic_error, R.id.layout_meeting_details)
+                    val popup = PopUpWindow(getString(R.string.txt_error_book_meeting), R.drawable.ic_error, R.id.layout_meeting_details)
                     popup.showPopUp(this)
                     loader.visibility = View.GONE
                 }
@@ -236,7 +236,7 @@ class MeetingDetailActivity : AppCompatActivity() {
                     btnPayment.visibility = View.GONE
                     txtParticipated.visibility = View.VISIBLE
                     loader.visibility = View.GONE
-                    val popup = PopUpWindow("Votre réservation à été effectuée avec succès !", R.drawable.ic_success, R.id.layout_meeting_details)
+                    val popup = PopUpWindow(getString(R.string.txt_book_successful), R.drawable.ic_success, R.id.layout_meeting_details)
                     popup.showPopUp(this)
                 }
             }

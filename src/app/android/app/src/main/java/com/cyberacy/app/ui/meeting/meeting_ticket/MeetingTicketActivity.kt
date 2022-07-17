@@ -53,7 +53,7 @@ class MeetingTicketActivity : AppCompatActivity() {
                     loader.visibility = View.GONE
                     iconError.visibility = View.VISIBLE
                     txtError.visibility = View.VISIBLE
-                    txtError.text = "Une erreur est survenue...\n${it.ex.message()}"
+                    txtError.text =  getString(R.string.txt_error_happening, it.ex.message())
                 }
                 MeetingQRCodeStateLoading -> {
                     loader.visibility = View.VISIBLE
@@ -63,7 +63,7 @@ class MeetingTicketActivity : AppCompatActivity() {
                     if (it.meetingQrcode == null) {
                         iconError.visibility = View.VISIBLE
                         txtError.visibility = View.VISIBLE
-                        txtError.text = "Nous n'avons pas trouvé de ticket à votre nom pour cette séance"
+                        txtError.text = getString(R.string.txt_not_found_ticket)
                     } else {
                         initInformation(it.meetingQrcode)
                     }
