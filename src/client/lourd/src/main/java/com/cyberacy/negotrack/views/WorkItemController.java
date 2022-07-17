@@ -37,7 +37,7 @@ public class WorkItemController implements Initializable {
 
     public void addEpic(ActionEvent actionEvent) {
         try {
-            new AddEpic().showModal();
+            new AddEpic(this::initListEpic).showModal();
         } catch(Exception e){
             e.printStackTrace();
             System.err.println(e.getMessage());
@@ -46,7 +46,7 @@ public class WorkItemController implements Initializable {
 
     public void addUserStory(ActionEvent actionEvent) {
         try {
-            new AddUserStory().showModal();
+            new AddUserStory(this::initListUserStory).showModal();
         } catch(Exception e){
             e.printStackTrace();
             System.err.println(e.getMessage());
@@ -55,7 +55,7 @@ public class WorkItemController implements Initializable {
 
     public void addTask(ActionEvent actionEvent) {
         try {
-            new AddTask().showModal();
+            new AddTask(this::initListTask).showModal();
         } catch(Exception e){
             e.printStackTrace();
             System.err.println(e.getMessage());

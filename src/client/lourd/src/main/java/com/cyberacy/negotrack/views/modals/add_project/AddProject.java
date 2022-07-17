@@ -13,6 +13,12 @@ import javafx.stage.StageStyle;
 
 public class AddProject extends AModal {
 
+    private final Runnable callback;
+
+    public AddProject(Runnable callback) {
+        this.callback = callback;
+    }
+
     @Override
     public void showModal() throws Exception {
         FXMLLoader alertLoader = new FXMLLoader(
@@ -30,6 +36,7 @@ public class AddProject extends AModal {
                 new Scene(layout, 500, 500)
         );
         alert.showAndWait();
+        callback.run();
     }
 
 }

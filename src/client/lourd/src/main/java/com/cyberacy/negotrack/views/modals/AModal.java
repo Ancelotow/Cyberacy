@@ -3,6 +3,8 @@ package com.cyberacy.negotrack.views.modals;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 
+import javax.security.auth.callback.Callback;
+
 public abstract class AModal {
 
     public abstract void showModal() throws Exception;

@@ -32,7 +32,7 @@ public class MainController implements Initializable {
 
     public void addProject(ActionEvent actionEvent) {
         try {
-            new AddProject().showModal();
+            new AddProject(this::initListProjects).showModal();
         } catch(Exception e){
             System.err.println(e.getMessage());
         }
@@ -54,20 +54,25 @@ public class MainController implements Initializable {
         try{
             btnKanban.setVisible(false);
             btnWorkItem.setVisible(false);
-            List<Project> projects = Project.getAllProjects();
-            projects.forEach(project -> {
-                MenuItem item = new MenuItem(project.getName());
-                item.setOnAction((event) ->  selectProject(project));
-                menu.getItems().add(item);
-            });
-            menu.getItems().add(new SeparatorMenuItem());
-            MenuItem itemAddProject = new MenuItem(" + Nouveau projet");
-            itemAddProject.setOnAction(this::addProject);
-            menu.getItems().add(itemAddProject);
+            initListProjects();
         } catch(Exception e) {
             e.printStackTrace();
             System.err.println(e.getMessage());
         }
+    }
+
+    private void initListProjects() {
+        menu.getItems().clear();
+        List<Project> projects = Project.getAllProjects();
+        projects.forEach(project -> {
+            MenuItem item = new MenuItem(project.getName());
+            item.setOnAction((event) ->  selectProject(project));
+            menu.getItems().add(item);
+        });
+        menu.getItems().add(new SeparatorMenuItem());
+        MenuItem itemAddProject = new MenuItem(" + Nouveau projet");
+        itemAddProject.setOnAction(this::addProject);
+        menu.getItems().add(itemAddProject);
     }
 
     public void goToKanban(ActionEvent actionEvent) {

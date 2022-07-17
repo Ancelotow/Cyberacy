@@ -8,7 +8,15 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import javax.security.auth.callback.Callback;
+
 public class AddEpic extends AModal {
+
+    private final Runnable callback;
+
+    public AddEpic(Runnable callback) {
+        this.callback = callback;
+    }
 
     @Override
     public void showModal() throws Exception {
@@ -25,6 +33,7 @@ public class AddEpic extends AModal {
                 new Scene(layout, 500, 500)
         );
         alert.showAndWait();
+        callback.run();
     }
 
 }

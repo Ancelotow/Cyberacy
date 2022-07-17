@@ -10,6 +10,12 @@ import javafx.stage.Stage;
 
 public class AddTask extends AModal {
 
+    private final Runnable callback;
+
+    public AddTask(Runnable callback) {
+        this.callback = callback;
+    }
+
     @Override
     public void showModal() throws Exception {
         FXMLLoader alertLoader = new FXMLLoader(
@@ -25,6 +31,7 @@ public class AddTask extends AModal {
                 new Scene(layout, 500, 700)
         );
         alert.showAndWait();
+        callback.run();
     }
 
 }
