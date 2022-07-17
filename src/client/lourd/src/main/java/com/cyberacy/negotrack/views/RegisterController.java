@@ -15,7 +15,7 @@ public class RegisterController {
     public GridPane form;
     public TextField email;
 
-    public void register(ActionEvent actionEvent) throws Exception {
+    public void register() throws Exception {
         if(login.getText().isEmpty() || password.getText().isEmpty() || email.getText().isEmpty()) {
             new ModalMessage("Formulaire incomplet", "Tout les champs sont obligatoires").showModal();
             return;
@@ -29,7 +29,7 @@ public class RegisterController {
     }
 
 
-    public void goToConnexion(ActionEvent actionEvent) {
+    public void goToConnexion() {
         try{
             Singleton.getInstance().getApplication().changeScene("login-view.fxml");
         }
