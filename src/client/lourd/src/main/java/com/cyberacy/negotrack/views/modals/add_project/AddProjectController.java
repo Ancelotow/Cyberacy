@@ -25,7 +25,7 @@ public class AddProjectController implements Initializable {
     }
 
     public void addProject() throws Exception {
-        if(name.getText().isBlank()) {
+        if(name.getText().isEmpty()) {
             new ModalMessage("Formulaire invalide", "Le nom est obligatoire").showModal();
             return;
         }

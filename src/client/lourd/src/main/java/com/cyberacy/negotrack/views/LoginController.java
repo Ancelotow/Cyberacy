@@ -24,7 +24,7 @@ public class LoginController implements Initializable {
 
     @FXML
     protected void connection() throws Exception {
-        if(!login.getText().isBlank() && !password.getText().isBlank()) {
+        if(!login.getText().isEmpty() && !password.getText().isEmpty()) {
             Account account = Account.getAccount(login.getText(), password.getText());
             if(account == null) {
                 new ModalMessage("Identifians invalide", "Votre identifiant et/ou mot de passe sont invalides.").showModal();

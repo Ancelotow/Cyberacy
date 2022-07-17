@@ -16,7 +16,7 @@ public class RegisterController {
     public TextField email;
 
     public void register(ActionEvent actionEvent) throws Exception {
-        if(login.getText().isBlank() || password.getText().isBlank() || email.getText().isBlank()) {
+        if(login.getText().isEmpty() || password.getText().isEmpty() || email.getText().isEmpty()) {
             new ModalMessage("Formulaire incomplet", "Tout les champs sont obligatoires").showModal();
             return;
         }

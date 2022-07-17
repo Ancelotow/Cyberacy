@@ -30,7 +30,7 @@ public class AddTaskController implements Initializable {
         Severity severity = cbSeverity.getSelectionModel().getSelectedItem();
         State state = cbState.getSelectionModel().getSelectedItem();
 
-        if(name.getText().isBlank() || priority == null || state == null || userStory == null || nbTimeForecast.getText() == null) {
+        if(name.getText().isEmpty() || priority == null || state == null || userStory == null || nbTimeForecast.getText() == null) {
             new ModalMessage("Formulaire invalide", "Le \"nom\", la \"user story\", la \"priorité\", le \"nombre d'heures prévu\" et l'\"état\" sont obligatoires").showModal();
             return;
         } else if(isBug.isSelected() && severity == null) {

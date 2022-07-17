@@ -24,7 +24,7 @@ public class AddUserStoryController implements Initializable {
 
     public void addUserStory(ActionEvent actionEvent) throws Exception {
         Epic epic = cbEpic.getSelectionModel().getSelectedItem();
-        if(name.getText().isBlank() || epic == null) {
+        if(name.getText().isEmpty() || epic == null) {
             new ModalMessage("Formulaire invalide", "Le \"nom\" et l'\"epic\" sont obligatoires").showModal();
             return;
         }

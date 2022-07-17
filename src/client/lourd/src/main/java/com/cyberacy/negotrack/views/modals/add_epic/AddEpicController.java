@@ -18,7 +18,7 @@ public class AddEpicController implements Initializable {
     public TextField name;
 
     public void addEpic(ActionEvent actionEvent) throws Exception {
-        if(name.getText().isBlank()) {
+        if(name.getText().isEmpty()) {
             new ModalMessage("Formulaire invalide", "Le nom est obligatoire").showModal();
             return;
         }
