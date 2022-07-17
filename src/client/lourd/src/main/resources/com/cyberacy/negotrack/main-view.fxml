@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<GridPane xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.cyberacy.negotrack.views.MainController"
+      prefWidth="500" fx:id="gridMain">
+
+    <columnConstraints>
+        <ColumnConstraints percentWidth="20.0"/>
+        <ColumnConstraints percentWidth="80.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="ALWAYS" />
+    </rowConstraints>
+
+    <VBox GridPane.columnIndex="0" styleClass="primary">
+        <MenuBar styleClass="hamburger-header" >
+            <Menu fx:id="menu" text="Aucun projet sélectionné">
+            </Menu>
+        </MenuBar>
+        <Separator/>
+        <Button fx:id="btnWorkItem" text="Elements de travail" onAction="#goToWorkItem" alignment="BASELINE_LEFT"/>
+        <Button fx:id="btnKanban" text="KANBAN" onAction="#goToKanban" alignment="BASELINE_LEFT"/>
+    </VBox>
+
+
+    <stylesheets>
+        <URL value="@../../../css/hamburger-menu.css"/>
+    </stylesheets>
+
+</GridPane>

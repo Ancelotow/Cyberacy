@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane maxWidth="500" minWidth="500" prefHeight="500.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cyberacy.negotrack.views.modals.add_project.AddProjectController">
+
+    <rowConstraints>
+        <RowConstraints percentHeight="30.0" />
+        <RowConstraints percentHeight="10.0" />
+        <RowConstraints percentHeight="30.0" />
+        <RowConstraints percentHeight="30.0" />
+      <RowConstraints />
+    </rowConstraints>
+
+    <Label styleClass="txt-title-H1" text="NOUVEAU PROJET" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+
+    <TextField fx:id="name" promptText="Nom*" styleClass="input-text" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+        <GridPane.margin>
+            <Insets bottom="5.0" top="5.0">
+                <right>10.0</right>
+                <left>10.0</left>
+            </Insets>
+        </GridPane.margin>
+    </TextField>
+
+    <TextArea fx:id="description" prefHeight="75" promptText="Description" styleClass="input-text" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+        <GridPane.margin>
+            <Insets bottom="5.0" top="5.0">
+                <right>10.0</right>
+                <left>10.0</left>
+            </Insets>
+        </GridPane.margin>
+    </TextArea>
+
+    <Button onAction="#addProject" prefWidth="150" styleClass="btn-primary-outline" text="Ajouter" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+
+    <stylesheets>
+        <URL value="@../../../../css/stylesheet.css" />
+    </stylesheets>
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+
+</GridPane>
