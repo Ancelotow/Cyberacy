@@ -123,6 +123,11 @@
     <string name="txt_identity">Identité</string>
     <string name="txt_account">Compte</string>
     <string name="txt_localisation">Localisation</string>
+    <string name="hint_birthday">Date de naissance</string>
+    <string name="txt_error_nir_short">Le NIR doit comporter 13 chiffres</string>
+    <string name="txt_error_not_same_pwd">Les mots de passes ne correspondent pas</string>
+    <string name="txt_error_not_email">Ceci n\'est pas une adresse mail</string>
+    <string name="txt_error_minor">Vous devez être majeure pour vous inscrire</string>
 
 
 </resources>

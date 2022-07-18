@@ -153,6 +153,32 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_birthday"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_birthday"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:errorEnabled="true"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/layout_lastname"
+            app:startIconDrawable="@drawable/ic_calendar">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/birthday"
+                android:focusable="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hk_nova"
+                android:lines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_nir"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
@@ -165,7 +191,7 @@
             app:errorEnabled="true"
             app:layout_constraintLeft_toLeftOf="@id/gl_start"
             app:layout_constraintRight_toRightOf="@id/gl_end"
-            app:layout_constraintTop_toBottomOf="@id/layout_lastname"
+            app:layout_constraintTop_toBottomOf="@id/layout_birthday"
             app:startIconDrawable="@drawable/ic_nir">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -275,6 +301,8 @@
                 android:lines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+
 
         <TextView
             android:id="@+id/title_account"
@@ -392,7 +420,16 @@
             app:layout_constraintRight_toRightOf="@id/gl_end"
             app:layout_constraintTop_toBottomOf="@id/layout_confirm_password"/>
 
-
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_circular"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+            android:layout_marginTop="20dp"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/layout_confirm_password"/>
 
 
 

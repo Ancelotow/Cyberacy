@@ -36,4 +36,8 @@ class Department(
 
     }
 
+    override fun toString(): String {
+        return "$code - $name"
+    }
+
 }

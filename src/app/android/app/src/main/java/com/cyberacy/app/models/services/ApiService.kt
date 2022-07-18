@@ -136,4 +136,10 @@ interface ApiService {
     @GET("department/{code}/town")
     fun getTownsFromDepartment(@Path("code") codeDept: String): Call<ResponseAPI<List<Town>>>
 
+    @GET("sex")
+    fun getGenders(): Call<ResponseAPI<List<Gender>>>
+
+    @GET("register")
+    fun register(@Body person: Person): Call<ResponseAPI<Unit>>
+
 }
