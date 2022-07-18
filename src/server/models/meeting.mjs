@@ -75,6 +75,33 @@ Meeting.prototype.IfExists = function (id) {
 }
 
 /**
+ * Vérifie si un meeting éxiste par son UUID
+ * @param uuid
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+Meeting.prototype.IfExistsWithUUID = function(uuid) {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT COUNT(*) FROM meeting WHERE mee_uuid = $1',
+            values: [uuid],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows[0] : null
+                if (res && res.count > 0) {
+                    resolve(true)
+                } else {
+                    resolve(false)
+                }
+            }
+        });
+    });
+}
+
+/**
  * Annule un meeting
  * @param id L'id du meeting
  * @param reason La raison de l'annulation

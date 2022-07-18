@@ -1296,6 +1296,23 @@
         ]
       }
     },
+    "/exist/{uuid}/meeting": {
+      "get": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Vérifie si un meeting existe ou non via son UUID",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/thread": {
       "get": {
         "tags": [

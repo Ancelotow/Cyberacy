@@ -190,6 +190,13 @@ const AbortedParticipant = (nir, idMeeting, reason = null) => {
     });
 }
 
+/**
+ * Récupère des informations sur les participants
+ * @param nir
+ * @param idMeeting
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
 const GetInfoParticipant = (nir, idMeeting) => {
     return new Promise((resolve, _) => {
         if (!nir || !idMeeting) {
@@ -208,6 +215,30 @@ const GetInfoParticipant = (nir, idMeeting) => {
     });
 }
 
+/**
+ * Retourne si un meeting existe par son UUID
+ * @param uuid Le UUID d'un meeting
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const IfMeetingExistByUUID = (uuid) => {
+    return new Promise((resolve, _) => {
+        if (uuid === null) {
+            resolve(new ResponseApi().InitMissingParameters())
+            return
+        }
+        new Meeting().IfExistsWithUUID(uuid).then(async (res) => {
+            resolve(new ResponseApi().InitOK({is_exist: res}))
+        }).catch((e) => {
+            if (e.code === '23503') {
+                resolve(new ResponseApi().InitBadRequest(e.message))
+                return
+            }
+            resolve(new ResponseApi().InitInternalServer(e))
+        })
+    });
+}
+
 export default {
     AddParticipant,
     AddMeeting,
@@ -215,5 +246,6 @@ export default {
     GetMeeting,
     AbortedParticipant,
     GetMeetingById,
-    GetInfoParticipant
+    GetInfoParticipant,
+    IfMeetingExistByUUID
 }

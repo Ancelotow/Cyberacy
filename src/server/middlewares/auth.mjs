@@ -13,7 +13,8 @@ const WHITE_ROUTES = [
     '/type_vote',
     '/region',
     '/department',
-    '/town'
+    '/town',
+    '/exist'
 ]
 
 const authToken = (req, res, next) => {
