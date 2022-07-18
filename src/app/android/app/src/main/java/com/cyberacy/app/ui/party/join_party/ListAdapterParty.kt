@@ -34,7 +34,7 @@ class ListAdapterParty(
     private fun itemSelected(item: PoliticalParty, context: Context) {
         val alertDialogBuilder = AlertDialog.Builder(context)
         alertDialogBuilder.setTitle(R.string.txt_join_party)
-        alertDialogBuilder.setMessage("Êtes-vous sûr(e) de vouloir rejoindre le parti ${item.name} ?")
+        alertDialogBuilder.setMessage(context.getString(R.string.txt_join_party_confirmation, item.name))
         alertDialogBuilder.setPositiveButton(R.string.btn_yes) { dialog, which ->
             itemClick.invoke(item)
         }

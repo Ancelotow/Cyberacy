@@ -140,7 +140,7 @@ class ThreadActivity : AppCompatActivity() {
         val textMessage = this.message.text.toString()
 
         if (textMessage.isEmpty()) {
-            layoutMessage.error = "Le message ne peut pas être nul"
+            layoutMessage.error = getString(R.string.txt_message_null)
             return
         }
 
@@ -163,7 +163,7 @@ class ThreadActivity : AppCompatActivity() {
     private fun leaveThread() {
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(R.string.txt_join_thread)
-        alertDialogBuilder.setMessage("Êtes-vous sûr(e) de vouloir quitter cette discussion ?")
+        alertDialogBuilder.setMessage(getString(R.string.txt_leave_thread_confirmation))
         alertDialogBuilder.setPositiveButton(R.string.btn_yes) { dialog, which ->
             lifecycleScope.launch {
                 window?.setFlags(

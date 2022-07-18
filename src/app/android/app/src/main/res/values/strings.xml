@@ -28,22 +28,29 @@
     <string name="nav_manifestation">Manifestations</string>
     <string name="nav_vote">Votes</string>
 
-    <!-- text -->
+    <!-- Text : Global -->
+    <string name="txt_error_happening">Une erreur est survenue… \n%s</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Text : Party -->
     <string name="txt_no_party">Sélectionnez un parti politique à rejoindre</string>
     <string name="txt_join_party">Rejoindre un parti</string>
     <string name="txt_join_thread">Rejoindre une discussion</string>
     <string name="txt_join_party_cancel">Annulation</string>
     <string name="txt_messagerie">Messagerie</string>
-    <string name="txt_error_happening">Une erreur est survenue… \n%s</string>
-
-    <string name="action_settings">Settings</string>
     <string name="txt_no_message">Aucun messages</string>
     <string name="txt_no_mythreads">Vous ne participez à aucune discussion\nAllez sur \"Autres Discussions\" pour en rejoindre une</string>
     <string name="txt_no_threads">Vous n\'avez aucune invitations ou de nouvelles discussions à rejoindre pour le moment</string>
     <string name="txt_no_messages">Ecrivez le premier message dans cette discussion !</string>
     <string name="txt_message_sent">Message envoyé</string>
+    <string name="txt_not_found_party">Nous n\'avons pas trouvé votre parti politique</string>
+    <string name="txt_join_party_confirmation">Êtes-vous sûr(e) de vouloir rejoindre le parti \"%s\" ?</string>
+    <string name="txt_leave_party_confirmation">Êtes-vous sûr(e) de vouloir quitter ce parti politique ?</string>
+    <string name="txt_join_thread_confirmation">Êtes-vous sûr(e) de vouloir rejoindre la discussion \"%s\" ?</string>
+    <string name="txt_leave_thread_confirmation">Êtes-vous sûr(e) de vouloir quitter cette discussion ?</string>
+    <string name="txt_message_null">Le message ne peut pas être nul</string>
 
-
+    <!-- Text : Elections -->
     <string name="txt_vote_inprogress">Les votes en cours</string>
     <string name="txt_choose_choice">Sélectionnez un des choix ci-dessous et appuyez sur le bouton \"A voter !\" pour valider votre choix</string>
     <string name="txt_to_vote_confirmation">Confirmation du vote</string>
@@ -68,6 +75,14 @@
     <!-- Text : Payment -->
     <string name="txt_payment">Paiement</string>
     <string name="txt_cdv">J\'ai lu et j\'accepte les <a href="https://www.termsandconditionsgenerator.com/live.php?token=pM2FwG6dI5fdNoVANzsbF4UUXywt1Uc7">conditions de ventes</a></string>
+    <string name="txt_total_excluding_tax">Total HT : %s €</string>
+    <string name="txt_vat">TVA : %s%</string>
+    <string name="txt_total_including_tax">Total TTC : %s €</string>
+    <string name="txt_pay_by_card">Payer par carte (%s €)</string>
+    <string name="txt_required_field_invoice">Ce champ est obligatoire pour envoyer la facture</string>
+    <string name="txt_cgv_required">Vous devez accepté le CGV pour continuer</string>
+
+
 
     <!-- Tab bar -->
     <string name="tb_conversation">Mes conversations</string>

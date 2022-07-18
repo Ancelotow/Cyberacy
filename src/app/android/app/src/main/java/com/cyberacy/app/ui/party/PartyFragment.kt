@@ -42,7 +42,6 @@ class PartyFragment : Fragment() {
                     loader.visibility = View.GONE
                 }
                 PartyStateLoading -> {
-                    Log.e("TEST", "load")
                     childView.visibility = View.GONE
                     loader.visibility = View.VISIBLE
                 }
@@ -50,10 +49,8 @@ class PartyFragment : Fragment() {
                     loader.visibility = View.GONE
                     childView.visibility = View.VISIBLE
                     if(it.party != null) {
-                        Log.e("TEST", "main")
                         changeView(MainPartyFragment())
                     } else {
-                        Log.e("TEST", "join")
                         changeView(JoinPartyFragment())
                     }
                 }

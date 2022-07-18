@@ -92,13 +92,13 @@ class PaymentCyberacyActivity : AppCompatActivity() {
         libelle = intent.getStringExtra("libelle").toString()
         amountIncludingTax = amountExcl + (amountExcl * (rateVAT / 100))
         findViewById<TextView>(R.id.product).text = libelle
-        findViewById<TextView>(R.id.total_ht).text = "Total HT : $amountExcl €"
-        findViewById<TextView>(R.id.vat_rate).text = "TVA : ${rateVAT}%"
-        findViewById<TextView>(R.id.total_ttc).text = "Total TTC : $amountIncludingTax €"
+        findViewById<TextView>(R.id.total_ht).text = getString(R.string.txt_total_excluding_tax, amountExcl)
+        findViewById<TextView>(R.id.vat_rate).text = getString(R.string.txt_vat, rateVAT)
+        findViewById<TextView>(R.id.total_ttc).text = getString(R.string.txt_vat, amountIncludingTax)
         val textCGV = findViewById<TextView>(R.id.text_cgv)
         textCGV.movementMethod = LinkMovementMethod.getInstance()
         btnPay = findViewById(R.id.btn_pay)
-        btnPay.text = "Payer par carte ($amountIncludingTax €)"
+        btnPay.text = getString(R.string.txt_vat, amountIncludingTax)
         btnPay.setOnClickListener { configureStripe() }
     }
 
@@ -150,12 +150,12 @@ class PaymentCyberacyActivity : AppCompatActivity() {
         layoutEmail.error = null
         checkBox.error = null
         if (email == null || email.isEmpty()) {
-            layoutEmail.error = "Ce champ est obligatoire pour envoyer la facture"
+            layoutEmail.error = getString(R.string.txt_required_field_invoice)
             return false
         }
 
         if (!checkBox.isChecked) {
-            checkBox.error = "Vous devez accepté le CGV pour continuer"
+            checkBox.error = getString(R.string.txt_cgv_required)
             return false
         }
         return true

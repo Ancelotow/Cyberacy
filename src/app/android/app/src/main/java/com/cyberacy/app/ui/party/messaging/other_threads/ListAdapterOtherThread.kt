@@ -34,7 +34,7 @@ class ListAdapterOtherThread(
     private fun itemSelected(item: ThreadMessaging, context: Context) {
         val alertDialogBuilder = AlertDialog.Builder(context)
         alertDialogBuilder.setTitle(R.string.txt_join_thread)
-        alertDialogBuilder.setMessage("Êtes-vous sûr(e) de vouloir rejoindre la discussion \"${item.name}\" ?")
+        alertDialogBuilder.setMessage(context.getString(R.string.txt_join_thread_confirmation, item.name))
         alertDialogBuilder.setPositiveButton(R.string.btn_yes) { dialog, which ->
             threadClick.invoke(item)
         }

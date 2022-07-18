@@ -77,7 +77,7 @@ class MainPartyFragment : Fragment() {
                 is PartyStateError -> {
                     loader.visibility = View.GONE
                     errorBody.visibility = View.VISIBLE
-                    txtError.text = "Une erreure est survenue...\n${it.ex.message()}"
+                    txtError.text = getString(R.string.txt_error_happening, it.ex.message())
                 }
                 PartyStateLoading -> {
                     body.visibility = View.GONE
@@ -88,7 +88,7 @@ class MainPartyFragment : Fragment() {
                     loader.visibility = View.GONE
                     if(it.party == null) {
                         errorBody.visibility = View.VISIBLE
-                        txtError.text = "Nous n'avons pas trouvé votre parti politique"
+                        txtError.text = context!!.getString(R.string.txt_not_found_party)
                     } else {
                         this.party = it.party
                         body.visibility = View.VISIBLE
@@ -123,7 +123,7 @@ class MainPartyFragment : Fragment() {
             view?.findViewById<TextView>(R.id.txt_day)?.text = meeting.dateStart.dayOfMonth.toString()
             view?.findViewById<TextView>(R.id.txt_name)?.text = meeting.name
             view?.findViewById<TextView>(R.id.txt_lieu)?.text = meeting.getPosition()
-            view?.findViewById<TextView>(R.id.txt_price)?.text = "Prix : ${meeting.getPriceStr()}"
+            view?.findViewById<TextView>(R.id.txt_price)?.text = getString(R.string.txt_meeting_price, meeting.getPriceStr())
             val btnQrcode = view?.findViewById<MaterialButton>(R.id.btn_qrcode)
             if(meeting.isParticipated) {
                 btnQrcode?.visibility = View.VISIBLE
@@ -151,7 +151,7 @@ class MainPartyFragment : Fragment() {
     private fun leaveParty() {
         val alertDialogBuilder = AlertDialog.Builder(context)
         alertDialogBuilder.setTitle(R.string.txt_join_thread)
-        alertDialogBuilder.setMessage("Êtes-vous sûr(e) de vouloir quitter ce parti politique ?")
+        alertDialogBuilder.setMessage(getString(R.string.txt_leave_party_confirmation))
         val loader = view!!.findViewById<ProgressBar>(R.id.loader_main_party)
         alertDialogBuilder.setPositiveButton(R.string.btn_yes) { dialog, which ->
             lifecycleScope.launch {
