@@ -11,6 +11,7 @@ import com.cyberacy.app.models.entities.Connection
 import com.cyberacy.app.models.entities.Session
 import com.cyberacy.app.models.services.ApiConnection
 import com.cyberacy.app.ui.navigation.NavigationActivity
+import com.cyberacy.app.ui.register.RegisterActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var layoutLogin: TextInputLayout
     lateinit var layoutPassword: TextInputLayout
     lateinit var btnConnection: MaterialButton
+    lateinit var btnRegister: MaterialButton
     lateinit var circularProgress: CircularProgressIndicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,8 +43,13 @@ class MainActivity : AppCompatActivity() {
         layoutLogin = findViewById(R.id.layout_login)
         layoutPassword = findViewById(R.id.layout_password)
         btnConnection = findViewById(R.id.btnConnection)
+        btnRegister = findViewById(R.id.btn_register)
         circularProgress = findViewById(R.id.progress_circular)
         btnConnection.setOnClickListener { this.connection() }
+        btnRegister.setOnClickListener {
+            val i = Intent(this@MainActivity, RegisterActivity::class.java)
+            startActivity(i)
+        }
     }
 
     private fun connection() {

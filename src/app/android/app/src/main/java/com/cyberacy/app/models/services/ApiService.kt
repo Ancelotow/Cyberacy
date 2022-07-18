@@ -130,4 +130,10 @@ interface ApiService {
         @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
     ): Call<ResponseAPI<Unit>>
 
+    @GET("department")
+    fun getDepartments(): Call<ResponseAPI<List<Department>>>
+
+    @GET("department/{code}/town")
+    fun getTownsFromDepartment(@Path("code") codeDept: String): Call<ResponseAPI<List<Town>>>
+
 }

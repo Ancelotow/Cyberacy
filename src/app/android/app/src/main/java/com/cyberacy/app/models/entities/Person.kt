@@ -24,6 +24,10 @@ class Person(
     @SerializedName("town")
     val town: String,
 
+    @SerializedName("town_code_insee")
+    val townCodeInsee: String,
+
+
     @SerializedName("sex")
     val sex: Int,
 
