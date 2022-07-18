@@ -124,7 +124,6 @@ routerMee.get("/exist/:uuid/meeting", async (req, res) => {
     // #swagger.tags = ['Meeting']
     // #swagger.description = 'Vérifie si un meeting existe ou non via son UUID'
 
-    const nir = req.data.nir
     const response = await meetingCtrl.IfMeetingExistByUUID(req.params.uuid)
     res.status(response.code).send(response)
 });
