@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.cyberacy.app.models.entities.Connection
+import com.cyberacy.app.models.entities.PopUpWindow
 import com.cyberacy.app.models.entities.Session
 import com.cyberacy.app.models.services.ApiConnection
 import com.cyberacy.app.ui.navigation.NavigationActivity
@@ -32,6 +34,14 @@ class MainActivity : AppCompatActivity() {
     lateinit var btnRegister: MaterialButton
     lateinit var circularProgress: CircularProgressIndicator
 
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val popup = PopUpWindow(getString(R.string.txt_account_created), R.drawable.ic_success, R.id.layout_main)
+                popup.showPopUp(this)
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         btnConnection.setOnClickListener { this.connection() }
         btnRegister.setOnClickListener {
             val i = Intent(this@MainActivity, RegisterActivity::class.java)
-            startActivity(i)
+            resultLauncher.launch(i)
         }
     }
 

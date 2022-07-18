@@ -22,6 +22,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.paypal.pyplcheckout.constants.RESPONSE_CODE_EXCEPTION
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.await
@@ -318,7 +319,7 @@ class RegisterActivity : AppCompatActivity() {
             nir = textInputNIR.text.toString(),
             firstname = textInputFirstname.text.toString(),
             lastname = textInputLastname.text.toString(),
-            birthday = birthdayDate!!,
+            birthday = birthdayDate!!.format(DateTimeFormatter.ISO_LOCAL_DATE),
             sex = genderSelected!!.id,
             address_street = textInputAddress.text.toString(),
             townCodeInsee = townSelected!!.codeInsee,
@@ -334,11 +335,19 @@ class RegisterActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try{
                 val response = ApiConnection.connection().register(person).await()
-                if(response.code == 400) {
-
-                }
+                setResult(RESULT_OK, intent)
+                finish()
             } catch (e: HttpException) {
                 Log.e("ERREUR HTTP", e.message().toString())
+                if(e.code() == 400) {
+                    val popup = PopUpWindow(getString(R.string.txt_account_already_existed), R.drawable.ic_warning, R.id.layout_register)
+                    popup.showPopUp(this@RegisterActivity)
+                } else {
+                    val popup = PopUpWindow(getString(R.string.txt_error_happening, e.message().toString()), R.drawable.ic_error, R.id.layout_register)
+                    popup.showPopUp(this@RegisterActivity)
+                }
+                circularProgress.visibility = View.GONE
+                btnRegister.visibility = View.VISIBLE
             }
         }
     }

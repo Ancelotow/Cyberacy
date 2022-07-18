@@ -22,7 +22,7 @@ class Session private constructor(private val person: Person) {
 
         fun getJwtToken(): String {
             if(instance != null) {
-                return instance!!.person.token
+                return instance!!.person.token ?: ""
             }
             return ""
         }

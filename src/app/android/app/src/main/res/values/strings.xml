@@ -128,6 +128,8 @@
     <string name="txt_error_not_same_pwd">Les mots de passes ne correspondent pas</string>
     <string name="txt_error_not_email">Ceci n\'est pas une adresse mail</string>
     <string name="txt_error_minor">Vous devez être majeure pour vous inscrire</string>
+    <string name="txt_account_already_existed">Ce compte existe déjà</string>
+    <string name="txt_account_created">Le compte à été créé avec succès !</string>
 
 
 </resources>

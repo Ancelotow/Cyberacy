@@ -139,7 +139,7 @@ interface ApiService {
     @GET("sex")
     fun getGenders(): Call<ResponseAPI<List<Gender>>>
 
-    @GET("register")
+    @POST("register")
     fun register(@Body person: Person): Call<ResponseAPI<Unit>>
 
 }

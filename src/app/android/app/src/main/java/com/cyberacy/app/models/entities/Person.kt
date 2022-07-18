@@ -17,7 +17,7 @@ class Person(
     val email: String,
 
     @SerializedName("birthday")
-    val birthday: LocalDateTime?,
+    val birthday: String?,
 
     @SerializedName("address_street")
     val address_street: String,
