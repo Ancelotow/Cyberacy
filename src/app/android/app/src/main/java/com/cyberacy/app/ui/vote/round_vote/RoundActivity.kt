@@ -34,7 +34,7 @@ class RoundActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 toVoteSuccessful()
             } else if (result.resultCode == RESULT_CANCELED) {
-                val popup = PopUpWindow("Vous n'avez pas voté", R.drawable.ic_canceled, R.id.layout_list_round)
+                val popup = PopUpWindow(getString(R.string.txt_no_voted), R.drawable.ic_canceled, R.id.layout_list_round)
                 popup.showPopUp(this)
             }
         }
@@ -95,7 +95,7 @@ class RoundActivity : AppCompatActivity() {
     }
 
     private fun toVoteSuccessful() {
-        val popup = PopUpWindow("Merci !\nVotre voix à été prise en compte", R.drawable.ic_success, R.id.layout_list_round)
+        val popup = PopUpWindow(getString(R.string.txt_thanks_to_voted), R.drawable.ic_success, R.id.layout_list_round)
         popup.showPopUp(this)
         viewModel.getRounds()
     }

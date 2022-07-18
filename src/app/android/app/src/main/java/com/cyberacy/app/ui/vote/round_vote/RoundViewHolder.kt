@@ -53,17 +53,17 @@ class RoundViewHolder(v: View) : RecyclerView.ViewHolder(v) {
             EVoteState.TO_VOTE -> {
                 colorStateVote = R.color.orange
                 iconStateVote = R.drawable.ic_warning
-                textStateVote = "A voter"
+                textStateVote = itemView.context.getString(R.string.txt_must_voted)
             }
             EVoteState.VOTED -> {
                 colorStateVote = R.color.success
                 iconStateVote = R.drawable.ic_success
-                textStateVote = "J'ai voté !"
+                textStateVote = itemView.context.getString(R.string.txt_have_voted)
             }
             else -> {
                 colorStateVote = R.color.red
                 iconStateVote = R.drawable.ic_canceled
-                textStateVote = "Abstenu"
+                textStateVote = itemView.context.getString(R.string.txt_abstention)
             }
         }
         txtIsVote.setTextColor(ContextCompat.getColor(itemView.context,colorStateVote))

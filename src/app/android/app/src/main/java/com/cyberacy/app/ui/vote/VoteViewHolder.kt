@@ -21,7 +21,7 @@ class VoteViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     fun setItem(item: Vote) {
         voteName.text = item.name
         voteType.text = item.typeName
-        val round = item.getCurrentRound()?.name ?: "Tour"
+        val round = item.getCurrentRound()?.name ?: itemView.context.getString(R.string.txt_round)
         val durationLeft: Duration = item.getDurationLeft() ?: Duration.ZERO
         voteCurrentRound.text = "$round : ${item.getTimeLeftStr()}"
 

@@ -31,6 +31,8 @@
     <!-- Text : Global -->
     <string name="txt_error_happening">Une erreur est survenue… \n%s</string>
     <string name="action_settings">Settings</string>
+    <string name="txt_required_field">Ce champ est obligatoire</string>
+    <string name="txt_error_login">L\'identidiant et/ou le mot de passe sont incorrects</string>
 
     <!-- Text : Party -->
     <string name="txt_no_party">Sélectionnez un parti politique à rejoindre</string>
@@ -54,6 +56,17 @@
     <string name="txt_vote_inprogress">Les votes en cours</string>
     <string name="txt_choose_choice">Sélectionnez un des choix ci-dessous et appuyez sur le bouton \"A voter !\" pour valider votre choix</string>
     <string name="txt_to_vote_confirmation">Confirmation du vote</string>
+    <string name="txt_round_finished">Ce tour est terminé</string>
+    <string name="txt_round_not_started">Ce tour n\'as pas encore commencé</string>
+    <string name="txt_already_voted">Vous avez déjà voté</string>
+    <string name="txt_no_voted">Vous n\'avez pas voté</string>
+    <string name="txt_thanks_to_voted">Merci !\nVotre voix à été prise en compte</string>
+    <string name="txt_have_voted">J\'ai voté</string>
+    <string name="txt_must_voted">A voter</string>
+    <string name="txt_abstention">Abstenu</string>
+    <string name="txt_confirm_choice">Êtes-vous sûr(e) de vouloir choisir \"%s\" ?</string>
+    <string name="txt_no_choice_selected">Vous n\'avez sélectionné aucun choix.</string>
+    <string name="txt_round">Tour</string>
 
     <!-- Text : Meeting -->
     <string name="txt_error_book_meeting">Une erreur est survenue lors de la réservation</string>
@@ -81,8 +94,6 @@
     <string name="txt_pay_by_card">Payer par carte (%s €)</string>
     <string name="txt_required_field_invoice">Ce champ est obligatoire pour envoyer la facture</string>
     <string name="txt_cgv_required">Vous devez accepté le CGV pour continuer</string>
-
-
 
     <!-- Tab bar -->
     <string name="tb_conversation">Mes conversations</string>

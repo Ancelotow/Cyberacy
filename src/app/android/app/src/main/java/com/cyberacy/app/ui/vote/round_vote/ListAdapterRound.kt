@@ -25,11 +25,11 @@ class ListAdapterRound(
             val item = rounds[pos]
             val today = LocalDateTime.now()
             if(item.dateEnd.isBefore(today)) {
-                PopUpWindow("Ce tour est terminé", R.drawable.ic_info, R.id.layout_list_round).showPopUp(activity as AppCompatActivity)
+                PopUpWindow(view.context.getString(R.string.txt_round_finished), R.drawable.ic_info, R.id.layout_list_round).showPopUp(activity as AppCompatActivity)
             } else if(item.dateStart.isAfter(today)) {
-                PopUpWindow("Ce tour n'as pas encore commencé", R.drawable.ic_info, R.id.layout_list_round).showPopUp(activity as AppCompatActivity)
+                PopUpWindow(view.context.getString(R.string.txt_round_not_started), R.drawable.ic_info, R.id.layout_list_round).showPopUp(activity as AppCompatActivity)
             } else if(item.isVoted) {
-                PopUpWindow("Vous avez déjà voté ", R.drawable.ic_success, R.id.layout_list_round).showPopUp(activity as AppCompatActivity)
+                PopUpWindow(view.context.getString(R.string.txt_already_voted), R.drawable.ic_success, R.id.layout_list_round).showPopUp(activity as AppCompatActivity)
             } else {
                 itemClick.invoke(item)
             }

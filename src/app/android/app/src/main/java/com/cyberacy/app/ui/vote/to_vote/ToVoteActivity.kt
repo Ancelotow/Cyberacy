@@ -82,12 +82,12 @@ class ToVoteActivity : AppCompatActivity() {
 
     private fun confirmToVote() {
         if(choiceSelected == null) {
-            PopUpWindow("Vous n'avez sélectionné aucun choix.", R.drawable.ic_warning, R.id.layout_list_choice).showPopUp(this as AppCompatActivity)
+            PopUpWindow(getString(R.string.txt_no_choice_selected), R.drawable.ic_warning, R.id.layout_list_choice).showPopUp(this as AppCompatActivity)
             return
         }
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(R.string.txt_to_vote_confirmation)
-        alertDialogBuilder.setMessage("Êtes-vous sûr(e) de vouloir choisir \"${choiceSelected!!.name}\" ?")
+        alertDialogBuilder.setMessage(getString(R.string.txt_confirm_choice, choiceSelected!!.name))
         alertDialogBuilder.setPositiveButton(R.string.btn_yes) { dialog, which ->
             toVote()
         }
@@ -111,7 +111,7 @@ class ToVoteActivity : AppCompatActivity() {
                 finish()
             } catch (e: HttpException) {
                 Log.e("Erreur to vote", e.message())
-                PopUpWindow("Une erreure est survenue...", R.drawable.ic_error, R.id.layout_list_choice).showPopUp(this@ToVoteActivity as AppCompatActivity)
+                PopUpWindow(getString(R.string.txt_error_happening, e.message()), R.drawable.ic_error, R.id.layout_list_choice).showPopUp(this@ToVoteActivity as AppCompatActivity)
             } finally {
                 circularProgress.visibility = View.GONE
                 btnVote.visibility = View.VISIBLE

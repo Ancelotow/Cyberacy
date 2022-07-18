@@ -52,10 +52,10 @@ class MainActivity : AppCompatActivity() {
         val pwd = this.password.text.toString()
 
         if (nir.isEmpty()) {
-            layoutLogin.error = "Ce champ est obligatoire"
+            layoutLogin.error = getString(R.string.txt_required_field)
             return
         } else if(pwd.isEmpty()) {
-            layoutPassword.error = "Ce champ est obligatoire"
+            layoutPassword.error = getString(R.string.txt_required_field)
             return
         }
 
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 }
             } catch (e: HttpException) {
                 if(e.code() == 401) {
-                    layoutLogin.error = "L'identidiant et/ou le mot de passe sont incorrects"
+                    layoutLogin.error = getString(R.string.txt_error_login)
                     password.text = null
                 }
             } finally {
