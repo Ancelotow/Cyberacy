@@ -94,11 +94,11 @@ class PaymentCyberacyActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.product).text = libelle
         findViewById<TextView>(R.id.total_ht).text = getString(R.string.txt_total_excluding_tax, amountExcl)
         findViewById<TextView>(R.id.vat_rate).text = getString(R.string.txt_vat, rateVAT)
-        findViewById<TextView>(R.id.total_ttc).text = getString(R.string.txt_vat, amountIncludingTax)
+        findViewById<TextView>(R.id.total_ttc).text = getString(R.string.txt_total_including_tax, amountIncludingTax)
         val textCGV = findViewById<TextView>(R.id.text_cgv)
         textCGV.movementMethod = LinkMovementMethod.getInstance()
         btnPay = findViewById(R.id.btn_pay)
-        btnPay.text = getString(R.string.txt_vat, amountIncludingTax)
+        btnPay.text = getString(R.string.txt_pay_by_card, amountIncludingTax)
         btnPay.setOnClickListener { configureStripe() }
     }
 

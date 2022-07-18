@@ -89,7 +89,7 @@
     <string name="txt_payment">Paiement</string>
     <string name="txt_cdv">J\'ai lu et j\'accepte les <a href="https://www.termsandconditionsgenerator.com/live.php?token=pM2FwG6dI5fdNoVANzsbF4UUXywt1Uc7">conditions de ventes</a></string>
     <string name="txt_total_excluding_tax">Total HT : %s €</string>
-    <string name="txt_vat">TVA : %s%</string>
+    <string name="txt_vat">TVA : %s \%%</string>
     <string name="txt_total_including_tax">Total TTC : %s €</string>
     <string name="txt_pay_by_card">Payer par carte (%s €)</string>
     <string name="txt_required_field_invoice">Ce champ est obligatoire pour envoyer la facture</string>
