@@ -83,7 +83,7 @@ Meeting.prototype.IfExists = function (id) {
 Meeting.prototype.IfExistsWithUUID = function(uuid) {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'SELECT COUNT(*) FROM meeting WHERE mee_uuid = $1',
+            text: 'SELECT COUNT(*) FROM meeting WHERE mee_uuid::text = $1',
             values: [uuid],
         }
         pool.query(request, (error, result) => {
