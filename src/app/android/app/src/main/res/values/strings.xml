@@ -69,6 +69,7 @@
     <string name="txt_confirm_choice">Êtes-vous sûr(e) de vouloir choisir \"%s\" ?</string>
     <string name="txt_no_choice_selected">Vous n\'avez sélectionné aucun choix.</string>
     <string name="txt_round">Tour</string>
+    <string name="txt_no_vote_in_progress">Il n\'y a aucun vote en cours</string>
 
     <!-- Text : Meeting -->
     <string name="txt_error_book_meeting">Une erreur est survenue lors de la réservation</string>

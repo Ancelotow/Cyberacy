@@ -71,6 +71,7 @@
     <string name="txt_confirm_choice">\"％s \"を選択してもよろしいですか？</string>
     <string name="txt_no_choice_selected">選択肢を選択していません。</string>
     <string name="txt_round">ラウンド</string>
+    <string name="txt_no_vote_in_progress">進行中の投票はありません</string>
 
 
     <string name="txt_error_book_meeting">予約中にエラーが発生しました</string>

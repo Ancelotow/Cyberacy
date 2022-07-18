@@ -70,6 +70,7 @@
     <string name="txt_confirm_choice">¿Está seguro de que desea elegir \"%s\"?</string>
     <string name="txt_no_choice_selected">No ha seleccionado ninguna opción.</string>
     <string name="txt_round">Redondo</string>
+    <string name="txt_no_vote_in_progress">No hay votaciones en curso</string>
 
 
     <string name="txt_error_book_meeting">Ocurrió un error durante la reserva.</string>
