@@ -51,6 +51,8 @@
     <string name="txt_join_thread_confirmation">Êtes-vous sûr(e) de vouloir rejoindre la discussion \"%s\" ?</string>
     <string name="txt_leave_thread_confirmation">Êtes-vous sûr(e) de vouloir quitter cette discussion ?</string>
     <string name="txt_message_null">Le message ne peut pas être nul</string>
+    <string name="txt_message_today">Aujourd\'hui %s</string>
+    <string name="txt_message_yesterday">Hier %s</string>
 
     <!-- Text : Elections -->
     <string name="txt_vote_inprogress">Les votes en cours</string>

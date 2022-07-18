@@ -28,6 +28,6 @@ class MessageViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         }
         message.text = item.message
         messageUser.text = item.getUserName()
-        messageDate.text = item.getDateMessage()
+        messageDate.text = item.getDateMessage(itemView.context)
     }
 }
