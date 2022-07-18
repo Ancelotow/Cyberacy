@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cyberacy</string>
+
+
+    <string name="desc_logo">logo</string>
+
+
+    <string name="hint_nir">Número de seguro social</string>
+    <string name="hint_pwd">Contraseña</string>
+    <string name="hint_message">Mensaje</string>
+    <string name="hint_email">Correo electrónico</string>
+
+
+    <string name="btn_login">Acceso</string>
+    <string name="btn_twitch">Enlace a Twitch</string>
+    <string name="btn_youtube">Enlace a YouTube</string>
+    <string name="btn_add_event">Agregar un recordatorio</string>
+    <string name="btn_book_meeting">Reservar reunión</string>
+    <string name="btn_pay_with_paypal">Pagar con PayPal</string>
+    <string name="btn_more_meeting">Ver más reuniones</string>
+    <string name="title_activity_navigation">NavegaciónActividad</string>
+    <string name="btn_yes">Sí</string>
+    <string name="btn_no">No</string>
+    <string name="btn_to_vote">¡Votar!</string>
+
+
+    <string name="nav_party">Partido político</string>
+    <string name="nav_manifestation">Eventos</string>
+    <string name="nav_vote">Votación</string>
+
+
+    <string name="txt_error_happening">Ocurrió un error… \n%s</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="txt_required_field">este campo es obligatorio</string>
+    <string name="txt_error_login">El nombre de usuario y/o la contraseña son incorrectos</string>
+
+
+    <string name="txt_no_party">Seleccione un partido político para unirse</string>
+    <string name="txt_join_party">Unirse a una fiesta</string>
+    <string name="txt_join_thread">Únase a una discusión</string>
+    <string name="txt_join_party_cancel">Cancelación</string>
+    <string name="txt_messagerie">Mensajería</string>
+    <string name="txt_no_message">Sin publicaciones</string>
+    <string name="txt_no_mythreads">No estás en ninguna discusión\nVe a \"Otras discusiones\" para unirte a una</string>
+    <string name="txt_no_threads">No tiene invitaciones o nuevas discusiones para unirse en este momento.</string>
+    <string name="txt_no_messages">¡Escribe el primer mensaje de este hilo!</string>
+    <string name="txt_message_sent">Mensaje enviado</string>
+    <string name="txt_not_found_party">No encontramos su partido político</string>
+    <string name="txt_join_party_confirmation">¿Estás seguro de que quieres unirte a la fiesta de \"%s\"?</string>
+    <string name="txt_leave_party_confirmation">¿Estás seguro de que quieres dejar este partido político?</string>
+    <string name="txt_join_thread_confirmation">¿Estás seguro de que quieres unirte a la discusión \"%s\"?</string>
+    <string name="txt_leave_thread_confirmation">¿Seguro que quieres salir de esta discusión?</string>
+    <string name="txt_message_null">El mensaje no puede ser nulo</string>
+    <string name="txt_message_today">Hoy %s</string>
+    <string name="txt_message_yesterday">ayer</string>
+
+
+    <string name="txt_vote_inprogress">Votación en progreso</string>
+    <string name="txt_choose_choice">Seleccione una de las opciones a continuación y presione el botón \"¡A votar!\" para validar su elección</string>
+    <string name="txt_to_vote_confirmation">Confirmación de voto</string>
+    <string name="txt_round_finished">esta ronda ha terminado</string>
+    <string name="txt_round_not_started">Este tour aún no ha comenzado.</string>
+    <string name="txt_already_voted">Tú ya has votado</string>
+    <string name="txt_no_voted">no has votado</string>
+    <string name="txt_thanks_to_voted">¡Gracias!\nTu voto ha sido tomado en cuenta</string>
+    <string name="txt_have_voted">Voté</string>
+    <string name="txt_must_voted">Votar</string>
+    <string name="txt_abstention">abstencion</string>
+    <string name="txt_confirm_choice">¿Está seguro de que desea elegir \"%s\"?</string>
+    <string name="txt_no_choice_selected">No ha seleccionado ninguna opción.</string>
+    <string name="txt_round">Redondo</string>
+
+
+    <string name="txt_error_book_meeting">Ocurrió un error durante la reserva.</string>
+    <string name="txt_book_successful">¡Tu reserva se ha realizado con éxito!</string>
+    <string name="txt_meeting_title_payment">Reserva de reunión: %s</string>
+    <string name="txt_meeting_price">Precios</string>
+    <string name="txt_meeting_during">Duración: %s</string>
+    <string name="txt_next_meeting">Próximas reuniones</string>
+    <string name="txt_meeting">Reuniones</string>
+    <string name="txt_no_meetings">No hay reuniones en este momento</string>
+    <string name="txt_no_meetings_detail">No hay información sobre esta reunión…\nVuelve a intentarlo más tarde</string>
+    <string name="txt_desc">Descripción</string>
+    <string name="txt_or">Dónde</string>
+    <string name="txt_participate_meeting">¡Asisto a la reunión!</string>
+    <string name="txt_my_ticket">Mi billete</string>
+    <string name="txt_cancel_book">Has cancelado el pago de tu reserva</string>
+    <string name="txt_not_found_ticket">No encontramos un boleto a su nombre para esta sesión</string>
+
+
+    <string name="txt_payment">Pago</string>
+    <string name="txt_cdv">He leído y acepto la<a href="https://www.termsandconditionsgenerator.com/live.php?token=pM2FwG6dI5fdNoVANzsbF4UUXywt1Uc7"> condiciones de venta</a>  </string>
+    <string name="txt_total_excluding_tax">Total sin IVA: %s €</string>
+    <string name="txt_vat">IVA: %s \%%</string>
+    <string name="txt_total_including_tax">Total IVA incluido: %s €</string>
+    <string name="txt_pay_by_card">Pago con tarjeta (%s €)</string>
+    <string name="txt_required_field_invoice">Este campo es obligatorio para enviar la factura</string>
+    <string name="txt_cgv_required">Debes aceptar los T&amp;C para continuar</string>
+
+
+    <string name="tb_conversation">mis conversaciones</string>
+    <string name="tb_other_conversation">Otros hilos</string>
+
+
+    <string name="title_activity_checkout">PagarActividad</string>
+    <string name="checkout_item_description">Descripción</string>
+    <string name="googlepay_status_unavailable" translatable="false">Unfortunately, Google Pay is
+        not available on this phone.
+    </string>
+    <string name="payments_show_name" translatable="false">Successfully received payment data for
+        %s!
+    </string>
+
+</resources>
