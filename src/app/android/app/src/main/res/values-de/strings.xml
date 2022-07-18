@@ -112,4 +112,24 @@
         %s!
     </string>
 
+    <string name="btn_register">Maak mijn account</string>
+    <string name="txt_register">inschrijving</string>
+    <string name="hint_firstname">Voornaam</string>
+    <string name="hint_lastname">Achternaam</string>
+    <string name="hint_password_check">Voer je wachtwoord opnieuw in</string>
+    <string name="hint_town">Dorp</string>
+    <string name="hint_dept">Afdeling</string>
+    <string name="hint_genre">Geslacht</string>
+    <string name="hint_address_street">Woonadres</string>
+    <string name="txt_identity">Identificeren</string>
+    <string name="txt_account">Account</string>
+    <string name="txt_localisation">Plaats</string>
+    <string name="hint_birthday">Geboortedatum</string>
+    <string name="txt_error_nir_short">De NIR moet uit 13 cijfers bestaan</string>
+    <string name="txt_error_not_same_pwd">Wachtwoorden komen niet overeen</string>
+    <string name="txt_error_not_email">Dit is geen e-mailadres</string>
+    <string name="txt_error_minor">U moet meerderjarig zijn om u te registreren</string>
+    <string name="txt_account_already_existed">Dit account bestaat al</string>
+    <string name="txt_account_created">Het account is succesvol aangemaakt!</string>
+
 </resources>

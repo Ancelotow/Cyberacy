@@ -31,7 +31,7 @@
     <string name="nav_vote">投票</string>
 
 
-    <string name="txt_error_happening">エラーが発生しました...\n％s</string>
+    <string name="txt_error_happening">エラーが発生しました…\n％s</string>
     <string name="action_settings">設定</string>
     <string name="txt_required_field">この項目は必須です</string>
     <string name="txt_error_login">ユーザー名やパスワードが正しくありません</string>
@@ -112,5 +112,25 @@
     <string name="payments_show_name" translatable="false">Successfully received payment data for
         %s!
     </string>
+
+    <string name="btn_register">アカウントを作る</string>
+    <string name="txt_register">登録</string>
+    <string name="hint_firstname">ファーストネーム</string>
+    <string name="hint_lastname">苗字</string>
+    <string name="hint_password_check">パスワードを再入力してください</string>
+    <string name="hint_town">街</string>
+    <string name="hint_dept">デパートメント</string>
+    <string name="hint_genre">性別</string>
+    <string name="hint_address_street">住所</string>
+    <string name="txt_identity">識別</string>
+    <string name="txt_account">アカウント</string>
+    <string name="txt_localisation">位置</string>
+    <string name="hint_birthday">生年月日</string>
+    <string name="txt_error_nir_short">NIRは13桁である必要があります</string>
+    <string name="txt_error_not_same_pwd">パスワードが一致していません</string>
+    <string name="txt_error_not_email">これはメールアドレスではありません</string>
+    <string name="txt_error_minor">登録するには法定年齢に達している必要があります</string>
+    <string name="txt_account_already_existed">このアカウントはすでに存在します</string>
+    <string name="txt_account_created">アカウントが正常に作成されました。</string>
 
 </resources>

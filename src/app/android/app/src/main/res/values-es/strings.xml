@@ -112,4 +112,23 @@
         %s!
     </string>
 
+    <string name="btn_register">Crear mi cuenta</string>
+    <string name="txt_register">Registro</string>
+    <string name="hint_firstname">Nombre de pila</string>
+    <string name="hint_lastname">Apellido</string>
+    <string name="hint_password_check">reingresa tu contraseña</string>
+    <string name="hint_town">Pueblo</string>
+    <string name="hint_dept">Departamento</string>
+    <string name="hint_genre">Género</string>
+    <string name="hint_address_street">Dirección</string>
+    <string name="txt_identity">Identificar</string>
+    <string name="txt_account">Cuenta</string>
+    <string name="txt_localisation">Ubicación</string>
+    <string name="hint_birthday">Fecha de nacimiento</string>
+    <string name="txt_error_nir_short">El NIR debe ser de 13 dígitos</string>
+    <string name="txt_error_not_same_pwd">Las contraseñas no coinciden</string>
+    <string name="txt_error_not_email">Esta no es una dirección de correo electrónico.</string>
+    <string name="txt_error_minor">Debes ser mayor de edad para registrarte</string>
+    <string name="txt_account_already_existed">Esta cuenta ya existe</string>
+    <string name="txt_account_created">¡La cuenta ha sido creada con éxito!</string>
 </resources>

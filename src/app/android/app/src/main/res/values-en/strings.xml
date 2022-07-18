@@ -111,4 +111,24 @@
     <string name="payments_show_name" translatable="false">Successfully received payment data for
         %s!
     </string>
+
+    <string name="btn_register">create my account</string>
+    <string name="txt_register">Registration</string>
+    <string name="hint_firstname">First name</string>
+    <string name="hint_lastname">Last name</string>
+    <string name="hint_password_check">Re-enter your password</string>
+    <string name="hint_town">Town</string>
+    <string name="hint_dept">Department</string>
+    <string name="hint_genre">Gender</string>
+    <string name="hint_address_street">Street address</string>
+    <string name="txt_identity">Identify</string>
+    <string name="txt_account">Account</string>
+    <string name="txt_localisation">Location</string>
+    <string name="hint_birthday">Date of Birth</string>
+    <string name="txt_error_nir_short">The NIR must be 13 digits</string>
+    <string name="txt_error_not_same_pwd">Passwords do not match</string>
+    <string name="txt_error_not_email">This is not an email address</string>
+    <string name="txt_error_minor">You must be of legal age to register</string>
+    <string name="txt_account_already_existed">This account already exists</string>
+    <string name="txt_account_created">The account has been successfully created!</string>
 </resources>
