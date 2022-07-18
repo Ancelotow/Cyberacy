@@ -27,6 +27,7 @@ const Register = (person) => {
                     resolve(new ResponseApi().InitBadRequest(e.message))
                     return
                 }
+                console.error(e)
                 resolve(new ResponseApi().InitInternalServer(e))
             })
         }
