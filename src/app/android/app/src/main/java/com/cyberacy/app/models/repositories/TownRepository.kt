@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
+import java.net.UnknownHostException
 
 object TownRepository {
 
@@ -16,6 +17,8 @@ object TownRepository {
                 emit(TownStateSuccess(Town.getTownsFromDept(codeDept)))
             } catch (e: HttpException) {
                 emit(TownStateError(e))
+            } catch (e: UnknownHostException) {
+                emit(TownStateErrorHost(e))
             }
         }.flowOn(Dispatchers.IO)
     }
@@ -27,3 +30,4 @@ sealed class TownState
 object TownStateLoading: TownState()
 data class TownStateSuccess(val towns: List<Town>): TownState()
 data class TownStateError(val ex: HttpException): TownState()
+data class TownStateErrorHost(val ex: UnknownHostException): TownState()

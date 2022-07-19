@@ -122,6 +122,9 @@ class RegisterActivity : AppCompatActivity() {
                     comboGender.isEnabled = false
                     Log.e("error", it.ex.message())
                 }
+                is GenderStateErrorHost -> {
+                    comboGender.isEnabled = false
+                }
                 GenderStateLoading -> {
                     comboGender.isEnabled = false
                 }
@@ -147,6 +150,9 @@ class RegisterActivity : AppCompatActivity() {
                 is DepartmentStateError -> {
                     comboDepartment.isEnabled = false
                     Log.e("error", it.ex.message())
+                }
+                is DepartmentStateErrorHost -> {
+                    comboDepartment.isEnabled = false
                 }
                 DepartmentStateLoading -> {
                     comboDepartment.isEnabled = false
@@ -176,6 +182,9 @@ class RegisterActivity : AppCompatActivity() {
                 is TownStateError -> {
                     comboTown.isEnabled = false
                     Log.e("error", it.ex.message())
+                }
+                is TownStateErrorHost -> {
+                    comboTown.isEnabled = false
                 }
                 TownStateLoading -> {
                     comboTown.isEnabled = false
@@ -350,7 +359,7 @@ class RegisterActivity : AppCompatActivity() {
                 circularProgress.visibility = View.GONE
                 btnRegister.visibility = View.VISIBLE
             } catch (e: UnknownHostException) {
-                val popup = PopUpWindow(getString(R.string.txt_cannot_communicate), R.drawable.ic_no_internet, R.id.layout_main)
+                val popup = PopUpWindow(getString(R.string.txt_connection_host_failure), R.drawable.ic_no_internet, R.id.layout_main)
                 popup.showPopUp(this@RegisterActivity)
                 circularProgress.visibility = View.GONE
                 btnRegister.visibility = View.VISIBLE

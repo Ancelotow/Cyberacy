@@ -55,6 +55,12 @@ class MeetingTicketActivity : AppCompatActivity() {
                     txtError.visibility = View.VISIBLE
                     txtError.text =  getString(R.string.txt_error_happening, it.ex.message())
                 }
+                is MeetingQRCodeStateErrorHost -> {
+                    loader.visibility = View.GONE
+                    iconError.visibility = View.VISIBLE
+                    txtError.visibility = View.VISIBLE
+                    txtError.text = getString(R.string.txt_connection_host_failure)
+                }
                 MeetingQRCodeStateLoading -> {
                     loader.visibility = View.VISIBLE
                 }

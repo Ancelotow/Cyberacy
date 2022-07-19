@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                     password.text = null
                 }
             } catch (e: UnknownHostException) {
-                val popup = PopUpWindow(getString(R.string.txt_cannot_communicate), R.drawable.ic_no_internet, R.id.layout_main)
+                val popup = PopUpWindow(getString(R.string.txt_connection_host_failure), R.drawable.ic_no_internet, R.id.layout_main)
                 popup.showPopUp(this@MainActivity)
             } finally {
                 circularProgress.visibility = View.GONE

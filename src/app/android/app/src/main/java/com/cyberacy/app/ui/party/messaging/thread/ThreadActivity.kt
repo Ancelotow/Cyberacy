@@ -113,6 +113,9 @@ class ThreadActivity : AppCompatActivity() {
                     Log.e("error", it.ex.message())
                     loaderMsg.visibility = View.GONE
                 }
+                is MessageStateErrorHost -> {
+                    loaderMsg.visibility = View.GONE
+                }
                 MessageStateLoading -> {
                     recyclerView.visibility = View.GONE
                     loaderMsg.visibility = View.VISIBLE

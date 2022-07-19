@@ -18,6 +18,7 @@ import com.cyberacy.app.models.entities.PoliticalParty
 import com.cyberacy.app.models.entities.PopUpWindow
 import com.cyberacy.app.models.entities.ThreadMessaging
 import com.cyberacy.app.models.repositories.PartyStateError
+import com.cyberacy.app.models.repositories.PartyStateErrorHost
 import com.cyberacy.app.models.repositories.PartyStateLoading
 import com.cyberacy.app.models.repositories.PartyStateSuccessMine
 import com.cyberacy.app.models.services.ApiConnection
@@ -60,6 +61,9 @@ class AddThreadActivity : AppCompatActivity() {
         viewModel.mineParty.observe(this) {
             when (it) {
                 is PartyStateError -> {
+                    loader.visibility = View.GONE
+                }
+                is PartyStateErrorHost -> {
                     loader.visibility = View.GONE
                 }
                 PartyStateLoading -> {
@@ -121,7 +125,7 @@ class AddThreadActivity : AppCompatActivity() {
                 circularLoader.visibility = View.GONE
                 btnAdd.visibility = View.VISIBLE
             } catch (e: UnknownHostException) {
-                val popup = PopUpWindow(getString(R.string.txt_cannot_communicate), R.drawable.ic_no_internet, R.id.layout_main)
+                val popup = PopUpWindow(getString(R.string.txt_connection_host_failure), R.drawable.ic_no_internet, R.id.layout_main)
                 popup.showPopUp(this@AddThreadActivity)
                 circularLoader.visibility = View.GONE
                 btnAdd.visibility = View.VISIBLE

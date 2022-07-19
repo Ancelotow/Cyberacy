@@ -59,6 +59,9 @@ class RoundActivity : AppCompatActivity() {
                 is RoundStateError -> {
                     shimmerLayout.visibility = View.GONE
                 }
+                is RoundStateErrorHost -> {
+                    shimmerLayout.visibility = View.GONE
+                }
                 RoundStateLoading -> {
                     recyclerView.visibility = View.GONE
                     shimmerLayout.visibility = View.VISIBLE

@@ -59,7 +59,7 @@
     <string name="hint_url_logo">URL Logo</string>
     <string name="hint_description_thread">Description…</string>
     <string name="btn_add">Ajouter</string>
-    <string name="txt_cannot_communicate">Nous ne parvenons pas à joindre le serveur.\nVeuillez vérifier votre connexion internet</string>
+    <string name="txt_connection_host_failure">Nous ne parvenons pas à joindre le serveur.\nVeuillez vérifier votre connexion internet</string>
 
 
     <!-- Text : Elections -->

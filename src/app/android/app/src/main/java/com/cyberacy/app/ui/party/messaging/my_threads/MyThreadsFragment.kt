@@ -47,6 +47,9 @@ class MyThreadsFragment : Fragment() {
                 is ThreadStateError -> {
                     shimmer_layout?.visibility = View.GONE
                 }
+                is ThreadStateErrorHost -> {
+                    shimmer_layout?.visibility = View.GONE
+                }
                 ThreadStateLoading -> {
                     recyclerView?.visibility = View.GONE
                     shimmer_layout?.visibility = View.VISIBLE

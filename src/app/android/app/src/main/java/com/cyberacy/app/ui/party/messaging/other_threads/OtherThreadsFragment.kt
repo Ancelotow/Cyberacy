@@ -21,6 +21,7 @@ import com.cyberacy.app.R
 import com.cyberacy.app.models.entities.PoliticalParty
 import com.cyberacy.app.models.entities.ThreadMessaging
 import com.cyberacy.app.models.repositories.ThreadStateError
+import com.cyberacy.app.models.repositories.ThreadStateErrorHost
 import com.cyberacy.app.models.repositories.ThreadStateLoading
 import com.cyberacy.app.models.repositories.ThreadStateSuccess
 import com.cyberacy.app.models.services.ApiConnection
@@ -55,6 +56,9 @@ class OtherThreadsFragment : Fragment() {
         viewModel.otherThreads.observe(viewLifecycleOwner) {
             when (it) {
                 is ThreadStateError -> {
+                    shimmer_layout.visibility = View.GONE
+                }
+                is ThreadStateErrorHost -> {
                     shimmer_layout.visibility = View.GONE
                 }
                 ThreadStateLoading -> {

@@ -86,15 +86,4 @@ class MessagingActivity : AppCompatActivity() {
         })
     }
 
-    /*
-    private val resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val popup = PopUpWindow(getString(R.string.txt_account_created), R.drawable.ic_success, R.id.layout_main)
-                popup.showPopUp(this)
-            }
-        }
-
-     */
-
 }

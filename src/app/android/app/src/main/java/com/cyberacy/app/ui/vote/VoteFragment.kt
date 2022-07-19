@@ -37,6 +37,10 @@ class VoteFragment : Fragment() {
                     shimmerLayout.visibility = View.GONE
                     labelNoData.visibility = View.GONE
                 }
+                is VoteStateErrorHost -> {
+                    shimmerLayout.visibility = View.GONE
+                    labelNoData.visibility = View.GONE
+                }
                 VoteStateLoading -> {
                     recyclerView.visibility = View.GONE
                     shimmerLayout.visibility = View.VISIBLE

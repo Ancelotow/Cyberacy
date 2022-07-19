@@ -65,12 +65,13 @@ class ListMeetingActivity : AppCompatActivity() {
                     Log.e("error", it.ex.message())
                     shimmerLayout.visibility = View.GONE
                 }
-
+                is MeetingListStateErrorHost -> {
+                    shimmerLayout.visibility = View.GONE
+                }
                 MeetingListStateLoading -> {
                     recyclerView.visibility = View.GONE
                     shimmerLayout.visibility = View.VISIBLE
                 }
-
                 is MeetingListStateSuccess -> {
                     shimmerLayout.visibility = View.GONE
                     if (it.meetings.isEmpty()) {

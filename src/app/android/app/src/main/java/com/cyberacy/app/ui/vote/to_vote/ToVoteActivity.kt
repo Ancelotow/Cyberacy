@@ -19,6 +19,7 @@ import com.cyberacy.app.R
 import com.cyberacy.app.models.entities.*
 import com.cyberacy.app.models.enums.EResultPayment
 import com.cyberacy.app.models.repositories.ChoiceStateError
+import com.cyberacy.app.models.repositories.ChoiceStateErrorHost
 import com.cyberacy.app.models.repositories.ChoiceStateLoading
 import com.cyberacy.app.models.repositories.ChoiceStateSuccess
 import com.cyberacy.app.models.services.ApiConnection
@@ -61,6 +62,9 @@ class ToVoteActivity : AppCompatActivity() {
         viewModel.listChoice.observe(this) {
             when (it) {
                 is ChoiceStateError -> {
+                    shimmerLayout.visibility = View.GONE
+                }
+                is ChoiceStateErrorHost -> {
                     shimmerLayout.visibility = View.GONE
                 }
                 ChoiceStateLoading -> {

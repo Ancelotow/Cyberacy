@@ -23,6 +23,7 @@ import com.cyberacy.app.models.entities.FCMTopic
 import com.cyberacy.app.models.entities.Meeting
 import com.cyberacy.app.models.entities.PoliticalParty
 import com.cyberacy.app.models.repositories.PartyStateError
+import com.cyberacy.app.models.repositories.PartyStateErrorHost
 import com.cyberacy.app.models.repositories.PartyStateLoading
 import com.cyberacy.app.models.repositories.PartyStateSuccessMine
 import com.cyberacy.app.models.services.ApiConnection
@@ -78,6 +79,11 @@ class MainPartyFragment : Fragment() {
                     loader.visibility = View.GONE
                     errorBody.visibility = View.VISIBLE
                     txtError.text = getString(R.string.txt_error_happening, it.ex.message())
+                }
+                is PartyStateErrorHost -> {
+                    loader.visibility = View.GONE
+                    errorBody.visibility = View.VISIBLE
+                    txtError.text = getString(R.string.txt_connection_host_failure)
                 }
                 PartyStateLoading -> {
                     body.visibility = View.GONE

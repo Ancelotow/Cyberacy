@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.viewModels
 import com.cyberacy.app.R
 import com.cyberacy.app.models.repositories.PartyStateError
+import com.cyberacy.app.models.repositories.PartyStateErrorHost
 import com.cyberacy.app.models.repositories.PartyStateLoading
 import com.cyberacy.app.models.repositories.PartyStateSuccessMine
 import com.cyberacy.app.ui.party.join_party.JoinPartyFragment
@@ -39,6 +40,9 @@ class PartyFragment : Fragment() {
         viewModel.mineParty.observe(viewLifecycleOwner) {
             when (it) {
                 is PartyStateError -> {
+                    loader.visibility = View.GONE
+                }
+                is PartyStateErrorHost -> {
                     loader.visibility = View.GONE
                 }
                 PartyStateLoading -> {

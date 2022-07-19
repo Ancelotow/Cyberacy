@@ -40,6 +40,7 @@ import com.stripe.android.paymentsheet.PaymentSheetResult
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.await
+import java.net.UnknownHostException
 import kotlin.properties.Delegates
 
 
@@ -191,6 +192,8 @@ class PaymentCyberacyActivity : AppCompatActivity() {
                 }
             } catch (e: HttpException) {
                 Log.e("Erreur API", e.response().toString())
+            } catch (e: UnknownHostException) {
+                Log.e("Erreur API", "host")
             } finally {
                 loader.visibility = View.GONE
                 btnPay.visibility = View.VISIBLE
