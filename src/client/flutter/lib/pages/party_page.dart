@@ -32,19 +32,21 @@ class _PartyPageState extends State<PartyPage> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: FutureBuilder(
-        future: PartyService().getAllParty(),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<PoliticalParty>> snapshot) {
-          if (snapshot.hasData) {
-            parties = snapshot.data!;
-            return _getListParty(context);
-          } else if (snapshot.hasError) {
-            return InfoError(error: snapshot.error as Error);
-          } else {
-            return _getPartyLoader(context);
-          }
-        },
+      child: SingleChildScrollView(
+        child: FutureBuilder(
+          future: PartyService().getAllParty(),
+          builder: (BuildContext context,
+              AsyncSnapshot<List<PoliticalParty>> snapshot) {
+            if (snapshot.hasData) {
+              parties = snapshot.data!;
+              return _getListParty(context);
+            } else if (snapshot.hasError) {
+              return InfoError(error: snapshot.error as Error);
+            } else {
+              return _getPartyLoader(context);
+            }
+          },
+        ),
       ),
     );
   }

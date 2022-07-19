@@ -21,24 +21,26 @@ class MeetingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: FutureBuilder(
-        future: MeetingService().getAllMeetings(),
-        builder: (BuildContext context, AsyncSnapshot<List<Meeting>> snapshot) {
-          if (snapshot.hasData) {
-            if (meetings.isEmpty) {
-              meetings = snapshot.data!;
+      child: SingleChildScrollView(
+        child: FutureBuilder(
+          future: MeetingService().getAllMeetings(),
+          builder: (BuildContext context, AsyncSnapshot<List<Meeting>> snapshot) {
+            if (snapshot.hasData) {
+              if (meetings.isEmpty) {
+                meetings = snapshot.data!;
+              }
+              return GridControl(
+                columns: _getColumns(context),
+                rows: _getRows(context),
+                button: _getButtonAdd(context),
+              );
+            } else if (snapshot.hasError) {
+              return InfoError(error: snapshot.error as Error);
+            } else {
+              return _getTableLoader(context);
             }
-            return GridControl(
-              columns: _getColumns(context),
-              rows: _getRows(context),
-              button: _getButtonAdd(context),
-            );
-          } else if (snapshot.hasError) {
-            return InfoError(error: snapshot.error as Error);
-          } else {
-            return _getTableLoader(context);
-          }
-        },
+          },
+        ),
       ),
     );
   }

@@ -26,25 +26,27 @@ class _VotePageState extends State<VotePage> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: FutureBuilder(
-        future: VoteService().getAllElection(),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<Election>> snapshot) {
-          if (snapshot.hasData) {
-            if (elections.isEmpty) {
-              elections = snapshot.data!;
+      child: SingleChildScrollView(
+        child: FutureBuilder(
+          future: VoteService().getAllElection(),
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Election>> snapshot) {
+            if (snapshot.hasData) {
+              if (elections.isEmpty) {
+                elections = snapshot.data!;
+              }
+              return GridControl(
+                columns: _getColumns(context),
+                rows: _getRows(context),
+                button: _getButtonAdd(context),
+              );
+            } else if (snapshot.hasError) {
+              return InfoError(error: snapshot.error as Error);
+            } else {
+              return _getTableLoader(context);
             }
-            return GridControl(
-              columns: _getColumns(context),
-              rows: _getRows(context),
-              button: _getButtonAdd(context),
-            );
-          } else if (snapshot.hasError) {
-            return InfoError(error: snapshot.error as Error);
-          } else {
-            return _getTableLoader(context);
-          }
-        },
+          },
+        ),
       ),
     );
   }
