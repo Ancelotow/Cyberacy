@@ -13,7 +13,8 @@ const WHITE_ROUTES = [
     '/type_vote',
     '/region',
     '/department',
-    '/town'
+    '/town',
+    '/exist'
 ]
 
 const authToken = (req, res, next) => {
@@ -40,6 +41,7 @@ const authToken = (req, res, next) => {
         if (err) {
             return res.sendStatus(403)
         }
+
         // utilisateur reconnu
         req.data = data
         next()

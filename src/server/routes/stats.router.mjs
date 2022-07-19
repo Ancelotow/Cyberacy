@@ -1,6 +1,6 @@
 import statsCtrl from "../controllers/stats.controller.mjs";
-import voteCtrl from "../controllers/vote.controller.mjs";
 import express from "express"
+import {ResponseApi} from "../models/response-api.mjs";
 
 const routerStats = express.Router()
 
@@ -25,13 +25,13 @@ routerStats.get("/statistics/political_party/adherent", async (req, res) => {
 
     if (req.query.sort === "year") {
         const response = await statsCtrl.GetNbAdherentByYear(req.data.nir)
-        res.status(response.status).send(response.data)
+        res.status(response.code).send(response)
     } else if (req.query.sort === "month") {
         const year = (req.query.year == null) ? new Date().getFullYear() : req.query.year
         const response = await statsCtrl.GetNbAdherentByMonth(req.data.nir, year)
-        res.status(response.status).send(response.data)
+        res.status(response.code).send(response)
     } else {
-        res.status(400).send("The parameters \"sort\" is required")
+        res.status(400).send(new ResponseApi().InitBadRequest("The parameters \"sort\" is required"))
     }
 });
 
@@ -46,23 +46,29 @@ routerStats.get("/statistics/political_party/meeting", async (req, res) => {
                 '@enum': ['year', 'month']
             }
 
-    } */
-    /*  #swagger.parameters['year'] = {
+    }
+    #swagger.parameters['year'] = {
            in: 'query',
-           description: 'L année pour le tri',
+           description: 'L\'année pour le tri',
            type: 'int'
 
-    } */
+    }
+     #swagger.parameters['idPoliticalParty'] = {
+           in: 'query',
+           description: 'L\'id d\'un parti politique, NULL récupérant tout (à NULL par défault)',
+           type: 'int'
+
+    }*/
 
     if (req.query.sort === "year") {
-        const response = await statsCtrl.GetNbMeetingByYear(req.data.nir)
-        res.status(response.status).send(response.data)
+        const response = await statsCtrl.GetNbMeetingByYear(req.data.nir, req.query.idPoliticalParty)
+        res.status(response.code).send(response)
     } else if (req.query.sort === "month") {
         const year = (req.query.year == null) ? new Date().getFullYear() : req.query.year
-        const response = await statsCtrl.GetNbMeetingByMonth(req.data.nir, year)
-        res.status(response.status).send(response.data)
+        const response = await statsCtrl.GetNbMeetingByMonth(req.data.nir, year, req.query.idPoliticalParty)
+        res.status(response.code).send(response)
     } else {
-        res.status(400).send("The parameters \"sort\" is required")
+        res.status(400).send(new ResponseApi().InitBadRequest("The parameters \"sort\" is required"))
     }
 });
 
@@ -72,7 +78,7 @@ routerStats.get("/statistics/political_party/annual_fee", async (req, res) => {
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await statsCtrl.GetAnnualFee(req.data.nir)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerStats.get("/statistics/political_party/messages", async (req, res) => {
@@ -96,9 +102,9 @@ routerStats.get("/statistics/political_party/messages", async (req, res) => {
         const year = (req.query.year == null) ? new Date().getFullYear() : req.query.year
         response = await statsCtrl.GetMessagesByWeeks(req.data.nir, year)
     } else {
-        response = {status: 400, data: "The parameters \"sort\" is required"}
+        response = new ResponseApi().InitBadRequest("The parameters \"sort\" is required")
     }
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerStats.get("/statistics/vote/abstention", async (req, res) => {
@@ -110,7 +116,7 @@ routerStats.get("/statistics/vote/abstention", async (req, res) => {
 
     const numRound = (req.query.numRound == null) ? 1 : req.query.numRound
     const response = await statsCtrl.GetVoteAbstention(numRound, req.query.typeVote)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerStats.get("/statistics/vote/participation", async (req, res) => {
@@ -122,16 +128,7 @@ routerStats.get("/statistics/vote/participation", async (req, res) => {
 
     const numRound = (req.query.numRound == null) ? 1 : req.query.numRound
     const response = await statsCtrl.GetVoteParticipation(numRound, req.query.typeVote)
-    res.status(response.status).send(response.data)
-});
-
-routerStats.get("/statistics/vote/:id/results", async (req, res) => {
-    // #swagger.tags = ['Statistiques']
-    // #swagger.description = 'Récupération des résultats aux votes.'
-    // #swagger.security = [{ "Bearer": [] }]
-
-    const response = await statsCtrl.GetVoteResults(req.params.vote)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 export {routerStats}

@@ -1,33 +1,40 @@
-import manifestation from "../models/manifestation.mjs";
+import {Manifestation} from "../models/manifestation.mjs";
 import manifestant from "../models/manifestant.mjs";
-import option from "../models/option-manifestation.mjs"
+import {OptionManifestation} from "../models/option-manifestation.mjs"
 import geoCtrl from "./geography.controller.mjs"
 import {Step} from "../models/step.mjs"
+import {ResponseApi} from "../models/response-api.mjs";
+import {Vote} from "../models/vote.mjs";
 
 /**
  * Ajoute une nouvelle manifestation
- * @param manif La nouvelle manifestation
  * @returns {Promise<unknown>}
  * @constructor
+ * @param manifJson
  */
-const AddManifestation = (manif) => {
+const AddManifestation = (manifJson) => {
     return new Promise((resolve, _) => {
-        if (!manif) {
-            resolve({status: 400, data: "Missing parameters."})
-        } else if (!manif.name || !manif.object) {
-            resolve({status: 400, data: "Missing parameters."})
-        } else if (!manif.date_start || !manif.date_end) {
-            resolve({status: 400, data: "Missing parameters."})
+        if (!manifJson) {
+            resolve(new ResponseApi().InitMissingParameters())
+        } else if (!manifJson.name || !manifJson.object) {
+            resolve(new ResponseApi().InitMissingParameters())
+        } else if (!manifJson.date_start || !manifJson.date_end) {
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
-            manifestation.Add(manif).then((res) => {
+            let manifestation = new Manifestation()
+            Object.assign(manifestation, manifJson)
+            manifestation.Add().then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "Manifestation has been created."})
+                    resolve(new ResponseApi().InitCreated("Manifestation has been created."))
                 } else {
-                    resolve({status: 400, data: "This manifestation already existed."})
+                    resolve(new ResponseApi().InitBadRequest("This manifestation already existed"))
                 }
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -43,17 +50,20 @@ const AddManifestation = (manif) => {
 const AbortedManifestation = (id, reason) => {
     return new Promise((resolve, _) => {
         if (!id) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
-            manifestation.Aborted(id, reason).then((res) => {
+            new Manifestation().Aborted(id, reason).then((res) => {
                 if (res) {
-                    resolve({status: 200, data: "Manifestation has been aborted."})
+                    resolve(new ResponseApi().InitOK(null))
                 } else {
-                    resolve({status: 400, data: "This manifestation not exist."})
+                    resolve(new ResponseApi().InitBadRequest("This manifestation not exist"))
                 }
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     })
@@ -68,20 +78,42 @@ const AbortedManifestation = (id, reason) => {
  */
 const GetAllManifestations = (includeAborted = false, nir = null) => {
     return new Promise((resolve, _) => {
-        manifestation.Get(includeAborted, nir).then(async (res) => {
-            const code = (res) ? 200 : 204;
-            if (code === 200) {
-                for (let i = 0; i < res.length; i++) {
-                    let resStep = await GetSteps(res[i].id);
-                    res[i].steps = (resStep.status === 200) ? resStep.data : [];
-                    let resOpt = await GetOptions(res[i].id);
-                    res[i].options = (resOpt.status === 200) ? resOpt.data : [];
-                }
+        new Manifestation().Get(includeAborted, nir).then(async (res) => {
+            for (let i = 0; i < res.length; i++) {
+                res[i].steps = await new Step().GetAll(res[i].id)
             }
-            resolve({status: code, data: res})
+            resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            if(e.code === '23503') resolve({status: 400, data: e.message})
-            resolve({status: 500, data: e})
+            if(e.code === '23503') {
+                resolve(new ResponseApi().InitBadRequest(e.message))
+                return
+            }
+            resolve(new ResponseApi().InitInternalServer(e))
+        })
+    })
+}
+
+/**
+ * Récupération du détail d'une manifestation
+ * @param nir Le NIR l'utilisateur
+ * @param id L'ID de la manifestation
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetManifestationDetails = (nir, id) => {
+    return new Promise((resolve, _) => {
+        new Manifestation().GetById(id, nir).then(async (res) => {
+            if(res) {
+                res.steps = await new Step().GetAll(res.id)
+                res.options = await new OptionManifestation().GetAll(res.id)
+            }
+            resolve(new ResponseApi().InitData(res))
+        }).catch((e) => {
+            if(e.code === '23503') {
+                resolve(new ResponseApi().InitBadRequest(e.message))
+                return
+            }
+            resolve(new ResponseApi().InitInternalServer(e))
         })
     })
 }
@@ -95,17 +127,20 @@ const GetAllManifestations = (includeAborted = false, nir = null) => {
 const Participate = (nir, id_manifestation) => {
     return new Promise((resolve, _) => {
         if (!nir || !id_manifestation) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             manifestant.Add(nir, id_manifestation).then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "You participate."})
+                    resolve(new ResponseApi().InitCreated("You participate."))
                 } else {
-                    resolve({status: 400, data: "You already participate."})
+                    resolve(new ResponseApi().InitBadRequest("You already participate"))
                 }
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     })
@@ -120,14 +155,16 @@ const Participate = (nir, id_manifestation) => {
 const GetOptions = (id_manifestation) => {
     return new Promise((resolve, _) => {
         if (!id_manifestation) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
-            option.GetAll(id_manifestation).then((res) => {
-                const code = (res) ? 200 : 204;
-                resolve({status: code, data: res})
+            new OptionManifestation().GetAll(id_manifestation).then((res) => {
+                resolve(new ResponseApi().InitData(res))
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -135,24 +172,29 @@ const GetOptions = (id_manifestation) => {
 
 /**
  * Ajoute une nouvelle option à une manifestation
- * @param opt Option de la manifestation à ajouter
  * @returns {Promise<unknown>}
  * @constructor
+ * @param optJson
  */
-const AddOption = (opt) => {
+const AddOption = (optJson) => {
     return new Promise((resolve, _) => {
-        if (!opt || !opt.name || !opt.id_manifestation) {
-            resolve({status: 400, data: "Missing parameters."})
+        if (!optJson || !optJson.name || !optJson.id_manifestation) {
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
-            option.Add(opt).then((res) => {
+            let option = new OptionManifestation()
+            Object.assign(option, optJson)
+            option.Add().then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "Option has been created."})
+                    resolve(new ResponseApi().InitCreated("Option has been created."))
                 } else {
-                    resolve({status: 400, data: "This option already existed."})
+                    resolve(new ResponseApi().InitBadRequest("This option already existed"))
                 }
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     })
@@ -167,17 +209,22 @@ const AddOption = (opt) => {
 const DeleteOption = (id) => {
     return new Promise((resolve, _) => {
         if (!id) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
-            option.Delete(id).then((res) => {
+            let option = new OptionManifestation()
+            option.id = id
+            option.Delete().then((res) => {
                 if (res) {
-                    resolve({status: 200, data: "The option has been deleted."})
+                    resolve(new ResponseApi().InitOK(null))
                 } else {
-                    resolve({status: 400, data: "This option does not existed."})
+                    resolve(new ResponseApi().InitBadRequest("This option does not existed"))
                 }
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -192,13 +239,13 @@ const DeleteOption = (id) => {
 const AddStep = (stp) => {
     return new Promise(async (resolve, _) => {
         if (stp === null) {
-            resolve({status: 400, data: "Missing parameter."})
+            resolve(new ResponseApi().InitMissingParameters())
         }
         let step = Object.assign(new Step(), stp);
         if (!step || !step.address_street || !step.date_arrived) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else if (!step.town_code_insee || !step.id_step_type || !step.id_manifestation) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             try {
                 let coordinates = await geoCtrl.GetLocationFromAddress(step.address_street, step.town_code_insee)
@@ -207,18 +254,20 @@ const AddStep = (stp) => {
                     step.longitude = coordinates.longitude
                 }
             } catch (e) {
-
+                console.error(e)
             }
             step.Add(stp).then((res) => {
                 if (res) {
-                    resolve({status: 201, data: "Step has been created."})
+                    resolve(new ResponseApi().InitCreated("Step has been created."))
                 } else {
-                    resolve({status: 400, data: "This step already existed."})
+                    resolve(new ResponseApi().InitBadRequest("This step already existed"))
                 }
             }).catch((e) => {
-                console.error(e)
-                if (e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     })
@@ -233,19 +282,22 @@ const AddStep = (stp) => {
 const DeleteStep = (id) => {
     return new Promise((resolve, _) => {
         if (!id) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             let step = new Step()
             step.id = id
             step.Delete().then((res) => {
                 if (res) {
-                    resolve({status: 200, data: "The step has been deleted."})
+                    resolve(new ResponseApi().InitOK(null))
                 } else {
-                    resolve({status: 400, data: "This step does not existed."})
+                    resolve(new ResponseApi().InitBadRequest("This step does not existed"))
                 }
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -260,14 +312,16 @@ const DeleteStep = (id) => {
 const GetSteps = (id_manifestation) => {
     return new Promise((resolve, _) => {
         if (!id_manifestation) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             new Step().GetAll(id_manifestation).then((res) => {
-                const code = (res) ? 200 : 204;
-                resolve({status: code, data: res})
+                resolve(new ResponseApi().InitData(res))
             }).catch((e) => {
-                if(e.code === '23503') resolve({status: 400, data: e.message})
-                resolve({status: 500, data: e})
+                if(e.code === '23503') {
+                    resolve(new ResponseApi().InitBadRequest(e.message))
+                    return
+                }
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -283,7 +337,8 @@ export default {
     DeleteOption,
     AddStep,
     DeleteStep,
-    GetSteps
+    GetSteps,
+    GetManifestationDetails
 }
 
 

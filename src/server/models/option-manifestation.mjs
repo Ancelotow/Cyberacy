@@ -1,4 +1,5 @@
 import {pool} from "../middlewares/postgres.mjs";
+import {Manifestation} from "./manifestation.mjs";
 
 class OptionManifestation {
     id
@@ -9,42 +10,16 @@ class OptionManifestation {
 }
 
 /**
- * Récupérer une option de manifestation
- * @param id L'Id de l'option de manifestation
- * @returns {Promise<unknown>}
- * @constructor
- */
-const GetById = (id) => {
-    return new Promise((resolve, reject) => {
-        const request = `SELECT omn_id          as id,
-                                omn_name        as name,
-                                omn_description as description,
-                                omn_is_delete   as is_delete,
-                                man_id          as id_manifestation
-                         FROM option_manifestation
-                         WHERE omn_id = ${id}
-                           AND omn_is_delete = false`
-        pool.query(request, (error, result) => {
-            if (error) {
-                reject(error)
-            } else {
-                let res = (result.rows.length > 0) ? result.rows[0] : null
-                resolve(res)
-            }
-        });
-    });
-}
-
-/**
  * Ajoute une nouvelle option pour une manifestation
- * @param option L'option de manifestation à rajouter
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Add = (option) => {
+OptionManifestation.prototype.Add = function() {
     return new Promise((resolve, reject) => {
-        const request = `INSERT INTO option_manifestation (omn_name, omn_description, man_id)
-                         VALUES ('${option.name}', '${option.description}', ${option.id_manifestation})`
+        const request = {
+            text: 'INSERT INTO option_manifestation (omn_name, omn_description, man_id) VALUES($1, $2, $3)',
+            values: [this.name, this.description, this.id_manifestation],
+        }
         pool.query(request, (error, _) => {
             if (error) {
                 reject(error)
@@ -57,13 +32,12 @@ const Add = (option) => {
 
 /**
  * Supprime une option de manifestation existante
- * @param id L'Id de la manifestation
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Delete = (id) => {
+OptionManifestation.prototype.Delete = () => {
     return new Promise((resolve, reject) => {
-        GetById(id).then((result) => {
+        this.IfExists().then((result) => {
             if (result) {
                 const request = `UPDATE option_manifestation SET omn_is_delete = true WHERE omn_id = ${id}`
                 pool.query(request, (error, _) => {
@@ -88,27 +62,43 @@ const Delete = (id) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetAll = (id_manifestation = null) => {
+OptionManifestation.prototype.GetAll = (id_manifestation) => {
     return new Promise((resolve, reject) => {
-        let request = `SELECT omn_id          as id,
-                                omn_name        as name,
-                                omn_description as description,
-                                omn_is_delete   as is_delete,
-                                man_id          as id_manifestation
-                         FROM option_manifestation
-                         WHERE omn_is_delete = false`
-        if (!id_manifestation) {
-            request += ` AND man_id = ${id_manifestation}`
+        const request = {
+            text: 'SELECT * FROM filter_options($1)',
+            values: [id_manifestation],
         }
         pool.query(request, (error, result) => {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows : null
-                resolve(res)
+                let listOptions = []
+                result.rows.forEach(e => listOptions.push(Object.assign(new OptionManifestation(), e)));
+                resolve(listOptions)
             }
         });
     });
 }
 
-export default {GetById, Add, Delete, GetAll}
+OptionManifestation.prototype.IfExists = function() {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT COUNT(*) FROM option_manifestation WHERE omn_id = $1',
+            values: [this.id],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows[0] : null
+                if (res && res.count > 0) {
+                    resolve(true)
+                } else {
+                    resolve(false)
+                }
+            }
+        });
+    });
+}
+
+export {OptionManifestation}

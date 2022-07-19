@@ -75,7 +75,7 @@ const Left = (nir) => {
         Get(nir, false, null).then((result) => {
             if (result) {
                 const request = {
-                    text: `UPDATE adherent SET adh_is_left = true, adh_date_left = now() WHERE prs_nir = ? AND adh_is_left = false`,
+                    text: `UPDATE adherent SET adh_is_left = true, adh_date_left = now() WHERE prs_nir = $1 AND adh_is_left = false`,
                     values: [nir],
                 }
                 pool.query(request, (error, _) => {

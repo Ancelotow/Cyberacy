@@ -46,10 +46,11 @@ create table type_vote
 create table profile
 (
     prf_id          serial                    not null,
-    prf_name        varchar(25)               not null,
+    prf_name        varchar(75)               not null,
     prf_description varchar(250)              null,
     prf_date_create timestamp default (now()) not null,
     prf_is_delete   boolean   default (false) not null,
+    prf_can_deleted boolean   default (true)  not null,
     prf_date_delete timestamp                 null,
     constraint pk_profile primary key (prf_id)
 );
@@ -107,7 +108,7 @@ create table person
     prs_firstname      varchar(50)  not null,
     prs_lastname       varchar(50)  not null,
     prs_email          varchar(50)  null,
-    prs_password       varchar(250) null,
+    prs_password       bytea        null,
     prs_birthday       date         null,
     prs_address_street varchar(250) null,
     twn_code_insee     varchar(15)  not null,
@@ -133,6 +134,7 @@ create table manifestation
     man_is_aborted           boolean   default (false) not null,
     man_date_aborted         timestamp                 null,
     man_date_create          timestamp default now()   not null,
+    man_fcm_topic            varchar(75)               null,
     constraint pk_manifestation primary key (man_id)
 );
 
@@ -193,7 +195,7 @@ create table manifestant
 create table political_party
 (
     pop_id               serial                    not null,
-    pop_name             varchar(50)               not null,
+    pop_name             varchar(100)              not null,
     pop_url_logo         varchar(100)              not null,
     pop_date_create      timestamp default (now()) not null,
     pop_description      varchar(250)              null,
@@ -234,20 +236,26 @@ create table annual_fee
 
 create table meeting
 (
-    mee_id             serial                  not null,
-    mee_name           varchar(50)             not null,
-    mee_object         varchar(50)             not null,
-    mee_description    varchar(250)            null,
-    mee_date_start     timestamp               not null,
-    mee_nb_time        decimal                 not null,
-    mee_is_aborted     boolean default (false) not null,
-    mee_reason_aborted varchar(250)            null,
+    mee_id             serial                                     not null,
+    mee_name           varchar(50)                                not null,
+    mee_object         varchar(50)                                not null,
+    mee_description    varchar(250)                               null,
+    mee_date_start     timestamp                                  not null,
+    mee_nb_time        decimal                                    not null,
+    mee_is_aborted     boolean default (false)                    not null,
+    mee_reason_aborted varchar(250)                               null,
     mee_date_aborted   timestamp,
-    mee_nb_place       int                     null,
-    mee_address_street varchar(250)            null,
-    mee_link_twitch    varchar(150)            null,
-    pop_id             int                     not null,
-    twn_code_insee     varchar(15)             null,
+    mee_nb_place       int                                        null,
+    mee_address_street varchar(250)                               null,
+    mee_link_twitch    varchar(150)                               null,
+    mee_link_youtube   varchar(150)                               null,
+    mee_price_excl     decimal default (0.00)                     not null,
+    mee_vta_rate       decimal default (20.00)                    not null,
+    mee_lat            decimal                                    null,
+    mee_lng            decimal                                    null,
+    mee_uuid           uuid    default (gen_random_uuid()) unique not null,
+    pop_id             int                                        not null,
+    twn_code_insee     varchar(15)                                null,
     constraint pk_meeting primary key (mee_id),
     constraint fk_meeting_politicalparty foreign key (pop_id) references political_party (pop_id),
     constraint fk_meeting_town foreign key (twn_code_insee) references town (twn_code_insee)
@@ -273,23 +281,26 @@ create table adherent
     adh_date_left date                    null,
     adh_is_left   boolean default (false) not null,
     pop_id        int                     not null,
+    prf_id        int                     null,
     prs_nir       varchar(20)             not null,
     constraint pk_adherent primary key (adh_id),
     constraint fk_adherent_person foreign key (prs_nir) references person (prs_nir),
-    constraint fk_adherent_politiclparty foreign key (pop_id) references political_party (pop_id)
+    constraint fk_adherent_politiclparty foreign key (pop_id) references political_party (pop_id),
+    constraint fk_adherent_profile foreign key (prf_id) references profile (prf_id)
 );
 
 create table thread
 (
     thr_id          serial                    not null,
     thr_main        boolean   default (false) not null,
-    thr_name        varchar(50)               not null,
+    thr_name        varchar(100)              not null,
     thr_description varchar(250)              null,
     thr_date_create timestamp default (now()) not null,
     thr_is_delete   boolean   default (false) not null,
     thr_date_delete timestamp                 null,
     thr_is_private  boolean   default (false) not null,
     thr_url_logo    varchar(150)              null,
+    thr_fcm_topic   varchar(50)               null,
     pop_id          int                       not null,
     constraint pk_thread primary key (thr_id),
     constraint fk_thread_politicalparty foreign key (pop_id) references political_party (pop_id)
@@ -334,14 +345,14 @@ create table election
 
 create table vote
 (
-    vte_id         serial      not null,
+    vte_id         serial       not null,
     vte_name       varchar(200) not null,
-    vte_nb_voter   int         not null,
-    elc_id         int         not null,
-    twn_code_insee varchar(15) null,
-    dpt_code       varchar(5)  null,
-    pop_id         int         null,
-    reg_code_insee varchar(15) null,
+    vte_nb_voter   int          not null,
+    elc_id         int          not null,
+    twn_code_insee varchar(15)  null,
+    dpt_code       varchar(5)   null,
+    pop_id         int          null,
+    reg_code_insee varchar(15)  null,
     constraint pk_vote primary key (vte_id),
     constraint fk_vote_town foreign key (twn_code_insee) references town (twn_code_insee),
     constraint fk_vote_department foreign key (dpt_code) references department (dpt_code),
@@ -363,19 +374,28 @@ create table round
 
 create table choice
 (
-    cho_id          serial          not null,
-    cho_name        varchar(50)     not null,
-    cho_order       int             not null,
-    cho_nb_vote     int default (0) not null,
-    rnd_num         int             not null,
-    vte_id          int             not null,
-    cho_description varchar(250)    null,
-    prs_nir         varchar(20)     null,
+    cho_id          serial       not null,
+    cho_name        varchar(50)  not null,
+    cho_description varchar(250) null,
+    vte_id          int          not null,
+    prs_nir         varchar(20)  null,
+    clr_id          int          null,
     constraint pk_choice primary key (cho_id),
-    constraint fk_choice_vote foreign key (rnd_num, vte_id) references round (rnd_num, vte_id),
+    constraint fk_choice_vote foreign key (vte_id) references vote (vte_id),
+    constraint fk_choice_color foreign key (clr_id) references color (clr_id),
     constraint fk_choice_person foreign key (prs_nir) references person (prs_nir)
 );
 
+create table link_round_choice
+(
+    cho_id      int             not null,
+    vte_id      int             not null,
+    rnd_num     int             not null,
+    lrc_nb_vote int default (0) not null,
+    constraint pk_linkroundchoice primary key (cho_id, vte_id, rnd_num),
+    constraint fk_linkroundchoice_round foreign key (vte_id, rnd_num) references round (vte_id, rnd_num),
+    constraint fk_linkroundchoice_choice foreign key (cho_id) references choice (cho_id)
+);
 
 create table link_person_round
 (

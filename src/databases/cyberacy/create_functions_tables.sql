@@ -11,41 +11,32 @@ create or replace function filter_political_party(_nir adherent.prs_nir%type def
                 date_create       political_party.pop_date_create%type,
                 description       political_party.pop_description%type,
                 is_delete         political_party.pop_is_delete%type,
-                date_delete       political_party.pop_date_delete%type,
                 object            political_party.pop_object%type,
-                address_street    political_party.pop_address_street%type,
                 siren             political_party.pop_siren%type,
-                chart             political_party.pop_chart%type,
-                iban              political_party.pop_iban%type,
-                url_bank_details  political_party.pop_url_bank_details%type,
                 url_chart         political_party.pop_url_chart%type,
                 id_political_edge political_party.poe_id%type,
-                nir               political_party.prs_nir%type,
-                town_code_insee   political_party.twn_code_insee%type
+                edge_name         political_edge.poe_name%type,
+                nir               political_party.prs_nir%type
             )
 as
 $filter$
 begin
     return query
-        select distinct pop.pop_id           as id,
-                        pop_name             as name,
-                        pop_url_logo         as url_logo,
-                        pop_date_create      as date_create,
-                        pop_description      as description,
-                        pop_is_delete        as is_delete,
-                        pop_date_delete      as date_delete,
-                        pop_object           as object,
-                        pop_address_street   as address_street,
-                        pop_siren            as siren,
-                        pop_chart            as chart,
-                        pop_iban             as iban,
-                        pop_url_bank_details as url_bank_details,
-                        pop_url_chart        as url_chart,
-                        poe_id               as id_political_edge,
-                        pop.prs_nir          as nir,
-                        twn_code_insee       as town_code_insee
+        select distinct pop.pop_id      as id,
+                        pop_name        as name,
+                        pop_url_logo    as url_logo,
+                        pop_date_create as date_create,
+                        pop_description as description,
+                        pop_is_delete   as is_delete,
+                        pop_object      as object,
+                        pop_siren       as siren,
+                        pop_url_chart   as url_chart,
+                        poe.poe_id      as id_political_edge,
+                        poe_name        as edge_name,
+                        pop.prs_nir     as nir
         from political_party pop
                  left join adherent adh on pop.pop_id = adh.pop_id
+                 join political_edge poe on pop.poe_id = poe.poe_id
         where (_nir is null or adh.prs_nir = _nir)
           and (pop_siren = _siren or _siren is null)
           and (pop.pop_id = _id or _id is null)
@@ -73,7 +64,8 @@ create or replace function filter_manifestation(_nir adherent.prs_nir%type defau
                 security_description manifestation.man_security_description%type,
                 nb_person_estimate   manifestation.man_nb_person_estimate%type,
                 url_document_signed  manifestation.man_url_document_signed%type,
-                reason_aborted       manifestation.man_reason_aborted%type
+                reason_aborted       manifestation.man_reason_aborted%type,
+                fcm_topic            manifestation.man_fcm_topic%type
             )
 as
 $filter$
@@ -90,7 +82,8 @@ begin
                man_security_description as security_description,
                man_nb_person_estimate   as nb_person_estimate,
                man_url_document_signed  as url_document_signed,
-               man_reason_aborted       as reason_aborted
+               man_reason_aborted       as reason_aborted,
+               man_fcm_topic            as fcm_topic
         from manifestation man
                  left join manifestant mnf on man.man_id = mnf.man_id
         where (_nir is null or mnf.prs_nir = _nir)
@@ -160,54 +153,62 @@ $filter$
 
 
 -- Filtre pour la table meeting
-create or replace function filter_meeting(_town meeting.twn_code_insee%type default null,
+create or replace function filter_meeting(_nir person.prs_nir%type,
+                                          _town meeting.twn_code_insee%type default null,
                                           _pop_id meeting.pop_id%type default null,
-                                          _nir person.prs_nir%type default null,
                                           _include_aborted meeting.mee_is_aborted%type default false,
-                                          _include_completed meeting.mee_is_aborted%type default true)
+                                          _include_completed boolean default true,
+                                          _include_finished boolean default false,
+                                          _id meeting.mee_id%type default null,
+                                          _only_mine boolean default false)
     returns table
             (
                 id                 meeting.mee_id%type,
                 name               meeting.mee_name%type,
-                object             meeting.mee_object%type,
-                description        meeting.mee_description%type,
                 date_start         meeting.mee_date_start%type,
                 nb_time            meeting.mee_nb_time%type,
                 is_aborted         meeting.mee_is_aborted%type,
-                reason_aborted     meeting.mee_reason_aborted%type,
-                nb_place           meeting.mee_nb_place%type,
                 nb_place_vacant    int,
                 address_street     meeting.mee_address_street%type,
-                link_twitch        meeting.mee_link_twitch%type,
                 id_political_party meeting.pop_id%type,
-                town_code_insee    meeting.twn_code_insee%type
+                town_code_insee    meeting.twn_code_insee%type,
+                vta_rate           meeting.mee_vta_rate%type,
+                price_excl         meeting.mee_price_excl%type,
+                town_name          town.twn_name%type,
+                is_participate     boolean
             )
 as
 $filter$
 begin
     return query
-        select mee.mee_id                      as id,
-               mee_name                        as name,
-               mee_object                      as object,
-               mee_description                 as description,
-               mee_date_start                  as date_start,
-               mee_nb_time                     as nb_time,
-               mee_is_aborted                  as is_aborted,
-               mee_reason_aborted              as reason_aborted,
-               mee_nb_place                    as nb_place,
-               get_nb_place_vacant(mee.mee_id) as nb_place_vacant,
-               mee_address_street              as address_street,
-               mee_link_twitch                 as link_twitch,
-               mee.pop_id                      as id_political_party,
-               mee.twn_code_insee              as town_code_insee
+        select distinct mee.mee_id                      as id,
+                        mee_name                        as name,
+                        mee_date_start                  as date_start,
+                        mee_nb_time                     as nb_time,
+                        mee_is_aborted                  as is_aborted,
+                        get_nb_place_vacant(mee.mee_id) as nb_place_vacant,
+                        mee_address_street              as address_street,
+                        mee.pop_id                      as id_political_party,
+                        mee.twn_code_insee              as town_code_insee,
+                        mee_vta_rate                    as vta_rate,
+                        mee_price_excl                  as price_excl,
+                        twn_name                        as town_name,
+                        case
+                            when ptcMine.prs_nir is not null then true
+                            else false
+                            end                         as is_participate
         from meeting mee
                  left join participant ptc on mee.mee_id = ptc.mee_id
+                 left join participant ptcMine on mee.mee_id = ptcMine.mee_id and ptcMine.prs_nir = _nir
+                 left join town t on t.twn_code_insee = mee.twn_code_insee
         where (_include_aborted = true or mee_is_aborted = false)
-          and (_nir is null or ptc.prs_nir = _nir)
           and (_pop_id is null or mee.pop_id = _pop_id)
           and (_town is null or mee.twn_code_insee = _town)
           and (_include_completed = true or nb_place_vacant > 0)
-        order by mee_date_start, mee_name desc;
+          and (_include_finished = true or mee_date_start > now())
+          and (_id is null or mee.mee_id = _id)
+          and (_only_mine = false or ptcMine.prs_nir is not null)
+        order by mee_date_start, mee_name;
 
 end;
 $filter$
@@ -292,7 +293,8 @@ create or replace function filter_thread(_nir person.prs_nir%type, _only_mine bo
                 date_delete        thread.thr_date_delete%type,
                 is_private         thread.thr_is_private%type,
                 url_logo           thread.thr_url_logo%type,
-                id_political_party thread.pop_id%type
+                id_political_party thread.pop_id%type,
+                fcm_topic          thread.thr_fcm_topic%type
             )
 as
 $filter$
@@ -301,23 +303,27 @@ declare
     is_granted_all boolean := is_granted(_nir, 'THREAD#READ_ALL');
 begin
     return query
-        select thr.thr_id      as id,
-               thr_name        as name,
-               thr_main        as main,
-               thr_description as description,
-               thr_date_create as date_create,
-               thr_is_delete   as is_delete,
-               thr_date_delete as date_delete,
-               thr_is_private  as is_private,
-               thr_url_logo    as url_logo,
-               thr.pop_id      as id_political_party
+        select distinct thr.thr_id      as id,
+                        thr_name        as name,
+                        thr_main        as main,
+                        thr_description as description,
+                        thr_date_create as date_create,
+                        thr_is_delete   as is_delete,
+                        thr_date_delete as date_delete,
+                        thr_is_private  as is_private,
+                        thr_url_logo    as url_logo,
+                        thr.pop_id      as id_political_party,
+                        thr_fcm_topic   as fcm_topic
         from thread thr
-                 left join member mem on thr.thr_id = mem.thr_id and mem.mem_is_left = false
-                 left join adherent adh on mem.adh_id = adh.adh_id and adh.prs_nir = _nir
-        where ((_only_mine = false and
-                (is_granted_all = true or (thr.pop_id = adh.pop_id and thr_is_private = false))) or
-               (is_granted = true and adh.adh_id is not null))
+                 join adherent adh on thr.pop_id = adh.pop_id and adh.prs_nir = _nir and adh.adh_is_left = false
+                 left join member mem on thr.thr_id = mem.thr_id and adh.adh_id = mem.adh_id
+        where (
+                (_only_mine = false and is_member_of_thread(adh.adh_id, thr.thr_id) = false and
+                 (is_granted_all = true or thr_is_private = false)) or
+                (_only_mine = true and mem.mem_id is not null and mem.mem_is_left = false)
+            )
           and thr_is_delete = false
+          and (is_granted_all = true or is_granted = true)
         order by name;
 end;
 $filter$
@@ -334,7 +340,8 @@ create or replace function filter_message(_nir person.prs_nir%type, _thr_id mess
                 message        message.msg_message%type,
                 date_published message.msg_date_published%type,
                 id_thread      message.thr_id%type,
-                id_member      message.mem_id%type
+                id_member      message.mem_id%type,
+                mine           boolean
             )
 as
 $filter$
@@ -342,20 +349,27 @@ declare
     is_granted boolean := is_granted(_nir, 'MESSAGE#READ');
 begin
     return query
-        select msg.msg_id         as id,
-               prs_firstname      as firstname,
-               prs_lastname       as lastname,
-               msg_message        as type,
-               msg_date_published as date_published,
-               msg.thr_id         as id_thread,
-               msg.mem_id         as id_member
+        select distinct msg.msg_id         as id,
+                        prs_firstname      as firstname,
+                        prs_lastname       as lastname,
+                        msg_message        as type,
+                        msg_date_published as date_published,
+                        msg.thr_id         as id_thread,
+                        msg.mem_id         as id_member,
+                        case
+                            when adhSender.prs_nir = _nir then true
+                            else false
+                            end            as mine
         from message msg
                  join thread thr on msg.thr_id = thr.thr_id and thr.thr_id = _thr_id
-                 join member mem on msg.mem_id = mem.mem_id and mem.mem_is_left = false
-                 join adherent adh on mem.adh_id = adh.adh_id and adh.prs_nir = _nir
-                 join person prs on adh.prs_nir = prs.prs_nir
+                 join member memSender on msg.mem_id = memSender.mem_id
+                 join adherent adhSender on memSender.adh_id = adhSender.adh_id
+                 join person prs on adhSender.prs_nir = prs.prs_nir
+                 join member mem on mem.thr_id = thr.thr_id and mem.mem_is_left = false
+                 join adherent adh on mem.adh_id = adh.adh_id and adh.prs_nir = _nir and adh.adh_is_left = false
         where is_granted = true
-        order by msg_date_published;
+        order by msg_date_published desc
+        limit 200;
 end;
 $filter$
     language plpgsql;
@@ -412,7 +426,8 @@ create or replace function filter_vote(_nir person.prs_nir%type, _elc_id vote.el
                 department_code    vote.dpt_code%type,
                 reg_code_insee     vote.reg_code_insee%type,
                 id_political_party vote.pop_id%type,
-                id_election        vote.elc_id%type
+                id_election        vote.elc_id%type,
+                id_type            election.tvo_id%type
             )
 as
 $filter$
@@ -422,22 +437,25 @@ declare
     today          timestamp := now();
 begin
     return query
-        select vte.vte_id         as id,
-               vte_name           as name,
-               vte.vte_nb_voter   as nb_voter,
-               vte.twn_code_insee as town_code_insee,
-               vte.dpt_code       as department_code,
-               vte.reg_code_insee as reg_code_insee,
-               vte.pop_id         as id_political_party,
-               vte.elc_id         as id_election
+        select distinct vte.vte_id         as id,
+                        vte_name           as name,
+                        vte.vte_nb_voter   as nb_voter,
+                        vte.twn_code_insee as town_code_insee,
+                        vte.dpt_code       as department_code,
+                        vte.reg_code_insee as reg_code_insee,
+                        vte.pop_id         as id_political_party,
+                        vte.elc_id         as id_election,
+                        e.tvo_id           as id_type
         from vote vte
+                 join election e on e.elc_id = vte.elc_id
                  left join round rnd on vte.vte_id = rnd.vte_id
                  left join adherent adh on vte.pop_id = adh.pop_id and adh_is_left = false and adh.prs_nir = _nir
         where (is_granted = true or is_granted_all = true)
           and vte.elc_id = _elc_id
           and ((_include_finish = false and rnd.rnd_date_end >= today) or _include_finish = true)
           and ((_include_future = false and rnd.rnd_date_start <= today) or _include_future = true)
-        order by rnd_date_start desc;
+          --order by rnd_date_start desc
+        limit 500;
 end;
 $filter$
     language plpgsql;
@@ -451,20 +469,27 @@ create or replace function filter_round(_nir person.prs_nir%type, _vte_id round.
                 name       round.rnd_name%type,
                 date_start round.rnd_date_start%type,
                 date_end   round.rnd_date_end%type,
-                id_vote    round.vte_id%type
+                id_vote    round.vte_id%type,
+                is_voted   boolean
             )
 as
 $filter$
 begin
     return query
-        select rnd_num        as num,
+        select rnd.rnd_num    as num,
                rnd_name       as name,
                rnd_date_start as date_start,
                rnd_date_end   as date_end,
-               vte_id         as id_vote
+               rnd.vte_id     as id_vote,
+               case
+                   when lpr.vte_id is null then false
+                   else true
+                   end        as is_voted
         from round rnd
+                 left join link_person_round lpr
+                           on rnd.vte_id = lpr.vte_id and rnd.rnd_num = lpr.rnd_num and lpr.prs_nir = _nir
         where rnd.vte_id = _vte_id
-        order by rnd_date_start, rnd_num;
+        order by rnd_date_start, num;
 end;
 $filter$
     language plpgsql;
@@ -472,36 +497,36 @@ $filter$
 
 -- Filtre pour la table choice
 create or replace function filter_choice(_nir person.prs_nir%type, _vte_id round.vte_id%type,
-                                         _rnd_num round.rnd_num%type)
+                                         _rnd_num round.rnd_num%type default null)
     returns table
             (
                 id           choice.cho_id%type,
                 name         choice.cho_name%type,
-                choice_order choice.cho_order%type,
-                nb_vote      choice.cho_nb_vote%type,
-                num_round    choice.rnd_num%type,
                 id_vote      choice.vte_id%type,
                 description  choice.cho_description%type,
                 candidat_nir choice.prs_nir%type,
-                candidat     varchar(150)
+                candidat     varchar,
+                id_color     choice.clr_id%type
             )
 as
 $filter$
 begin
     return query
-        select cho.cho_id                               as id,
-               cho_name                                 as name,
-               cho_order                                as choice_order,
-               cho_nb_vote                              as nb_vote,
-               cho.rnd_num                              as num_round,
-               cho.vte_id                               as id_vote,
-               cho_description                          as description,
-               cho.prs_nir                              as candidat_nir,
-               concat(prs_lastname, ' ', prs_firstname) as candidat
+        select distinct cho.cho_id                                        as id,
+                        cho_name                                          as name,
+                        cho.vte_id                                        as id_vote,
+                        cho_description                                   as description,
+                        cho.prs_nir                                       as candidat_nir,
+                        concat(prs_lastname, ' ', prs_firstname)::varchar as candidat,
+                        cho.clr_id                                        as id_color
         from choice cho
-                 join filter_round(_nir, true, true, null, _vte_id) rnd on rnd.num = _rnd_num
+                 left join link_round_choice lrc on cho.cho_id = lrc.cho_id
+                 left join filter_round(_nir, _vte_id) rnd
+                           on rnd.num = lrc.rnd_num and rnd.id_vote = lrc.vte_id
                  left join person prs on cho.prs_nir = prs.prs_nir
-        order by cho_order, cho_name;
+        where cho.vte_id = _vte_id
+          and (rnd.num = _rnd_num or _rnd_num is null)
+        order by cho_name;
 end;
 $filter$
     language plpgsql;
@@ -541,7 +566,8 @@ $filter$
 
 -- Statistiques pour les parties politiques (nb meeting)
 create or replace function stats_meeting_from_party(_nir adherent.prs_nir%type,
-                                                    _year int default extract(year from now()))
+                                                    _year int default extract(year from now()),
+                                                    _pop_id political_party.pop_id%type default null)
     returns table
             (
                 id_political_party adherent.pop_id%type,
@@ -567,6 +593,7 @@ begin
              meeting mee
                  join political_party pop on mee.pop_id = pop.pop_id
                  join adherent adh on pop.pop_id = adh.pop_id and adh.prs_nir = _nir and adh.adh_is_left = false
+        where (_pop_id is null or pop.pop_id = _pop_id)
         order by year, month;
 end;
 $filter$
@@ -750,38 +777,47 @@ $filter$
 
 
 -- Résultats de vote
-create or replace function vote_get_results(_vte_id vote.vte_id%type)
+create or replace function vote_get_results(_vte_id vote.vte_id%type, _rnd_num round.rnd_num%type)
     returns table
             (
                 id_choice               choice.cho_id%type,
                 libelle_choice          choice.cho_name%type,
-                nb_voice                choice.cho_nb_vote%type,
+                nb_voice                link_round_choice.lrc_nb_vote%type,
                 perc_with_abstention    decimal,
                 perc_without_abstention decimal,
                 id_vote                 vote.vte_id%type,
                 name_vote               vote.vte_name%type,
                 num_round               round.rnd_num%type,
-                name_round              round.rnd_name%type
+                name_round              round.rnd_name%type,
+                id_color                choice.clr_id%type
             )
 as
 $filter$
 begin
     return query
-        select cho_id                                      as id_choice,
+        select lrc.cho_id                                  as id_choice,
                cho_name                                    as libelle_choice,
-               cho_nb_vote                                 as nb_voice,
-               (cho_nb_vote::decimal / vte_nb_voter) * 100 as perc_with_abstention,
-               (cho_nb_vote::decimal / get_nb_voter_to_one_vote(rnd.vte_id, rnd.rnd_num)) *
-               100                                         as perc_without_abstention,
+               lrc_nb_vote                                 as nb_voice,
+               (lrc_nb_vote::decimal / vte_nb_voter) * 100 as perc_with_abstention,
+               case
+                   when get_nb_voter_to_one_vote(rnd.vte_id, rnd.rnd_num) = 0 then 0
+                   else (lrc_nb_vote::decimal / get_nb_voter_to_one_vote(rnd.vte_id, rnd.rnd_num)) *
+                        100
+                   end                                     as perc_without_abstention,
+
                rnd.vte_id                                  as id_vote,
                vte_name                                    as name_vote,
                rnd.rnd_num                                 as num_round,
-               rnd_name                                    as name_round
-        from choice cho
-                 join round rnd on cho.rnd_num = rnd.rnd_num
+               rnd_name                                    as name_round,
+               cho.clr_id                                  as id_color
+        from link_round_choice lrc
+                 join choice cho on lrc.cho_id = cho.cho_id
+                 join round rnd on lrc.rnd_num = rnd.rnd_num and lrc.vte_id = rnd.vte_id
                  join vote vte on rnd.vte_id = vte.vte_id
-        where rnd.vte_id = _vte_id
-        order by rnd_date_start desc, perc_without_abstention desc;
+        where lrc.vte_id = _vte_id
+          and lrc.rnd_num = _rnd_num
+          and rnd.rnd_date_end < now()
+        order by perc_without_abstention desc;
 end;
 $filter$
     language plpgsql;
@@ -1017,11 +1053,82 @@ end;
 $filter$
     language plpgsql;
 
-/*
+-- Filtre pour la table options
+create or replace function filter_options(_id option_manifestation.man_id%type)
+    returns table
+            (
+                id               option_manifestation.omn_id%type,
+                name             option_manifestation.omn_name%type,
+                description      option_manifestation.omn_description%type,
+                is_delete        option_manifestation.omn_is_delete%type,
+                id_manifestation option_manifestation.man_id%type
+            )
+as
+$filter$
+begin
+    return query
+        select omn_id          as id,
+               omn_name        as name,
+               omn_description as description,
+               omn_is_delete   as is_delete,
+               man_id          as id_manifestation
+        from option_manifestation
+        where man_id = _id
+          and omn_is_delete = false
+        order by omn_name;
+end;
+$filter$
+    language plpgsql;
 
+-- Récupère la liste des votes "en cours" d'un utilisateur
+create or replace function get_in_progress_vote(_nir person.prs_nir%type)
+    returns table
+            (
+                id                 vote.vte_id%type,
+                name               vote.vte_name%type,
+                nb_voter           vote.vte_nb_voter%type,
+                town_code_insee    vote.twn_code_insee%type,
+                department_code    vote.dpt_code%type,
+                reg_code_insee     vote.reg_code_insee%type,
+                id_political_party vote.pop_id%type,
+                id_election        vote.elc_id%type,
+                id_type            election.tvo_id%type,
+                name_type          type_vote.tvo_name%type
+            )
+as
+$filter$
+declare
+    today    timestamp := now();
+    mine_dpt department.dpt_code%type;
+    mine_twn town.twn_code_insee%type;
+    mine_reg region.reg_code_insee%type;
+begin
+    select twn.twn_code_insee, dpt.dpt_code, dpt.reg_code_insee
+    into mine_twn, mine_dpt, mine_reg
+    from person prs
+             join town twn on prs.twn_code_insee = twn.twn_code_insee
+             join department dpt on twn.dpt_code = dpt.dpt_code
+    where prs_nir = _nir;
 
- and vte.elc_id = _elc_id
-          and ((_include_finish = false and rnd.rnd_date_end >= today) or _include_finish = true)
-          and ((_include_future = false and rnd.rnd_date_start <= today) or _include_future = true)
-
- */
+    return query
+        select vte.vte_id         as id,
+               vte_name           as name,
+               vte.vte_nb_voter   as nb_voter,
+               vte.twn_code_insee as town_code_insee,
+               vte.dpt_code       as department_code,
+               vte.reg_code_insee as reg_code_insee,
+               vte.pop_id         as id_political_party,
+               vte.elc_id         as id_election,
+               e.tvo_id           as id_type,
+               tv.tvo_name        as name_type
+        from vote vte
+                 join election e on e.elc_id = vte.elc_id
+                 join type_vote tv on e.tvo_id = tv.tvo_id
+        where elc_date_start <= today
+          and elc_date_end >= today
+          and (vte.twn_code_insee = mine_twn or vte.twn_code_insee is null)
+          and (vte.dpt_code = mine_dpt or vte.dpt_code is null)
+          and (vte.reg_code_insee = mine_reg or vte.reg_code_insee is null);
+end ;
+$filter$
+    language plpgsql;

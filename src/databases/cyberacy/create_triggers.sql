@@ -125,26 +125,32 @@ create trigger trg_add_round
     for each row
 execute procedure add_round();
 
--- Trigger AFTER INSERT pour la table "round"
-create or replace function add_choice_blank()
+
+-- Trigger AFTER INSERT pour la table "vote"
+create or replace function add_first_round()
     returns trigger
 as
 $trigger$
 begin
-    insert into choice(cho_name, cho_order, cho_description, rnd_num, vte_id)
-    values ('vote blanc', 1, 'Vous pouvez voter blanc si aucune des proposition ne vous conviens.', new.rnd_num,
-            new.vte_id);
+    insert into round(rnd_num, rnd_name, rnd_date_start, rnd_date_end, vte_id)
+    select 1, 'Premier Tour', elc_date_start, elc_date_start + interval '12' HOUR, new.vte_id
+    from election
+    where elc_id = new.elc_id;
+
+    insert into choice(cho_name, cho_description, vte_id)
+    values ('Vote blanc', 'Vous pouvez voter blanc si aucune des propositions ne vous conviens.', new.vte_id);
+
 
     return new;
 end
 $trigger$
     language plpgsql;
 
-create trigger trg_add_choice_blank
+create trigger trg_add_first_round
     after insert
-    on round
+    on vote
     for each row
-execute procedure add_choice_blank();
+execute procedure add_first_round();
 
 
 -- Trigger BEFORE INSERT pour la table "choice"
@@ -153,16 +159,17 @@ create or replace function add_choice()
 as
 $trigger$
 declare
-    date_vote timestamp;
+    date_election timestamp;
 begin
-    select rnd_date_start
-    into date_vote
-    from round
-    where rnd_num = new.rnd_num
-      and vte_id = new.vte_id;
+    select elc_date_start
+    into date_election
+    from vote vte
+             join election elc on elc.elc_id = vte.elc_id
+    where vte.vte_id = new.vte_id;
 
-    if date_vote <= now() then
-        raise 'You cannot add a new choice when vote has started.' using errcode = '23503';
+
+    if date_election <= now() then
+        raise 'You cannot add a new choice when election has started.' using errcode = '23503';
     end if;
 
     return new;
@@ -175,6 +182,31 @@ create trigger trg_add_choice
     on choice
     for each row
 execute procedure add_choice();
+
+
+-- Trigger BEFORE INSERT pour la table "choice"
+create or replace function add_choice_into_first_round()
+    returns trigger
+as
+$trigger$
+begin
+
+    if exists(select * from round where vte_id = new.vte_id and rnd_num = 1) then
+        insert into link_round_choice(cho_id, vte_id, rnd_num, lrc_nb_vote)
+        values(new.cho_id, new.vte_id, 1, 0);
+    end if;
+
+    return new;
+end
+$trigger$
+    language plpgsql;
+
+create trigger trg_add_choice_into_first_round
+    after insert
+    on choice
+    for each row
+execute procedure add_choice_into_first_round();
+
 
 
 -- Trigger BEFORE UPDATE pour la table "choice"
@@ -192,7 +224,7 @@ begin
     where rnd_num = new.rnd_num
       and vte_id = new.vte_id;
 
-    if date_vote_started <= now() or date_vote_ended >= now() then
+    if date_vote_started > now() or date_vote_ended < now() then
         raise 'You cannot vote before or after the vote.' using errcode = '23503';
     end if;
 
@@ -203,7 +235,7 @@ $trigger$
 
 create trigger trg_add_add_vote_for_choice
     before update
-    on choice
+    on link_round_choice
     for each row
 execute procedure add_vote_for_choice();
 
@@ -222,7 +254,7 @@ begin
         from town
         group by new.elc_name, new.elc_id;
 
-    -- Régionale
+        -- Régionale
     elsif new.tvo_id = 2 then
         insert into vote (vte_name, elc_id, vte_nb_voter, reg_code_insee)
         select concat(new.elc_name, ' : ', reg_name), new.elc_id, sum(twn_nb_resident), reg.reg_code_insee
@@ -231,7 +263,7 @@ begin
                  join town twn on dpt.dpt_code = twn.dpt_code
         group by reg_name, new.elc_name, new.elc_id, reg.reg_code_insee;
 
-    -- Départementale
+        -- Départementale
     elsif new.tvo_id = 3 then
         insert into vote (vte_name, elc_id, vte_nb_voter, dpt_code)
         select concat(new.elc_name, ' : ', dpt_name), new.elc_id, sum(twn_nb_resident), dpt.dpt_code
@@ -239,7 +271,7 @@ begin
                  join town twn on dpt.dpt_code = twn.dpt_code
         group by dpt_name, new.elc_name, new.elc_id, dpt.dpt_code;
 
-    -- Municipale
+        -- Municipale
     elsif new.tvo_id = 4 then
         insert into vote (vte_name, elc_id, vte_nb_voter, twn_code_insee)
         select concat(new.elc_name, ' : ', twn_name), new.elc_id, twn_nb_resident, twn_code_insee
@@ -256,4 +288,81 @@ create trigger trg_add_election
     on election
     for each row
 execute procedure add_election();
+
+-- Trigger AFTER INSERT pour la table "thread"
+create or replace function add_thread()
+    returns trigger
+as
+$trigger$
+begin
+    update thread
+    set thr_fcm_topic = concat('thread_', new.thr_id)
+    where thr_id = new.thr_id;
+
+    return new;
+end
+$trigger$
+    language plpgsql;
+
+create trigger trg_insert_thread
+    after insert
+    on thread
+    for each row
+execute procedure add_thread();
+
+
+-- Trigger AFTER INSERT pour la table "manifestation"
+create or replace function add_manifestation()
+    returns trigger
+as
+$trigger$
+begin
+    update manifestation
+    set man_fcm_topic = concat('manifestation_', new.man_id)
+    where man_id = new.man_id;
+
+    return new;
+end
+$trigger$
+    language plpgsql;
+
+create trigger trg_insert_manifestation
+    after insert
+    on manifestation
+    for each row
+execute procedure add_manifestation();
+
+
+-- Trigger BEFORE DELETE pour la table "choice"
+create or replace function remove_choice()
+    returns trigger
+as
+$trigger$
+declare
+    date_election timestamp;
+begin
+    select elc_date_start
+    into date_election
+    from vote vte
+             join election elc on elc.elc_id = vte.elc_id
+    where vte.vte_id = old.vte_id;
+
+
+    if date_election <= now() then
+        raise 'You cannot delete a choice when election has started.' using errcode = '23503';
+    end if;
+
+    delete from link_round_choice
+        where cho_id = old.cho_id;
+
+    return old;
+end
+$trigger$
+    language plpgsql;
+
+create trigger trg_remove_choice
+    before delete
+    on choice
+    for each row
+execute procedure remove_choice();
 

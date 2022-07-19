@@ -6,7 +6,7 @@ Authorization: Bearer {{jwt_token}}
 
 ###
 # @name Get all meeting (without aborted)
-GET http://localhost:3000{{url}}/meeting
+GET {{url}}/meeting
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 
@@ -24,9 +24,13 @@ Authorization: Bearer {{jwt_token}}
 Content-Type: application/json
 
 {
-  "name": "Présidentiel 2022",
-  "object": "Présidentiel",
-  "date_start": "2022-05-12",
+  "name": "Meeting annuel Horizons",
+  "object": "Meeting annuel",
+  "date_start": "2022-07-28",
   "nb_time": 2.20,
-  "id_political_party": 3
+  "id_political_party": 32,
+  "price_excl": 0,
+  "vta_rate": 0,
+  "street_address": "5 rue de Tahure",
+  "town_code_insee": "76351"
 }
