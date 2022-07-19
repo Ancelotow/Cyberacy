@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        println("okkkkkkkk")
         setContentView(R.layout.activity_main)
         val actionBar: ActionBar? = supportActionBar
         actionBar?.hide()

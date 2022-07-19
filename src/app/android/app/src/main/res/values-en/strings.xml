@@ -26,7 +26,7 @@
 
 
     <string name="nav_party">Political party</string>
-    <string name="nav_manifestation">Events</string>
+    <string name="nav_manifestation">Manifestations</string>
     <string name="nav_vote">Voting</string>
 
 
@@ -139,4 +139,5 @@
     <string name="hint_description_thread">Description…</string>
     <string name="btn_add">Add</string>
     <string name="txt_connection_host_failure">We are unable to reach the server.\nPlease check your internet connection</string>
+
 </resources>
