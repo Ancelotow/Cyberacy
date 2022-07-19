@@ -6,6 +6,11 @@ import retrofit2.http.*
 
 interface ApiService {
 
+    @GET("manifestation")
+    fun getManifestation(
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<ResponseAPI<List<Manifestation>?>>
+
     @POST("login_app")
     fun login(@Body connection: Connection): Call<ResponseAPI<Person>>
 
