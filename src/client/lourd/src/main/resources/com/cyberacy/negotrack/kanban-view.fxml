@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane GridPane.columnIndex="1" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cyberacy.negotrack.views.KanbanController">
+   <columnConstraints>
+      <ColumnConstraints percentWidth="25.0" />
+      <ColumnConstraints percentWidth="25.0" />
+      <ColumnConstraints percentWidth="25.0" />
+      <ColumnConstraints percentWidth="25.0" />
+   </columnConstraints>
+   <children>
+      <GridPane style="-fx-background-color: #c99976" styleClass="gridpane-kanban">
+         <rowConstraints>
+            <RowConstraints percentHeight="5.0" vgrow="SOMETIMES" />
+            <RowConstraints percentHeight="90.0" vgrow="SOMETIMES" />
+            <RowConstraints percentHeight="5.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
+         <GridPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </GridPane.margin>
+         <Label styleClass="txt-title-H3-white" text="A Faire" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+            <GridPane.margin>
+               <Insets top="5.0" />
+            </GridPane.margin>
+         </Label>
+         <Button maxWidth="100.0" mnemonicParsing="false" styleClass="btn-primary-outline" text="+ tâche" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+            <GridPane.margin>
+               <Insets bottom="10.0" />
+            </GridPane.margin>
+         </Button>
+         <ListView fx:id="listToDo" prefWidth="245.0" style="-fx-background-color: transaperent" GridPane.rowIndex="1" />
+      </GridPane>
+      <GridPane style="-fx-background-color: #7286d9" styleClass="gridpane-kanban" GridPane.columnIndex="1">
+         <rowConstraints>
+            <RowConstraints percentHeight="5.0" vgrow="SOMETIMES" />
+            <RowConstraints percentHeight="95.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
+         <GridPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </GridPane.margin>
+         <Label styleClass="txt-title-H3-white" text="En cours" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+            <GridPane.margin>
+               <Insets top="5.0" />
+            </GridPane.margin>
+         </Label>
+         <ListView fx:id="listInProgress" style="-fx-background-color: transaperent" GridPane.rowIndex="1" />
+      </GridPane>
+      <GridPane style="-fx-background-color: #6fb65b" styleClass="gridpane-kanban" GridPane.columnIndex="2">
+         <rowConstraints>
+            <RowConstraints percentHeight="5.0" vgrow="SOMETIMES" />
+            <RowConstraints percentHeight="95.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
+         <GridPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </GridPane.margin>
+         <Label styleClass="txt-title-H3-white" text="A tester" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+            <GridPane.margin>
+               <Insets top="5.0" />
+            </GridPane.margin>
+         </Label>
+         <ListView fx:id="listToTest" style="-fx-background-color: transaperent" GridPane.rowIndex="1" />
+      </GridPane>
+      <GridPane style="-fx-background-color: #c47474" styleClass="gridpane-kanban" GridPane.columnIndex="3">
+         <rowConstraints>
+            <RowConstraints percentHeight="5.0" vgrow="SOMETIMES" />
+            <RowConstraints percentHeight="95.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
+         <GridPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </GridPane.margin>
+         <Label styleClass="txt-title-H3-white" text="Terminé" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+            <GridPane.margin>
+               <Insets top="5.0" />
+            </GridPane.margin>
+         </Label>
+         <ListView fx:id="listDone" style="-fx-background-color: transaperent" GridPane.rowIndex="1" />
+      </GridPane>
+   </children>
+    <stylesheets>
+        <URL value="@../../../css/stylesheet.css" />
+    </stylesheets>
+
+</GridPane>

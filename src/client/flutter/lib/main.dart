@@ -8,6 +8,8 @@ import 'package:bo_cyberacy/pages/navigation_page.dart';
 import 'package:bo_cyberacy/pages/party/add_party_page.dart';
 import 'package:bo_cyberacy/pages/screen_404.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() {
   runApp(const MyApp());
@@ -97,53 +99,54 @@ class MyApp extends StatelessWidget {
 
   TextTheme _getTextThemeDark(BuildContext context) {
     return TextTheme(
-        headline1: TextStyle(
-          color: Colors.white,
-          fontFamily: "HK-Nova",
-          fontSize: 35,
-          fontWeight: FontWeight.bold,
-        ),
-        headline2: TextStyle(
-          color: Theme.of(context).accentColor,
-          fontFamily: "HK-Nova",
-          fontSize: 28,
-        ),
-        headline3: TextStyle(
-          color: Colors.white,
-          fontFamily: "HK-Nova",
-          fontSize: 20,
-          fontWeight: FontWeight.w100,
-        ),
-        headline4: TextStyle(
-          color: Colors.white,
-          fontFamily: "HK-Nova",
-          fontSize: 20,
-        ),
-        bodyText1: TextStyle(
-          color: Colors.white,
-          fontFamily: "HK-Nova",
-          fontSize: 14,
-        ),
-        bodyText2: TextStyle(
-          color: Colors.white,
-          fontFamily: "HK-Nova",
-          fontSize: 14,
-        ),
-        caption: TextStyle(
-          color: Colors.grey,
-          fontFamily: "HK-Nova",
-          fontSize: 12,
-        ),
-        button: TextStyle(
-          color: Colors.white,
-          fontFamily: "HK-Nova",
-          fontSize: 14,
-        ),
-        labelMedium: TextStyle(
-          color: Colors.white,
-          fontFamily: "HK-Nova",
-          fontSize: 14,
-        ));
+      headline1: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 35,
+        fontWeight: FontWeight.bold,
+      ),
+      headline2: TextStyle(
+        color: Theme.of(context).accentColor,
+        fontFamily: "HK-Nova",
+        fontSize: 28,
+      ),
+      headline3: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 20,
+        fontWeight: FontWeight.w100,
+      ),
+      headline4: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 20,
+      ),
+      bodyText1: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 14,
+      ),
+      bodyText2: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 14,
+      ),
+      caption: TextStyle(
+        color: Colors.grey,
+        fontFamily: "HK-Nova",
+        fontSize: 12,
+      ),
+      button: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 14,
+      ),
+      labelMedium: TextStyle(
+        color: Colors.white,
+        fontFamily: "HK-Nova",
+        fontSize: 14,
+      ),
+    );
   }
 
   TextTheme _getTextThemeLight(BuildContext context) {
@@ -209,6 +212,13 @@ class MyApp extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(8.00),
       ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: const Color.fromARGB(255, 227, 2, 2),
+          width: 2.0,
+        ),
+        borderRadius: BorderRadius.circular(8.00),
+      ),
       filled: true,
       contentPadding: EdgeInsets.all(8.00),
       hoverColor: Colors.transparent,
@@ -231,19 +241,29 @@ class MyApp extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(8.00),
       ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: const Color.fromARGB(255, 227, 2, 2),
+          width: 2.0,
+        ),
+        borderRadius: BorderRadius.circular(8.00),
+      ),
       filled: true,
       contentPadding: EdgeInsets.all(8.00),
       hoverColor: Colors.transparent,
     );
   }
-
 }
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
+    Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     return LoginPage();
   }
 }

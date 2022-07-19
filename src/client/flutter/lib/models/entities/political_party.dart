@@ -50,4 +50,17 @@ class PoliticalParty {
     };
   }
 
+  @override
+  bool operator == (dynamic other) =>
+      other != null && other is PoliticalParty && siren == other.siren;
+
+  @override
+  int get hashCode => super.hashCode;
+
+  @override
+  String toString() {
+    return name!;
+  }
+
+
 }

@@ -46,7 +46,7 @@ const GetById = (nir) => {
 const GetByIdAndPassword = (nir, password) => {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'SELECT * FROM person WHERE prs_nir = $1 AND prs_password = $2',
+            text: 'SELECT f.* FROM filter_person($1) f JOIN person p ON f.nir = p.prs_nir AND nir = $1 AND prs_password = sha256($2)',
             values: [nir, password],
         }
         pool.query(request, (error, result) => {
@@ -94,8 +94,9 @@ const Add = (person) => {
     return new Promise((resolve, reject) => {
         GetById(person.nir).then((result) => {
             if (!result) {
+                console.log(person)
                 const request = {
-                    text: 'INSERT INTO person (prs_nir, prs_firstname, prs_lastname, prs_email, prs_password, prs_birthday, prs_address_street, twn_code_insee, sex_id, prf_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
+                    text: 'INSERT INTO person (prs_nir, prs_firstname, prs_lastname, prs_email, prs_password, prs_birthday, prs_address_street, twn_code_insee, sex_id, prf_id) VALUES($1, $2, $3, $4, sha256($5::bytea), $6, $7, $8, $9, $10)',
                     values: [person.nir, person.firstname, person.lastname, person.email, person.password, person.birthday, person.address_street, person.town_code_insee, person.sex, person.profile],
                 }
                 pool.query(request, (error, _) => {
@@ -109,6 +110,7 @@ const Add = (person) => {
                 resolve(false)
             }
         }).catch((e) => {
+            console.error("HEREEEEEE")
             reject(e)
         });
     });

@@ -7,6 +7,7 @@ class Election {
     date_end
     id_type_vote
     type_vote = null
+    votes = []
 }
 
 /**

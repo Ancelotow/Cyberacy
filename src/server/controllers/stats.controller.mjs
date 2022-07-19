@@ -1,6 +1,7 @@
 import partyMod from "../models/political-party.mjs"
 import {GetStatsAbsentions, GetStatsParticipations, GetResults} from "../models/vote.mjs"
 import groupBy from 'lodash/groupBy.js'
+import {ResponseApi} from "../models/response-api.mjs";
 
 /**
  * Statistiques : récupère le nombre d'adhérent par mois
@@ -12,22 +13,27 @@ import groupBy from 'lodash/groupBy.js'
 const GetNbAdherentByMonth = (nir, year = new Date().getFullYear()) => {
     return new Promise(async (resolve, _) => {
         if (!nir) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
             return;
         }
         try {
             let stats = await partyMod.GetNbAdherent(nir, year);
+            let allPartys = await partyMod.GetAllPartyForStats()
             if (stats == null) {
-                resolve({status: 204, data: "You haven't join any political party."})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
-            const statsParty = groupBy(stats, function (n) {
-                return n.party_name;
-            });
-            resolve({status: 200, data: statsParty})
+            let listStats = []
+            for(let i = 0; i < allPartys.length; i++) {
+                allPartys[i].year = parseInt(year)
+                allPartys[i].stats = stats.filter(s => s.id_political_party === allPartys[i].id)
+                if(allPartys[i].stats.length > 0) {
+                    listStats.push(allPartys[i])
+                }
+            }
+            resolve(new ResponseApi().InitData(listStats))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }
@@ -42,28 +48,25 @@ const GetNbAdherentByYear = (nir) => {
     return new Promise(async (resolve, _) => {
         let year = new Date().getFullYear() - 10;
         let result;
-        let total;
-        let statsYears = {};
-        let keys;
+        let allPartys = await partyMod.GetAllPartyForStats()
+        for(let i = 0; i < allPartys.length; i++) {
+            allPartys[i].stats = []
+        }
         for (year; year <= new Date().getFullYear(); year++) {
-            result = await GetNbAdherentByMonth(nir, year)
-            if (result.status !== 200) {
-                resolve(result);
-                return;
-            }
-            keys = Object.keys(result.data);
-            total = 0;
-            for (let j = 0; j < keys.length; j++) {
-                for (let i = 0; i < result.data[keys[j]].length; i++) {
-                    total += result.data[keys[j]][i].nb_adherent;
+            result = await partyMod.GetNbAdherent(nir, year)
+            for(let i = 0; i < allPartys.length; i++) {
+                let resultMonth  = result.filter(s => s.id_political_party === allPartys[i].id)
+                if(resultMonth.length > 0) {
+                    let total = 0
+                    for(let j = 0; j < resultMonth.length; j++) {
+                        total += resultMonth[j].nb_adherent
+                    }
+                    allPartys[i].stats.push({year, total})
                 }
-                if (statsYears[keys[j]] == null) {
-                    statsYears[keys[j]] = []
-                }
-                statsYears[keys[j]].push({year, nb_adherent: total});
             }
         }
-        resolve({status: 200, data: statsYears})
+        let statsYear = allPartys.filter(party => party.stats.length > 0)
+        resolve(new ResponseApi().InitData(statsYear))
     });
 }
 
@@ -71,28 +74,34 @@ const GetNbAdherentByYear = (nir) => {
  * Statistiques : récupère le nombre de meetings par mois
  * @param nir Le NIR de l'utilisateur
  * @param year L'année du filtre (l'année courante par défaut)
+ * @param idPoliticalParty
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetNbMeetingByMonth = (nir, year = new Date().getFullYear()) => {
+const GetNbMeetingByMonth = (nir, year = new Date().getFullYear(), idPoliticalParty = null) => {
     return new Promise(async (resolve, _) => {
         if (!nir) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
             return;
         }
         try {
-            let stats = await partyMod.GetNbMeeting(nir, year);
+            let stats = await partyMod.GetNbMeeting(nir, year, idPoliticalParty);
+            let allPartys = await partyMod.GetAllPartyForStats()
             if (stats == null) {
-                resolve({status: 204, data: "You haven't join any political party."})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
-            const statsParty = groupBy(stats, function (n) {
-                return n.party_name;
-            });
-            resolve({status: 200, data: statsParty})
+            let listStats = []
+            for(let i = 0; i < allPartys.length; i++) {
+                allPartys[i].year = parseInt(year)
+                allPartys[i].stats = stats.filter(s => s.id_political_party === allPartys[i].id)
+                if(allPartys[i].stats.length > 0) {
+                    listStats.push(allPartys[i])
+                }
+            }
+            resolve(new ResponseApi().InitData(listStats))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }
@@ -100,38 +109,37 @@ const GetNbMeetingByMonth = (nir, year = new Date().getFullYear()) => {
 /**
  * Statistiques : récupère le nombre de meeting par an
  * @param nir Le NIR de l'utilisateur
+ * @param idPoliticalParty
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetNbMeetingByYear = (nir) => {
+const GetNbMeetingByYear = (nir, idPoliticalParty = null) => {
     return new Promise(async (resolve, _) => {
         let year = new Date().getFullYear() - 10;
         let result;
-        let total_meeting;
-        let total_participant;
-        let statsYears = {};
-        let keys;
+        let allPartys = await partyMod.GetAllPartyForStats()
+        for(let i = 0; i < allPartys.length; i++) {
+            allPartys[i].stats = []
+        }
         for (year; year <= new Date().getFullYear(); year++) {
-            result = await GetNbMeetingByMonth(nir, year)
-            if (result.status !== 200) {
-                resolve(result);
-                return;
-            }
-            keys = Object.keys(result.data);
-            total_meeting = 0;
-            total_participant = 0;
-            for (let j = 0; j < keys.length; j++) {
-                for (let i = 0; i < result.data[keys[j]].length; i++) {
-                    total_meeting += result.data[keys[j]][i].nb_meeting;
-                    total_participant += result.data[keys[j]][i].nb_participant;
+            result = await partyMod.GetNbMeeting(nir, year, idPoliticalParty)
+            if(result) {
+                for(let i = 0; i < allPartys.length; i++) {
+                    let resultMonth  = result.filter(s => s.id_political_party === allPartys[i].id)
+                    if(resultMonth.length > 0) {
+                        let total_participant = 0
+                        let total_meeting = 0
+                        for(let j = 0; j < resultMonth.length; j++) {
+                            total_participant += resultMonth[j].nb_participant
+                            total_meeting += resultMonth[j].nb_meeting
+                        }
+                        allPartys[i].stats.push({year, total_participant, total_meeting})
+                    }
                 }
-                if (statsYears[keys[j]] == null) {
-                    statsYears[keys[j]] = []
-                }
-                statsYears[keys[j]].push({year, nb_meeting: total_meeting, nb_participant: total_participant});
             }
         }
-        resolve({status: 200, data: statsYears})
+        let statsYear = allPartys.filter(party => party.stats.length > 0)
+        resolve(new ResponseApi().InitData(statsYear))
     });
 }
 
@@ -144,22 +152,27 @@ const GetNbMeetingByYear = (nir) => {
 const GetAnnualFee = (nir) => {
     return new Promise(async (resolve, _) => {
         if (!nir) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
             return;
         }
         try {
             let stats = await partyMod.GetAnnualFee(nir);
+            let allPartys = await partyMod.GetAllPartyForStats()
             if (stats == null) {
-                resolve({status: 204, data: "You haven't join any political party."})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
-            const statsParty = groupBy(stats, function (n) {
-                return n.party_name;
-            });
-            resolve({status: 200, data: statsParty})
+            let listStats = []
+            for(let i = 0; i < allPartys.length; i++) {
+                allPartys[i].year = parseInt(year)
+                allPartys[i].stats = stats.filter(s => s.id_political_party === allPartys[i].id)
+                if(allPartys[i].stats.length > 0) {
+                    listStats.push(allPartys[i])
+                }
+            }
+            resolve(new ResponseApi().InitData(listStats))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }
@@ -174,19 +187,18 @@ const GetAnnualFee = (nir) => {
 const GetMessagesByDate = (nir, date = new Date()) => {
     return new Promise(async (resolve, _) => {
         if (!nir) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
             return;
         }
         try {
             let stats = await partyMod.GetNbMessageByDay(nir, new Date(date));
             if (stats == null) {
-                resolve({status: 204, data: "You haven't join any political party or thread."})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
-            resolve({status: 200, data: TransformResultThread(stats)})
+            resolve(new ResponseApi().InitData(TransformResultThread(stats)))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }
@@ -201,19 +213,18 @@ const GetMessagesByDate = (nir, date = new Date()) => {
 const GetMessagesByWeeks = (nir, year = new Date().getFullYear()) => {
     return new Promise(async (resolve, _) => {
         if (!nir) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
             return;
         }
         try {
             let stats = await partyMod.GetNbMessageByWeeks(nir, year);
             if (stats == null) {
-                resolve({status: 204, data: "You haven't join any political party or thread."})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
-            resolve({status: 200, data: TransformResultThread(stats)})
+            resolve(new ResponseApi().InitData(TransformResultThread(stats)))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }
@@ -230,13 +241,12 @@ const GetVoteAbstention = (num_round = 1, id_type_vote = null) => {
         try {
             let stats = await GetStatsAbsentions(num_round, id_type_vote);
             if (stats == null) {
-                resolve({status: 204, data: stats})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
-            resolve({status: 200, data: stats})
+            resolve(new ResponseApi().InitData(stats))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }
@@ -253,36 +263,12 @@ const GetVoteParticipation = (num_round = 1, id_type_vote = null) => {
         try {
             let stats = await GetStatsParticipations(num_round, id_type_vote);
             if (stats == null) {
-                resolve({status: 204, data: stats})
+                resolve(new ResponseApi().InitNoContent())
                 return;
             }
-            resolve({status: 200, data: stats})
+            resolve(new ResponseApi().InitData(stats))
         } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
-        }
-    });
-}
-
-/**
- * Récupère les résultats des votes
- * @param id_type_vote Filtrer par types de votes
- * @param id_vote Filtre sur un vote
- * @returns {Promise<unknown>}
- * @constructor
- */
-const GetVoteResults = (id_vote) => {
-    return new Promise(async (resolve, _) => {
-        try {
-            let stats = await GetResults(id_vote);
-            if (stats == null) {
-                resolve({status: 204, data: stats})
-                return;
-            }
-            resolve({status: 200, data: TransformResultVote(stats)})
-        } catch (e) {
-            console.error(e)
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         }
     });
 }
@@ -301,52 +287,15 @@ function TransformResultThread(result) {
         resultThread = groupBy(statsParty[keys[i]], function (n) {
             return n.thread_name;
         });
-        statsFilterThread.push({name: keys[i], threads: resultThread})
+        let keysThread = Object.keys(resultThread);
+        let threads = []
+        for(let j = 0; j < keysThread.length; j++) {
+            let stats = statsParty[keys[i]].filter(e => e.thread_name === keysThread[j])
+            threads.push({name: keysThread[j], stats})
+        }
+        statsFilterThread.push({name: keys[i], threads})
     }
     return statsFilterThread;
-}
-
-function TransformResultVote(result) {
-    if (!result) {
-        return null;
-    }
-    const listVote = []
-
-    let vote;
-    let indexVote;
-    let indexRound;
-    for (let i = 0; i < result.length; i++) {
-        vote = {
-            id: result[i].id_vote,
-            vote: result[i].name_vote,
-            type_vote: result[i].name_type_vote,
-            id_type_vote: result[i].id_type_vote
-        };
-        indexVote = listVote.findIndex(e => e.id === vote.id);
-        if (indexVote < 0) {
-            listVote.push(vote);
-            indexVote = listVote.findIndex(e => e.id === vote.id);
-        }
-        if(listVote[indexVote].rounds == null) listVote[indexVote].rounds = []
-        delete result[i].name_vote;
-        delete result[i].id_vote;
-        delete result[i].name_type_vote;
-        delete result[i].id_type_vote;
-        indexRound = listVote[indexVote].rounds.findIndex(e => e.num_round === result[i].num_round);
-        if (indexRound < 0) {
-            listVote[indexVote].rounds.push({
-                num_round: result[i].num_round,
-                name_round: result[i].name_round
-            });
-            indexRound = listVote[indexVote].rounds.findIndex(e => e.num_round === result[i].num_round);
-        }
-
-        if(listVote[indexVote].rounds[indexRound].results == null) listVote[indexVote].rounds[indexRound].results = []
-        delete result[i].name_round;
-        delete result[i].num_round;
-        listVote[indexVote].rounds[indexRound].results.push(result[i])
-    }
-    return listVote;
 }
 
 export default {
@@ -358,6 +307,5 @@ export default {
     GetMessagesByDate,
     GetMessagesByWeeks,
     GetVoteAbstention,
-    GetVoteParticipation,
-    GetVoteResults
+    GetVoteParticipation
 }

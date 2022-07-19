@@ -48,6 +48,7 @@ const Add = (idAdherent, idThread) => {
         const isExisted = await IfExists(idAdherent, idThread)
         if(isExisted) {
             resolve(false)
+            return;
         }
         const request = {
             text: 'INSERT INTO member(adh_id, thr_id) VALUES($1, $2)',

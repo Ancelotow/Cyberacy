@@ -14,8 +14,8 @@ class Session {
       Hive.init(dir.path);
     }
     Box<String> box = await Hive.openBox("loginBox");
-    var token = await AuthService().login(nir, pwd);
-    box.put(_idHiveToken, token);
+    var person = await AuthService().login(nir, pwd);
+    box.put(_idHiveToken, person.token!);
   }
 
   static Future<String?> getToken() async {

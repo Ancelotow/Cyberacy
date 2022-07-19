@@ -1,5 +1,9 @@
 import 'dart:convert';
+import 'package:bo_cyberacy/models/entities/result_vote.dart';
+
+import '../entities/choice.dart';
 import '../entities/election.dart';
+import '../entities/response_api.dart';
 import '../entities/vote.dart';
 import '../errors/api_service_error.dart';
 import 'api_service.dart';
@@ -8,21 +12,17 @@ import 'package:http/http.dart' as http;
 class VoteService extends ApiService {
   VoteService();
 
-  Future<List<Vote>> getAllVote() async {
+  Future<List<Vote>> getAllVote(int idElection) async {
     try {
       List<Vote> votes = [];
       var response = await http.get(
-        getUrl("vote", {"includeFinish": "true", "includeFuture": "true"}),
+        getUrl("election/$idElection/vote", {"includeFinish": "true", "includeFuture": "true"}),
         headers: await getHeaders(auth: true),
       );
       if (response.statusCode == 200) {
-        List<dynamic> list = jsonDecode(response.body);
-        try{
-          votes = list.map((json) => Vote.fromJson(json)).toList();
-
-        } catch(e) {
-          print(e);
-        }
+        ResponseAPI responseApi = ResponseAPI.fromJson(jsonDecode(response.body));
+        List<dynamic> listObject = responseApi.data;
+        votes = listObject.map((json) => Vote.fromJson(json)).toList();
       }
       return votes;
     } on ApiServiceError catch(e) {
@@ -38,8 +38,9 @@ class VoteService extends ApiService {
         headers: await getHeaders(auth: true),
       );
       if (response.statusCode == 200) {
-        List<dynamic> list = jsonDecode(response.body);
-        elections = list.map((json) => Election.fromJson(json)).toList();
+        ResponseAPI responseApi = ResponseAPI.fromJson(jsonDecode(response.body));
+        List<dynamic> listObject = responseApi.data;
+        elections = listObject.map((json) => Election.fromJson(json)).toList();
       }
       return elections;
     } on ApiServiceError catch(e) {
@@ -47,16 +48,77 @@ class VoteService extends ApiService {
     }
   }
 
-  Future<String> addElection(Election election) async {
+  Future<void> addElection(Election election) async {
     var response = await http.post(
       getUrl("election", null),
       headers: await getHeaders(auth: true),
       body: election.toJson(),
     );
     if (response.statusCode == 201) {
-      return response.body;
+      return;
     } else {
       throw ApiServiceError(response);
+    }
+  }
+
+  Future<Vote> getVoteById(int id) async {
+    try {
+      var response = await http.get(
+        getUrl("vote/$id/details", null),
+        headers: await getHeaders(auth: true),
+      );
+      if (response.statusCode == 200) {
+        ResponseAPI responseApi = ResponseAPI.fromJson(jsonDecode(response.body));
+        return Vote.fromJson(responseApi.data);
+      } else {
+        throw ApiServiceError(response);
+      }
+    } on ApiServiceError catch(e) {
+      rethrow;
+    }
+  }
+
+  Future<void> addChoice(Choice choice, int idVote) async {
+    var response = await http.post(
+      getUrl("vote/$idVote/choice", null),
+      headers: await getHeaders(auth: true),
+      body: choice.toJson(),
+    );
+    if (response.statusCode == 201) {
+      return;
+    } else {
+      throw ApiServiceError(response);
+    }
+  }
+
+  Future<void> deleteChoice(int idChoice) async {
+    var response = await http.delete(
+      getUrl("vote/choice/$idChoice", null),
+      headers: await getHeaders(auth: true),
+      body: null,
+    );
+    if (response.statusCode == 201) {
+      return;
+    } else {
+      throw ApiServiceError(response);
+    }
+  }
+
+  Future<List<ResultVote>> getResultRound(int idVote, int numRound) async {
+    try {
+      List<ResultVote> resultsVote = [];
+      var response = await http.get(
+        getUrl("vote/$idVote/round/$numRound/results", null),
+        headers: await getHeaders(auth: true),
+      );
+      if (response.statusCode == 200) {
+        ResponseAPI responseApi = ResponseAPI.fromJson(jsonDecode(response.body));
+        List<dynamic> listObject = responseApi.data;
+        resultsVote = listObject.map((json) => ResultVote.fromJson(json)).toList();
+      }
+      return resultsVote;
+    } on ApiServiceError catch(e) {
+      rethrow;
     }
   }
 

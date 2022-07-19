@@ -1,16 +1,18 @@
 // ignore_for_file: prefer_const_constructors
-
+import 'package:intl/intl.dart';
 import 'package:bo_cyberacy/models/entities/step.dart';
 import 'package:bo_cyberacy/pages/manifestation/manifestation_details.dart';
 import 'package:flutter/material.dart';
 import '../../models/entities/manifestation.dart';
 import '../../models/notifications/navigation_notification.dart';
 import '../map_manifestation.dart';
+import 'card_state_progress.dart';
 
 class CardManif extends StatelessWidget {
   final Manifestation manifestation;
   final double width;
   final double height;
+  final format = new DateFormat('dd/MM/yyyy HH:mm');
 
   CardManif({
     Key? key,
@@ -39,7 +41,7 @@ class CardManif extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(10)),
         child: SizedBox(
           width: width,
-          height: height,
+          height: 300,
           child: Material(
             color: Theme.of(context).cardColor,
             child: InkWell(
@@ -56,13 +58,44 @@ class CardManif extends StatelessWidget {
                     child: MapManifestation(steps: steps),
                   ),
                   Expanded(
-                    child: Center(
-                      child: Text(
-                        name,
-                        maxLines: 2,
-                        overflow: TextOverflow.clip,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline2,
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Center(
+                            child: Text(
+                              name,
+                              maxLines: 2,
+                              overflow: TextOverflow.clip,
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headline2,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.calendar_today),
+                                    SizedBox(width: 5),
+                                    Text(
+                                      format.format(manifestation.dateStart!),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: CardStateProgress(
+                                  stateProgress:
+                                      manifestation.getStateProgress(),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
                       ),
                     ),
                   ),

@@ -1,4 +1,5 @@
 import {pool} from "../middlewares/postgres.mjs";
+import {Meeting} from "./meeting.mjs";
 
 class Town {
     code_insee
@@ -23,8 +24,9 @@ Town.prototype.GetAll = function () {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows : null
-                resolve(res)
+                let listTowns = []
+                result.rows.forEach(e => listTowns.push(Object.assign(new Town(), e)));
+                resolve(listTowns)
             }
         });
     });
@@ -46,7 +48,7 @@ Town.prototype.GetById = function (code_insee)  {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows[0] : null
+                let res = (result.rows.length > 0) ? Object.assign(new Town(), result.rows[0]) : null
                 resolve(res)
             }
         });
@@ -100,8 +102,9 @@ Town.prototype.GetByDepartment = function (code) {
             if (error) {
                 reject(error)
             } else {
-                let res = (result.rows.length > 0) ? result.rows : null
-                resolve(res)
+                let listTowns = []
+                result.rows.forEach(e => listTowns.push(Object.assign(new Town(), e)));
+                resolve(listTowns)
             }
         });
     });

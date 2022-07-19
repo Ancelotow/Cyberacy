@@ -66,12 +66,8 @@ class _ManifestationDetailState extends State<ManifestationDetail> {
     if (widget.manifestation.nbPersonEstimate != null) {
       ctrlNbPerson.text = widget.manifestation.nbPersonEstimate!.toString();
     }
-    if (widget.manifestation.steps != null) {
-      widget.steps = widget.manifestation.steps!;
-    }
-    if (widget.manifestation.options != null) {
-      widget.options = widget.manifestation.options!;
-    }
+    widget.steps = widget.manifestation.steps ?? [];
+    widget.options = widget.manifestation.options ?? [];
   }
 
   @override

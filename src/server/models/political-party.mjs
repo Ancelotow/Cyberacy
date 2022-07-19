@@ -22,6 +22,7 @@ class PoliticalParty {
     doc_logo
     doc_bank_details
     doc_chart
+    next_meeting = null
 }
 
 class StatsAdherent {
@@ -80,8 +81,8 @@ const Add = (party) => {
             resolve(false)
         }
         const request = {
-            text: 'INSERT INTO political_party (pop_name, pop_description, pop_object, pop_address_street, pop_siren, pop_chart, pop_iban, poe_id, prs_nir, twn_code_insee, pop_date_create) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
-            values: [party.name, party.description, party.object, party.address_street, party.siren, party.chart, party.iban, party.id_political_edge, party.nir, party.town_code_insee, party.date_create],
+            text: 'INSERT INTO political_party (pop_name, pop_description, pop_object, pop_address_street, pop_siren, pop_chart, pop_iban, poe_id, prs_nir, twn_code_insee, pop_date_create, pop_url_logo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)',
+            values: [party.name, party.description, party.object, party.address_street, party.siren, party.chart, party.iban, party.id_political_edge, party.nir, party.town_code_insee, party.date_create, party.url_logo],
         }
         pool.query(request, (error, _) => {
             if (error) {
@@ -102,6 +103,64 @@ const GetAll = () => {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * FROM filter_political_party()',
+            values: [],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows : null
+                resolve(res)
+            }
+        });
+    });
+}
+
+const GetMine = (nir) => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: `select distinct pop.pop_id           as id,
+                                   pop_name             as name,
+                                   pop_url_logo         as url_logo,
+                                   pop_date_create      as date_create,
+                                   pop_description      as description,
+                                   pop_is_delete        as is_delete,
+                                   pop_date_delete      as date_delete,
+                                   pop_object           as object,
+                                   pop_address_street   as address_street,
+                                   pop_siren            as siren,
+                                   pop_chart            as chart,
+                                   pop_iban             as iban,
+                                   pop_url_bank_details as url_bank_details,
+                                   pop_url_chart        as url_chart,
+                                   poe_id               as id_political_edge,
+                                   pop.prs_nir          as nir,
+                                   twn_code_insee       as town_code_insee
+                   from political_party pop
+                            join adherent adh on pop.pop_id = adh.pop_id and adh.prs_nir = $1 and adh.adh_is_left = false
+                   limit 1`,
+            values: [nir],
+        }
+        pool.query(request, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                let res = (result.rows.length > 0) ? result.rows[0] : null
+                resolve(res)
+            }
+        });
+    });
+}
+
+/**
+ * Récupère tout les partie politique pour les statistiques
+ * @returns {Promise<unknown>}
+ * @constructor
+ */
+const GetAllPartyForStats = () => {
+    return new Promise((resolve, reject) => {
+        const request = {
+            text: 'SELECT pop_id as id, pop_name as name  FROM political_party',
             values: [],
         }
         pool.query(request, (error, result) => {
@@ -304,14 +363,15 @@ const GetNbAdherent = (nir, year = new Date().getFullYear()) => {
  * Statistiques : Récupère le nombre de meeting et le nombre de participant pour un parti politiue par an et par mois
  * @param nir Le NIR de l'ahdérent
  * @param year L'année du tri
+ * @param idPoliticalParty
  * @returns {Promise<unknown>}
  * @constructor
  */
-const GetNbMeeting = (nir, year = new Date().getFullYear()) => {
+const GetNbMeeting = (nir, year = new Date().getFullYear(), idPoliticalParty = null) => {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'SELECT * FROM stats_meeting_from_party($1, $2)',
-            values: [nir, year],
+            text: 'SELECT * FROM stats_meeting_from_party($1, $2, $3)',
+            values: [nir, year, idPoliticalParty],
         }
         pool.query(request, (error, result) => {
             if (error) {
@@ -414,5 +474,7 @@ export default {
     GetNbMeeting,
     GetAnnualFee,
     GetNbMessageByDay,
-    GetNbMessageByWeeks
+    GetNbMessageByWeeks,
+    GetAllPartyForStats,
+    GetMine
 }

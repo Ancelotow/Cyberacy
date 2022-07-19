@@ -5,6 +5,7 @@ class Profile {
     name
     description
     date_create
+    can_deleted = false
 }
 
 /**
@@ -13,7 +14,7 @@ class Profile {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Get = (nir) => {
+Profile.prototype.Get = function (nir) {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT * FROM filter_profile($1)',
@@ -32,16 +33,14 @@ const Get = (nir) => {
 
 /**
  * Ajoute un nouveau profil
- * @param name Le nom du profil
- * @param description La description du profile
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Add = (name, description) => {
+Profile.prototype.Add = function () {
     return new Promise((resolve, reject) => {
         const request = {
-            text: 'INSERT INTO profile (prf_name, prf_description) VALUES ($1, $2)',
-            values: [name, description],
+            text: 'INSERT INTO profile (prf_name, prf_description, prf_can_deleted) VALUES ($1, $2, true)',
+            values: [this.name, this.description],
         }
         pool.query(request, (error, _) => {
             if (error) {
@@ -55,17 +54,19 @@ const Add = (name, description) => {
 
 /**
  * Suppression d'un profile existant
- * @param id
  * @returns {Promise<unknown>}
  * @constructor
  */
-const Delete = (id) => {
+Profile.prototype.Delete = function () {
     return new Promise((resolve, reject) => {
-        IfExists(id).then((result) => {
+        this.IfExists(this.id).then((result) => {
             if (result) {
                 const request = {
-                    text: `UPDATE profile SET prf_is_delete = true, prf_date_delete = now() WHERE prf_id = $1`,
-                    values: [id],
+                    text: `UPDATE profile
+                           SET prf_is_delete   = true,
+                               prf_date_delete = now()
+                           WHERE prf_id = $1`,
+                    values: [this.id],
                 }
                 pool.query(request, (error, _) => {
                     if (error) {
@@ -89,7 +90,7 @@ const Delete = (id) => {
  * @returns {Promise<unknown>}
  * @constructor
  */
-const IfExists = (id) => {
+Profile.prototype.IfExists = (id) => {
     return new Promise((resolve, reject) => {
         const request = {
             text: 'SELECT COUNT(*) FROM profile WHERE prf_id = $1',
@@ -110,10 +111,4 @@ const IfExists = (id) => {
     });
 }
 
-export default {
-    Profile,
-    Get,
-    IfExists,
-    Delete,
-    Add
-}
+export {Profile}

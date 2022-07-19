@@ -118,9 +118,9 @@ declare
     nb_vote int;
 begin
 
-    select cho_nb_vote
+    select lrc_nb_vote
     into nb_vote
-    from choice
+    from link_round_choice
     where cho_id = id_choice
       and vte_id = _vte_id
       and rnd_num = _rnd_num;
@@ -133,8 +133,8 @@ begin
 
     insert into link_person_round (rnd_num, vte_id, prs_nir) values (_rnd_num, _vte_id, nir);
 
-    update choice
-    set cho_nb_vote = nb_vote
+    update link_round_choice
+    set lrc_nb_vote = nb_vote
     where cho_id = id_choice
       and vte_id = _vte_id
       and rnd_num = _rnd_num;
@@ -354,6 +354,69 @@ begin
     end if;
 
     return count;
+end;
+$body$
+    language plpgsql;
+
+
+-- Récupère si un adhérent appartient déjà à un thread ou non
+create or replace function is_member_of_thread(_adh_id adherent.adh_id%type, _thr_id thread.thr_id%type)
+    returns boolean
+as
+$body$
+declare
+    count int;
+begin
+    select count(*)
+    into count
+    from member
+    where mem_is_left = false
+      and adh_id = _adh_id
+      and thr_id = _thr_id;
+
+    if count is null then
+        count := 0;
+    end if;
+
+    if count = 0 then
+        return false;
+    else
+        return true;
+    end if;
+end;
+$body$
+    language plpgsql;
+
+
+-- Créé un second tour de vote automatiquement
+create or replace function create_second_round(_vte_id round.vte_id%type)
+    returns void
+as
+$body$
+declare
+    date_election_end timestamp;
+begin
+
+    if not exists(select *
+                  from vote_get_results(_vte_id, 1)
+                  where perc_without_abstention > 50) and  not exists(select *
+                                                                      from round where rnd_num = 2 and vte_id = _vte_id) then
+        select elc_date_end
+        into date_election_end
+        from vote vte
+                 join election e on e.elc_id = vte.elc_id
+        where vte_id = _vte_id;
+
+        insert into round(rnd_num, rnd_name, rnd_date_start, rnd_date_end, vte_id)
+        values (2, 'Second tour', date_election_end - interval '12' HOUR, date_election_end, _vte_id);
+
+        insert into link_round_choice(cho_id, vte_id, rnd_num)
+        select id_choice, _vte_id, 2
+        from vote_get_results(_vte_id, 1)
+        order by perc_without_abstention desc
+        limit 2;
+    end if;
+
 end;
 $body$
     language plpgsql;

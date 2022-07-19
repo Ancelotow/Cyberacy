@@ -1,6 +1,6 @@
 ###
 # @name Get types step
-GET {{url}}/step_type
+GET {{url}}/type_step
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
 
