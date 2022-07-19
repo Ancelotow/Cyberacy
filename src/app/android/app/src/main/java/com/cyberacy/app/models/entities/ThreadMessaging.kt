@@ -17,7 +17,7 @@ class ThreadMessaging(
     val description: String,
 
     @SerializedName("url_logo")
-    val urlLogo: String,
+    val urlLogo: String?,
 
     @SerializedName("id_political_party")
     val idPoliticalParty: Int,

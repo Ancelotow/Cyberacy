@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_add_thread"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.party.messaging.add_thread.AddThreadActivity">
@@ -62,7 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/hint_name_thread"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="5dp"
             app:boxCornerRadiusBottomEnd="5dp"
             app:boxCornerRadiusBottomStart="5dp"
             app:boxCornerRadiusTopEnd="5dp"
@@ -70,36 +71,11 @@
             app:errorEnabled="true"
             app:layout_constraintLeft_toLeftOf="@id/gl_start"
             app:layout_constraintRight_toRightOf="@id/gl_end"
-            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/card_logo_thread"
             app:startIconDrawable="@drawable/ic_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/hk_nova"
-                android:lines="1" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_url_logo"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_url_logo"
-            app:boxCornerRadiusBottomEnd="5dp"
-            app:boxCornerRadiusBottomStart="5dp"
-            app:boxCornerRadiusTopEnd="5dp"
-            app:boxCornerRadiusTopStart="5dp"
-            app:errorEnabled="true"
-            app:layout_constraintLeft_toLeftOf="@id/gl_start"
-            app:layout_constraintRight_toRightOf="@id/gl_end"
-            app:layout_constraintTop_toBottomOf="@id/layout_name"
-            app:startIconDrawable="@drawable/ic_image">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/url_logo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/hk_nova"
@@ -121,7 +97,7 @@
             app:errorEnabled="true"
             app:layout_constraintLeft_toLeftOf="@id/gl_start"
             app:layout_constraintRight_toRightOf="@id/gl_end"
-            app:layout_constraintTop_toBottomOf="@id/layout_url_logo"
+            app:layout_constraintTop_toBottomOf="@id/layout_name"
             app:startIconDrawable="@drawable/ic_description">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -151,6 +127,33 @@
             app:layout_constraintTop_toBottomOf="@id/layout_description"
             tools:ignore="PrivateResource" />
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_logo_thread"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            card_view:cardCornerRadius="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:startIconDrawable="@drawable/ic_image">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/desc_logo"
+                android:src="@mipmap/thread_void"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.cardview.widget.CardView>
+
+
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progress_circular"
             android:layout_width="100sp"
@@ -163,6 +166,9 @@
             app:layout_constraintTop_toBottomOf="@id/layout_description"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
     <include layout="@layout/layout_error"
         android:id="@+id/body_error"
