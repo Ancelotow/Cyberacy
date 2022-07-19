@@ -11,6 +11,7 @@ import '../../models/notifications/navigation_notification.dart';
 import '../../widgets/buttons/button.dart';
 import '../../widgets/input_field/input_text.dart';
 import '../party_page.dart';
+import 'package:desktop_drop/desktop_drop.dart';
 
 class AddPartyPage extends StatefulWidget {
   static const String routeName = "infoPartyPage";
@@ -23,6 +24,10 @@ class AddPartyPage extends StatefulWidget {
 
 class _AddPartyPageState extends State<AddPartyPage> {
   final _formKey = GlobalKey<FormState>();
+
+  bool _dragging = false;
+
+  Offset? offset;
 
   final TextEditingController ctrlName = TextEditingController();
   final TextEditingController ctrlSiren = TextEditingController();
@@ -103,6 +108,7 @@ class _AddPartyPageState extends State<AddPartyPage> {
                 width: width,
                 controller: ctrlUrlLogo,
               ),
+              dropFileTarget(context),
               InputSelected<PoliticalEdge>(
                 future: RefService().getAllPoliticalEdge(),
                 items: [],
@@ -115,7 +121,7 @@ class _AddPartyPageState extends State<AddPartyPage> {
                   currentEdge = value;
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Button(
                 label: "Sauvegarder",
                 width: width,
@@ -123,7 +129,7 @@ class _AddPartyPageState extends State<AddPartyPage> {
                 pressedColor: Colors.lightBlue,
                 click: () => _saveParty(context),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Button(
                   label: "Annuler",
                   width: width,
@@ -180,5 +186,49 @@ class _AddPartyPageState extends State<AddPartyPage> {
       }
     }
   }
+
+  Widget dropFileTarget(BuildContext context) {
+    return DropTarget(
+      onDragDone: (detail) async {
+        setState(() {
+          print("0");
+        });
+        debugPrint('onDragDone:');
+        for (final file in detail.files) {
+          debugPrint('  ${file.path} ${file.name}'
+              '  ${await file.lastModified()}'
+              '  ${await file.length()}'
+              '  ${file.mimeType}');
+        }
+      },
+      onDragUpdated: (details) {
+        setState(() {
+          offset = details.localPosition;
+        });
+      },
+      onDragEntered: (detail) {
+        setState(() {
+          _dragging = true;
+          offset = detail.localPosition;
+        });
+      },
+      onDragExited: (detail) {
+        setState(() {
+          _dragging = false;
+          offset = null;
+        });
+      },
+      child: Container(
+        height: 200,
+        width: 200,
+        color: _dragging ? Colors.blue.withOpacity(0.4) : Colors.black26,
+        child: Stack(
+          children: [
+          ],
+        ),
+      ),
+    );
+  }
+
 
 }

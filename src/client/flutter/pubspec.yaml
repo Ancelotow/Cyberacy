@@ -23,6 +23,8 @@ dependencies:
   shimmer: ^2.0.0
   syncfusion_flutter_maps: ^20.1.61
   percent_indicator: ^4.2.2
+  firebase_storage: ^10.3.2
+  desktop_drop: ^0.3.3
 
 
 
