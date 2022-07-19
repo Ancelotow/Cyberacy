@@ -123,12 +123,10 @@
         android:layout_width="wrap_content"
         android:layout_marginTop="5dp"
         android:fontFamily="@font/hk_nova"
-        android:textColor="@color/purple_500"
         app:cornerRadius="5dp"
-        app:strokeColor="@color/purple_500"
         app:layout_constraintLeft_toLeftOf="@id/gl_start"
         app:layout_constraintRight_toRightOf="@id/gl_end"
-        app:layout_constraintTop_toBottomOf="@id/btnConnection"/>
+        app:layout_constraintTop_toBottomOf="@id/barrier"/>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progress_circular"

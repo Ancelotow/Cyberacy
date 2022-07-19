@@ -23,6 +23,7 @@ import com.cyberacy.app.models.entities.FCMTopic
 import com.cyberacy.app.models.entities.Meeting
 import com.cyberacy.app.models.entities.PoliticalParty
 import com.cyberacy.app.models.repositories.PartyStateError
+import com.cyberacy.app.models.repositories.PartyStateErrorHost
 import com.cyberacy.app.models.repositories.PartyStateLoading
 import com.cyberacy.app.models.repositories.PartyStateSuccessMine
 import com.cyberacy.app.models.services.ApiConnection
@@ -40,6 +41,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.await
+import java.net.UnknownHostException
 
 class MainPartyFragment : Fragment() {
 
@@ -78,6 +80,11 @@ class MainPartyFragment : Fragment() {
                     loader.visibility = View.GONE
                     errorBody.visibility = View.VISIBLE
                     txtError.text = getString(R.string.txt_error_happening, it.ex.message())
+                }
+                is PartyStateErrorHost -> {
+                    loader.visibility = View.GONE
+                    errorBody.visibility = View.VISIBLE
+                    txtError.text = getString(R.string.txt_connection_host_failure)
                 }
                 PartyStateLoading -> {
                     body.visibility = View.GONE
@@ -175,6 +182,11 @@ class MainPartyFragment : Fragment() {
                     if (e.code() == 401) {
                         Log.e("Erreur 401", e.message())
                     }
+                    loader.visibility = View.GONE
+                    activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                } catch (e: UnknownHostException) {
+                    Toast.makeText(this@MainPartyFragment.context, R.string.txt_connection_host_failure, Toast.LENGTH_SHORT)
+                        .show()
                     loader.visibility = View.GONE
                     activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 }

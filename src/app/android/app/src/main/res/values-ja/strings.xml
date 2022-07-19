@@ -71,6 +71,7 @@
     <string name="txt_confirm_choice">\"％s \"を選択してもよろしいですか？</string>
     <string name="txt_no_choice_selected">選択肢を選択していません。</string>
     <string name="txt_round">ラウンド</string>
+    <string name="txt_no_vote_in_progress">進行中の投票はありません</string>
 
 
     <string name="txt_error_book_meeting">予約中にエラーが発生しました</string>
@@ -132,5 +133,12 @@
     <string name="txt_error_minor">登録するには法定年齢に達している必要があります</string>
     <string name="txt_account_already_existed">このアカウントはすでに存在します</string>
     <string name="txt_account_created">アカウントが正常に作成されました。</string>
+
+    <string name="txt_create_thread">新しいスレッド</string>
+    <string name="hint_name_thread">スレッド名*</string>
+    <string name="hint_url_logo">ロゴのURL</string>
+    <string name="hint_description_thread">説明…</string>
+    <string name="btn_add">追加</string>
+    <string name="txt_connection_host_failure">サーバーにアクセスできません。\nインターネット接続を確認してください</string>
 
 </resources>

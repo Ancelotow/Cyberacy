@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
+import java.net.ConnectException
+import java.net.UnknownHostException
 
 object RoundRepository {
 
@@ -16,6 +18,10 @@ object RoundRepository {
                 emit(RoundStateSuccess(Round.getRounds(idVote)))
             } catch (e: HttpException) {
                 emit(RoundStateError(e))
+            } catch (e: UnknownHostException) {
+                emit(RoundStateErrorHost(e))
+            } catch (e: ConnectException) {
+                emit(RoundStateErrorHost(e))
             }
         }.flowOn(Dispatchers.IO)
     }
@@ -26,3 +32,4 @@ sealed class RoundState
 object RoundStateLoading: RoundState()
 data class RoundStateSuccess(val rounds: List<Round>): RoundState()
 data class RoundStateError(val ex: HttpException): RoundState()
+data class RoundStateErrorHost(val ex: Exception): RoundState()

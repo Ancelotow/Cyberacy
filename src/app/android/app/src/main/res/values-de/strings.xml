@@ -70,6 +70,7 @@
     <string name="txt_confirm_choice">Sind Sie sicher, dass Sie \"%s\" auswählen möchten?</string>
     <string name="txt_no_choice_selected">Sie haben keine Auswahl getroffen.</string>
     <string name="txt_round">Runden</string>
+    <string name="txt_no_vote_in_progress">Es sind keine Abstimmungen im Gange</string>
 
     <!-- Text : Meeting -->
     <string name="txt_error_book_meeting">Während der Reservierung ist ein Fehler aufgetreten</string>
@@ -131,5 +132,12 @@
     <string name="txt_error_minor">U moet meerderjarig zijn om u te registreren</string>
     <string name="txt_account_already_existed">Dit account bestaat al</string>
     <string name="txt_account_created">Het account is succesvol aangemaakt!</string>
+
+    <string name="txt_create_thread">Neue Diskussion</string>
+    <string name="hint_name_thread">Chat Name*</string>
+    <string name="hint_url_logo">URL-Logo</string>
+    <string name="hint_description_thread">Beschreibung…</string>
+    <string name="btn_add">Hinzufügen</string>
+    <string name="txt_connection_host_failure">Wir können den Server nicht erreichen.\nBitte überprüfen Sie Ihre Internetverbindung</string>
 
 </resources>

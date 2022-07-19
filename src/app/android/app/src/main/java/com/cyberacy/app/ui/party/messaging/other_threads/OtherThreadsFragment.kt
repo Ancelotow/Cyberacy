@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,6 +22,7 @@ import com.cyberacy.app.R
 import com.cyberacy.app.models.entities.PoliticalParty
 import com.cyberacy.app.models.entities.ThreadMessaging
 import com.cyberacy.app.models.repositories.ThreadStateError
+import com.cyberacy.app.models.repositories.ThreadStateErrorHost
 import com.cyberacy.app.models.repositories.ThreadStateLoading
 import com.cyberacy.app.models.repositories.ThreadStateSuccess
 import com.cyberacy.app.models.services.ApiConnection
@@ -47,22 +49,42 @@ class OtherThreadsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val shimmer_layout = view.findViewById<ShimmerFrameLayout>(R.id.shimmer_layout)
+        val shimmerLayout = view.findViewById<ShimmerFrameLayout>(R.id.shimmer_layout)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview)
         val labelNoData = view.findViewById<TextView>(R.id.label_no_data)
+        val bodyError = view.findViewById<ConstraintLayout>(R.id.body_error)
+        val bodyErrorHost = view.findViewById<ConstraintLayout>(R.id.body_error_host)
+        val txtError = bodyError.findViewById<TextView>(R.id.txt_error)
         loaderJoin = view.findViewById(R.id.loader_join)
+
         recyclerView.visibility = View.GONE
+        bodyErrorHost.visibility = View.GONE
+        bodyError.visibility = View.GONE
         viewModel.otherThreads.observe(viewLifecycleOwner) {
             when (it) {
                 is ThreadStateError -> {
-                    shimmer_layout.visibility = View.GONE
+                    recyclerView.visibility = View.GONE
+                    shimmerLayout.visibility = View.GONE
+                    bodyErrorHost.visibility = View.GONE
+                    bodyError.visibility = View.VISIBLE
+                    txtError.text = getString(R.string.txt_error_happening, it.ex.message())
+                }
+                is ThreadStateErrorHost -> {
+                    recyclerView.visibility = View.GONE
+                    bodyErrorHost.visibility = View.VISIBLE
+                    bodyError.visibility = View.GONE
+                    shimmerLayout.visibility = View.GONE
                 }
                 ThreadStateLoading -> {
                     recyclerView.visibility = View.GONE
-                    shimmer_layout.visibility = View.VISIBLE
+                    bodyErrorHost.visibility = View.GONE
+                    bodyError.visibility = View.GONE
+                    shimmerLayout.visibility = View.VISIBLE
                 }
                 is ThreadStateSuccess -> {
-                    shimmer_layout.visibility = View.GONE
+                    bodyErrorHost.visibility = View.GONE
+                    bodyError.visibility = View.GONE
+                    shimmerLayout.visibility = View.GONE
                     if(it.threads.isEmpty()) {
                         labelNoData.visibility = View.VISIBLE
                     } else {

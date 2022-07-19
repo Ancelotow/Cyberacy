@@ -19,6 +19,9 @@ class ThreadMessaging(
     @SerializedName("url_logo")
     val urlLogo: String,
 
+    @SerializedName("id_political_party")
+    val idPoliticalParty: Int,
+
     @SerializedName("date_create")
     val dateCreate: LocalDateTime,
 

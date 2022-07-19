@@ -73,6 +73,11 @@ class MeetingDetailActivity : AppCompatActivity() {
                     textNoData.visibility = View.VISIBLE
                     textNoData.text = getString(R.string.txt_error_happening, it.ex.message())
                 }
+                is MeetingDetailStateErrorHost -> {
+                    loader.visibility = View.GONE
+                    textNoData.visibility = View.VISIBLE
+                    textNoData.text = getString(R.string.txt_connection_host_failure)
+                }
                 MeetingDetailStateLoading -> {
                     body.visibility = View.GONE
                     loader.visibility = View.VISIBLE
@@ -226,6 +231,11 @@ class MeetingDetailActivity : AppCompatActivity() {
                     val popup = PopUpWindow(getString(R.string.txt_error_book_meeting), R.drawable.ic_error, R.id.layout_meeting_details)
                     popup.showPopUp(this)
                     loader.visibility = View.GONE
+                }
+                is MeetingParticipateStateErrorHost -> {
+                    loader.visibility = View.GONE
+                    val popup = PopUpWindow(getString(R.string.txt_connection_host_failure), R.drawable.ic_no_internet, R.id.layout_meeting_details)
+                    popup.showPopUp(this)
                 }
                 MeetingParticipateStateLoading -> {
                     btnPayment.visibility = View.GONE

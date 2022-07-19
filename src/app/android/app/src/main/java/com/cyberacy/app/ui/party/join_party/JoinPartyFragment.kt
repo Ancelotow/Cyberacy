@@ -56,6 +56,9 @@ class JoinPartyFragment : Fragment() {
                 is PartyStateError -> {
                     shimmer_layout.visibility = View.GONE
                 }
+                is PartyStateErrorHost -> {
+                    shimmer_layout.visibility = View.GONE
+                }
                 PartyStateLoading -> {
                     recyclerView.visibility = View.GONE
                     shimmer_layout.visibility = View.VISIBLE

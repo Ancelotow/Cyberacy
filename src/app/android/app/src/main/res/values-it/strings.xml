@@ -70,6 +70,7 @@
     <string name="txt_confirm_choice">Sei sicuro di voler scegliere \"%s\"?</string>
     <string name="txt_no_choice_selected">Non hai selezionato nessuna scelta.</string>
     <string name="txt_round">Girare</string>
+    <string name="txt_no_vote_in_progress">Non ci sono votazioni in corso</string>
 
 
     <string name="txt_error_book_meeting">Si è verificato un errore durante la prenotazione</string>
@@ -132,4 +133,10 @@
     <string name="txt_account_already_existed">questo account esiste già</string>
     <string name="txt_account_created">L\'account è stato creato con successo!</string>
 
+    <string name="txt_create_thread">Nuovo thread</string>
+    <string name="hint_name_thread">Nome thread*</string>
+    <string name="hint_url_logo">URL logo</string>
+    <string name="hint_description_thread">Descrizione…</string>
+    <string name="btn_add">Aggiungi</string>
+    <string name="txt_connection_host_failure">Non siamo in grado di raggiungere il server.\nVerifica la tua connessione Internet</string>
 </resources>

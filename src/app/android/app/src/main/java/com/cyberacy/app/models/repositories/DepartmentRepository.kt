@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
+import java.net.ConnectException
+import java.net.UnknownHostException
 
 object DepartmentRepository {
 
@@ -16,6 +18,10 @@ object DepartmentRepository {
                 emit(DepartmentStateSuccess(Department.getDepartment()))
             } catch (e: HttpException) {
                 emit(DepartmentStateError(e))
+            } catch (e: UnknownHostException) {
+                emit(DepartmentStateErrorHost(e))
+            } catch (e: ConnectException) {
+                emit(DepartmentStateErrorHost(e))
             }
         }.flowOn(Dispatchers.IO)
     }
@@ -26,3 +32,4 @@ sealed class DepartmentState
 object DepartmentStateLoading: DepartmentState()
 data class DepartmentStateSuccess(val departments: List<Department>): DepartmentState()
 data class DepartmentStateError(val ex: HttpException): DepartmentState()
+data class DepartmentStateErrorHost(val ex: Exception): DepartmentState()

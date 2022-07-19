@@ -1,5 +1,6 @@
 package com.cyberacy.app.models.repositories
 
+import com.cyberacy.app.models.entities.Connection
 import com.cyberacy.app.models.entities.Message
 import com.cyberacy.app.models.entities.ThreadMessaging
 import kotlinx.coroutines.Dispatchers
@@ -10,6 +11,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.isActive
 import retrofit2.HttpException
+import java.net.ConnectException
+import java.net.UnknownHostException
 
 object ThreadRepository {
 
@@ -23,6 +26,10 @@ object ThreadRepository {
                 }
             } catch (e: HttpException) {
                 emit(ThreadStateError(e))
+            } catch (e: UnknownHostException) {
+                emit(ThreadStateErrorHost(e))
+            } catch (e: ConnectException) {
+                emit(ThreadStateErrorHost(e))
             }
         }.flowOn(Dispatchers.IO)
     }
@@ -34,6 +41,10 @@ object ThreadRepository {
                 emit(ThreadStateSuccess(ThreadMessaging.getOtherThreads()))
             } catch (e: HttpException) {
                 emit(ThreadStateError(e))
+            } catch (e: UnknownHostException) {
+                emit(ThreadStateErrorHost(e))
+            } catch (e: ConnectException) {
+                emit(ThreadStateErrorHost(e))
             }
         }.flowOn(Dispatchers.IO)
     }
@@ -44,3 +55,4 @@ sealed class ThreadState
 object ThreadStateLoading: ThreadState()
 data class ThreadStateSuccess(val threads: List<ThreadMessaging>): ThreadState()
 data class ThreadStateError(val ex: HttpException): ThreadState()
+data class ThreadStateErrorHost(val ex: Exception): ThreadState()
