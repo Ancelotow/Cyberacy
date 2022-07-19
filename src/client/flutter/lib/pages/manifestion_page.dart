@@ -27,7 +27,7 @@ class ManifestationPage extends StatefulWidget {
 class _ManifestationPageState extends State<ManifestationPage> {
   List<Manifestation> manifs = [];
   final double _widthCard = 500;
-  final double _heightCard = 200;
+  final double _heightCard = 300;
 
   @override
   Widget build(BuildContext context) {

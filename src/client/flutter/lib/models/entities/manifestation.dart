@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:bo_cyberacy/models/entities/option.dart';
 import 'package:bo_cyberacy/models/entities/step.dart';
 
+import '../enums/state_progress.dart';
+
 class Manifestation {
   int? id;
   String? name;
@@ -53,6 +55,19 @@ class Manifestation {
       "security_description": securityDescription,
       "nb_person_estimate": nbPersonEstimate.toString()
     };
+  }
+
+  StateProgress getStateProgress() {
+    DateTime today = DateTime.now();
+    if(dateEnd == null || dateStart == null) {
+      return StateProgress.coming;
+    } else if(today.isAfter(dateEnd!)) {
+      return StateProgress.passed;
+    } else if (today.isBefore(dateStart!)) {
+      return StateProgress.coming;
+    } else {
+      return StateProgress.inProgress;
+    }
   }
 
 }
