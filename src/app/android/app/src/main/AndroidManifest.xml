@@ -3,9 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
         android:name="android.permission.POST_NOTIFICATIONS"
         tools:node="remove" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -18,6 +22,36 @@
         android:theme="@style/Theme.Cyberacy"
         tools:targetApi="31">
         <activity
+            android:name=".ui.party.messaging.add_thread.AddThreadActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.register.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.vote.to_vote.ToVoteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.vote.round_vote.RoundActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.meeting.meeting_ticket.MeetingTicketActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.payment.PaymentCyberacyActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.cyberacy.app.ui.meeting.meeting_detail.MeetingDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.cyberacy.app.ui.meeting.ListMeetingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.party.messaging.thread.ThreadActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.party.messaging.MessagingActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.navigation.NavigationActivity"
             android:exported="false"
             android:label="@string/title_activity_navigation" />
@@ -29,7 +63,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Icône pour les Notifications PUSH -->
+        </activity> <!-- This element is required to enable Google Pay in your app. -->
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" /> <!-- Icône pour les Notifications PUSH -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notification" /> <!-- Couleur pour les Notifications PUSH -->
@@ -42,7 +79,10 @@
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>
+        </service> <!-- Google Maps -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBVQkLeRIrhx7eZqQZfUbZuHizLgboeoPM" />
     </application>
 
 </manifest>

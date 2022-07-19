@@ -1,14 +1,14 @@
 package com.cyberacy.app.models.entities
 
 
-class Session private constructor(private val jwtToken: String) {
+class Session private constructor(private val person: Person) {
 
     companion object {
         private var instance: Session? = null
 
-        fun openSession(token: String) {
+        fun openSession(person: Person) {
             if(instance == null) {
-                instance = Session(token)
+                instance = Session(person)
             }
         }
 
@@ -22,7 +22,7 @@ class Session private constructor(private val jwtToken: String) {
 
         fun getJwtToken(): String {
             if(instance != null) {
-                return instance!!.jwtToken
+                return instance!!.person.token ?: ""
             }
             return ""
         }

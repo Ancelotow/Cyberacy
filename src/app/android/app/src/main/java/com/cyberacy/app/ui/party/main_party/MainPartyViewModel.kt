@@ -8,19 +8,19 @@ import com.cyberacy.app.models.repositories.PoliticalPartyRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class MainPartyViewModel(val id: Int) : ViewModel() {
+class MainPartyViewModel() : ViewModel() {
 
 
     private val _party = MutableLiveData<PartyState>()
     val party = _party
 
     init {
-        getPartyById(id)
+        getMineParty()
     }
 
-    fun getPartyById(id: Int) {
+    private fun getMineParty() {
         viewModelScope.launch {
-            PoliticalPartyRepository.fetchPartyById(id).collect {
+            PoliticalPartyRepository.fetchMineParty().collect {
                 _party.value = it
             }
         }

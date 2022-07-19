@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">サイバーアシー</string>
+
+
+    <string name="desc_logo">ロゴ</string>
+
+
+    <string name="hint_nir">社会保障番号</string>
+    <string name="hint_pwd">パスワード</string>
+    <string name="hint_message">メッセージ</string>
+    <string name="hint_email">メールアドレス</string>
+
+
+    <string name="btn_login">ログイン</string>
+    <string name="btn_twitch">Twitchへのリンク</string>
+    <string name="btn_youtube">YouTubeへのリンク</string>
+    <string name="btn_add_event">リマインダーを追加する</string>
+    <string name="btn_book_meeting">ブックミーティング</string>
+    <string name="btn_pay_with_paypal">PayPalで支払う</string>
+    <string name="btn_more_meeting">他の会議を見る</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
+    <string name="btn_yes">はい</string>
+    <string name="btn_no">いいえ</string>
+    <string name="btn_to_vote">投票する！</string>
+
+
+    <string name="nav_party">政治団体</string>
+    <string name="nav_manifestation">イベント</string>
+    <string name="nav_vote">投票</string>
+
+
+    <string name="txt_error_happening">エラーが発生しました…\n％s</string>
+    <string name="action_settings">設定</string>
+    <string name="txt_required_field">この項目は必須です</string>
+    <string name="txt_error_login">ユーザー名やパスワードが正しくありません</string>
+
+
+    <string name="txt_no_party">参加する政党を選択してください</string>
+    <string name="txt_join_party">パーティーに参加する</string>
+    <string name="txt_join_thread">ディスカッションに参加する</string>
+    <string name="txt_join_party_cancel">キャンセルする</string>
+    <string name="txt_messagerie">メッセージング</string>
+    <string name="txt_no_message">投稿なし</string>
+    <string name="txt_no_mythreads">ディスカッションに参加していません\n「その他のディスカッション」に移動して参加してください</string>
+    <string name="txt_no_threads">現時点では、参加するための招待状や新しいディスカッションはありません。</string>
+    <string name="txt_no_messages">このスレッドに最初のメッセージを書いてください！</string>
+    <string name="txt_message_sent">送信されたメッセージ</string>
+    <string name="txt_not_found_party">あなたの政党は見つかりませんでした</string>
+    <string name="txt_join_party_confirmation">\"％s \"パーティーに参加してもよろしいですか？</string>
+    <string name="txt_leave_party_confirmation">この政党を去ってよろしいですか？</string>
+    <string name="txt_join_thread_confirmation">\"％s \"ディスカッションに参加してもよろしいですか？</string>
+    <string name="txt_leave_thread_confirmation">このディスカッションを終了してもよろしいですか？</string>
+    <string name="txt_message_null">メッセージをnullにすることはできません</string>
+    <string name="txt_message_today">今日％s</string>
+    <string name="txt_message_yesterday">昨日</string>
+
+
+    <string name="txt_vote_inprogress">投票中</string>
+    <string name="txt_choose_choice">以下の選択肢の1つを選択し、[投票！]ボタンを押して選択を検証します</string>
+    <string name="txt_to_vote_confirmation">投票の確認</string>
+    <string name="txt_round_finished">このラウンドは終わりました</string>
+    <string name="txt_round_not_started">このツアーはまだ始まっていません</string>
+    <string name="txt_already_voted">あなたはすでに投票しました</string>
+    <string name="txt_no_voted">あなたは投票していません</string>
+    <string name="txt_thanks_to_voted">ありがとうございます！\nあなたの投票は考慮されました</string>
+    <string name="txt_have_voted">私が投票しました</string>
+    <string name="txt_must_voted">投票する</string>
+    <string name="txt_abstention">棄権</string>
+    <string name="txt_confirm_choice">\"％s \"を選択してもよろしいですか？</string>
+    <string name="txt_no_choice_selected">選択肢を選択していません。</string>
+    <string name="txt_round">ラウンド</string>
+    <string name="txt_no_vote_in_progress">進行中の投票はありません</string>
+
+
+    <string name="txt_error_book_meeting">予約中にエラーが発生しました</string>
+    <string name="txt_book_successful">ご予約は無事に完了しました！</string>
+    <string name="txt_meeting_title_payment">会議の予約：％s</string>
+    <string name="txt_meeting_price">価格：％s</string>
+    <string name="txt_meeting_during">期間：％s</string>
+    <string name="txt_next_meeting">次の会議</string>
+    <string name="txt_meeting">ミーティング</string>
+    <string name="txt_no_meetings">現在、会議はありません</string>
+    <string name="txt_no_meetings_detail">この会議に関する情報はありません…\n後でもう一度やり直してください</string>
+    <string name="txt_desc">説明</string>
+    <string name="txt_or">どこ</string>
+    <string name="txt_participate_meeting">私は会議に出席します！</string>
+    <string name="txt_my_ticket">私のチケット</string>
+    <string name="txt_cancel_book">予約の支払いをキャンセルしました</string>
+    <string name="txt_not_found_ticket">このセッションのチケットがあなたの名前で見つかりませんでした</string>
+
+
+    <string name="txt_payment">支払い</string>
+    <string name="txt_cdv">私は読んで受け入れます<a href="https://www.termsandconditionsgenerator.com/live.php?token=pM2FwG6dI5fdNoVANzsbF4UUXywt1Uc7"> 販売条件</a>  </string>
+    <string name="txt_total_excluding_tax">付加価値税を除く合計：％s€</string>
+    <string name="txt_vat">VAT：％s \%%</string>
+    <string name="txt_total_including_tax">付加価値税を含む合計：％s€</string>
+    <string name="txt_pay_by_card">カードで支払う（％s€）</string>
+    <string name="txt_required_field_invoice">このフィールドは、請求書を送信するために必要です</string>
+    <string name="txt_cgv_required">続行するには、利用規約に同意する必要があります</string>
+
+
+    <string name="tb_conversation">私の会話</string>
+    <string name="tb_other_conversation">その他のスレッド</string>
+
+
+    <string name="title_activity_checkout">CheckoutActivity</string>
+    <string name="checkout_item_description">説明</string>
+    <string name="googlepay_status_unavailable" translatable="false">Unfortunately, Google Pay is
+        not available on this phone.
+    </string>
+    <string name="payments_show_name" translatable="false">Successfully received payment data for
+        %s!
+    </string>
+
+    <string name="btn_register">アカウントを作る</string>
+    <string name="txt_register">登録</string>
+    <string name="hint_firstname">ファーストネーム</string>
+    <string name="hint_lastname">苗字</string>
+    <string name="hint_password_check">パスワードを再入力してください</string>
+    <string name="hint_town">街</string>
+    <string name="hint_dept">デパートメント</string>
+    <string name="hint_genre">性別</string>
+    <string name="hint_address_street">住所</string>
+    <string name="txt_identity">識別</string>
+    <string name="txt_account">アカウント</string>
+    <string name="txt_localisation">位置</string>
+    <string name="hint_birthday">生年月日</string>
+    <string name="txt_error_nir_short">NIRは13桁である必要があります</string>
+    <string name="txt_error_not_same_pwd">パスワードが一致していません</string>
+    <string name="txt_error_not_email">これはメールアドレスではありません</string>
+    <string name="txt_error_minor">登録するには法定年齢に達している必要があります</string>
+    <string name="txt_account_already_existed">このアカウントはすでに存在します</string>
+    <string name="txt_account_created">アカウントが正常に作成されました。</string>
+
+    <string name="txt_create_thread">新しいスレッド</string>
+    <string name="hint_name_thread">スレッド名*</string>
+    <string name="hint_url_logo">ロゴのURL</string>
+    <string name="hint_description_thread">説明…</string>
+    <string name="btn_add">追加</string>
+    <string name="txt_connection_host_failure">サーバーにアクセスできません。\nインターネット接続を確認してください</string>
+
+</resources>
