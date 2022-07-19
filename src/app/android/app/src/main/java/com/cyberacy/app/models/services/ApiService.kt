@@ -142,4 +142,10 @@ interface ApiService {
     @POST("register")
     fun register(@Body person: Person): Call<ResponseAPI<Unit>>
 
+    @POST("thread")
+    fun addThread(
+        @Body thread: ThreadMessaging,
+        @Header("Authorization") jwtToken: String = "Bearer ${Session.getJwtToken()}"
+    ): Call<ResponseAPI<Unit>>
+
 }

@@ -26,6 +26,7 @@ import com.paypal.pyplcheckout.constants.RESPONSE_CODE_EXCEPTION
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.await
+import java.net.UnknownHostException
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -346,6 +347,11 @@ class RegisterActivity : AppCompatActivity() {
                     val popup = PopUpWindow(getString(R.string.txt_error_happening, e.message().toString()), R.drawable.ic_error, R.id.layout_register)
                     popup.showPopUp(this@RegisterActivity)
                 }
+                circularProgress.visibility = View.GONE
+                btnRegister.visibility = View.VISIBLE
+            } catch (e: UnknownHostException) {
+                val popup = PopUpWindow(getString(R.string.txt_cannot_communicate), R.drawable.ic_no_internet, R.id.layout_main)
+                popup.showPopUp(this@RegisterActivity)
                 circularProgress.visibility = View.GONE
                 btnRegister.visibility = View.VISIBLE
             }

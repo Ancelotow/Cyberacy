@@ -54,6 +54,14 @@
     <string name="txt_message_today">Aujourd\'hui %s</string>
     <string name="txt_message_yesterday">Hier %s</string>
 
+    <string name="txt_create_thread">Nouvelle discussion</string>
+    <string name="hint_name_thread">Nom de la discussion*</string>
+    <string name="hint_url_logo">URL Logo</string>
+    <string name="hint_description_thread">Description…</string>
+    <string name="btn_add">Ajouter</string>
+    <string name="txt_cannot_communicate">Nous ne parvenons pas à joindre le serveur.\nVeuillez vérifier votre connexion internet</string>
+
+
     <!-- Text : Elections -->
     <string name="txt_vote_inprogress">Les votes en cours</string>
     <string name="txt_choose_choice">Sélectionnez un des choix ci-dessous et appuyez sur le bouton \"A voter !\" pour valider votre choix</string>

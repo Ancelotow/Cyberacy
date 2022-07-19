@@ -23,6 +23,8 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.await
 import java.io.IOException
+import java.lang.Exception
+import java.net.UnknownHostException
 
 class MainActivity : AppCompatActivity() {
     
@@ -92,6 +94,9 @@ class MainActivity : AppCompatActivity() {
                     layoutLogin.error = getString(R.string.txt_error_login)
                     password.text = null
                 }
+            } catch (e: UnknownHostException) {
+                val popup = PopUpWindow(getString(R.string.txt_cannot_communicate), R.drawable.ic_no_internet, R.id.layout_main)
+                popup.showPopUp(this@MainActivity)
             } finally {
                 circularProgress.visibility = View.GONE
                 btnConnection.visibility = View.VISIBLE
