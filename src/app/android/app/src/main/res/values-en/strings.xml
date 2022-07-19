@@ -132,4 +132,11 @@
     <string name="txt_error_minor">You must be of legal age to register</string>
     <string name="txt_account_already_existed">This account already exists</string>
     <string name="txt_account_created">The account has been successfully created!</string>
+
+    <string name="txt_create_thread">New thread</string>
+    <string name="hint_name_thread">Thread Name*</string>
+    <string name="hint_url_logo">Logo URL</string>
+    <string name="hint_description_thread">Description…</string>
+    <string name="btn_add">Add</string>
+    <string name="txt_connection_host_failure">We are unable to reach the server.\nPlease check your internet connection</string>
 </resources>

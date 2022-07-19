@@ -133,4 +133,11 @@
     <string name="txt_account_already_existed">Dit account bestaat al</string>
     <string name="txt_account_created">Het account is succesvol aangemaakt!</string>
 
+    <string name="txt_create_thread">Neue Diskussion</string>
+    <string name="hint_name_thread">Chat Name*</string>
+    <string name="hint_url_logo">URL-Logo</string>
+    <string name="hint_description_thread">Beschreibung…</string>
+    <string name="btn_add">Hinzufügen</string>
+    <string name="txt_connection_host_failure">Wir können den Server nicht erreichen.\nBitte überprüfen Sie Ihre Internetverbindung</string>
+
 </resources>

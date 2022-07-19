@@ -132,4 +132,11 @@
     <string name="txt_error_minor">Debes ser mayor de edad para registrarte</string>
     <string name="txt_account_already_existed">Esta cuenta ya existe</string>
     <string name="txt_account_created">¡La cuenta ha sido creada con éxito!</string>
+
+    <string name="txt_create_thread">Nuevo hilo</string>
+    <string name="hint_name_thread">Nombre del hilo*</string>
+    <string name="hint_url_logo">URL del logotipo</string>
+    <string name="hint_description_thread">Descripción…</string>
+    <string name="btn_add">Agregar</string>
+    <string name="txt_connection_host_failure">No podemos comunicarnos con el servidor.\nCompruebe su conexión a Internet</string>
 </resources>

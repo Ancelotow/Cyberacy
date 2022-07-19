@@ -134,4 +134,11 @@
     <string name="txt_account_already_existed">このアカウントはすでに存在します</string>
     <string name="txt_account_created">アカウントが正常に作成されました。</string>
 
+    <string name="txt_create_thread">新しいスレッド</string>
+    <string name="hint_name_thread">スレッド名*</string>
+    <string name="hint_url_logo">ロゴのURL</string>
+    <string name="hint_description_thread">説明…</string>
+    <string name="btn_add">追加</string>
+    <string name="txt_connection_host_failure">サーバーにアクセスできません。\nインターネット接続を確認してください</string>
+
 </resources>
