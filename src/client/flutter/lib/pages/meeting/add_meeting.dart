@@ -287,8 +287,8 @@ class _AddMeetingState extends State<AddMeeting> {
             priceExcl: double.parse(ctrlPriceExcl.text),
             rateVAT: double.parse(ctrlVAT.text),
             idPoliticalParty: currentParty!.id!,
-            linkTwitch: ctrlLinkTwitch.text.isEmpty ? null : ctrlLinkTwitch.text,
-            linkYoutube: ctrlLinkYoutube.text.isEmpty ? null : ctrlLinkYoutube.text,
+            linkTwitch: ctrlLinkTwitch.text,
+            linkYoutube: ctrlLinkYoutube.text,
         );
         await MeetingService().addMeeting(meeting);
         NavigationNotification(MeetingsPage()).dispatch(context);
