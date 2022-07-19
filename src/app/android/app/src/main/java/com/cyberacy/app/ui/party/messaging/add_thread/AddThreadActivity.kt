@@ -47,6 +47,7 @@ class AddThreadActivity : AppCompatActivity() {
         val loader = findViewById<ProgressBar>(R.id.loader)
         val bodyForm = findViewById<ConstraintLayout>(R.id.layout_form)
         val bodyError = findViewById<ConstraintLayout>(R.id.body_error)
+        val bodyErrorHost = findViewById<ConstraintLayout>(R.id.body_error_host)
         val txtError = bodyError.findViewById<TextView>(R.id.txt_error)
         btnAdd = findViewById(R.id.btn_add_thread)
         circularLoader = findViewById(R.id.progress_circular)
@@ -57,22 +58,29 @@ class AddThreadActivity : AppCompatActivity() {
 
         loader.visibility = View.VISIBLE
         bodyForm.visibility = View.GONE
+        bodyErrorHost.visibility = View.GONE
         bodyError.visibility = View.GONE
         viewModel.mineParty.observe(this) {
             when (it) {
                 is PartyStateError -> {
+                    bodyError.visibility = View.VISIBLE
+                    bodyErrorHost.visibility = View.GONE
+                    txtError.text = getString(R.string.txt_error_happening, it.ex.message())
                     loader.visibility = View.GONE
                 }
                 is PartyStateErrorHost -> {
+                    bodyErrorHost.visibility = View.VISIBLE
                     loader.visibility = View.GONE
                 }
                 PartyStateLoading -> {
                     bodyError.visibility = View.GONE
+                    bodyErrorHost.visibility = View.GONE
                     loader.visibility = View.VISIBLE
                     bodyForm.visibility = View.GONE
                 }
                 is PartyStateSuccessMine -> {
                     loader.visibility = View.GONE
+                    bodyErrorHost.visibility = View.GONE
                     if(it.party == null) {
                         bodyError.visibility = View.VISIBLE
                         txtError.text = getString(R.string.txt_not_found_party)

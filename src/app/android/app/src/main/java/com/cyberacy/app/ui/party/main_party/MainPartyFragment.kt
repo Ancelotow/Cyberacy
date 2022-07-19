@@ -41,6 +41,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.await
+import java.net.UnknownHostException
 
 class MainPartyFragment : Fragment() {
 
@@ -181,6 +182,11 @@ class MainPartyFragment : Fragment() {
                     if (e.code() == 401) {
                         Log.e("Erreur 401", e.message())
                     }
+                    loader.visibility = View.GONE
+                    activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                } catch (e: UnknownHostException) {
+                    Toast.makeText(this@MainPartyFragment.context, R.string.txt_connection_host_failure, Toast.LENGTH_SHORT)
+                        .show()
                     loader.visibility = View.GONE
                     activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 }

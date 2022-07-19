@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -54,7 +55,13 @@ class ListMeetingActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
         val shimmerLayout = findViewById<ShimmerFrameLayout>(R.id.shimmer_layout)
         val labelNoData = findViewById<TextView>(R.id.label_no_data)
+        val bodyError = findViewById<ConstraintLayout>(R.id.body_error)
+        val bodyErrorHost = findViewById<ConstraintLayout>(R.id.body_error_host)
+        val txtError = bodyError.findViewById<TextView>(R.id.txt_error)
+
         recyclerView.visibility = View.GONE
+        bodyErrorHost.visibility = View.GONE
+        bodyError.visibility = View.GONE
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.reverseLayout = true
         linearLayoutManager.stackFromEnd = true
@@ -63,16 +70,27 @@ class ListMeetingActivity : AppCompatActivity() {
             when (it) {
                 is MeetingListStateError -> {
                     Log.e("error", it.ex.message())
+                    bodyErrorHost.visibility = View.GONE
+                    bodyError.visibility = View.VISIBLE
+                    txtError.text = getString(R.string.txt_error_happening, it.ex.message())
                     shimmerLayout.visibility = View.GONE
+                    recyclerView.visibility = View.GONE
                 }
                 is MeetingListStateErrorHost -> {
+                    bodyErrorHost.visibility = View.VISIBLE
+                    bodyError.visibility = View.GONE
                     shimmerLayout.visibility = View.GONE
+                    recyclerView.visibility = View.GONE
                 }
                 MeetingListStateLoading -> {
                     recyclerView.visibility = View.GONE
+                    bodyErrorHost.visibility = View.GONE
+                    bodyError.visibility = View.GONE
                     shimmerLayout.visibility = View.VISIBLE
                 }
                 is MeetingListStateSuccess -> {
+                    bodyErrorHost.visibility = View.GONE
+                    bodyError.visibility = View.GONE
                     shimmerLayout.visibility = View.GONE
                     if (it.meetings.isEmpty()) {
                         recyclerView.visibility = View.GONE

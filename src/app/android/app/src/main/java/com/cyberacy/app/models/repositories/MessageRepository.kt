@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.isActive
 import retrofit2.HttpException
+import java.net.ConnectException
 import java.net.UnknownHostException
 
 object MessageRepository {
@@ -25,6 +26,8 @@ object MessageRepository {
                 emit(MessageStateError(e))
             } catch (e: UnknownHostException) {
                 emit(MessageStateErrorHost(e))
+            } catch (e: ConnectException) {
+                emit(MessageStateErrorHost(e))
             }
         }.flowOn(Dispatchers.IO)
     }
@@ -35,4 +38,4 @@ sealed class MessageState
 object MessageStateLoading: MessageState()
 data class MessageStateSuccess(val messages: List<Message>): MessageState()
 data class MessageStateError(val ex: HttpException): MessageState()
-data class MessageStateErrorHost(val ex: UnknownHostException): MessageState()
+data class MessageStateErrorHost(val ex: Exception): MessageState()

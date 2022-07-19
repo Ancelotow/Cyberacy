@@ -32,6 +32,8 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.await
+import java.net.ConnectException
+import java.net.UnknownHostException
 import kotlin.properties.Delegates
 
 
@@ -104,23 +106,41 @@ class ThreadActivity : AppCompatActivity() {
     private fun initMessages() {
         recyclerView.visibility = View.GONE
         val linearLayoutManager = LinearLayoutManager(this)
+        val bodyError = findViewById<ConstraintLayout>(R.id.body_error)
+        val bodyErrorHost = findViewById<ConstraintLayout>(R.id.body_error_host)
+        val txtError = bodyError.findViewById<TextView>(R.id.txt_error)
+
         linearLayoutManager.reverseLayout = true
         linearLayoutManager.stackFromEnd = true
         recyclerView.layoutManager = linearLayoutManager
+
+        bodyErrorHost.visibility = View.GONE
+        bodyError.visibility = View.GONE
         viewModel.messages.observe(this) {
             when (it) {
                 is MessageStateError -> {
                     Log.e("error", it.ex.message())
+                    recyclerView.visibility = View.GONE
                     loaderMsg.visibility = View.GONE
+                    bodyErrorHost.visibility = View.GONE
+                    bodyError.visibility = View.VISIBLE
+                    txtError.text = getString(R.string.txt_error_happening, it.ex.message())
                 }
                 is MessageStateErrorHost -> {
+                    recyclerView.visibility = View.GONE
+                    bodyErrorHost.visibility = View.VISIBLE
+                    bodyError.visibility = View.GONE
                     loaderMsg.visibility = View.GONE
                 }
                 MessageStateLoading -> {
+                    bodyErrorHost.visibility = View.GONE
+                    bodyError.visibility = View.GONE
                     recyclerView.visibility = View.GONE
                     loaderMsg.visibility = View.VISIBLE
                 }
                 is MessageStateSuccess -> {
+                    bodyErrorHost.visibility = View.GONE
+                    bodyError.visibility = View.GONE
                     loaderMsg.visibility = View.GONE
                     if (it.messages.isEmpty()) {
                         recyclerView.visibility = View.GONE
@@ -156,6 +176,11 @@ class ThreadActivity : AppCompatActivity() {
                 Toast.makeText(this@ThreadActivity, R.string.txt_message_sent, Toast.LENGTH_SHORT)
                     .show()
                 this@ThreadActivity.message.text = null
+            } catch (e: UnknownHostException) {
+                Toast.makeText(this@ThreadActivity, R.string.txt_connection_host_failure, Toast.LENGTH_SHORT)
+                    .show()
+                loaderSend.visibility = View.GONE
+                window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             } finally {
                 loaderSend.visibility = View.GONE
                 buttonSend.visibility = View.VISIBLE
@@ -182,6 +207,11 @@ class ThreadActivity : AppCompatActivity() {
                     if (e.code() == 401) {
                         Log.e("Erreur 401", e.message())
                     }
+                    loaderSend.visibility = View.GONE
+                    window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                } catch (e: UnknownHostException) {
+                    Toast.makeText(this@ThreadActivity, R.string.txt_connection_host_failure, Toast.LENGTH_SHORT)
+                        .show()
                     loaderSend.visibility = View.GONE
                     window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 }
