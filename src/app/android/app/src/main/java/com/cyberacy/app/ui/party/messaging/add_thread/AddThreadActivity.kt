@@ -2,12 +2,19 @@ package com.cyberacy.app.ui.party.messaging.add_thread
 
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -26,11 +33,16 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.await
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.net.UnknownHostException
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class AddThreadActivity : AppCompatActivity() {
 
@@ -38,7 +50,26 @@ class AddThreadActivity : AppCompatActivity() {
     private var party: PoliticalParty? = null
 
     private lateinit var btnAdd: MaterialButton
+    private lateinit var imageThread: ImageView
     private lateinit var circularLoader: CircularProgressIndicator
+    private lateinit var inputDescription: TextInputEditText
+    private lateinit var inputName: TextInputEditText
+    private val firebaseStorage = Firebase.storage
+    private var urlImage: String? = null
+    private var chooseImage = false
+
+    private val resultLogo =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK || result.resultCode == 100) {
+                try{
+                    val uriImage: Uri  = result.data!!.data!!
+                    imageThread.setImageURI(uriImage)
+                    chooseImage = true
+                } catch(e: Exception) {
+                    Log.e("ERREUR", e.message.toString())
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +82,10 @@ class AddThreadActivity : AppCompatActivity() {
         val txtError = bodyError.findViewById<TextView>(R.id.txt_error)
         btnAdd = findViewById(R.id.btn_add_thread)
         circularLoader = findViewById(R.id.progress_circular)
+        imageThread = findViewById(R.id.logo)
+        imageThread.setOnClickListener { openGalleryForImage() }
+        inputName = findViewById(R.id.name)
+        inputDescription = findViewById(R.id.description)
 
         btnAdd.setOnClickListener { addThread() }
 
@@ -99,20 +134,47 @@ class AddThreadActivity : AppCompatActivity() {
         val layoutName = findViewById<TextInputLayout>(R.id.layout_name)
         layoutName.error = null
 
-        val inputName = findViewById<TextInputEditText>(R.id.name)
-        val inputDescription = findViewById<TextInputEditText>(R.id.description)
-        val urlLogo = findViewById<TextInputEditText>(R.id.url_logo)
-
         if(inputName.text == null || inputName.text!!.isEmpty()) {
             layoutName.error = getString(R.string.txt_required_field)
-            return;
+            return
         }
+        circularLoader.visibility = View.VISIBLE
+        btnAdd.visibility = View.GONE
+        if(chooseImage) {
+            postLogoToFirebase()
+        } else {
+            postNewThread()
+        }
+    }
 
+    private fun postLogoToFirebase() {
+        val formatter = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss")
+        val dateString = LocalDateTime.now().format(formatter)
+        val nameFirebase = "thread_logo_${dateString}"
+
+        val storageRef = firebaseStorage.reference
+        val riversRef = storageRef.child(nameFirebase)
+        val bitmap = (imageThread.drawable as BitmapDrawable).bitmap
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+        val uploadTask = riversRef.putBytes(data)
+        uploadTask.addOnFailureListener {
+            postNewThread()
+        }.addOnSuccessListener { taskSnapshot ->
+            val path = taskSnapshot.uploadSessionUri!!.path.toString()
+            val host = taskSnapshot.uploadSessionUri!!.host.toString()
+            urlImage = "https://${host}${path}/${nameFirebase}?alt=media"
+            postNewThread()
+        }
+    }
+
+    private fun postNewThread() {
         val thread = ThreadMessaging(
             id = -1,
             name = inputName.text!!.toString(),
             description = inputDescription.text.toString(),
-            urlLogo = urlLogo.text.toString(),
+            urlLogo = urlImage,
             dateCreate = LocalDateTime.now(),
             idPoliticalParty = party!!.id,
             isPrivate = false,
@@ -160,4 +222,11 @@ class AddThreadActivity : AppCompatActivity() {
         buttonBack.iconTint = ContextCompat.getColorStateList(this, colorIcon)
         buttonBack.setOnClickListener { finish() }
     }
+
+    private fun openGalleryForImage() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        resultLogo.launch(intent)
+    }
+
 }
