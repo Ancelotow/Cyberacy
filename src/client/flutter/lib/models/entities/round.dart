@@ -1,18 +1,21 @@
+import 'choice.dart';
+
 class Round {
-  int? num;
-  String? name;
-  DateTime? dateStart;
-  DateTime? dateEnd;
-  int? nbVoter;
-  int? idVote;
+  int num;
+  String name;
+  DateTime dateStart;
+  DateTime dateEnd;
+  int nbVoter;
+  int idVote;
+  List<Choice> choices = [];
 
   Round({
-    this.num,
-    this.name,
-    this.dateStart,
-    this.dateEnd,
-    this.nbVoter,
-    this.idVote,
+    required this.num,
+    required this.name,
+    required this.dateStart,
+    required this.dateEnd,
+    this.nbVoter = 0,
+    required this.idVote,
   });
 
   Round.fromJson(Map<String, dynamic> json)
@@ -20,7 +23,11 @@ class Round {
         name = json["name"],
         dateStart = DateTime.parse(json["date_start"]),
         dateEnd = DateTime.parse(json["date_end"]),
-        nbVoter = json["nb_voter"],
-        idVote = json["id_vote"];
+        nbVoter = json["nb_voter"] ?? 0,
+        idVote = json["id_vote"] {
+    if(json["choices"] != null) {
+      choices = (json["choices"] as List).map((dynamic json) => Choice.fromJson(json)).toList();
+    }
+  }
 
 }

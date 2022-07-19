@@ -14,4 +14,11 @@ class PoliticalEdge {
     return name;
   }
 
+  @override
+  bool operator == (dynamic other) =>
+      other != null && other is PoliticalEdge && id == other.id;
+
+  @override
+  int get hashCode => super.hashCode;
+
 }

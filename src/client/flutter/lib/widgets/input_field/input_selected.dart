@@ -12,6 +12,8 @@ class InputSelected<T> extends StatefulWidget {
   Function(dynamic)? onChanged;
   final IconData? icon;
   final Future<List<T>>? future;
+  final String? Function(dynamic)? validator;
+
 
   InputSelected({
     Key? key,
@@ -24,6 +26,7 @@ class InputSelected<T> extends StatefulWidget {
     required this.items,
     this.icon,
     this.future,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -67,6 +70,7 @@ class _InputSelectedState<T> extends State<InputSelected> {
           child: DropdownButtonFormField<T>(
             items: _getItems(),
             value: _getValue(),
+            validator: widget.validator,
             onChanged: widget.onChanged,
             isExpanded: true,
             style: Theme.of(context).textTheme.bodyText1,

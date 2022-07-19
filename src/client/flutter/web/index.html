@@ -40,6 +40,7 @@
   <script src="flutter.js" defer></script>
 </head>
 <body>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
@@ -54,5 +55,20 @@
       });
     });
   </script>
+<script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyBVQkLeRIrhx7eZqQZfUbZuHizLgboeoPM",
+        authDomain: "cyberacy-1e929.firebaseapp.com",
+        databaseURL: "https://cyberacy-1e929.firebaseio.com",
+        projectId: "cyberacy-1e929",
+        storageBucket: "cyberacy-1e929.appspot.com",
+        messagingSenderId: "384126364480",
+        appId: "1:384126364480:web:42a588ddc4030462aba8a5",
+        measurementId: "G-N925PQB7JG",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
 </body>
 </html>

@@ -29,4 +29,9 @@ class MyColor {
     return Color.fromARGB(opacity.floor(), red.floor(), green.floor(), blue.floor());
   }
 
+  @override
+  String toString(){
+    return name;
+  }
+
 }

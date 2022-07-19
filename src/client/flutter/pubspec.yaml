@@ -22,6 +22,12 @@ dependencies:
   path_provider: ^2.0.11
   shimmer: ^2.0.0
   syncfusion_flutter_maps: ^20.1.61
+  percent_indicator: ^4.2.2
+  firebase_storage: ^10.3.2
+  desktop_drop: ^0.3.3
+  cross_file: ^0.3.3+1
+  image: ^3.2.0
+  firebase_core: ^1.19.2
 
 
 
@@ -46,3 +52,4 @@ flutter:
     - assets/maps/france_dept.json
     - assets/maps/france_towns.json
     - assets/maps/france_reg.json
+    - assets/maps/france_metropole.json

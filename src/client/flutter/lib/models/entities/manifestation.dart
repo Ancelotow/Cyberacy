@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:bo_cyberacy/models/entities/option.dart';
 import 'package:bo_cyberacy/models/entities/step.dart';
 
+import '../enums/state_progress.dart';
+
 class Manifestation {
   int? id;
   String? name;
@@ -34,15 +36,14 @@ class Manifestation {
         object = json["object"],
         securityDescription = json["security_description"],
         nbPersonEstimate = json["nb_person_estimate"] {
-    try {
+    if(json["steps"] != null) {
       List<dynamic> listStepsJson = json["steps"];
-      List<dynamic> listOptionsJson = json["options"];
       steps = listStepsJson.map((jsonStep) => StepManif.fromJson(jsonStep)).toList();
-      options = listOptionsJson.map((jsonOpt) => Option.fromJson(jsonOpt)).toList();
-    } catch(e) {
-      print(e);
     }
-
+    if(json["options"] != null) {
+      List<dynamic> listOptionsJson = json["options"];
+      options = listOptionsJson.map((jsonOpt) => Option.fromJson(jsonOpt)).toList();
+    }
   }
 
   Object toJson() {
@@ -54,6 +55,19 @@ class Manifestation {
       "security_description": securityDescription,
       "nb_person_estimate": nbPersonEstimate.toString()
     };
+  }
+
+  StateProgress getStateProgress() {
+    DateTime today = DateTime.now();
+    if(dateEnd == null || dateStart == null) {
+      return StateProgress.coming;
+    } else if(today.isAfter(dateEnd!)) {
+      return StateProgress.passed;
+    } else if (today.isBefore(dateStart!)) {
+      return StateProgress.coming;
+    } else {
+      return StateProgress.inProgress;
+    }
   }
 
 }
