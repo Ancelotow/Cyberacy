@@ -3,9 +3,8 @@ import {Department} from "../models/department.mjs";
 import {Town} from "../models/town.mjs";
 import axios from "axios";
 import {config} from "dotenv";
-import {TypeVote} from "../models/type-vote.mjs";
-import {Round} from "../models/round.mjs";
 import {Color} from "../models/color.mjs";
+import {ResponseApi} from "../models/response-api.mjs";
 
 class Coordinates {
 
@@ -35,6 +34,7 @@ function GetLocationFromAddress(address, zip_code) {
         config()
         axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address},${zip_code},France&key=${process.env.GOOGLE_MAPS_TOKEN}`).then(async (res) => {
             if (res.data) {
+                console.log(res.data)
                 if (res.data.status === "OK" && res.data.results !== null) {
                     if (res.data.results.length >= 0) {
                         let geo = res.data.results[0].geometry
@@ -70,15 +70,14 @@ function GetLocationFromAddress(address, zip_code) {
 const GetRegions = () => {
     return new Promise((resolve, _) => {
         new Region().GetAll().then(async (res) => {
-            const code = (res.length > 0) ? 200 : 204;
             for (let i = 0; i < res.length; i++) {
                 if (res[i].id_color) {
                     res[i].color = await new Color().GetById(res[i].id_color)
                 }
             }
-            resolve({status: code, data: res})
+            resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         })
     });
 }
@@ -91,15 +90,14 @@ const GetRegions = () => {
 const GetDepartments = () => {
     return new Promise((resolve, _) => {
         new Department().GetAll().then(async (res) => {
-            const code = (res.length > 0) ? 200 : 204;
             for (let i = 0; i < res.length; i++) {
                 if (res[i].id_color) {
                     res[i].color = await new Color().GetById(res[i].id_color)
                 }
             }
-            resolve({status: code, data: res})
+            resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         })
     });
 }
@@ -112,10 +110,9 @@ const GetDepartments = () => {
 const GetTowns = () => {
     return new Promise((resolve, _) => {
         new Town().GetAll().then((res) => {
-            const code = (res) ? 200 : 204;
-            resolve({status: code, data: res})
+            resolve(new ResponseApi().InitData(res))
         }).catch((e) => {
-            resolve({status: 500, data: e})
+            resolve(new ResponseApi().InitInternalServer(e))
         })
     });
 }
@@ -129,13 +126,12 @@ const GetTowns = () => {
 const GetTownsByDepartment = (code) => {
     return new Promise((resolve, _) => {
         if(!code) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             new Town().GetByDepartment(code).then((res) => {
-                const code = (res) ? 200 : 204;
-                resolve({status: code, data: res})
+                resolve(new ResponseApi().InitData(res))
             }).catch((e) => {
-                resolve({status: 500, data: e})
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -148,20 +144,20 @@ const GetTownsByDepartment = (code) => {
  * @constructor
  */
 const GetDepartmentByRegion = (code_insee) => {
+    let response = new ResponseApi()
     return new Promise((resolve, _) => {
         if(!code_insee) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             new Department().GetByRegion(code_insee).then(async (res) => {
-                const code = (res.length > 0) ? 200 : 204;
                 for (let i = 0; i < res.length; i++) {
                     if (res[i].id_color) {
                         res[i].color = await new Color().GetById(res[i].id_color)
                     }
                 }
-                resolve({status: code, data: res})
+                resolve(new ResponseApi().InitData(res))
             }).catch((e) => {
-                resolve({status: 500, data: e})
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });
@@ -177,13 +173,12 @@ const GetDepartmentByRegion = (code_insee) => {
 const GetCoordinates = (address_street, zip_code) => {
     return new Promise((resolve, _) => {
         if(address_street == null || zip_code == null) {
-            resolve({status: 400, data: "Missing parameters."})
+            resolve(new ResponseApi().InitMissingParameters())
         } else {
             GetLocationFromAddress(address_street, zip_code).then((res) => {
-                const code = (res) ? 200 : 204;
-                resolve({status: code, data: res})
+                resolve(new ResponseApi().InitData(res))
             }).catch((e) => {
-                resolve({status: 500, data: e})
+                resolve(new ResponseApi().InitInternalServer(e))
             })
         }
     });

@@ -82,11 +82,13 @@ $role$
         end if;
         if not exists(select * from role where rle_id = 4) then
             insert into role(rle_id, rle_title, rle_description, rle_code)
-            values (4, 'Accès au module "Manifestation"', 'Accéder au module "Manifestaion"', 'MODULE_MANIFESTAION#ACCESS');
+            values (4, 'Accès au module "Manifestation"', 'Accéder au module "Manifestaion"',
+                    'MODULE_MANIFESTAION#ACCESS');
         end if;
         if not exists(select * from role where rle_id = 5) then
             insert into role(rle_id, rle_title, rle_description, rle_code)
-            values (5, 'Accès au module "Parti politique"', 'Accéder au module "Parti politique"', 'MODULE_POLITICAL_PARTY#ACCESS');
+            values (5, 'Accès au module "Parti politique"', 'Accéder au module "Parti politique"',
+                    'MODULE_POLITICAL_PARTY#ACCESS');
         end if;
         if not exists(select * from role where rle_id = 6) then
             insert into role(rle_id, rle_title, rle_description, rle_code)
@@ -124,5 +126,95 @@ $role$
             insert into role(rle_id, rle_title, rle_description, rle_code)
             values (14, 'VOTE : Lecture tout', 'Pouvoir voir les votes (sondage privé inclus)', 'VOTE#READ_ALL');
         end if;
+        if not exists(select * from role where rle_id = 15) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (15, 'PARTI POLITIQUE : Créer un thread', 'Pouvoir créer un thread dans un parti politique',
+                    'THREAD$$$CREATE');
+        end if;
+        if not exists(select * from role where rle_id = 16) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (16, 'PARTI POLITIQUE : Supprimer un thread', 'Pouvoir supprimer un thread', 'THREAD$$$DELETE');
+        end if;
+        if not exists(select * from role where rle_id = 17) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (17, 'PARTI POLITIQUE : Inviter dans un thread', 'Pouvoir inviter une personne dans un thread',
+                    'THREAD$$$INVITED');
+        end if;
+        if not exists(select * from role where rle_id = 18) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (18, 'PERSONNES : Lecture', 'Pouvoir voir la liste des personnes', 'PERSON$$$READ');
+        end if;
+        if not exists(select * from role where rle_id = 19) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (19, 'Accès au module UTILISATEUR', 'Accéder au module UTILISATEUR sur le Back-Office', 'USER$$$ACCESS');
+        end if;
+        if not exists(select * from role where rle_id = 20) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (20, 'PROFILE : Lecture', 'Pouvoir voir la liste des profiles', 'PROFIL$$$READ');
+        end if;
+        if not exists(select * from role where rle_id = 21) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (21, 'Accès au module PROFILE', 'Accéder au module PROFILE sur le Back-Office', 'PROFIL$$$ACCESS');
+        end if;
+        if not exists(select * from role where rle_id = 22) then
+            insert into role(rle_id, rle_title, rle_description, rle_code)
+            values (22, 'DROITS : Lecture', 'Pouvoir voir la liste des droits', 'ROLE$$$READ');
+        end if;
     end;
 $role$;
+
+do
+$profile$
+    begin
+        if not exists(select * from profile where prf_id = 1) then
+            insert into profile(prf_id, prf_name, prf_can_deleted) values (1, 'Super Administrateur', false);
+        end if;
+
+        if not exists(select * from profile where prf_id = 2) then
+            insert into profile(prf_id, prf_name, prf_can_deleted) values (2, 'Administrateur', false);
+        end if;
+
+        if not exists(select * from profile where prf_id = 3) then
+            insert into profile(prf_id, prf_name, prf_can_deleted)
+            values (3, 'Administrateur (Parti politique)', false);
+        end if;
+
+        if not exists(select * from profile where prf_id = 4) then
+            insert into profile(prf_id, prf_name, prf_can_deleted) values (4, 'Utilisateur', false);
+        end if;
+    end;
+$profile$;
+
+
+do
+$profile$
+    begin
+        delete
+        from link_role_profile
+        where prf_id in (select prf_id
+                         from profile
+                         where prf_can_deleted = false);
+
+        -- Super Administrateur
+        insert into link_role_profile(rle_id, prf_id)
+        select rle_id, 1
+        from role;
+
+        -- Administrateur
+        insert into link_role_profile(rle_id, prf_id)
+        select rle_id, 2
+        from role
+        where rle_code not in (
+            'THREAD$$$DELETE'
+            );
+
+        -- Administrateur (Parti Politique)
+        insert into link_role_profile(rle_id, prf_id)
+        select rle_id, 3
+        from role
+        where rle_code in (
+                           'THREAD$$$INVITED', 'THREAD$$$DELETE', 'THREAD$$$CREATE', 'THREAD#READ_ALL', 'THREAD#READ',
+                           'MESSAGE#READ', 'MEMBER#READ'
+            );
+    end;
+$profile$;

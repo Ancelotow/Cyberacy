@@ -15,7 +15,7 @@ routerAuth.post("/register", async (req, res) => {
     } */
 
     const response = await Register(req.body)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerAuth.post("/login_app", async (req, res) => {
@@ -30,7 +30,7 @@ routerAuth.post("/login_app", async (req, res) => {
     } */
 
     const response = await Authentication(req.body.nir, req.body.password, "APP_ANDROID#CONNECTION")
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerAuth.post("/login_stats", async (req, res) => {
@@ -45,7 +45,7 @@ routerAuth.post("/login_stats", async (req, res) => {
     } */
 
     const response = await Authentication(req.body.nir, req.body.password, "APP_IOS#CONNECTION")
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerAuth.post("/login_bo", async (req, res) => {
@@ -60,7 +60,7 @@ routerAuth.post("/login_bo", async (req, res) => {
     } */
 
     const response = await Authentication(req.body.nir, req.body.password, "BO#CONNECTION")
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 

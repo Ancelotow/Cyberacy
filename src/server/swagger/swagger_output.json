@@ -96,6 +96,28 @@
         ]
       }
     },
+    "/manifestation/{id}/details": {
+      "get": {
+        "tags": [
+          "Manifestation"
+        ],
+        "description": "Récupérer le détail d\\'une manifestation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/manifestation/{id}/participate": {
       "post": {
         "tags": [
@@ -394,6 +416,21 @@
         "responses": {}
       }
     },
+    "/colors": {
+      "get": {
+        "tags": [
+          "References"
+        ],
+        "description": "Récupération des couleurs.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/region": {
       "get": {
         "tags": [
@@ -469,7 +506,7 @@
             "name": "address_street",
             "in": "query",
             "description": "L'adresse (rue).",
-            "type": "boolean"
+            "type": "string"
           },
           {
             "name": "zip_code",
@@ -615,6 +652,43 @@
         ]
       }
     },
+    "/vote/in_progress": {
+      "get": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Récupère les votes en cours d\\'un utilisateur.",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/vote/{id}/details": {
+      "get": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Récupère un vote en détail.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/vote/{id}/round": {
       "post": {
         "tags": [
@@ -665,21 +739,15 @@
         ]
       }
     },
-    "/vote/{id_vote}/round/{num_round}/choice": {
+    "/vote/{id_vote}/choice": {
       "post": {
         "tags": [
           "Election"
         ],
-        "description": "Ajout de un nouveau choix.",
+        "description": "Ajout d\\'un nouveau choix pour un vote.",
         "parameters": [
           {
             "name": "id_vote",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "num_round",
             "in": "path",
             "required": true,
             "type": "string"
@@ -699,12 +767,64 @@
             "Bearer": []
           }
         ]
-      },
+      }
+    },
+    "/vote/choice/{id_choice}": {
+      "delete": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Supprime un choix de vote existant",
+        "parameters": [
+          {
+            "name": "id_choice",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/vote/{id_vote}/round/{num_round}/choice": {
       "get": {
         "tags": [
           "Election"
         ],
         "description": "Récupère les choix pour un tour de vote donné.",
+        "parameters": [
+          {
+            "name": "id_vote",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "num_round",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/vote/{id_vote}/round/{num_round}/results": {
+      "get": {
+        "tags": [
+          "Election"
+        ],
+        "description": "Récupère les résultats pour un tour de vote donné.",
         "parameters": [
           {
             "name": "id_vote",
@@ -747,11 +867,7 @@
             "type": "string"
           }
         ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          }
-        },
+        "responses": {},
         "security": [
           {
             "Bearer": []
@@ -812,6 +928,21 @@
             "type": "string"
           }
         ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/political_party/mine": {
+      "get": {
+        "tags": [
+          "Political party"
+        ],
+        "description": "Récupère en détail le parti politique auquel j\\'adhère",
+        "parameters": [],
         "responses": {},
         "security": [
           {
@@ -999,31 +1130,46 @@
         "description": "Récupération des meetings.",
         "parameters": [
           {
-            "name": "mine",
-            "in": "query",
-            "description": "Voir uniquement les meetings auxquelles je participe.",
-            "type": "boolean"
-          },
-          {
             "name": "town",
             "in": "query",
+            "description": "Code INSEE d'une ville.",
             "type": "string"
           },
           {
             "name": "idPoliticalParty",
             "in": "query",
-            "type": "string"
+            "description": "L'id du parti politique",
+            "type": "int"
           },
           {
             "name": "includeAborted",
             "in": "query",
-            "description": "Inclure les meetings annuler.",
+            "description": "Inclure les meetings annulés.",
             "type": "boolean"
           },
           {
             "name": "includeCompleted",
             "in": "query",
-            "type": "string"
+            "description": "Inclure les meetings complet",
+            "type": "boolean"
+          },
+          {
+            "name": "includeFinished",
+            "in": "query",
+            "description": "Inclure les meetings finis",
+            "type": "boolean"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "L'id du meeting",
+            "type": "number"
+          },
+          {
+            "name": "onlyMine",
+            "in": "query",
+            "description": "Récupérer uniquement les meeting auxquels je participe",
+            "type": "boolean"
           }
         ],
         "responses": {},
@@ -1048,6 +1194,28 @@
             "schema": {
               "$ref": "#/definitions/Aborted"
             }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/meeting/{id}/details": {
+      "get": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Récupère le détail d\\'un meeting",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {},
@@ -1104,6 +1272,45 @@
             "Bearer": []
           }
         ]
+      }
+    },
+    "/meeting/participate/{id}/details-qrcode": {
+      "get": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Récupérer les informations afin de générer un QR-Code",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/exist/{uuid}/meeting": {
+      "get": {
+        "tags": [
+          "Meeting"
+        ],
+        "description": "Vérifie si un meeting existe ou non via son UUID",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
       }
     },
     "/thread": {
@@ -1248,18 +1455,20 @@
           "Messaging"
         ],
         "description": "Publier un nouveau message sur un thread donné.",
-        "consumes": [
-          "text/plain"
-        ],
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "thread",
+            "in": "body",
+            "description": "Le nouveau message",
+            "schema": {
+              "$ref": "#/definitions/AddMessage"
+            }
           }
         ],
         "responses": {},
@@ -1267,13 +1476,7 @@
           {
             "Bearer": []
           }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "text/plain": "Ceci est mon nouveau message. Super !!!!!"
-          }
-        }
+        ]
       }
     },
     "/thread/{id}/member": {
@@ -1428,9 +1631,15 @@
             }
           },
           {
+            "name": "idPoliticalParty",
+            "in": "query",
+            "description": "L'id d'un parti politique, NULL récupérant tout (à NULL par défault)",
+            "type": "int"
+          },
+          {
             "name": "year",
             "in": "query",
-            "description": "L année pour le tri",
+            "description": "L'année pour le tri",
             "type": "int"
           }
         ],
@@ -1551,20 +1760,37 @@
         ]
       }
     },
-    "/statistics/vote/{id}/results": {
-      "get": {
+    "/payment-sheet": {
+      "post": {
         "tags": [
-          "Statistiques"
+          "Payment"
         ],
-        "description": "Récupération des résultats aux votes.",
+        "description": "Permet de payer les achats (ex: réservations de meetings)",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "name": "payment",
+            "in": "body",
+            "description": "Objet initialisant un nouveau paiement avec Stripe",
+            "schema": {
+              "$ref": "#/definitions/InitPayment"
+            }
           }
         ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/fcm-topics": {
+      "get": {
+        "tags": [
+          "Notification PUSH"
+        ],
+        "description": "Récupère tout les topics FCM (Notification PUSH) de l\\'utilisateur",
+        "parameters": [],
         "responses": {},
         "security": [
           {
@@ -1880,13 +2106,25 @@
           "type": "string",
           "example": "https://www.twitch.tv/samueletienne"
         },
+        "link_youtube": {
+          "type": "string",
+          "example": "https://www.youtube.com/channel/UCk2xd7NXB2BL5diWVNQj4Tg"
+        },
         "id_political_party": {
           "type": "number",
           "example": 1
         },
         "town_code_insee": {
           "type": "string",
-          "example": "11003"
+          "example": "75112"
+        },
+        "price_excl": {
+          "type": "number",
+          "example": 35
+        },
+        "vta_rate": {
+          "type": "number",
+          "example": 20
         }
       }
     },
@@ -1954,6 +2192,10 @@
         "candidat_nir": {
           "type": "string",
           "example": "012457832032045"
+        },
+        "id_color": {
+          "type": "number",
+          "example": 1
         }
       }
     },
@@ -1975,6 +2217,44 @@
         "id_type_vote": {
           "type": "number",
           "example": 1
+        }
+      }
+    },
+    "AddMessage": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Bonjour tout le monde !"
+        }
+      }
+    },
+    "InitPayment": {
+      "type": "object",
+      "properties": {
+        "amount_including_tax": {
+          "type": "number",
+          "example": 10.99
+        },
+        "amount_excl": {
+          "type": "number",
+          "example": 8.792
+        },
+        "vat_rate": {
+          "type": "number",
+          "example": 20
+        },
+        "is_test": {
+          "type": "boolean",
+          "example": true
+        },
+        "libelle": {
+          "type": "string",
+          "example": "réservation place meeting : Horizons conférence annuelle !"
+        },
+        "email": {
+          "type": "string",
+          "example": "toto@gmail.com"
         }
       }
     }

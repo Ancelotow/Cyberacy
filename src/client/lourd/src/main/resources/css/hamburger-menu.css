@@ -1,0 +1,115 @@
+@font-face {
+    font-family: 'HK Nova Medium';
+    src: url('../fonts/HKNova-Medium.ttf');
+}
+
+.button{
+    -fx-pref-width: 250;
+    -fx-background-color: #312783;
+    -fx-background-insets: 0;
+    -fx-border-radius: 0;
+    -fx-text-fill: #FFFFFF;
+    -fx-text-alignment:right;
+    -fx-font-size: 20;
+    -fx-font-family: "HK Nova Medium";
+}
+
+.label{
+    -fx-font-size: 25;
+    -fx-font-family: "HK Nova Medium";
+    -fx-text-fill: #FFFFFF;
+    -fx-pref-width: 250;
+    -fx-text-alignment:center;
+    -fx-padding: 5;
+}
+
+.separator .line{
+    -fx-pref-width: 250;
+    -fx-pref-height: 1;
+    -fx-background-color: #121110;
+    -fx-border-color: #121110;
+    -fx-background-radius: 2;
+    -fx-background-insets: 0;
+    -fx-border-radius: 0;
+}
+
+.button:hover{
+    -fx-background-color: #704ab0;
+}
+
+.region{
+    -fx-background-color: #312783;
+}
+
+.primary{
+    -fx-background-color: #312783;
+}
+
+.menu-bar{
+    -fx-background-color: #312783;
+}
+.menu-bar{
+    -fx-background-color: #312783;
+}
+
+
+.hamburger-header .menu-button .label{
+    -fx-text-fill: #FFFFFF;
+    -fx-text-alignment:center;
+    -fx-alignment: center;
+    -fx-font-size: 20;
+    -fx-pref-width: 250;
+    -fx-font-family: "HK Nova Medium";
+}
+
+.hamburger-header .menu-button .items{
+    -fx-background-color: #704ab0;
+}
+
+.hamburger-header .menu-button .menu-item{
+    -fx-pref-width: 250;
+    -fx-background-color: #704ab0;
+    -fx-background-insets: 0;
+    -fx-border-radius: 0;
+}
+
+.hamburger-header .menu-button .context-menu{
+    -fx-background-color: #704ab0;
+}
+
+.hamburger-header .menu-button .separator .line{
+    -fx-pref-width: 250;
+    -fx-pref-height: 1;
+    -fx-background-color: #121110;
+    -fx-border-color: #121110;
+    -fx-background-radius: 2;
+    -fx-background-insets: 0;
+    -fx-border-radius: 0;
+}
+
+.hamburger-header .menu-button .menu-item:hover{
+    -fx-background-color: #312783;
+}
+
+.hamburger-header .menu-button .menu-item .label{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 15;
+    -fx-font-family: "HK Nova Medium";
+}
+
+.hamburger-header .menu-button{
+    -fx-border-color: #312783;
+    -fx-border-radius: 0;
+    -fx-background-color: #312783;
+    -fx-pref-width: 250;
+    -fx-pref-height: 60;
+    -fx-background-insets: 0;
+}
+
+.hamburger-header .menu-button:hover{
+    -fx-background-color: #704ab0;
+}
+
+.hamburger-header .region-menu{
+    -fx-background-color: #312783;
+}

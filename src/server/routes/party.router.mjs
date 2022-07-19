@@ -21,7 +21,7 @@ routerParty.post("/political_party", async (req, res) => {
     } */
 
     const response = await partyCtrl.AddParty(req.body)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerParty.get("/political_party", async (req, res) => {
@@ -54,7 +54,17 @@ routerParty.get("/political_party", async (req, res) => {
     const includeLeft = (req.query.includeLeft == null || req.query.includeLeft === 'true')
     const idPoliticalParty = (req.query.idPoliticalParty == null) ? null : req.query.idPoliticalParty
     const response = await partyCtrl.GetPoliticalParty(siren, nir, includeLeft, idPoliticalParty)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
+});
+
+routerParty.get("/political_party/mine", async (req, res) => {
+    // #swagger.tags = ['Political party']
+    // #swagger.description = 'Récupère en détail le parti politique auquel j\'adhère'
+    // #swagger.security = [{ "Bearer": [] }]
+
+    const nir = req.data.nir
+    const response = await partyCtrl.GetPoliticalPartyMine(nir)
+    res.status(response.code).send(response)
 });
 
 routerParty.post("/political_party/:id/join", async (req, res) => {
@@ -64,7 +74,7 @@ routerParty.post("/political_party/:id/join", async (req, res) => {
 
     const nir = req.data.nir
     const response = await partyCtrl.JoinParty(nir, req.params.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerParty.delete("/political_party/left", async (req, res) => {
@@ -74,7 +84,7 @@ routerParty.delete("/political_party/left", async (req, res) => {
 
     const nir = req.data.nir
     const response = await partyCtrl.LeftParty(nir)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerParty.post("/political_party/annual_fee", async (req, res) => {
@@ -88,7 +98,7 @@ routerParty.post("/political_party/annual_fee", async (req, res) => {
     } */
 
     const response = await partyCtrl.AddAnnualFee(req.body)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerParty.get("/political_party/:id/annual_fee", async (req, res) => {
@@ -97,7 +107,7 @@ routerParty.get("/political_party/:id/annual_fee", async (req, res) => {
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await partyCtrl.GetAnnualFeeByParty(req.params.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerParty.post("/political_party/:id/upload_logo",  upload.single('logo'), async (req, res) => {
@@ -106,7 +116,7 @@ routerParty.post("/political_party/:id/upload_logo",  upload.single('logo'), asy
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await partyCtrl.UploadLogo(req.file, req.params.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerParty.post("/political_party/:id/upload_chart",  upload.single('chart'), async (req, res) => {
@@ -115,7 +125,7 @@ routerParty.post("/political_party/:id/upload_chart",  upload.single('chart'), a
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await partyCtrl.UploadChart(req.file, req.params.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerParty.post("/political_party/:id/upload_bank_details",  upload.single('bank_details'), async (req, res) => {
@@ -124,7 +134,7 @@ routerParty.post("/political_party/:id/upload_bank_details",  upload.single('ban
     // #swagger.security = [{ "Bearer": [] }]
 
     const response = await partyCtrl.UploadChart(req.file, req.params.id)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 export {routerParty}

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane GridPane.columnIndex="1" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cyberacy.negotrack.views.WorkItemController">
+   <columnConstraints>
+      <ColumnConstraints percentWidth="34.0" />
+      <ColumnConstraints percentWidth="33.0" />
+      <ColumnConstraints percentWidth="33.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints vgrow="ALWAYS" />
+   </rowConstraints>
+
+   <stylesheets>
+      <URL value="@../../../css/stylesheet.css" />
+   </stylesheets>
+
+   <children>
+      <VBox styleClass="gridpane-workitem" GridPane.columnIndex="0">
+         <Label prefHeight="17.0" styleClass="txt-title-H3" text="Epic" />
+         <Button onAction="#addEpic" alignment="CENTER" mnemonicParsing="false" styleClass="btn-primary-outline" text="+ Epic">
+            <VBox.margin>
+               <Insets left="5.0" />
+            </VBox.margin>
+         </Button>
+         <ListView fx:id="listEpic">
+            <VBox.margin>
+               <Insets top="5.0" />
+            </VBox.margin>
+         </ListView>
+      </VBox>
+      <VBox styleClass="gridpane-workitem" GridPane.columnIndex="1">
+         <Label styleClass="txt-title-H3" text="User Story" />
+         <Button onAction="#addUserStory" mnemonicParsing="false" styleClass="btn-primary-outline" text="+ User Story">
+            <VBox.margin>
+               <Insets left="5.0" />
+            </VBox.margin>
+         </Button>
+         <ListView fx:id="listUserStory">
+            <VBox.margin>
+               <Insets top="5.0" />
+            </VBox.margin>
+         </ListView>
+      </VBox>
+      <VBox styleClass="gridpane-workitem" GridPane.columnIndex="2">
+         <Label styleClass="txt-title-H3" text="Tâches / Bug" />
+         <Button onAction="#addTask" mnemonicParsing="false" styleClass="btn-primary-outline" text="+ Tâche / Bug">
+            <VBox.margin>
+               <Insets left="5.0" />
+            </VBox.margin>
+         </Button>
+         <ListView fx:id="listTask">
+            <VBox.margin>
+               <Insets top="5.0" />
+            </VBox.margin>
+         </ListView>
+      </VBox>
+   </children>
+
+</GridPane>

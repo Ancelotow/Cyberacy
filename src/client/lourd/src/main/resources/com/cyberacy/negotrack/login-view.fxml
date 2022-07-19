@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane fx:id="form" alignment="TOP_CENTER" hgap="10" prefHeight="600" prefWidth="1000" vgap="20" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cyberacy.negotrack.views.LoginController">
+
+    <columnConstraints>
+        <ColumnConstraints prefWidth="500" />
+        <ColumnConstraints prefWidth="500" />
+    </columnConstraints>
+
+    <ImageView fitHeight="400" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+        <image>
+            <Image url="@../../../images/title_logo.png" />
+        </image>
+    </ImageView>
+
+
+    <GridPane maxWidth="500" minWidth="500" prefHeight="600" GridPane.columnIndex="1">
+
+        <rowConstraints>
+            <RowConstraints percentHeight="30.0" prefHeight="50.0" />
+            <RowConstraints percentHeight="10.0" />
+            <RowConstraints percentHeight="10.0" />
+            <RowConstraints percentHeight="30.0" />
+            <RowConstraints percentHeight="30.0" />
+        </rowConstraints>
+
+        <Label styleClass="txt-title-H1" text="CONNEXION" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+
+        <TextField fx:id="login" promptText="Identifiant" styleClass="input-text" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets>
+                    <right>20</right>
+                    <left>10</left>
+                </Insets>
+            </GridPane.margin>
+        </TextField>
+
+        <PasswordField fx:id="password" promptText="Mot de passe" styleClass="input-text" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <GridPane.margin>
+                <Insets>
+                    <right>20</right>
+                    <left>10</left>
+                </Insets>
+            </GridPane.margin>
+        </PasswordField>
+
+        <Button onAction="#connection" styleClass="btn-primary-outline" text="Connexion" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+         <GridPane.margin>
+            <Insets bottom="5.0" />
+         </GridPane.margin></Button>
+
+        <Button onAction="#register" styleClass="btn-primary-outline" text="S'inscrire" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets top="5.0" />
+         </GridPane.margin></Button>
+
+        <columnConstraints>
+            <ColumnConstraints percentWidth="100.0" />
+        </columnConstraints>
+
+    </GridPane>
+
+
+    <stylesheets>
+        <URL value="@../../../css/stylesheet.css" />
+    </stylesheets>
+
+    <rowConstraints>
+        <RowConstraints />
+    </rowConstraints>
+
+</GridPane>

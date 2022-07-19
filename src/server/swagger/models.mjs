@@ -94,8 +94,11 @@ export default  {
         nb_place: 5000,
         street_address: "Accord Hotel Arena",
         link_twitch: "https://www.twitch.tv/samueletienne",
+        link_youtube: "https://www.youtube.com/channel/UCk2xd7NXB2BL5diWVNQj4Tg",
         id_political_party: 1,
-        town_code_insee: "11003"
+        town_code_insee: "75112",
+        price_excl: 35.00,
+        vta_rate: 20.00
     },
 
     AddThread: {
@@ -117,7 +120,8 @@ export default  {
         name: "Edouard PHILLIPE",
         choice_order: 1,
         description: "Elections aux législatives : Edouard PHILLIPE",
-        candidat_nir: "012457832032045"
+        candidat_nir: "012457832032045",
+        id_color: 1
     },
 
     AddElection: {
@@ -127,4 +131,16 @@ export default  {
         id_type_vote: 1,
     },
 
+    AddMessage: {
+        message: "Bonjour tout le monde !"
+    },
+
+    InitPayment: {
+        amount_including_tax: 10.99,
+        amount_excl: 8.792,
+        vat_rate: 20,
+        is_test: true,
+        libelle: "réservation place meeting : Horizons conférence annuelle !",
+        email: "toto@gmail.com"
+    },
 };

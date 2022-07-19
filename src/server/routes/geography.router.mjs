@@ -8,7 +8,7 @@ routerGeo.get("/region", async (req, res) => {
     // #swagger.description = 'Récupération des régions.'
 
     const response = await geographyCtrl.GetRegions()
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerGeo.get("/region/:code_insee/department", async (req, res) => {
@@ -16,7 +16,7 @@ routerGeo.get("/region/:code_insee/department", async (req, res) => {
     // #swagger.description = 'Récupération des départements par régions.'
 
     const response = await geographyCtrl.GetDepartmentByRegion(req.params.code_insee)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerGeo.get("/department", async (req, res) => {
@@ -24,7 +24,7 @@ routerGeo.get("/department", async (req, res) => {
     // #swagger.description = 'Récupération des départements.'
 
     const response = await geographyCtrl.GetDepartments()
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerGeo.get("/department/:code/town", async (req, res) => {
@@ -32,7 +32,7 @@ routerGeo.get("/department/:code/town", async (req, res) => {
     // #swagger.description = 'Récupération des communes par département.'
 
     const response = await geographyCtrl.GetTownsByDepartment(req.params.code)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerGeo.get("/town", async (req, res) => {
@@ -40,7 +40,7 @@ routerGeo.get("/town", async (req, res) => {
     // #swagger.description = 'Récupération des communes.'
 
     const response = await geographyCtrl.GetTowns()
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 routerGeo.get("/coordinates", async (req, res) => {
@@ -55,11 +55,11 @@ routerGeo.get("/coordinates", async (req, res) => {
     /* #swagger.parameters['address_street'] = {
           in: 'query',
           description: 'L\'adresse (rue).',
-          type: 'boolean'
+          type: 'string'
    } */
 
     const response = await geographyCtrl.GetCoordinates(req.query.address_street, req.query.zip_code)
-    res.status(response.status).send(response.data)
+    res.status(response.code).send(response)
 });
 
 export {routerGeo}
