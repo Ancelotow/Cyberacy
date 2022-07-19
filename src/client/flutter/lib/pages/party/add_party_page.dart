@@ -1,3 +1,8 @@
+import 'dart:convert';
+import 'dart:html';
+
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:bo_cyberacy/models/entities/political_edge.dart';
 import 'package:bo_cyberacy/models/entities/political_party.dart';
 import 'package:bo_cyberacy/models/services/party_service.dart';
@@ -12,6 +17,7 @@ import '../../widgets/buttons/button.dart';
 import '../../widgets/input_field/input_text.dart';
 import '../party_page.dart';
 import 'package:desktop_drop/desktop_drop.dart';
+import 'package:cross_file/cross_file.dart';
 
 class AddPartyPage extends StatefulWidget {
   static const String routeName = "infoPartyPage";
@@ -24,6 +30,7 @@ class AddPartyPage extends StatefulWidget {
 
 class _AddPartyPageState extends State<AddPartyPage> {
   final _formKey = GlobalKey<FormState>();
+  XFile? iconParty = null;
 
   bool _dragging = false;
 
@@ -66,6 +73,7 @@ class _AddPartyPageState extends State<AddPartyPage> {
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const SizedBox(height: 50),
+              dropFileTarget(context),
               InputText(
                 placeholder: "SIREN*",
                 icon: Icons.person,
@@ -101,14 +109,13 @@ class _AddPartyPageState extends State<AddPartyPage> {
                 validator: _validatorFieldNullOrEmpty,
                 controller: ctrlNir,
               ),
-              InputText(
+              /*InputText(
                 placeholder: "URL Logo*",
                 icon: Icons.image,
                 validator: _validatorFieldNullOrEmpty,
                 width: width,
                 controller: ctrlUrlLogo,
-              ),
-              dropFileTarget(context),
+              ),*/
               InputSelected<PoliticalEdge>(
                 future: RefService().getAllPoliticalEdge(),
                 items: [],
@@ -131,11 +138,12 @@ class _AddPartyPageState extends State<AddPartyPage> {
               ),
               const SizedBox(height: 10),
               Button(
-                  label: "Annuler",
-                  width: width,
-                  color: Colors.red,
-                  pressedColor: Colors.redAccent,
-                  click: () => NavigationNotification(PartyPage()).dispatch(context),
+                label: "Annuler",
+                width: width,
+                color: Colors.red,
+                pressedColor: Colors.redAccent,
+                click: () =>
+                    NavigationNotification(PartyPage()).dispatch(context),
               ),
             ],
           ),
@@ -163,13 +171,24 @@ class _AddPartyPageState extends State<AddPartyPage> {
   Future<void> _saveParty(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       setState(() => isSaving = true);
+      if(iconParty == null) {
+        AlertNormal(
+          context: context,
+          title: "Erreur ajout",
+          message: "Le logo du parti est obligatoire",
+          labelButton: "Continuer",
+        ).show();
+        setState(() => isSaving = false);
+        return;
+      }
       try {
+        final urlLogo = await uploadLogo();
         PoliticalParty party = PoliticalParty(
           object: ctrlObject.text,
           siren: ctrlSiren.text,
           nirFondator: ctrlNir.text,
           iban: ctrlIban.text,
-          urlLogo: ctrlUrlLogo.text,
+          urlLogo: urlLogo,
           idPoliticalEdge: currentEdge!.id,
         );
         await PartyService().addParty(party);
@@ -181,9 +200,34 @@ class _AddPartyPageState extends State<AddPartyPage> {
           message: e.responseHttp.body,
           labelButton: "Continuer",
         ).show();
+      } on FirebaseException catch (e){
+        AlertNormal(
+          context: context,
+          title: "Erreur upload logo",
+          message: e.message ?? "Erreur inconnue",
+          labelButton: "Continuer",
+        ).show();
       } finally {
         setState(() => isSaving = false);
       }
+    }
+  }
+
+  Future<String> uploadLogo() async {
+    final storageRef = FirebaseStorage.instance.ref();
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('ddMMyyyyHHmmss').format(now);
+    String name = "party_${formattedDate}";
+    final logoRef = storageRef.child(name);
+    try {
+      final bytes = await iconParty!.readAsBytes();
+      final result = await logoRef.putData(bytes, SettableMetadata(
+        contentType: "image/jpeg",
+      ));
+      final url = await logoRef.getDownloadURL();
+      return url;
+    } on FirebaseException{
+      rethrow;
     }
   }
 
@@ -191,15 +235,8 @@ class _AddPartyPageState extends State<AddPartyPage> {
     return DropTarget(
       onDragDone: (detail) async {
         setState(() {
-          print("0");
+          iconParty = detail.files[0];
         });
-        debugPrint('onDragDone:');
-        for (final file in detail.files) {
-          debugPrint('  ${file.path} ${file.name}'
-              '  ${await file.lastModified()}'
-              '  ${await file.length()}'
-              '  ${file.mimeType}');
-        }
       },
       onDragUpdated: (details) {
         setState(() {
@@ -222,13 +259,22 @@ class _AddPartyPageState extends State<AddPartyPage> {
         height: 200,
         width: 200,
         color: _dragging ? Colors.blue.withOpacity(0.4) : Colors.black26,
-        child: Stack(
-          children: [
-          ],
-        ),
+        child: getIconFile(context),
       ),
     );
   }
 
-
+  Widget getIconFile(BuildContext context) {
+    if (iconParty == null) {
+      return const Center(
+        child: Text(
+          "Logo du parti\nDéposer ici",
+          textAlign: TextAlign.center,
+        ),
+      );
+    } else {
+      final path = iconParty!.path;
+      return Image.network(path);
+    }
+  }
 }
