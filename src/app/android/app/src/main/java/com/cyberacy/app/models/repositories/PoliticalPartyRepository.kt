@@ -1,11 +1,19 @@
 package com.cyberacy.app.models.repositories
 
+import android.util.Log
+import com.cyberacy.app.models.entities.Message
 import com.cyberacy.app.models.entities.PoliticalParty
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.isActive
 import retrofit2.HttpException
+import java.net.ConnectException
+import java.net.UnknownHostException
 
 object PoliticalPartyRepository {
 
@@ -16,6 +24,10 @@ object PoliticalPartyRepository {
                 emit(PartyStateSuccessList(PoliticalParty.getPoliticalParties()))
             } catch (e: HttpException) {
                 emit(PartyStateError(e))
+            } catch (e: UnknownHostException) {
+                emit(PartyStateErrorHost(e))
+            } catch (e: ConnectException) {
+                emit(PartyStateErrorHost(e))
             }
         }.flowOn(Dispatchers.IO)
     }
@@ -27,8 +39,12 @@ object PoliticalPartyRepository {
                 emit(PartyStateSuccessMine(PoliticalParty.getMinePoliticalParty()))
             } catch (e: HttpException) {
                 emit(PartyStateError(e))
+            } catch (e: UnknownHostException) {
+                emit(PartyStateErrorHost(e))
+            } catch (e: ConnectException) {
+                emit(PartyStateErrorHost(e))
             }
-        }.flowOn(Dispatchers.IO)
+        }
     }
 
     suspend fun fetchPartyById(id: Int): Flow<PartyState> {
@@ -38,6 +54,10 @@ object PoliticalPartyRepository {
                 emit(PartyStateSuccessMine(PoliticalParty.getPoliticalPartyById(id)))
             } catch (e: HttpException) {
                 emit(PartyStateError(e))
+            } catch (e: UnknownHostException) {
+                emit(PartyStateErrorHost(e))
+            } catch (e: ConnectException) {
+                emit(PartyStateErrorHost(e))
             }
         }.flowOn(Dispatchers.IO)
     }
@@ -49,3 +69,4 @@ object PartyStateLoading: PartyState()
 data class PartyStateSuccessList(val parties: List<PoliticalParty>): PartyState()
 data class PartyStateSuccessMine(val party: PoliticalParty?): PartyState()
 data class PartyStateError(val ex: HttpException): PartyState()
+data class PartyStateErrorHost(val ex: Exception): PartyState()

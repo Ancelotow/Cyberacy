@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/layout_main"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
@@ -66,6 +67,7 @@
             android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:lines="1"
             android:fontFamily="@font/hk_nova" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -94,6 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
+            android:lines="1"
             android:fontFamily="@font/hk_nova"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -102,14 +105,28 @@
         android:id="@+id/btnConnection"
         android:text="@string/btn_login"
         android:layout_height="60dp"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_width="0dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="@font/hk_nova"
+        android:textColor="@color/white"
         app:cornerRadius="5dp"
         app:backgroundTint="@color/navy"
+        app:layout_constraintLeft_toLeftOf="@id/btn_register"
+        app:layout_constraintRight_toRightOf="@id/btn_register"
+        app:layout_constraintTop_toBottomOf="@id/layout_password"/>
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:id="@+id/btn_register"
+        android:text="@string/btn_register"
+        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/hk_nova"
+        app:cornerRadius="5dp"
         app:layout_constraintLeft_toLeftOf="@id/gl_start"
         app:layout_constraintRight_toRightOf="@id/gl_end"
-        app:layout_constraintTop_toBottomOf="@id/layout_password"/>
+        app:layout_constraintTop_toBottomOf="@id/barrier"/>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progress_circular"
@@ -122,6 +139,12 @@
         app:layout_constraintRight_toRightOf="@id/gl_end"
         app:layout_constraintTop_toBottomOf="@id/layout_password"/>
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="progress_circular,btnConnection" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

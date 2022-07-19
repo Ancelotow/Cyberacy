@@ -52,7 +52,6 @@
             android:id="@+id/party_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:fontFamily="@font/hk_nova"
             android:textSize="25sp"
             android:maxLines="2"

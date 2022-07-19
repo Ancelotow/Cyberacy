@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cyberacy</string>
+
+    <!-- description -->
+    <string name="desc_logo">Logo</string>
+
+    <!-- hint -->
+    <string name="hint_nir">Sozialversicherungsnummer</string>
+    <string name="hint_pwd">Passwort</string>
+    <string name="hint_message">Nachricht</string>
+    <string name="hint_email">Mail Adresse</string>
+
+    <!-- button -->
+    <string name="btn_login">Anmeldung</string>
+    <string name="btn_twitch">Link zu Twitch</string>
+    <string name="btn_youtube">Link zu YouTube</string>
+    <string name="btn_add_event">Fügen Sie eine Erinnerung hinzu</string>
+    <string name="btn_book_meeting">Treffen buchen</string>
+    <string name="btn_pay_with_paypal">Zahlen Sie mit PayPal</string>
+    <string name="btn_more_meeting">Weitere Treffen anzeigen</string>
+    <string name="title_activity_navigation">Navigationsaktivität</string>
+    <string name="btn_yes">Ja</string>
+    <string name="btn_no">Nö</string>
+    <string name="btn_to_vote">Zum Abstimmen!</string>
+
+    <!-- navigation bottom bar-->
+    <string name="nav_party">Politische Partei</string>
+    <string name="nav_manifestation">Veranstaltungen</string>
+    <string name="nav_vote">Wählen</string>
+
+    <!-- Text : Global -->
+    <string name="txt_error_happening">Ein Fehler ist aufgetreten… \n%s</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="txt_required_field">Dieses Feld ist erforderlich</string>
+    <string name="txt_error_login">Benutzername und/oder Passwort sind falsch</string>
+
+    <!-- Text : Party -->
+    <string name="txt_no_party">Wählen Sie eine politische Partei aus, der Sie beitreten möchten</string>
+    <string name="txt_join_party">Trete einer Partei bei</string>
+    <string name="txt_join_thread">Nehmen Sie an einem Chat teil</string>
+    <string name="txt_join_party_cancel">Stornierung</string>
+    <string name="txt_messagerie">Nachrichten</string>
+    <string name="txt_no_message">Keine Beiträge</string>
+    <string name="txt_no_mythreads">Sie befinden sich in keiner Diskussion\nGehen Sie zu \"Andere Diskussionen\", um einer beizutreten</string>
+    <string name="txt_no_threads">Sie haben derzeit keine Einladungen oder neuen Diskussionsfäden, denen Sie beitreten können.</string>
+    <string name="txt_no_messages">Schreiben Sie die erste Nachricht in diesem Thread!</string>
+    <string name="txt_message_sent">Nachricht gesendet</string>
+    <string name="txt_not_found_party">Wir haben Ihre politische Partei nicht gefunden</string>
+    <string name="txt_join_party_confirmation">Sind Sie sicher, dass Sie der Party \"%s\" beitreten möchten?</string>
+    <string name="txt_leave_party_confirmation">Sind Sie sicher, dass Sie diese politische Partei verlassen möchten?</string>
+    <string name="txt_join_thread_confirmation">Sind Sie sicher, dass Sie an der \"%s\"-Diskussion teilnehmen möchten?</string>
+    <string name="txt_leave_thread_confirmation">Möchten Sie diese Diskussion wirklich verlassen?</string>
+    <string name="txt_message_null">Nachricht darf nicht null sein</string>
+    <string name="txt_message_today">Heute %s</string>
+    <string name="txt_message_yesterday">Gestern</string>
+
+    <!-- Text : Elections -->
+    <string name="txt_vote_inprogress">Abstimmung läuft</string>
+    <string name="txt_choose_choice">Wählen Sie eine der folgenden Optionen aus und klicken Sie auf die Schaltfläche \"Eine Stimme!\", um Ihre Wahl zu bestätigen</string>
+    <string name="txt_to_vote_confirmation">Bestätigung der Abstimmung</string>
+    <string name="txt_round_finished">Diese Runde ist beendet</string>
+    <string name="txt_round_not_started">Diese Tour hat noch nicht begonnen</string>
+    <string name="txt_already_voted">Sie haben bereits abgestimmt</string>
+    <string name="txt_no_voted">Sie haben nicht gewählt</string>
+    <string name="txt_thanks_to_voted">Vielen Dank!\nIhre Stimme wurde berücksichtigt</string>
+    <string name="txt_have_voted">ich wählte</string>
+    <string name="txt_must_voted">Zu stimmen</string>
+    <string name="txt_abstention">Enthaltung</string>
+    <string name="txt_confirm_choice">Sind Sie sicher, dass Sie \"%s\" auswählen möchten?</string>
+    <string name="txt_no_choice_selected">Sie haben keine Auswahl getroffen.</string>
+    <string name="txt_round">Runden</string>
+    <string name="txt_no_vote_in_progress">Es sind keine Abstimmungen im Gange</string>
+
+    <!-- Text : Meeting -->
+    <string name="txt_error_book_meeting">Während der Reservierung ist ein Fehler aufgetreten</string>
+    <string name="txt_book_successful">Ihre Reservierung wurde erfolgreich durchgeführt!</string>
+    <string name="txt_meeting_title_payment">Besprechungsbuchung: %s</string>
+    <string name="txt_meeting_price">Preise</string>
+    <string name="txt_meeting_during">Dauer: %s</string>
+    <string name="txt_next_meeting">Nächste Treffen</string>
+    <string name="txt_meeting">Treffen</string>
+    <string name="txt_no_meetings">Momentan finden keine Treffen statt</string>
+    <string name="txt_no_meetings_detail">Es gibt keine Informationen zu diesem Meeting…\nVersuchen Sie es später erneut</string>
+    <string name="txt_desc">Beschreibung</string>
+    <string name="txt_or">Wo</string>
+    <string name="txt_participate_meeting">Ich nehme an der Sitzung teil!</string>
+    <string name="txt_my_ticket">Mein Ticket</string>
+    <string name="txt_cancel_book">Sie haben die Zahlung Ihrer Reservierung storniert</string>
+    <string name="txt_not_found_ticket">Wir konnten für diese Sitzung kein Ticket auf Ihren Namen finden</string>
+
+    <!-- Text : Payment -->
+    <string name="txt_payment">Zahlung</string>
+    <string name="txt_cdv">Ich habe die <a href="https://www.termsandconditionsgenerator.com/live.php?token=pM2FwG6dI5fdNoVANzsbF4UUXywt1Uc7">Verkaufsbedingungen</a> gelesen und akzeptiere sie</string>
+    <string name="txt_total_excluding_tax">Gesamt ohne MwSt.: %s €</string>
+    <string name="txt_vat">Mehrwertsteuer: %s \%%</string>
+    <string name="txt_total_including_tax">Gesamt inkl. MwSt.: %s €</string>
+    <string name="txt_pay_by_card">Bezahlen mit Karte (%s €)</string>
+    <string name="txt_required_field_invoice">Dieses Feld wird zum Versenden der Rechnung benötigt</string>
+    <string name="txt_cgv_required">Sie müssen die AGB akzeptieren, um fortzufahren</string>
+
+    <!-- Tab bar -->
+    <string name="tb_conversation">Meine Gespräche</string>
+    <string name="tb_other_conversation">Andere Themen</string>
+
+    <!-- Checkout activity -->
+    <string name="title_activity_checkout">Checkout-Aktivität</string>
+    <string name="checkout_item_description">Beschreibung</string>
+    <string name="googlepay_status_unavailable" translatable="false">Unfortunately, Google Pay is
+        not available on this phone.
+    </string>
+    <string name="payments_show_name" translatable="false">Successfully received payment data for
+        %s!
+    </string>
+
+    <string name="btn_register">Maak mijn account</string>
+    <string name="txt_register">inschrijving</string>
+    <string name="hint_firstname">Voornaam</string>
+    <string name="hint_lastname">Achternaam</string>
+    <string name="hint_password_check">Voer je wachtwoord opnieuw in</string>
+    <string name="hint_town">Dorp</string>
+    <string name="hint_dept">Afdeling</string>
+    <string name="hint_genre">Geslacht</string>
+    <string name="hint_address_street">Woonadres</string>
+    <string name="txt_identity">Identificeren</string>
+    <string name="txt_account">Account</string>
+    <string name="txt_localisation">Plaats</string>
+    <string name="hint_birthday">Geboortedatum</string>
+    <string name="txt_error_nir_short">De NIR moet uit 13 cijfers bestaan</string>
+    <string name="txt_error_not_same_pwd">Wachtwoorden komen niet overeen</string>
+    <string name="txt_error_not_email">Dit is geen e-mailadres</string>
+    <string name="txt_error_minor">U moet meerderjarig zijn om u te registreren</string>
+    <string name="txt_account_already_existed">Dit account bestaat al</string>
+    <string name="txt_account_created">Het account is succesvol aangemaakt!</string>
+
+    <string name="txt_create_thread">Neue Diskussion</string>
+    <string name="hint_name_thread">Chat Name*</string>
+    <string name="hint_url_logo">URL-Logo</string>
+    <string name="hint_description_thread">Beschreibung…</string>
+    <string name="btn_add">Hinzufügen</string>
+    <string name="txt_connection_host_failure">Wir können den Server nicht erreichen.\nBitte überprüfen Sie Ihre Internetverbindung</string>
+
+</resources>

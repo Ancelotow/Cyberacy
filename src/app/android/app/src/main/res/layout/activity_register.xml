@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.register.RegisterActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="50dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="50dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_back"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            app:backgroundTint="@color/transparent"
+            app:cornerRadius="50dp"
+            app:icon="@drawable/ic_back"
+            app:iconGravity="textStart"
+            app:iconTint="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/title" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/hk_nova"
+            android:text="@string/txt_register"
+            android:textSize="40sp"
+            android:lines="1"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/title_identity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/hk_nova"
+            android:text="@string/txt_identity"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
+        <View
+            android:id="@+id/split_line_identity"
+            android:layout_width="0dp"
+            android:layout_height= "1dp"
+            android:background="@color/grey"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/title_identity"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_genre"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_genre"
+            android:layout_marginTop="20dp"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:errorEnabled="true"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/split_line_identity"
+            app:startIconDrawable="@drawable/ic_gender">
+
+            <AutoCompleteTextView
+                android:id="@+id/genre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hk_nova"
+                android:lines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_firstname"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_firstname"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:errorEnabled="true"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/layout_genre"
+            app:startIconDrawable="@drawable/ic_person">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/firstname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hk_nova"
+                android:lines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_lastname"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_lastname"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:errorEnabled="true"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/layout_firstname"
+            app:startIconDrawable="@drawable/ic_person">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hk_nova"
+                android:lines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_birthday"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_birthday"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:errorEnabled="true"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/layout_lastname"
+            app:startIconDrawable="@drawable/ic_calendar">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/birthday"
+                android:focusable="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hk_nova"
+                android:lines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_nir"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_nir"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:errorEnabled="true"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/layout_birthday"
+            app:startIconDrawable="@drawable/ic_nir">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hk_nova"
+                android:lines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/title_localisation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/hk_nova"
+            android:text="@string/txt_localisation"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/layout_nir" />
+
+        <View
+            android:id="@+id/split_line_localisation"
+            android:layout_width="0dp"
+            android:layout_height= "1dp"
+            android:background="@color/grey"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/title_localisation"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_address"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_address_street"
+            android:layout_marginTop="20dp"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:errorEnabled="true"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/title_localisation"
+            app:startIconDrawable="@drawable/ic_address">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hk_nova"
+                android:lines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_dept"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_dept"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:errorEnabled="true"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/layout_address"
+            app:startIconDrawable="@drawable/ic_department">
+
+            <AutoCompleteTextView
+                android:id="@+id/department"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hk_nova"
+                android:lines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_town"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_town"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:errorEnabled="true"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/layout_dept"
+            app:startIconDrawable="@drawable/ic_town">
+
+            <AutoCompleteTextView
+                android:id="@+id/town"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hk_nova"
+                android:lines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <TextView
+            android:id="@+id/title_account"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/hk_nova"
+            android:text="@string/txt_account"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/layout_town" />
+
+        <View
+            android:id="@+id/split_line_account"
+            android:layout_width="0dp"
+            android:layout_height= "1dp"
+            android:background="@color/grey"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/title_account"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_email"
+            android:layout_marginTop="20dp"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:errorEnabled="true"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/title_account"
+            app:startIconDrawable="@drawable/ic_email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hk_nova"
+                android:lines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_pwd"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:errorEnabled="true"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/layout_email"
+            app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/ic_key">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hk_nova"
+                android:inputType="textPassword"
+                android:lines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_confirm_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_password_check"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:errorEnabled="true"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/layout_password"
+            app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/ic_key">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/hk_nova"
+                android:inputType="textPassword"
+                android:lines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_register"
+            android:text="@string/txt_register"
+            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/hk_nova"
+            android:textColor="@color/white"
+            app:cornerRadius="5dp"
+            app:backgroundTint="@color/navy"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/layout_confirm_password"/>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_circular"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+            android:layout_marginTop="20dp"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="@id/gl_start"
+            app:layout_constraintRight_toRightOf="@id/gl_end"
+            app:layout_constraintTop_toBottomOf="@id/layout_confirm_password"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
+

@@ -25,6 +25,8 @@ import com.cyberacy.app.models.entities.Session
 import com.cyberacy.app.models.repositories.*
 import com.cyberacy.app.models.services.ApiConnection
 import com.cyberacy.app.ui.navigation.NavigationActivity
+import com.cyberacy.app.ui.party.PartyFragment
+import com.cyberacy.app.ui.party.main_party.MainPartyFragment
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
@@ -54,6 +56,9 @@ class JoinPartyFragment : Fragment() {
                 is PartyStateError -> {
                     shimmer_layout.visibility = View.GONE
                 }
+                is PartyStateErrorHost -> {
+                    shimmer_layout.visibility = View.GONE
+                }
                 PartyStateLoading -> {
                     recyclerView.visibility = View.GONE
                     shimmer_layout.visibility = View.VISIBLE
@@ -63,9 +68,7 @@ class JoinPartyFragment : Fragment() {
                     recyclerView.visibility = View.VISIBLE
                     recyclerView.adapter =
                         ListAdapterParty(it.parties as MutableList<PoliticalParty>) { party ->
-                            partySelected(
-                                party
-                            )
+                            partySelected(party)
                         }
                     recyclerView.layoutManager = GridLayoutManager(context, 1)
                 }
@@ -74,7 +77,7 @@ class JoinPartyFragment : Fragment() {
         }
     }
 
-    fun partySelected(party: PoliticalParty) {
+    private fun partySelected(party: PoliticalParty) {
         loaderJoin.visibility = View.VISIBLE
         activity?.window?.setFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -83,6 +86,7 @@ class JoinPartyFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 ApiConnection.connection().joinParty(party.id).await()
+                (parentFragment!! as PartyFragment).refresh()
             } catch (e: HttpException) {
                 Log.e("Erreur HTTP", e.message())
             } finally {
@@ -92,61 +96,4 @@ class JoinPartyFragment : Fragment() {
         }
     }
 
-}
-
-class ListAdapterParty(
-    val parties: MutableList<PoliticalParty>,
-    val itemClick: (item: PoliticalParty) -> Unit
-) : RecyclerView.Adapter<PartyViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartyViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_party, parent, false)
-        return PartyViewHolder(view).listen { pos, type ->
-            val item = parties.get(pos)
-            itemSelected(item, parent.context)
-        }
-    }
-
-    override fun onBindViewHolder(holder: PartyViewHolder, position: Int) {
-        holder.setItem(parties[position], (position + 1))
-    }
-
-    override fun getItemCount(): Int {
-        return parties.size
-    }
-
-    private fun itemSelected(item: PoliticalParty, context: Context) {
-        val alertDialogBuilder = AlertDialog.Builder(context)
-        alertDialogBuilder.setTitle(R.string.txt_join_party)
-        alertDialogBuilder.setMessage("Êtes-vous sûr(e) de vouloir rejoindre le parti ${item.name} ?")
-        alertDialogBuilder.setPositiveButton(R.string.btn_yes) { dialog, which ->
-            itemClick.invoke(item)
-        }
-        alertDialogBuilder.setNegativeButton(R.string.btn_no) { dialog, which ->
-            Toast.makeText(context, R.string.txt_join_party_cancel, Toast.LENGTH_SHORT).show()
-        }
-        alertDialogBuilder.show()
-    }
-
-    // Listener quand on clique sur l'élément
-    private fun <T : ViewHolder> T.listen(event: (position: Int, type: Int) -> Unit): T {
-        itemView.setOnClickListener {
-            event.invoke(adapterPosition, itemViewType)
-        }
-        return this
-    }
-
-}
-
-
-class PartyViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-
-    private val partyName = v.findViewById<TextView>(R.id.party_name)
-    private val partyLogo = v.findViewById<ImageView>(R.id.logo)
-
-    fun setItem(item: PoliticalParty, rank: Int) {
-        partyName.text = item.name
-        Picasso.get().load(item.urlLogo).into(partyLogo)
-    }
 }

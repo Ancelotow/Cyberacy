@@ -1,20 +1,14 @@
 package com.cyberacy.app.ui.navigation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.ActionBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentContainerView
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupWithNavController
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.cyberacy.app.R
-import com.cyberacy.app.databinding.ActivityNavigationBinding
-import com.cyberacy.app.models.entities.Session
+import com.cyberacy.app.models.entities.FCMTopic
 
 class NavigationActivity : AppCompatActivity() {
 
@@ -34,6 +28,8 @@ class NavigationActivity : AppCompatActivity() {
         val navHost = supportFragmentManager.findFragmentById(R.id.host_view) as NavHostFragment
         setupWithNavController(navBar, navHost.navController)
 
-        Log.v("JWT TOKEN", Session.getJwtToken())
+        FCMTopic.subscribeAllTopic(this)
     }
+
+
 }
