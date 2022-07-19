@@ -58,94 +58,96 @@ class _AddPartyPageState extends State<AddPartyPage> {
       body: Center(
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Nouveau parti politique",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline1,
-              ),
-              Text(
-                "(Le nom et l'adresse du parti seront rempli automatiquement grâce au SIREN)",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-              const SizedBox(height: 50),
-              dropFileTarget(context),
-              InputText(
-                placeholder: "SIREN*",
-                icon: Icons.person,
-                width: width,
-                validator: _validatorFieldNullOrEmpty,
-                controller: ctrlSiren,
-              ),
-              InputText(
-                placeholder: "Objet*",
-                icon: Icons.abc,
-                width: width,
-                validator: _validatorFieldNullOrEmpty,
-                controller: ctrlObject,
-              ),
-              InputText(
-                placeholder: "Description*",
-                icon: Icons.abc,
-                width: width,
-                validator: _validatorFieldNullOrEmpty,
-                controller: ctrlDescription,
-              ),
-              InputText(
-                placeholder: "IBAN*",
-                icon: Icons.credit_card,
-                width: width,
-                validator: _validatorFieldNullOrEmpty,
-                controller: ctrlIban,
-              ),
-              InputText(
-                placeholder: "NIR du fondateur*",
-                icon: Icons.person,
-                width: width,
-                validator: _validatorFieldNullOrEmpty,
-                controller: ctrlNir,
-              ),
-              /*InputText(
-                placeholder: "URL Logo*",
-                icon: Icons.image,
-                validator: _validatorFieldNullOrEmpty,
-                width: width,
-                controller: ctrlUrlLogo,
-              ),*/
-              InputSelected<PoliticalEdge>(
-                future: RefService().getAllPoliticalEdge(),
-                items: [],
-                value: currentEdge,
-                placeholder: "Bord politique*",
-                icon: Icons.event_seat,
-                validator: _validatorInputFieldNullOrEmpty,
-                width: width,
-                onChanged: (value) {
-                  currentEdge = value;
-                },
-              ),
-              const SizedBox(height: 10),
-              Button(
-                label: "Sauvegarder",
-                width: width,
-                isLoad: isSaving,
-                pressedColor: Colors.lightBlue,
-                click: () => _saveParty(context),
-              ),
-              const SizedBox(height: 10),
-              Button(
-                label: "Annuler",
-                width: width,
-                color: Colors.red,
-                pressedColor: Colors.redAccent,
-                click: () =>
-                    NavigationNotification(PartyPage()).dispatch(context),
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Nouveau parti politique",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+                Text(
+                  "(Le nom et l'adresse du parti seront rempli automatiquement grâce au SIREN)",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                const SizedBox(height: 50),
+                dropFileTarget(context),
+                InputText(
+                  placeholder: "SIREN*",
+                  icon: Icons.person,
+                  width: width,
+                  validator: _validatorFieldNullOrEmpty,
+                  controller: ctrlSiren,
+                ),
+                InputText(
+                  placeholder: "Objet*",
+                  icon: Icons.abc,
+                  width: width,
+                  validator: _validatorFieldNullOrEmpty,
+                  controller: ctrlObject,
+                ),
+                InputText(
+                  placeholder: "Description*",
+                  icon: Icons.abc,
+                  width: width,
+                  validator: _validatorFieldNullOrEmpty,
+                  controller: ctrlDescription,
+                ),
+                InputText(
+                  placeholder: "IBAN*",
+                  icon: Icons.credit_card,
+                  width: width,
+                  validator: _validatorFieldNullOrEmpty,
+                  controller: ctrlIban,
+                ),
+                InputText(
+                  placeholder: "NIR du fondateur*",
+                  icon: Icons.person,
+                  width: width,
+                  validator: _validatorFieldNullOrEmpty,
+                  controller: ctrlNir,
+                ),
+                /*InputText(
+                  placeholder: "URL Logo*",
+                  icon: Icons.image,
+                  validator: _validatorFieldNullOrEmpty,
+                  width: width,
+                  controller: ctrlUrlLogo,
+                ),*/
+                InputSelected<PoliticalEdge>(
+                  future: RefService().getAllPoliticalEdge(),
+                  items: [],
+                  value: currentEdge,
+                  placeholder: "Bord politique*",
+                  icon: Icons.event_seat,
+                  validator: _validatorInputFieldNullOrEmpty,
+                  width: width,
+                  onChanged: (value) {
+                    currentEdge = value;
+                  },
+                ),
+                const SizedBox(height: 10),
+                Button(
+                  label: "Sauvegarder",
+                  width: width,
+                  isLoad: isSaving,
+                  pressedColor: Colors.lightBlue,
+                  click: () => _saveParty(context),
+                ),
+                const SizedBox(height: 10),
+                Button(
+                  label: "Annuler",
+                  width: width,
+                  color: Colors.red,
+                  pressedColor: Colors.redAccent,
+                  click: () =>
+                      NavigationNotification(PartyPage()).dispatch(context),
+                ),
+              ],
+            ),
           ),
         ),
       ),
